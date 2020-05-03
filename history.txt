@@ -1,0 +1,15 @@
+# save existing files
+mkdir .ar
+mv * .ar
+# clean any useless, premature work
+rm -fr .git
+# create a new local REPO
+cgit init
+# add the remote  to the list of known REPOs
+git_remote
+# verify that information
+cgit remote -v
+# retrieve the bit thats on the remote repo
+cgit pull $(remote_repo) master
+# create an editable record
+history | tail -24 | nhn | tee history.txt
