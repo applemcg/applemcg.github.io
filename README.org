@@ -1,0 +1,8 @@
+** applemcg.github.io
+
+Formerly in the MyIdeaWarehouse.html file, it's now the index file in
+this directory.
+
+Using {user}.gitnub.io for a  [[https://tiddlywiki.com][Tiddly Wiki]]
+
+
