@@ -1,0 +1,222 @@
+gitlib_copyright () 
+{ 
+    cat <<EOF
+
+Copyright (c)2 2015-2020 Marty McGowan, JYATL - Just Yet Another Testing Lab
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+EOF
+
+}
+gitlib_version () 
+{ 
+    printf "%s\t%s\n" gitlib 0.5.0
+}
+git_pullclone () 
+{ 
+    [[ -e $1 ]] && { 
+        comment Fetching master latest pull for: $2;
+        ignore pushd $1;
+        cgit pull;
+        ignore popd
+    } || { 
+        comment Cloning $2;
+        cgit clone $2
+    }
+}
+git_init () 
+{ 
+    : when this becomes and APP, may be overridden;
+    : by defining a git_user, which in the App World,;
+    : is invoked _after_ any _init function;
+    git_account applemcg
+}
+git_account () 
+{ 
+    : set or return the account name of;
+    case $# in 
+        0)
+            echo ${GIT_ACCOUNT}
+        ;;
+        *)
+            setenv GIT_ACCOUNT $1
+        ;;
+    esac
+}
+findClean () 
+{ 
+    grep "$1" - | sed "s/.*$1 *//"
+}
+subcmmd () 
+{ 
+    grep '^ *[a-z[a-z]*)$' | sed 's/)$//; s/ */git /' $*
+}
+mygithub () 
+{ 
+    case $1 in 
+        *@)
+            separator=":"
+        ;;
+        *//)
+            separator="/"
+        ;;
+    esac;
+    echo ${1}github.com${separator}$(git_account)/$(basename $PWD).git
+}
+git_modified () 
+{ 
+    cgit status | awk '
+            /not staged/      {ready++};
+            /to be committed/ {ready++}; 
+             #           { print "debug: ", ready, $NF, $0 }
+            ready && /modified:/ { print $NF }
+            ready && /deleted:/  { print $NF }
+            ready && /file:/     { print $NF }
+           '
+}
+git_deleted () 
+{ 
+    cgit status | grep deleted: | field 2
+}
+git_mods () 
+{ 
+    cgit status | findClean modified:;
+    git status | findClean "new file:"
+}
+git_hub () 
+{ 
+    mygithub https://
+}
+git_ssh () 
+{ 
+    mygithub git@
+}
+git_push () 
+{ 
+    : to remember the origin;
+    : date: 2020-03-28;
+    cgit push $(remote_repo) ${1:-master}
+}
+git_add () 
+{ 
+    cgit add $*
+}
+git_name () 
+{ 
+    ignore pushd .;
+    while [[ $PWD != "/" ]]; do
+        [[ -d .git ]] && { 
+            basename $PWD;
+            break
+        };
+        cd ..;
+    done;
+    ignore popd
+}
+git_clone () 
+{ 
+    indir .. cgit clone $(git hub)
+}
+git_help () 
+{ 
+    cgit help $*;
+    sfg git_ | sed 's/^/    /'
+}
+git_untracked () 
+{ 
+    cgit status | sed '1,/Untracked files:/d; s/^#[     ]*//' | tail +3
+}
+git_needadd () 
+{ 
+    git status | grep '^[       ][      ]*' | egrep -v '(:|\))'
+}
+git () 
+{ 
+    : see if its a function, if not its a GIT Command;
+    set -- ${*:-status};
+    local gfun=git_${1};
+    isfunction $gfun && { 
+        $gfun ${*:2};
+        return $?
+    };
+    cgit $*
+}
+git_local () 
+{ 
+    [[ -d .git ]] && return $?;
+    [[ -d ../.git ]] || return $?;
+    pushd ..
+}
+git_addorigin () 
+{ 
+    : add a remote REPO to a local REPO;
+    : date: 2020-05-03;
+    report_notdirectory .git && return 1;
+    cgit remote add $(git_origin) $(git_url);
+    comment OBSOLESCENT in behalf of git_remote
+}
+git_url () 
+{ 
+    : the directory-dependent URL;
+    report_notdirectory .git && { 
+        echo /dev/null;
+        return 1
+    };
+    ${*:-echo} https://github.com/$(git_account)/$(basename $PWD)
+}
+git_origin () 
+{ 
+    : a GIT ORIGIN should be tied to the directory being served.;
+    : why? git remote -v lists all ones remote REPOs. all going different places;
+    : why would the "origin" be treated as a universal? No, it is a VARIABLE.;
+    : date: 2020-05-03;
+    report_notdirectory .git && return 1;
+    set -- $(basename $PWD);
+    echo ${1:0:5};
+    comment OBSOLESCENT in behalf of git_repo
+}
+git_remote () 
+{ 
+    : addresses the linguistic shortfall of ORIGIN;
+    : date: 2020-05-03;
+    git_addorigin
+}
+remote_repo () 
+{ 
+    : addresses the linguistic shortfall of ORIGIN;
+    : date: 2020-05-03;
+    set NoWAY;
+    report_notdirectory .git || set -- $(basename $PWD);
+    echo ${1:0:5}
+}
+cgit () 
+{ 
+    : date: 2020-05-03;
+    command git $@
+}
+git_toio () 
+{ 
+    : date: 2020-05-03;
+    git status | grep 'nothing to commit' && return;
+    git add index.html;
+    git commit -m $(iso_ymd);
+    git push
+}
+git_init  1>&2
