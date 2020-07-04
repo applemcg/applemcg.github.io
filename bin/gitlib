@@ -112,11 +112,12 @@ git_push ()
 { 
     : to remember the origin;
     : date: 2020-03-28;
+    comment cgit push $(remote_repo) ${1:-master};
     cgit push $(remote_repo) ${1:-master}
 }
 git_add () 
 { 
-    cgit add $*
+    cgit add "$@"
 }
 git_name () 
 { 
@@ -218,5 +219,78 @@ git_toio ()
     git add index.html;
     git commit -m $(iso_ymd);
     git push
+}
+git_diff () 
+{ 
+    : date: 2020-04-05;
+    : date: 2020-05-11;
+    set -- ${1:-cached};
+    cgit diff --$1 | tee .$1.out;
+    wc .$1.out
+}
+git_files () 
+{ 
+    : date: 2020-04-05;
+    : date: 2020-05-11;
+    ${*:-echo} $(git ls-files)
+}
+git_location () 
+{ 
+    : [go to] the Git REPO base directory;
+    : date: 2020-02-26;
+    : date: 2020-05-11;
+    ${*:-pushd} /Users/martymcgowan/git/bapp;
+    cdx
+}
+git_open () 
+{ 
+    : the associated repo;
+    : date: 2020-04-28;
+    : date: 2020-05-11;
+    ${*:-open} https://github.com/applemcg/bashapp
+}
+git_sum () 
+{ 
+    : date: 2020-05-11;
+    set $HOME/lib/git_sum.{txt,nxt};
+    [[ -f $1 ]] || { 
+        touch $1
+    };
+    { 
+        cat $1 <(gh git | awk '$2 ~ /git/ && !p[$3,$4,$5]++' )
+    } | sort -u > $2;
+    echo $*
+}
+git_tocommit () 
+{ 
+    : which files may be committed;
+    : date: 2020-05-11;
+    git status | awk '
+
+        /commit:/             { follow = 0};
+	/committed:/          { follow = 1 };
+	follow && /modified:/ { print $2 }
+    '
+}
+git_tostage () 
+{ 
+    : which files may be staged;
+    : date: 2020-05-11;
+    git status | awk '
+
+        /commit:/             { follow = 1 }
+	follow && /modified:/ { print $2 }
+    '
+}
+toMIWreading () 
+{ 
+    : convert the reading list into the MyIdeaWarehouse format,;
+    : date: 2020-07-04;
+    sorttable -r < librarything.rdb | tawk '
+    
+    NR == 1 { printf "| !%s | !%s | !%s |\n", $1, $2, $3}
+     NR < 3 { next };
+            { printf "|%s |%s |%s |\n", $1, $2, $3}
+   '
 }
 git_init  1>&2
