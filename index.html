@@ -14246,7 +14246,7 @@ exports.context = contextWidget;
 <div bag="default" created="20200516160357751" creator="M" modified="20200516160400487" modifier="MartyMcGowa" revision="1" title="$:/status/UserName">
 <pre>MartyMcGowan</pre>
 </div>
-<div created="20200718184652034" creator="MartyMcGowan" list="[[wiki Table Report]] LibraryThing [[Extending the Diary]] Active [[most recent journal entry]] TableofContents [[Welcome to Stroll]]" modified="20200718184814543" modifier="MartyMcGowan" title="$:/StoryList">
+<div created="20200718190634008" creator="MartyMcGowan" list="LibraryThing Active [[most recent journal entry]] TableofContents [[Welcome to Stroll]]" modified="20200718190636381" modifier="MartyMcGowan" title="$:/StoryList">
 <pre></pre>
 </div>
 <div bag="default" created="20200127183739219" list="$:/core/ui/Buttons/home $:/core/ui/Buttons/close-all $:/core/ui/Buttons/fold-all $:/core/ui/Buttons/unfold-all $:/core/ui/Buttons/permaview $:/core/ui/Buttons/new-tiddler $:/.giffmex/buttons/newnote-datetime $:/core/ui/Buttons/new-journal $:/core/ui/Buttons/new-image $:/core/ui/Buttons/import $:/core/ui/Buttons/export-page $:/core/ui/Buttons/control-panel $:/core/ui/Buttons/advanced-search $:/core/ui/Buttons/manager $:/core/ui/Buttons/tag-manager $:/core/ui/Buttons/language $:/core/ui/Buttons/palette $:/core/ui/Buttons/theme $:/core/ui/Buttons/storyview $:/core/ui/Buttons/encryption $:/core/ui/Buttons/timestamp $:/core/ui/Buttons/full-screen $:/core/ui/Buttons/print $:/core/ui/Buttons/save-wiki $:/core/ui/Buttons/refresh $:/core/ui/Buttons/more-page-actions" modified="20200502175037744" revision="0" tags="stroll" title="$:/tags/PageControls" type="text/vnd.tiddlywiki">
@@ -26311,13 +26311,15 @@ The `acct_active` function is written into its'' acctlib''
 <div created="20200704184115810" creator="MartyMcGowan" modified="20200704184115810" modifier="MartyMcGowan" title="LIbraryThing">
 <pre></pre>
 </div>
-<div created="20180811170517886" creator="MartyMcGowan" modified="20200718190137806" modifier="MartyMcGowan" tags="active" title="LibraryThing">
+<div created="20180811170517886" creator="MartyMcGowan" modified="20200718191658824" modifier="MartyMcGowan" tags="active" title="LibraryThing">
 <pre>[[LibraryThing|http://www.librarything.com/catalog.php?view=applemcg&amp;collection=-1&amp;shelf=list&amp;sort=stamp]]
 
-As of [[today|2020-07-18, Saturday]], I've moved my &quot;read it&quot; collection from LibraryThing into /RDB tables on applemcg.github.io/reading.  The experiment begins:
+As of [[today|2020-07-18, Saturday]], I've moved my &quot;have read&quot; collection from LibraryThing into /RDB tables on applemcg.github.io/reading.  The experiment begins:
 
+* it's downloaded as a tsv: haveread.ts
 * /RDB can't handle operations (row, column, sorttable) on tables of as many as 49 fields, the exportable width of Library Things records
-* the tags and collections fields have been converted to lower case in the goodfields table
+* the tags and collections fields have been converted to lower case in the haveread table
+* the tags and collections tables have been cross-referenced to M x N relation pairs
 
 Let's see if i can harvest a table_report in Wiki table format, a la [[On My Night Stand]]
 
