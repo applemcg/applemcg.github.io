@@ -47,6 +47,7 @@ git_init ()
     : by defining a git_user, which in the App World,;
     : is invoked _after_ any _init function;
     git_account applemcg
+    comment main
 }
 git_account () 
 { 
@@ -150,7 +151,8 @@ git_needadd ()
 }
 git () 
 { 
-    : see if its a function, if not its a GIT Command;
+    : if its NOT a function, ,then its a GIT Command;
+    : the default command is STATUS, unless you can think of another;
     set -- ${*:-status};
     local gfun=git_${1};
     isfunction $gfun && { 
@@ -217,6 +219,8 @@ git_toio ()
     : date: 2020-05-03;
     git status | grep 'nothing to commit' && return;
     git add index.html;
+    git add TTGL/index.html;
+    git add reading/index.html;    
     git commit -m $(iso_ymd);
     git push
 }
@@ -293,4 +297,159 @@ toMIWreading ()
             { printf "|%s |%s |%s |\n", $1, $2, $3}
    '
 }
+wiki_tablereport () 
+{ 
+    : convert the reading list into the MyIdeaWarehouse format,;
+    : date: 2020-07-04;
+    sorttable < tables.rdb | tawk '
+    
+    NR == 1 { printf "| !%s | !%s | !%s | !%s |\n", $1, $2, $3, $4}
+     NR < 3 { next };
+            { printf "|%s |%s |%s |%s |\n", $1, $2, $3, $4 }
+   '
+}
+days_reading () 
+{ 
+    : a days -- todays -- reading;
+    : date: 2020-07-10;
+    zcat .hry/librarything.rdb.Z | rd grep ${1:-$(yymmdd)} | sorttable
+}
+read_cycle () 
+{ 
+    : produce RDB Table of the Reader Cycle BookKeys by Day number;
+    : date: 2020-07-11;
+    rdb_hdr daynum bookkeys;
+    tail +3 cycle.rdb | awk '
+    BEGIN { ncombo = 1; }
+    NF > 1 {
+            # Better: ncombo = smallest common factor of each rows count
+            ncombo *= ( NF - 1 )
+            cycle[$1] = $1 
+            nx[$1] = $2;
+            for(i=2; i < NF; i++) {
+
+                nx[$i] = $(i+1);
+  	    }
+            nx[$NF] = $2;
+        }
+    END {
+         fmtp = "\t\t\t\t%s[%s] = %s\n"
+         for (i in cycle) { printf fmtp, "cycle", i, cycle[i] > /dev/stderr; }
+         for (n in nx)    { printf fmtp, "nx",    n, nx[n]    > /dev/stderr; }
+
+	 for( i = 1; i <= ncombo; i++) {
+            sp = sprintf("%3d\t", i);
+            for (c in cycle) { 
+	        cc = cycle[c]
+                # printf fmtp, "cycle", c, cc       > /dev/stderr
+                # printf fmtp, "nx",   cc, nx[cc]   > /dev/stderr
+		cycle[c] = nx[cc]
+                printf "%s", sp nx[cc]
+	        sp = " "
+	    }
+	    printf "\n"
+        }
+    }
+    '
+}
+dayone_two () 
+{ 
+    : date: 2020-07-11;
+    row "daynum == $1 || daynum ==$2" < readcycle.rdb | column bookkeys | headoff | wpl
+}
+keysmatch () 
+{ 
+    : date: 2020-07-11;
+    rowhas key $1 < keybook.rdb | headoff
+}
+booksfrom () 
+{ 
+    : date: 2020-07-11;
+    rdb_hdr key book;
+    foreach keysmatch $(dayone_two $*)
+}
+read_twodays () 
+{ 
+    : date: 2020-07-11;
+    set -- ${1:-6};
+    set $1 $(expr $1 + 1);
+    booksfrom $* | rowhas key '[A-Z]'
+}
+rawtsv_tordb () 
+{ 
+    rdb_hdr $(sed 1q $1 | sed 's/ /_/g' | lc);
+    tail +2 $1
+}
+field_tolc () 
+{ 
+    report_notpipe && return 1;
+    compute "$1 = tolower($1)"
+}
+field_xref () 
+{ 
+    : convert book_id field to field book_id, where field is multi-valued;
+    newest $2.rdb $1 || { 
+        cat $1 | column book_id $2 | headoff | rdb_n2one $2 book_id > $2.rdb
+    }
+}
+goodfields () 
+{
+    : the field list must be trimmed.  it seems 49 fields is too many for compute, etc...
+    ${*:-echo} tags collections lc_classification book_id	\
+        title primary_author copies source entry_date		\
+	from_where page_count lccn acquired date_{started,read} \
+	isbn{,s} subjects dewey_decimal lending_{start,end} review rating
+}
+lower_canon () 
+{
+    report_notfile haveread.tsv && return 1
+    rawtsv_tordb haveread.tsv | goodfields column | compute '
+
+        tags = tolower(tags)
+        collectionss = tolower(collections)	
+    ' 
+}
+book_tordb () 
+{ 
+    : date: 2020-07-18;
+    set -- ${1:-haveread.tsv};
+    set -- ${1%.tsv}.rdb $1;
+    report_notfile $1 && return 1
+    newest $1 $2 || { lower_canon $2 > $1; }
+    field_xref $1 tags;
+    field_xref $1 collections;
+    newest $3 $1 || {
+    cat $1 | column book_id primary_author title rating date_{started,read} | tdb | compute '
+
+        t=title ":"
+	l=index(t,":")-1
+	if (l>48) {
+	    l = 48
+	}
+	title = substr(t,1,l)
+
+    ' > $3
+    }
+    table_report
+}
+tdb () 
+{ 
+    : date: 2020-07-18;
+    sed 's/[(][^\)]*[)]//g' $*
+}
+rdb_n2one () 
+{ 
+    : date: 2020-07-18;
+    report_notpipe && return 1;
+    rdb_hdr $*;
+    sed 's/, /	/g' | tawk '{ for(i=2; i<=NF; i++) printf "%s\t%s\n", $i, $1 }'
+}
+tab_count () 
+{ 
+    : tabulate the count of unique rows;
+    : date: 2020-07-18;
+    report_notpipe && return 1;
+    sorttable | rduniq | sorttable -n | column Count | rename Count oc | rduniq | rename Count tabul8 oc Count
+}
+main () { book_tordb; }
 git_init  1>&2

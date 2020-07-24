@@ -21,3 +21,5 @@ ar/
 
 # and these files
 
+reading/*.???
+reading/*.rdb
