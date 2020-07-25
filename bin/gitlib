@@ -294,7 +294,7 @@ toMIWreading ()
     
     NR == 1 { printf "| !%s | !%s | !%s |\n", $1, $2, $3}
      NR < 3 { next };
-            { printf "|%s |%s |%s |\n", $1, $2, $3}
+            { printf "|%s |[[%s]] |[[%s]] |\n", $1, $2, $3}
    '
 }
 wiki_tablereport () 
