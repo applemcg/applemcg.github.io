@@ -220,6 +220,7 @@ git_toio ()
     git status | grep 'nothing to commit' && return;
     git add index.html;
     git add TTGL/index.html;
+    git add shelf/index.html;    
     git add reading/index.html;    
     git commit -m $(iso_ymd);
     git push
