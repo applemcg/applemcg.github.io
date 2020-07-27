@@ -46,7 +46,7 @@ git_init ()
     : when this becomes and APP, may be overridden;
     : by defining a git_user, which in the App World,;
     : is invoked _after_ any _init function;
-    git_account applemcg
+    git_account applemcg;
     comment main
 }
 git_account () 
@@ -83,14 +83,9 @@ mygithub ()
 }
 git_modified () 
 { 
-    cgit status | awk '
-            /not staged/      {ready++};
-            /to be committed/ {ready++}; 
-             #           { print "debug: ", ready, $NF, $0 }
-            ready && /modified:/ { print $NF }
-            ready && /deleted:/  { print $NF }
-            ready && /file:/     { print $NF }
-           '
+    : list the modified GIT files;
+    : date: 2020-07-27;
+    git status | awk '$1 ~ /modified:/ { print $2 }'
 }
 git_deleted () 
 { 
@@ -220,8 +215,8 @@ git_toio ()
     git status | grep 'nothing to commit' && return;
     git add index.html;
     git add TTGL/index.html;
-    git add shelf/index.html;    
-    git add reading/index.html;    
+    git add shelf/index.html;
+    git add reading/index.html;
     git commit -m $(iso_ymd);
     git push
 }
@@ -394,33 +389,32 @@ field_xref ()
     }
 }
 goodfields () 
-{
-    : the field list must be trimmed.  it seems 49 fields is too many for compute, etc...
-    ${*:-echo} tags collections lc_classification book_id	\
-        title primary_author copies source entry_date		\
-	from_where page_count lccn acquired date_{started,read} \
-	isbn{,s} subjects dewey_decimal lending_{start,end} review rating
+{ 
+    : the field list must be trimmed. it seems 49 fields is too many for compute, etc...;
+    ${*:-echo} tags collections lc_classification book_id title primary_author copies source entry_date from_where page_count lccn acquired date_{started,read} isbn{,s} subjects dewey_decimal lending_{start,end} review rating
 }
 lower_canon () 
-{
-    report_notfile haveread.tsv && return 1
+{ 
+    report_notfile haveread.tsv && return 1;
     rawtsv_tordb haveread.tsv | goodfields column | compute '
 
         tags = tolower(tags)
         collectionss = tolower(collections)	
-    ' 
+    '
 }
 book_tordb () 
 { 
     : date: 2020-07-18;
     set -- ${1:-haveread.tsv};
     set -- ${1%.tsv}.rdb $1;
-    report_notfile $1 && return 1
-    newest $1 $2 || { lower_canon $2 > $1; }
+    report_notfile $1 && return 1;
+    newest $1 $2 || { 
+        lower_canon $2 > $1
+    };
     field_xref $1 tags;
     field_xref $1 collections;
-    newest $3 $1 || {
-    cat $1 | column book_id primary_author title rating date_{started,read} | tdb | compute '
+    newest $3 $1 || { 
+        cat $1 | column book_id primary_author title rating date_{started,read} | tdb | compute '
 
         t=title ":"
 	l=index(t,":")-1
@@ -430,7 +424,7 @@ book_tordb ()
 	title = substr(t,1,l)
 
     ' > $3
-    }
+    };
     table_report
 }
 tdb () 
@@ -452,5 +446,8 @@ tab_count ()
     report_notpipe && return 1;
     sorttable | rduniq | sorttable -n | column Count | rename Count oc | rduniq | rename Count tabul8 oc Count
 }
-main () { book_tordb; }
+main () 
+{ 
+    book_tordb
+}
 git_init  1>&2

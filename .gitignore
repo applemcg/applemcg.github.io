@@ -14,10 +14,13 @@
 
 # these directories
 
+gdu
 ar/
 *_backup
 *_files
 
 # and these files
 
+Emacs
 reading/*.???
+bin/bin*
