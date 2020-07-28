@@ -12044,8 +12044,8 @@ exports.context = contextWidget;
 <div created="20200418122101344" modified="20200726184311718" title="$:/state/tab/moresidebar-1850697562">
 <pre>$:/core/ui/MoreSideBar/All</pre>
 </div>
-<div created="20200418121835270" modified="20200727145804263" title="$:/state/tab/sidebar--595412856">
-<pre>$:/core/ui/SideBar/Open</pre>
+<div created="20200418121835270" modified="20200728134112333" title="$:/state/tab/sidebar--595412856">
+<pre>$:/core/ui/SideBar/Recent</pre>
 </div>
 <div created="20200504200956301" modified="20200504201043124" title="$:/state/tabs/controlpanel/toolbars-1345989671">
 <pre>$:/core/ui/ControlPanel/Toolbars/EditToolbar</pre>
@@ -12068,7 +12068,7 @@ exports.context = contextWidget;
 <div bag="default" revision="1" title="$:/status/UserName">
 <pre></pre>
 </div>
-<div created="20200728133137108" list="[[On /RDB]] [[What's Here]] [[Table of Contents]]" modified="20200728133137108" title="$:/StoryList">
+<div created="20200728134115653" list="RDB_Format [[On /RDB]] [[What's Here]] [[Table of Contents]]" modified="20200728134329313" title="$:/StoryList">
 <pre></pre>
 </div>
 <div created="20200519141000553" list="$:/.giffmex/Buttons/more-tiddler-edit-actions $:/core/ui/Buttons/delete $:/core/ui/Buttons/cancel $:/core/ui/Buttons/save" modified="20200521145647980" tags="$:/giffmex/bigeditarea $:/giffmex/stroll" title="$:/tags/EditToolbar">
@@ -12099,19 +12099,19 @@ exports.context = contextWidget;
         },
         &quot;$:/info/url/full&quot;: {
             &quot;title&quot;: &quot;$:/info/url/full&quot;,
-            &quot;text&quot;: &quot;https://applemcg.github.io/shelf/&quot;
+            &quot;text&quot;: &quot;file:///Users/martymcgowan/git/applemcg.github.io/shelf/index.html&quot;
         },
         &quot;$:/info/url/host&quot;: {
             &quot;title&quot;: &quot;$:/info/url/host&quot;,
-            &quot;text&quot;: &quot;applemcg.github.io&quot;
+            &quot;text&quot;: &quot;&quot;
         },
         &quot;$:/info/url/hostname&quot;: {
             &quot;title&quot;: &quot;$:/info/url/hostname&quot;,
-            &quot;text&quot;: &quot;applemcg.github.io&quot;
+            &quot;text&quot;: &quot;&quot;
         },
         &quot;$:/info/url/protocol&quot;: {
             &quot;title&quot;: &quot;$:/info/url/protocol&quot;,
-            &quot;text&quot;: &quot;https:&quot;
+            &quot;text&quot;: &quot;file:&quot;
         },
         &quot;$:/info/url/port&quot;: {
             &quot;title&quot;: &quot;$:/info/url/port&quot;,
@@ -12119,7 +12119,7 @@ exports.context = contextWidget;
         },
         &quot;$:/info/url/pathname&quot;: {
             &quot;title&quot;: &quot;$:/info/url/pathname&quot;,
-            &quot;text&quot;: &quot;/shelf/&quot;
+            &quot;text&quot;: &quot;/Users/martymcgowan/git/applemcg.github.io/shelf/index.html&quot;
         },
         &quot;$:/info/url/search&quot;: {
             &quot;title&quot;: &quot;$:/info/url/search&quot;,
@@ -12127,7 +12127,7 @@ exports.context = contextWidget;
         },
         &quot;$:/info/url/origin&quot;: {
             &quot;title&quot;: &quot;$:/info/url/origin&quot;,
-            &quot;text&quot;: &quot;https://applemcg.github.io&quot;
+            &quot;text&quot;: &quot;file://&quot;
         },
         &quot;$:/info/browser/screen/width&quot;: {
             &quot;title&quot;: &quot;$:/info/browser/screen/width&quot;,
@@ -12153,8 +12153,8 @@ exports.context = contextWidget;
 <div created="20200502174943975" modified="20200502174950301" title="$:/temp/RenameTags/search">
 <pre>tb</pre>
 </div>
-<div created="20200418122544376" modified="20200727000622862" title="$:/temp/search">
-<pre>import</pre>
+<div created="20200418122544376" modified="20200728134110612" title="$:/temp/search">
+<pre></pre>
 </div>
 <div created="20200429214841632" modified="20200429214841632" tags="$:/tags/ServerConnection" title="$:/temp/ServerConnection/https://tiddlywiki.com/library/v5.1.22/index.html" url="https://tiddlywiki.com/library/v5.1.22/index.html">
 <pre>loaded</pre>
@@ -12300,7 +12300,7 @@ Before you start storing important information in Stroll, it is vital to make su
 See the [[control panel|$:/ControlPanel]] for more options.
 </pre>
 </div>
-<div created="20200727115751547" modified="20200728133429156" tags="[[Table of Contents]]" title="On /RDB">
+<div created="20200727115751547" modified="20200728142209248" tags="[[Table of Contents]]" title="On /RDB">
 <pre>Let's take a look at an [[/RDB]] table: the table_report, best viewed in a wider screen:  
 
 ```
@@ -12336,7 +12336,10 @@ This particular table is the file ''tables.rdb'', which has 18 records, was last
 
 In the last week, i've added the [[tsv suffix]] as an acceptable suffix in addition to my long-used rdb suffix.   /RDB itself does not require a suffix to recognize an /RDB table.
 
-This command: `$ row 'fields ~ /[Dd]ecimal/' &lt; tables.rdb | tabletolist` demonstrates two facets of /RDB: [[it's SQL|RDB_SQL]] and the alternate ''list''[[ data format|RDB_Format]]:
+This command: `$ row 'fields ~ /[Dd]ecimal/' &lt; tables.rdb | tabletolist` demonstrates two facets of /RDB:
+
+# [[it's query language, using the shell, is its &quot;SQL&quot;|RDB_SQL]] and 
+# the alternate ''list''[[ data format|RDB_Format]]:
 
 ```
 
@@ -12357,7 +12360,7 @@ fields	LC Classification ISBN ISBNs Subjects Dewey Decimal Dewey Wording
 <div created="20200727000724861" modified="20200727000724861" title="On My Nightstand">
 <pre></pre>
 </div>
-<div created="20200727121634813" modified="20200727142543691" title="RDB_Format">
+<div created="20200727121634813" modified="20200728134510801" title="RDB_Format">
 <pre>An /rdb data table may be in one of two formats: table or list, both of which are tab-separated.
 
 The Table:   `row 'table ~ /^t/'&lt; tables.rdb | justify `
@@ -12385,10 +12388,14 @@ fields	tags book_id
 
 ```
 
-Two things worth noting about the list, one of which is not readiliy apparent.  The first line must be blank, empty, or containing only the new-line character.  The name-value pairs are separated by a tab, of course.   The values are usually left-justified in the data field, but the numbers, at least the counting numbers, have been right-justified in their field.  This is not by default, but by special arrangement of the ''compute'' function.  Here is the fragment:  `printf &quot;%7d\t&quot; $records;`  which I must remind myself is a shell fragment, not the usual awk application program.  It right-adjusts the number of records in a seven-digit field folllowed immediately by the tab character.
+Two things worth noting about the list format, one of which is not readiliy apparent.  
+
+# The first line must be blank, empty, or containing only the new-line character.  
+# The name-value pairs are separated by a tab, of course.   
+
+The values are usually left-justified in the data field, but the numbers, at least the counting numbers, have been right-justified in their field.  This is not by default, but by special arrangement of the ''compute'' function.  Here is the fragment:  `printf &quot;%7d\t&quot; $records;`  which I must remind myself is a shell fragment, not the usual awk application program.  It right-adjusts the number of records in a seven-digit field folllowed immediately by the tab character.
 
 And a extra note about the query.   The ''/^t/'' syntax in the selection uses the caret symbol &quot;^&quot; in a [[regular expression|https://en.wikipedia.org/wiki/Regular_expression]] which says &quot;starts with a ...&quot; .  which then requests the (in this case,  two) tables whose name begins with a ''t'' 
-
 
 !!! References:
 {{re_rdb_format}}</pre>
