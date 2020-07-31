@@ -3,6 +3,19 @@
 Formerly in the MyIdeaWarehouse.html file, it's now the index file in
 this directory.
 
-Using {user}.gitnub.io for a  [[https://tiddlywiki.com][Tiddly Wiki]]
+{user}.github.io for a  [[https://tiddlywiki.com][Tiddly Wiki]]: 
+
+| directory | Contents                           |
+| .         |MyIdeaWarehouse                     |
+| TTGL      |Time to Get Liberal                 |
+| shelf     |Lessons Learned in Shell Functions  |
+| reading   |Import Library Thing                |
+
+
+
+
+
+
+
 
 
