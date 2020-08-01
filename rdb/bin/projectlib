@@ -1,0 +1,13 @@
+field_instances () 
+{ 
+    : count the instances of a fields value in a table;
+    set -- ${1:-render};
+    column $1 < command.rdb | sorttable | rduniq | rename $1 value | column Count field value | compute "field = \"$1\"" 2> /dev/null | headoff
+}
+all_fields () 
+{ 
+    set -- $(sed 1q command.rdb);
+    shift;
+    rdb_hdr Count field value;
+    foreach field_instances $*
+}

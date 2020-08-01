@@ -11,6 +11,8 @@
 *.css
 *.err
 *.log
+rdb/lib/*.nxt
+rdb/lib/*.tmp
 
 # these directories
 

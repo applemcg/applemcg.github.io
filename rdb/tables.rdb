@@ -1,0 +1,5 @@
+table	nrecrds	modate	fields
+-----	-------	------	------
+lib/command.rdb	    283	2020-08-01	command render type status attrib 
+lib/tables.rdb	      3	2020-08-01	table nrecrds modate fields 
+lib/testobject.rdb	     40	2020-08-01	object flag means 
