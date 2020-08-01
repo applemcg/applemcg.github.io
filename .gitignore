@@ -11,8 +11,8 @@
 *.css
 *.err
 *.log
-rdb/lib/*.nxt
-rdb/lib/*.tmp
+*.nxt
+*.tmp
 
 # these directories
 
@@ -20,6 +20,7 @@ gdu
 ar/
 *_backup
 *_files
+rdb/*
 
 # and these files
 
