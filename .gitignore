@@ -12,6 +12,8 @@
 *.err
 *.log
 *.nxt
+*.tsv
+*.rdb
 *.tmp
 
 # these directories
@@ -20,10 +22,8 @@ gdu
 ar/
 *_backup
 *_files
-rdb/*
 
 # and these files
 
 Emacs
-reading/*.???
 bin/bin*

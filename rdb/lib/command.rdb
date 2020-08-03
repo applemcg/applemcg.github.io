@@ -27,7 +27,7 @@ compress	ignore	file		/RDB use is unnecessary; command use COMPRESSES file, more
 compute	use	function	implemented	
 computedate	use	file		/Users/martymcgowan/Dropbox/rdb/bin/computedate
 consolidate	later			accounting
-cpdir	next	function	implemented	
+cpdir	verify	function	implemented	
 cstate	later			accounting
 cursor	later	function		novelty
 datatype	use	function	implemented	
@@ -47,7 +47,7 @@ formtoprogram				implement former screen as ~
 getjournal	later			accounting
 gregorian	use	file		/Users/martymcgowan/Dropbox/rdb/bin/gregorian
 hashkey	later			see append
-headoff	next	function	implemented	
+headoff	verify	function	implemented	
 headon	next	function	implemented	
 helpme	next	function	implemented	smart table
 howmany	next	function	implemented	
@@ -283,3 +283,4 @@ widest	use	function	implemented
 width	use	function	implemented	
 word	use	function	implemented	
 yourprog	later	function		sample template
+

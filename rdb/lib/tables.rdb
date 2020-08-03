@@ -2,5 +2,5 @@ table	nrecrds	modate	fields
 -----	-------	------	------
 command.rdb	    283	2020-08-01	command render type status attrib 
 instances.rdb	     77	2020-08-01	Count field value 
-tables.rdb	      3	2020-08-01	table nrecrds modate fields 
+tables.rdb	      4	2020-08-01	table nrecrds modate fields 
 testobject.rdb	     40	2020-08-01	object flag means 

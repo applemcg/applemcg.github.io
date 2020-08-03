@@ -11,3 +11,14 @@ all_fields ()
     rdb_hdr Count field value;
     foreach field_instances $*
 }
+cpdir () 
+{ 
+    : copies one directory tree to another director;
+    local usage="$(myname) fromdir todir";
+    report_notdirectory $1 $usage && return 1;
+    report_notdirectory $2 $usage && return 2;
+    pushd $1
+    tar cf - . | ( cd $2;     comment $(pwd)
+    tar xfv - )
+    popd 
+}
