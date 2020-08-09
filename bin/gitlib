@@ -450,4 +450,12 @@ main ()
 { 
     book_tordb
 }
+date_finished () 
+{ 
+    : from the history, finished and date last read;
+    : date: 2020-08-07;
+    set -- .hry/librarything.rdb.Z;
+    report_notfile $1 && return 1;
+    zcat $1 | sorttable -r latest | ncolumn insert_time | select_first book | row delete_time | ncolumn delete_time
+}
 git_init  1>&2
