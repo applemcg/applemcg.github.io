@@ -1,0 +1,5 @@
+rdb_q () 
+{ 
+    set -- ${1:-schema};
+    [[ -f $1 ]] && column table < $1 | rd uniq
+}

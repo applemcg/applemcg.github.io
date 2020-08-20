@@ -1,0 +1,88 @@
+
+* RDB -- An Implementation
+
+After picking up a copy of the classic book, [[https://www.amazon.com/Relational-Database-Management-Prentice-Hall-Software/dp/013938622X][Unix Relational Database
+Management:Application Development in the UNIX Environment]] by Rod
+Manis, Evan Schaffer, and Robert Jorgensen a few weeks ago, it's time
+to collect and organize my work according to the mark laid down by the
+motivating text.
+
+Since the late '80s, having met Manis while he was contracting at the
+Unix System Labs in Summit NJ, I've had a ksh, now bash implementation
+of his model.  He'd given me a draft copy of the book, which laid out
+how to build one on your own.  I've used it over the years, and now
+find it taking on larger jobs, in particular managing my writing
+collection of 4454 files.
+
+** The Plan
+
+This requires a table of command.rdb, with fields:
+
++ command --  the name of the function, shell script, program ...
++ render -- the intended rendering, and how soon, 
++ type -- function, file, ...
++ status -- implemented, tested, verified, packaged, etc...
++ attrib -- an attribute, almost a comment
+
+The various renderings:
+
+#+BEGIN_EXAMPLE
+Count	render
+-----	------
+   6	
+   1	add file: $(rdbhome)/man/whatis
+   1	alias
+   1	final
+   3	ignore
+  69	later
+   1	much later
+   4	never
+  24	next
+   1	see formtoprogram
+  40	use
+ 132	verify
+#+END_EXAMPLE
+
+The various types:
+
+#+BEGIN_EXAMPLE
+
+
+Count	type
+-----	----
+  54	
+   1	C prog
+  20	file
+ 206	function
+   1	script
+   1	shell keyword
+
+#+END_EXAMPLE
+
+And status:
+
+#+BEGIN_EXAMPLE
+Count	status
+-----	------
+ 108	
+ 175	implemented
+
+#+END_EXAMPLE
+
+Attribute ( > 1 )
+
+#+BEGIN_EXAMPLE
+Count	attrib
+-----	------
+ 195	
+  30	accounting
+   2	sample
+   2	see append
+   2	see search, ...
+
+#+END_EXAMPLE
+
+** The Status
+** The Release
+** Some History
+

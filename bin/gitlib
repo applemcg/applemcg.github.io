@@ -199,9 +199,15 @@ git_remote ()
 remote_repo () 
 { 
     : addresses the linguistic shortfall of ORIGIN;
+    : and here we are capitualting for expedience
     : date: 2020-05-03;
-    set NoWAY;
-    report_notdirectory .git || set -- $(basename $PWD);
+    : date: 2020-08-20 -- capitualtion;
+    : set NoWAY;
+    report_notdirectory .git && return 1;
+    echo origin
+    return
+    : save these for a recovery exercise?!
+    set -- $(basename $PWD);
     echo ${1:0:5}
 }
 cgit () 
@@ -476,6 +482,11 @@ readhistory ()
 { 
     : active and when finished books;
     : date: 2020-08-18;
-    zcat .hry/librarything.rdb.Z | sorttable -r latest | select_first book | sorttable book | rename latest finish | compute 'finish = ((delete_time)? finish: "")' | ncolumn {insert,delete}_time
+    function _rh_select () { sorttable -r latest | select_first book | sorttable book; }
+    function _rh_finish () { rename latest finish | compute '
+
+        finish = ((delete_time)? finish: "")' | ncolumn {insert,delete}_time
+    }
+    zcat .hry/librarything.rdb.Z | _rh_select | _rh_finish 
 }
 git_init  1>&2

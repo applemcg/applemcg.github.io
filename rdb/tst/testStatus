@@ -1,0 +1,8 @@
+command	date	status	table	cmdarg
+-------	-----	------	------	------
+justify	120909	tested		
+widest	120909	tested		
+row	120909	tested	sample.rdb	Membership_Level ~ /Contributing/
+column	120909	tested	testStatus	status newcol command
+addcol	120909	tested	testStatus	cmdarg
+compute	120909	tested	testStatus	date = date - 3

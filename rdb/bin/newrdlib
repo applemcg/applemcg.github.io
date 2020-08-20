@@ -1,0 +1,2293 @@
+cpdir () 
+{ 
+    report_notdirectory $1 && return 1;
+    report_notdirectory $2 && return 2;
+    pushd $1 > /dev/null;
+    tar cf - . | ( cd $2;
+    tar xf - );
+    popd > /dev/null
+}
+difference () 
+{ 
+    report_notfile $1 && return 1;
+    report_notfile $2 && return 2;
+    sed 2q $1;
+    ( headoff < $1;
+    headoff < $2 ) | sort | uniq -u
+}
+filesize () 
+{ 
+    report_notargcount 1 $# file ... && return 1;
+    case $# in 
+        1)
+            set -- $(wc -c $1);
+            echo $1
+        ;;
+        *)
+            rdb_hdr Offset Filename;
+            wc -c $* | awk '$2 !~ /^total$/'
+        ;;
+    esac
+}
+headoff () 
+{ 
+    : remove the RDB header from a TABLE;
+    : date: 2019-08-14;
+    report_notpipe && return 1;
+    tail +3
+}
+headon () 
+{ 
+    return
+}
+helpme () 
+{ 
+    return
+}
+howmany () 
+{ 
+    return
+}
+interdash () 
+{ 
+    return
+}
+length () 
+{ 
+    return
+}
+listtosh () 
+{ 
+    return
+}
+lowercase () 
+{ 
+    return
+}
+number () 
+{ 
+    return
+}
+record () 
+{ 
+    return
+}
+rename () 
+{ 
+    : ~ fromFieldName toNewName ...;
+    : by modifying the matching column name;
+    : date: 2016-11-15;
+    : date: 2019-08-14;
+    report_notpipe && return 1;
+    : -------------------------------------- begin template.fun --;
+    local HEAD;
+    local DASH;
+    local COL="";
+    local C;
+    :;
+    read HEAD;
+    [[ -z "$HEAD" ]] && { 
+        ( echo;
+        cat ) | listtotable | $(myname) "$@" | tabletolist;
+        return 0
+    };
+    read DASH;
+    : ---------------------------------------- end template.fun --;
+    HEAD=$(echo :$HEAD: | tr ' 	' :);
+    : app_trace HEAD: $HEAD;
+    while [[ $# -gt 1 ]]; do
+        : app_trace from, to: $1 $2;
+        HEAD=${HEAD/:$1:/:$2:};
+        : app_trace HEAD: $HEAD;
+        shift 2;
+    done;
+    HEAD=$(echo $HEAD | tr : ' ');
+    app_trace HEAD: $HEAD;
+    rdb_hdr $HEAD;
+    cat
+}
+rmblank () 
+{ 
+    return
+}
+soundex () 
+{ 
+    return
+}
+substitute () 
+{ 
+    return
+}
+tableorlist () 
+{ 
+    return
+}
+tabletofact () 
+{ 
+    return
+}
+tabletom4 () 
+{ 
+    return
+}
+tabletorule () 
+{ 
+    return
+}
+tabletosed () 
+{ 
+    return
+}
+trimblank () 
+{ 
+    return
+}
+uppercase () 
+{ 
+    return
+}
+rd_addf () 
+{ 
+    report_notfile ${1:-NoSuchFile} && { 
+        comment rd_initf $1;
+        return 1
+    };
+    report_notargcount 2 $# && return 2;
+    report_notfile $RD_PACKED && return 3;
+    :;
+    : do not do an RDPUT here. this allows the current table;
+    : to re-order the fields in the history as well.;
+    :;
+    back up $RD_TABLE;
+    local fields=$(args_uniq $RD_CFIELDS ${*:2});
+    :;
+    : ------------- establish the field order in both history and table --;
+    : ---------------------------------------- and remove blank records --;
+    :;
+    zcat $RD_PACKED | tee $RD_TEMP | column {insert,delete}_time $fields > $RD_HISTORY;
+    :;
+    rd_compress;
+    :;
+    column $fields < $RD_TABLE | awk NF > $RD_TEMP;
+    mv $RD_TEMP $RD_TABLE;
+    :;
+    rd_syncf $RD_TABLE;
+    back up $RD_TABLE $RD_PACKED
+}
+rd_addf_doc () 
+{ 
+    cat <<EOF
+    name: rd_addf
+    args: table field(s) ...
+    test: rd_addf_test
+    insert an extra field in an RDB table, it's history, and current file.
+    the problem arises in that the history mechanism relies on a consistent set of fields
+    idea: this version appends the field(s) as the last columns in the table.
+EOF
+
+}
+rd_addf_test () 
+{ 
+    rm -f *foo*;
+    cp ~/Dropbox/todo.rdb foo.rdb;
+    cp ~/Dropbox/.bak/h.todo.rdb.Z h.foo.rdb.Z;
+    rd_addf foo.rdb newfoo oldbar
+}
+rd_awk_builtin () 
+{ 
+    : app_trace $*;
+    : todo: move out to rdbcmdlib;
+    curl http://www.math.utah.edu/docs/info/gawk_13.html 2> /dev/null | grep -i '<DT><CODE>.*(<VAR>' | sed 's/.*<CODE>//; s/(.*//'
+}
+rd_before () 
+{ 
+    : app_trace $*;
+    row "date < $(rd_date $1)"
+}
+rd_canon () 
+{ 
+    : date: 2017-03-26;
+    : date: 2017-12-18;
+    : from: rdb_canon;
+    : app_trace $*;
+    case $1 in 
+        h.*.rdb.Z)
+            set ${1#h.};
+            set h.$1 ${1%.Z};
+            zcat $1 | rdb_current | rdb_write $2
+        ;;
+        h.*.rdb)
+            : backs up, removes compressed history;
+            : compresses an existing history;
+            : recursively deals with compressed history;
+            back up $1.Z;
+            rm -f $1.Z;
+            doit compress $1;
+            rd_canon $1.Z
+        ;;
+        *.rdb)
+            rd_syncf $* || return 1;
+            newest $RD_PACKED $RD_TABLE || rd_syncf $RD_TABLE
+        ;;
+        *)
+            [[ -f $1.rdb ]] && { 
+                $(myname) $1.rdb;
+                return
+            };
+            comment rm -f $1
+        ;;
+    esac
+}
+rd_cat () 
+{ 
+    : date: 2017-05-12;
+    cat $1;
+    shift;
+    for f in $*;
+    do
+        tail +3 $f;
+    done
+}
+rd_columns () 
+{ 
+    : enumerate the columns in an RDB table;
+    set -- {1..129};
+    while [ -n "$2" ]; do
+        eval nC$1=$2;
+        shift;
+    done
+}
+rd_compress () 
+{ 
+    report_notfile ${RD_HISTORY:-NO_RD_HISTORY_NAME} && return 1;
+    : app_trace $*;
+    [[ -f $RD_PACKED ]] && backup $RD_PACKED;
+    rm -f $RD_PACKED;
+    compress $RD_HISTORY
+}
+rd_copyright () 
+{ 
+    : mfg: fam_iam;
+    : date: 2019-01-23;
+    comment "Copyright (C) 2019, JYATL - Just Yet Another Testing Lab;";
+    comment "mailto:edu <dot> MIT {dot} alum {aT} martymcgowan;";
+    : "mfgd:appleton.local//Users/martymcgowan 2019_0424_143349"
+}
+rd_current () 
+{ 
+    ${*:-echo} $RD_TABLE
+}
+rd_data () 
+{ 
+    : app_trace $*;
+    cat ${1:--} | column_data ${*:2}
+}
+rd_datarow () 
+{ 
+    : mfg: rd_syncf;
+    : date: 2019-01-23;
+    report_notpipe && return 1;
+    row command | row render | row type | row attrib
+}
+rd_demoinit () 
+{ 
+    : command line helper;
+    set foo.rdb;
+    rm -f *$1*;
+    rd_syncf;
+    rd_syncf $1;
+    rd_syncf $1 this that other;
+    rd_syncf $1;
+    zcat h.$1.Z;
+    ls -lrt *$1*;
+    rm -f *$1*;
+    declare -f rd_demoinit
+}
+rd_files () 
+{ 
+    eval echo $(for f in RD_{TABLE,ERRF,TEMP,HISTORY,PACKED}; do printf "\$$f "; done)
+}
+rd_firsttime () 
+{ 
+    : mfg: fam_iam;
+    : date: 2019-01-23;
+    rd_copyright;
+    unset rd_firsttime
+}
+rd_fixhistory () 
+{ 
+    : date: 2017-12-17;
+    report_notcommand ${1:-NeedCommandArgument} && return 1;
+    zcat $RD_PACKED | $1 | tee $RD_HISTORY;
+    comment OK?, then compress $RD_HISTORY
+}
+rd_head () 
+{ 
+    comment TRACE rd_head $# ARGS $*;
+    quietly comment -- common relational data header;
+    rd_hlistd;
+    echo "$HEAD";
+    echo "$DASH";
+    arglist=$1;
+    Cs="     1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20";
+    Cs="$Cs 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40";
+    Cs="$Cs 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60";
+    set -- $Cs;
+    while test -n "$2"; do
+        eval nC$1=$2;
+        shift;
+    done;
+    C=1;
+    for I in $HEAD;
+    do
+        COLIN="$COLIN $I=\$$C;";
+        COLOUT="$COLOUT \$$C=$I;";
+        eval C=\$nC${C};
+    done
+}
+rd_help () 
+{ 
+    rd_addf_doc;
+    rd_syncf_doc
+}
+rd_historyfunctions () 
+{ 
+    ${*:-echo} flip_mddyy rd_nontoday;
+    comment maybe used in call to rd_fixhistory
+}
+rd_init () 
+{ 
+    : date: 2018-01-15;
+    fam_iam;
+    return;
+    :;
+    : hdr: -- RD ------------------------------------- PUBLIC Functions --;
+    :;
+    smart_def rd_public rd_{init,help,{addf,syncf}{,_doc}};
+    smart_add rd_public rd_{init{copy,f},schema,cat,files};
+    smart_add rd_public rd_{compress,current,packed};
+    smart_add rd_public rd_{before,since,data,sortuniq};
+    smart_add rd_public rd_{nospace,popular,reorder,rowsof};
+    smart_add rd_public rd_{fixhistory,nontoday};
+    :;
+    smart_def rd_fixhistoryfunctions rd_nontoday;
+    :;
+    smart_def rd_utils rdput;
+    smart_add rd_utils for_{missing,remaining_args};
+    :;
+    smart_def public_hint public_{home,libraryname,hint};
+    :;
+    smart_function rd_locality;
+    :;
+    : ------------------- same PUBLIC_BIN, but separate library --;
+    :;
+    public_libraryname rdlib;
+    init_discoverfile ~/bin/rdlib ~/lib/rdlib.txt rd_init;
+    [[ -s ~bin/rdlib ]] || rm -f ~/bin/rdlib;
+    :;
+    echo public_hint ff, public_vars
+}
+rd_initcopy () 
+{ 
+    : app_trace $(nava RD_HISTORY; nava RD_CFIELDS);
+    report_isfile $RD_HISTORY && { 
+        rm -f $RD_HISTORY;
+        return
+    };
+    : prepend history fields;
+    rdb_hdr {insert,delete}_time $RD_CFIELDS > $RD_HISTORY
+}
+rd_initf () 
+{ 
+    case $1 in 
+        h.*)
+            report_isfile $1 as it is a History File. && return 2
+        ;;
+        *)
+            report_notfile ${1:-"No File"} && { 
+                comment rd_schema table field ...;
+                return 1
+            }
+        ;;
+    esac;
+    setenv RD_NAME ${1%.*};
+    setenv RD_TABLE $1;
+    setenv RD_HISTORY h.$RD_TABLE;
+    setenv RD_PACKED $RD_HISTORY.Z;
+    setenv RD_TEMP $RD_NAME.tmp;
+    setenv RD_ERRF $RD_NAME.err;
+    setenv RD_CFIELDS $(sed 1q $RD_TABLE);
+    :;
+    local boiler=": mfg: $(myname 2);: date: 2019-01-23";
+    eval "rd_datarow () { $boiler; report_notpipe && return 1; $(rd_rowsof $RD_CFIELDS); }";
+    return 0
+}
+rd_lastofkey () 
+{ 
+    rd sort -r | column | printfirst | rd sort
+}
+rd_list () 
+{ 
+    : mfg: fam_iam;
+    : date: 2019-01-23;
+    sfg ^rd_ 2> /dev/null
+}
+rd_listfmt () 
+{ 
+    comment TRACE $# rd_listfmt ARGS $*;
+    quietly comment Relational Data LIST ForMaT;
+    [[ -z "$HEAD" ]] && { 
+        echo $0 $* 1>&2;
+        ( echo $DASH;
+        cat ) | listtotable | $0 $*;
+        return 0
+    }
+}
+rd_locality () 
+{ 
+    : app_trace $*;
+    smart_install rd;
+    smart_def rd_private rd_{locality,private}
+}
+rd_nontoday () 
+{ 
+    : date: 2017-12-17;
+    report_notpipe && return 1;
+    local sod=$(yymmdd)000000;
+    row "insert_time < $sod && delete_time < $sod"
+}
+rd_nospace () 
+{ 
+    : app_trace $*;
+    pick $(rd_data $* | sed 's/ /_/g')
+}
+rd_packed () 
+{ 
+    : Relational Data -- update packed history;
+    : from: rdput;
+    : date: 2017-12-24;
+    : date: 2018-01-15;
+    :;
+    report_notfile $RD_TABLE && return 1;
+    : app_trace $*;
+    awk NF $RD_TABLE > $RD_TEMP;
+    mv $RD_TEMP $RD_TABLE;
+    :;
+    for_existing $RD_PACKED uncompress;
+    :;
+    : -------------------------------------------------- no PACKED file --;
+    :;
+    back up $RD_HISTORY $RD_TABLE;
+    :;
+    : awk program, rdupdate.awk depends on knowing;
+    : history, and before data file;
+    :;
+    local now=$(date '+%y%m%d%H%M%S');
+    local awk=$(awk_file rdupdate);
+    : app_trace NOW: $now, AWK: $awk;
+    :;
+    awk -F'\t' -v now=$now -f $awk $RD_HISTORY $RD_TABLE > $RD_TEMP;
+    :;
+    chmod +x $RD_HISTORY;
+    cat $RD_TEMP > $RD_HISTORY;
+    : --------------------------------------------- restore PACKED file --;
+    rd_compress
+}
+rd_popular () 
+{ 
+    : app_trace $*;
+    rd sort | rduniq | rd sort -rn | rd sed ${1:-12}q | ncolumn Count
+}
+rd_reorder () 
+{ 
+    : edit, re-order the fields in an rdb table;
+    : usage cat table | column $(rd_reorder table);
+    :;
+    report_notfile $1 && return 1;
+    sed 1q $1 | tr '\t' '\n' > .x;
+    pr -tn .x 1>&2;
+    ed .x;
+    set $(< .x);
+    echo $*
+}
+rd_rowsof () 
+{ 
+    printf " row %s " $1;
+    shift;
+    for field in $*;
+    do
+        printf "| row %s " $field;
+    done
+}
+rd_schema () 
+{ 
+    : defines the table schema;
+    : writes and compresses history;
+    : --------------------------------------- does NOT use inif --;
+    :;
+    report_isfile $1 && return 1;
+    :;
+    report_notargcount 2 $# file field ... && return 2;
+    :;
+    local table=$1;
+    shift;
+    local history=h.$table;
+    local packed=$history.Z;
+    :;
+    rdb_hdr $* > $table;
+    rdb_hdr insert_time delete_time $* > $history;
+    :;
+    compress $history;
+    back up $table $packed
+}
+rd_settings () 
+{ 
+    : date: 2018-03-10;
+    cmd_log;
+    set | grep ^RD_
+}
+rd_since () 
+{ 
+    : app_trace $*;
+    row "date >= $(rd_date $1)"
+}
+rd_sortuniq () 
+{ 
+    rd sort | uniq -c | awk '
+       BEGIN   { OFS = "\t" }
+       NR == 1 { $1 = "count" }
+       NR == 2 { $1 = "-----" }
+               { print }
+    ' | sed '
+         s/\(^ *[0123456789][0123456789]*\)  */\1	/
+    '
+}
+rd_stat () 
+{ 
+    : date: 2017-12-23;
+    cmd_log;
+    rdb_hdr date wkday chars file;
+    stat_day $* | sed 's/"//g' | awk '{ printf "%s\t%s\t%7d\t%s\n", $11, $12, $8, $NF }'
+}
+rd_syncf () 
+{ 
+    : 2019-02-14 back up_version is now backup_ver;
+    pushd $(dirname $1) > /dev/null;
+    set $(basename $1);
+    rd_initf $1 || { 
+        popd;
+        return 1
+    };
+    :;
+    app_trace PWD: $PWD, $*;
+    : --------------------------- save first version of the day --;
+    backup_init;
+    :;
+    [[ -d ${DIR_VERSION}/$(ver_date) ]] || back_ver;
+    :;
+    :;
+    : -------------------------------------- rest state: TABLE and PACKED exist --;
+    :;
+    for_existing $RD_HISTORY rd_compress;
+    : --------------------------------------- may be first time --;
+    for_missing $RD_PACKED rd_initcopy;
+    for_existing $RD_HISTORY rd_compress;
+    report_notfile $RD_PACKED && { 
+        [[ -f ${DIR_BACKUP}/$RD_PACKED ]] || { 
+            popd;
+            return 3
+        };
+        cp ${DIR_BACKUP}/$RD_PACKED .
+    };
+    : ------------------------------------------- update PACKED --;
+    :;
+    rd_packed;
+    back_up $RD_PACKED $RD_TABLE;
+    for_remaining_args $*;
+    popd > /dev/null;
+    return 0
+}
+rd_syncf_doc () 
+{ 
+    cat <<EOF
+    name: rd_syncf
+    args: table field(s) ...
+    test: rd_syncf
+    establishes a class of
+    + file names ...: RD_ TABLE, TEMP, ERRF, HISTORY, and PACKED
+    + argument names: RD_ NAME, CFIELDS: suffix-less table name, Current field names
+    + and a user function rd_datarow, which returns only rows with no empty fields
+        since an idiom "awk NF" returns the nonempty rows.
+    for an existing file argument, it is assigned the TABLE name,
+      and either the PACKED or HISTORY file is also created.
+EOF
+
+}
+rd_variable () 
+{ 
+    : mfg: fam_iam;
+    : date: 2019-01-23;
+    eval RD_$1=$2
+}
+rd_vars () 
+{ 
+    set | grep ^RD_
+}
+rdb_active () 
+{ 
+    : date: 2017-07-10;
+    : date: 2017-07-18;
+    report_notfile $1 && return 1;
+    zcat $1 | row \!delete_time | ncolumn delete_time
+}
+rdb_allHistory () 
+{ 
+    : date: 2019-04-07;
+    ignore pushd $(dirname $1);
+    zcat h.$(basename $1).Z;
+    ignore popd;
+    ignore cleandirlist
+}
+rdb_at () 
+{ 
+    : app_trace $*;
+    row "insert_time ~ /^$1/ || delete_time ~ /^$1/"
+}
+rdb_canon () 
+{ 
+    : default state of /RDB file: TABLE and PACKED HISTORY,;
+    : existing HISTORY is PACKED, {un}compress toggles the state;
+    : date: 2019-08-31;
+    : date: 2019-09-07, awk NF idiom = no empty records;
+    : date: 2019-09-08, new FEATURE: History will Add, Remove Fields;
+    : .. according to the fields currently in the TABLE. while this;
+    : .. may be risky, the intention is to facilitate adding fields;
+    : .. to the history rather than deleting any. ~ Later.;
+    app_trace PWD: $PWD, $#: $*;
+    runfrom $(dirname $1) $(basename $1) || return;
+    local r=$1;
+    local h=$(needir .hry)/$1;
+    local z=$h.Z;
+    [[ -s $h ]] || rm -f $h;
+    [[ -s $z ]] || rm -f $z;
+    while true; do
+        set -- $(newest_first $r $h $z | tr '\n' : ; echo);
+        : app_trace newest_first r: $r, h: $h, z: $z, SET: $#, $@;
+        case $1 in 
+            $z:*:$r | $z:$r:*)
+                : app_trace 1 $*;
+                rm -f $h;
+                return
+            ;;
+            $r:$h:*)
+                : app_trace 2 be sure the Fields havent Changed in $r;
+                h_repair $r $h || { 
+                    comment ERROR, unable to REPAIR $h from $r;
+                    compress $h;
+                    return 1
+                };
+                : updates H;
+                h_update $r
+            ;;
+            $r:$z:*)
+                app_trace 3 $1;
+                : updates H;
+                uncompress -f $z;
+                touch $r
+            ;;
+            $r:*)
+                local fields="{insert,delete}_time $(sed 1q $r)";
+                : app_trace 4 no H, no Z, so "rdb_hdr $fields TO $h";
+                rdb_hdr $fields > $h;
+                touch $r
+            ;;
+            $h:*)
+                : app_trace 5 $1;
+                : updates Z;
+                compress -f $h
+            ;;
+            $z:*)
+                : app_trace 6 $*;
+                zcat $z | row !delete_time | ncolumn {insert,delete}_time | awk NF > $r;
+                touch $z
+            ;;
+            *)
+                app_trace ERROR, no matching files: $*;
+                return
+            ;;
+        esac;
+    done
+}
+rdb_cat () 
+{ 
+    : todo: update HEADOFF to deal input redirection;
+    rdb_hdr $(sed 1q $1);
+    for t in $(shell_onlyfiles $*);
+    do
+        cat $t | headoff;
+    done
+}
+rdb_changehistory () 
+{ 
+    : date 2017-02-12;
+    zcat $1 | column {insert,delete}_time | rd sort -r | rduniq
+}
+rdb_col () 
+{ 
+    : app_trace $*;
+    rdb_data $1 | rdb_current | column $2
+}
+rdb_colrename () 
+{ 
+    : ~ fromFieldName toNewName;
+    : by modifying the matching column name;
+    : on the first line of an /RDB file;
+    : date 2016-11-15;
+    report_notpipe && return 1;
+    awk -v fm=$1 -v to=$2 '
+    BEGIN   { OFS = "\t" } 
+    NR == 1 {
+              for (i=1; i<=NF; i++) {
+                  if ($i == fm) 
+                      $i = to
+                  }
+            }
+            { print }
+    '
+}
+rdb_column () 
+{ 
+    : app_trace $*;
+    local boiler=": mfg: $(myname 2);: date: 2019-01-23";
+    eval "${1}_${2} () { $boiler; rdb_now $1 | column $2 | rd sort -u; }"
+}
+rdb_create () 
+{ 
+    : app_trace $# $*;
+    rdb_hdr $*;
+    headoff
+}
+rdb_current () 
+{ 
+    : date: 2017-05-12;
+    : app_trace $*;
+    row 'delete_time ~ /^$/' | rdb_notime
+}
+rdb_dDate () 
+{ 
+    : date: 2019-06-11;
+    addcol d_date | compute 'd_date = substr(delete_time,1,6)'
+}
+rdb_data () 
+{ 
+    set -- $1 ${2:-.};
+    for f in $1 $1.rdb;
+    do
+        [[ -f $1 ]] && rd_syncf $1;
+        [[ -f $2/h.$f.Z ]] && { 
+            zcat $2/h.$f.Z;
+            return
+        };
+    done
+}
+rdb_datafrom () 
+{ 
+    : app_trace $*;
+    "$@" | tail +3
+}
+rdb_deletes () 
+{ 
+    set -- ${1%.rdb};
+    set -- $1 h.$1.rdb.Z delete_time;
+    [[ -f $2 ]] || { 
+        comment USAGE rdb_deletes STEM of h.STEM.rdb.Z;
+        ls h.*.rdb.Z 1>&2;
+        return
+    };
+    shift;
+    : app_trace $# $*;
+    zcat $1 | column $2 | rd sort | rd uniq -c | sed 's/^ *//' | sp2tab | rdb_create count $2
+}
+rdb_editorusers () 
+{ 
+    : app_trace $*;
+    awk '$3 ~ /rdb_editor/ { print $4 }' ~/Dropbox/log/editor.log
+}
+rdb_fieldcheck () 
+{ 
+    : date: 2019-08-04;
+    awk -F'\t' '!p[NF]++ { print NF, $0 }' $*
+}
+rdb_fieldids () 
+{ 
+    : returns a COL string label=$N, ... assigning Nth field to column NAME;
+    : ------------------------- save the header fields --;
+    : date 2017-03-26;
+    local HEAD="";
+    while [ -n "$1" ]; do
+        case $1 in 
+            BEGIN | END | FS | NF | NR | FNR | FILENAME | ARGC | ARGV | RS | OFS | ORS | OFMT | SUBSEP)
+                comment USING a Reserved Name: $1 as a Field
+            ;;
+            length | srand | int | substr | index | match | split | sub | gsub | sprintf | system | getline | function)
+                comment USING a builtin function $1 as a Field
+            ;;
+            *)
+                HEAD="$HEAD $1"
+            ;;
+        esac;
+        shift;
+    done;
+    : ---------------------------- allow for 129 fields --;
+    : history: seq, jot, bash {...};
+    set -- {1..129};
+    while [ -n "$2" ]; do
+        eval nC$1=$2;
+        shift;
+    done;
+    local C=1;
+    : app_trace $HEAD;
+    : ------------- align HEAD names with field numbers --;
+    local COL="";
+    for I in $HEAD;
+    do
+        case $COL in 
+            *$I=*)
+                comment "duplicate "$I" in column names: $COL"
+            ;;
+            *)
+                COL="$COL $I=\$$C;";
+                eval C=\$nC$C
+            ;;
+        esac;
+    done;
+    : app_trace COL: $COL;
+    echo $COL
+}
+rdb_hdr () 
+{ 
+    : date: 2017-05-12;
+    : app_trace $*;
+    : first the names, then equal-width dashes,;
+    : with one or more, spaces to a single TAB;
+    ( echo $*;
+    echo $* | tr 'a-zA-Z0-9_' '-' ) | sed 's/  */ /g' | tr ' ' '\t'
+}
+rdb_hdrOf () 
+{ 
+    : date 2017-01-21;
+    report_notfile $1 && return 1;
+    rdb_hdr $(sed 1q $1)
+}
+rdb_hdx2 () 
+{ 
+    : collapse {insert,delete}_time into {i,d}_date;
+    : date: 2019-04-20;
+    : date: 2019-06-07 a good place to add the spaceit survivor;
+    : date: 2019-07-14;
+    report_notargcount 1 $# family for FAM_{history,columns} && return 1;
+    set ${1}_columns;
+    report_notfunction $1 && return 1;
+    report_notpipe && return 2;
+    set -- $($1);
+    trace_call $*;
+    tee .$(myname).000 | addcol i_date d_date | tee .$(myname).001 | compute 'i_date = substr(insert_time,1,6); d_date = substr(delete_time,1,6)' | tee .$(myname).002
+}
+rdb_history () 
+{ 
+    : app_trace $*;
+    for_existing h.$(rdb_name $1).Z zcat
+}
+rdb_historydates () 
+{ 
+    : collapse {insert,delete}_time into {i,d}_date;
+    : date: 2019-04-20;
+    : date: 2019-08-18;
+    : date: 2019-08-20;
+    report_notpipe && return 2;
+    : app_trace $*;
+    addcol i_date d_date | compute '
+
+        i_date = substr(insert_time,1,6); 
+	d_date = substr(delete_time,1,6)
+
+   '
+}
+rdb_historyname () 
+{ 
+    : smart_ops returns full path to history file;
+    : date: 2019-04-11;
+    ${2:-echo} $PWD/h.$1.Z
+}
+rdb_iDate () 
+{ 
+    : date: 2019-06-11;
+    report_notpipe && return 1;
+    addcol i_date | compute 'i_date = substr(insert_time,1,6)'
+}
+rdb_init () 
+{ 
+    : app_trace $*;
+    : source cmdlib
+}
+rdb_inserts () 
+{ 
+    set -- ${1%.rdb};
+    set -- $1 h.$1.rdb.Z insert_time;
+    [[ -f $2 ]] || { 
+        comment USAGE rdb_inserts STEM of h.STEM.rdb.Z;
+        ls h.*.rdb.Z 1>&2;
+        return
+    };
+    shift;
+    : app_trace $# $*;
+    rdb_hdr count $2;
+    zcat $1 | column $2 | rd sort | rd uniq -c | sed 's/^ *//' | rdb_datrdb_data2tab
+}
+rdb_join () 
+{ 
+    : date: 2017-05-11;
+    function arg_colnames () 
+    { 
+        while [[ $# -gt 0 ]]; do
+            case $1 in 
+                -o)
+
+                ;;
+                -*)
+                    shift
+                ;;
+                *)
+                    [[ -f $1 ]] || echo $1
+                ;;
+            esac;
+            shift;
+        done
+    };
+    function arg_filename () 
+    { 
+        for f in $*;
+        do
+            [[ -f $f ]] && echo $f;
+        done
+    };
+    function arg_flags () 
+    { 
+        while [[ $# -gt 0 ]]; do
+            case $1 in 
+                -o)
+
+                ;;
+                -*)
+                    echo $1 $2;
+                    shift
+                ;;
+            esac;
+            shift;
+        done
+    };
+    : non-flag args are either files or column names;
+    local cols=$(arg_colnames $*);
+    local args=$(arg_flags $*);
+    set $(arg_filename $*);
+    report_notargcount 2 $# file file ... man join && return 1;
+    local f1=$1;
+    local f2=$2;
+    local col1=$(sed 1q $f1);
+    local col2=$(sed 1q $f2);
+    set $col1;
+    local cols=${cols:-$1};
+    local new1=$(columnlist $cols $col1);
+    local new2=$(columnlist $cols $col2);
+    local toun="toun cols args f1 col1 f2 col2 new1 new2";
+    foreach nava $toun 1>&2;
+    rm -f .tmp.{a,b}*;
+    set .tmp.{a,b}$$;
+    cat $f1 | column $new1 | tail +3 | sort > $1;
+    cat $f2 | column $new2 | tail +3 | sort > $2;
+    rdb_hdr $(columnlist $new1 $new2);
+    join $args -t '	' $1 $2 | tee .joined.rdb;
+    comment rm -f $1 $2;
+    unset $toun
+}
+rdb_key () 
+{ 
+    : app_trace $*;
+    rdb_col $1 $(rdb_fields $1) | rd sort -u
+}
+rdb_match () 
+{ 
+    : app_trace $*;
+    comm $* <(ls *.rdb) <(ls h.*.Z | sed 's/h.//; s/.Z//')
+}
+rdb_name () 
+{ 
+    set -- ${1%.rdb}.rdb;
+    [[ -f $1 ]] || { 
+        comment no RDB file $1;
+        comment local RDB;
+        ls *.rdb 1>&2;
+        return 1
+    };
+    : app_trace $# $*;
+    newest h.$1.Z $1 || rd_syncf $1;
+    echo $1
+}
+rdb_next () 
+{ 
+    : repair RDB table with first COMMAND;
+    : date: 2017-04-07;
+    : args: RDB-table "command with args";
+    : date: 2017-04-09;
+    : date: 2017-05-12;
+    report_notargcount 2 $# && return 1;
+    set ${1%.rdb}.{rdb,nxt} "${*:2}";
+    report_notfunction $3 && return 2;
+    report_notfile $1 && return 3;
+    read_tty $* DOES ${*:3};
+    awk NF $1 | does ${*:3} > $2;
+    cat $2 | onlyChanged $1;
+    nrdp $1;
+    tomorrow rm -f $2
+}
+rdb_nodups () 
+{ 
+    : removes duplicate records from an RDB file;
+    : echos command to remove NXT file, or;
+    : command to move NXT to RDB, leaves diffs on DIF;
+    : date: 2017-05-16;
+    report_notfile $1 && return 1;
+    set $1 ${1%.rdb}.{nxt,dif};
+    rd sort -u < $1 > $2;
+    diff $1 $2 > $3 && { 
+        echo rm $2 $3
+    } || echo mv $2 $1
+}
+rdb_nohistory () 
+{ 
+    : ~;
+    : which RDB files have no history;
+    set .hz;
+    ls h.*rdb.Z | sed 's/h\.//; s/.Z$//' > $1;
+    ls *.rdb | command comm -13 $1 -;
+    rm -f $*
+}
+rdb_notime () 
+{ 
+    : date: 2017-05-12;
+    : app_trace $*;
+    ncolumn insert_time delete_time
+}
+rdb_notinsert () 
+{ 
+    : app_trace $*;
+    ncolumn insert_time
+}
+rdb_ondate () 
+{ 
+    : RDB changes on YYMMDD, default TODAY;
+    : date: 2019-04-20;
+    report_notargcount 1 $# FAMILY name && return 1;
+    set $1 ${2:-$(yymmdd)};
+    rdb_historydates $1 | row "i_date == $2 || d_date == $2" | rd sort
+}
+rdb_onlytime () 
+{ 
+    : app_trace $*;
+    column insert_time delete_time
+}
+rdb_qshape () 
+{ 
+    tawk '
+    NR == 1      { fields = NF }
+    NF != fields { printf "%4d %3d: %s\n", NR, NF, $0 }
+    END          { printf "file %s fields %d\n", FILENAME, fields > "/dev/stderr" }
+    ' $1
+}
+rdb_rcheck () 
+{ 
+    : date: 2019-08-04;
+    tawk '!p[NF]++ { print NF, $0 }' $*
+}
+rdb_record () 
+{ 
+    : app_trace $*;
+    tail +3
+}
+rdb_records () 
+{ 
+    : date: 2017-07-10;
+    : date: 2017-07-16;
+    : date: 2017-07-18;
+    cmd_log;
+    set $1 h.$1.Z;
+    report_notfile $1 && return 1;
+    rd_syncf $1;
+    rdb_active $2 | ncolumn insert_time
+}
+rdb_repair () 
+{ 
+    report_notfile $1 no RDBFILE && { 
+        ls *.rdb;
+        return 1
+    };
+    r=${1%.*};
+    report_isfile $r.edt && { 
+        rdb_repairhelp $1 $r;
+        return 2
+    };
+    row "$2" < $1 > $r.edt;
+    row "!( $2 )" < $1 > $r.not;
+    rdb_repairhelp $1 $r
+}
+rdb_repairhelp () 
+{ 
+    comment edit $2.edt then rdb_-cat $2.??? back to $1;
+    comment for more instructions: rdb_repairnotes
+}
+rdb_repairnotes () 
+{ 
+    cat <<'EOF'
+  $ rdb_repair file.rdb "selection critera"
+the selection criteria produces two files:
+   file.edt -- the selection
+   file.not -- the rest of the data
+manually edit the file.edt until satisfied, then
+restor the file with these commands:
+  $ rdb_cat file.edt file.not > file.nxt
+  $ rdput file.rdb
+  $ mv file.nxt file.rdb
+  $ rdput file.rdb
+  $ rm -f file.edt file.not
+maybe this could be called rdb_repair_finish
+EOF
+
+}
+rdb_semiSplit2nd () 
+{ 
+    : date: 2017-07-10;
+    : date: 2017-07-18;
+    awk '
+    $2 !~ /;/ { print; next }
+              {
+                ns = split($2,categ,";");
+                for(i=1; i<=ns; i++) printf "%s\t%s\n", $1, categ[i];
+	       }
+    '
+}
+rdb_smart () 
+{ 
+    smart_def $1 $(lib)/${2:-$1}.rdb
+}
+rdb_sum () 
+{ 
+    rdb_hdr $*;
+    column $* | tail +3 | tawk '
+        {
+	  nc=NF;
+	  for (i = 1; i<= NF; i++) sum[i] += $i
+        }
+    END {
+	  sep="";
+	  for (i=1; i<=nc; i++) {
+	    printf "%s%f", sep, sum[i]
+	    sep = "\t"
+         }
+    printf "\n"
+    }'
+}
+rdb_timetally () 
+{ 
+    : date: 2017-05-12;
+    zcat h.$1.Z | column {insert,delete}_time | rd sort | rduniq
+}
+rdb_today () 
+{ 
+    : app_trace $# $*;
+    set -- $(yymmdd)000000 ${1:-tasks};
+    rdb_data $2 | row "delete_time > $1 || insert_time > $1" | rdb_notinsert
+}
+rdb_trc () 
+{ 
+    : app_trace $*;
+    rdb_now $1 | row "$2" | column $3
+}
+rdb_whinsert () 
+{ 
+    : app_trace $*;
+    rdb_history $1 | row '!delete_time' | ncolumn delete_time
+}
+rdb_write () 
+{ 
+    report_notfunction $1 && return 1;
+    $1 | tee ${1}.rdb
+}
+rd () 
+{ 
+    : -- allow commands to preserve Relation Data header;
+    : date: 2017-05-11;
+    : app_trace $*;
+    read HEAD;
+    read DASH;
+    rdb_hdr $HEAD;
+    "$@"
+}
+rdb () 
+{ 
+    : date: 2017-05-12;
+    : app_trace $*;
+    app_isa $* || return;
+    tables $* | tee tables.rdb;
+    rdb canon tables.rdb
+}
+rdbcmd_init () 
+{ 
+    : app_trace $*;
+    declare -f rdupdate > /dev/null || { 
+        . rdblib
+    };
+    declare -f rd_initf > /dev/null || { 
+        . rdlib
+    }
+}
+rdbcmd_qrf () 
+{ 
+    : app_trace $*;
+    wh functions rdbcmdlib
+}
+rdbcmdlib_version () 
+{ 
+    printf "%s\t%s\n" rdbcmdlib 0.5.0
+}
+rdbfields () 
+{ 
+    : date: 2017-05-11;
+    set $1 ${1%.rdb}.rdb;
+    for f in $*;
+    do
+        [[ -f $f ]] && { 
+            sed 1q $f;
+            return
+        };
+    done;
+    report_notfile $1 Nor rdbfile $2;
+    return 1
+}
+rdbhome () 
+{ 
+    : date: 2019-08-04;
+    ${*:-echo} $(home)/lib/rdb
+}
+rdbkup () 
+{ 
+    set -- ${1%.rdb};
+    newest h.$1.rdb.Z $1.rdb || logjob $(doit rdput $1.rdb 2>&1)
+}
+rdbroot () 
+{ 
+    : app_trace $*;
+    echo $HOME/Dropbox/rdb
+}
+rdeditor () 
+{ 
+    function _rdbfields () 
+    { 
+        sed 1q $1
+    };
+    function _rdtail () 
+    { 
+        rd tail -24 $1
+    };
+    set -- ${1%.rdb};
+    set -- $1.rdb $1.fix $1.tbl ${2:-_rdtail};
+    : app_trace $# $*;
+    [[ -f $1 ]] || { 
+        comment "USAGE ${FUNCNAME[0]} table[.rdb]";
+        comment "Tables (on stdout for user):";
+        ls *.rdb;
+        return 1
+    };
+    [[ -f $2 ]] || { 
+        comment "USAGE ${FUNCNAME[0]} Table [queryCmd]";
+        comment "USING $4 to trim the $1 to $2, RETURN to continue";
+        read a;
+        $4 < $1 > $2
+    };
+    [[ "$(_rdbfields $1)" == "$(_rdbfields $2)" ]] || { 
+        comment " .. NOW .. $2 needs IDENTICAL column names as $1";
+        return 2
+    };
+    ( rdb_hdr $(_rdbfields $1);
+    diff $2 $1 | grep '^> ' | sed 's/..//' ) > $3;
+    ${EDITOR:-emacs} $2;
+    ( cat $3;
+    tail +3 $2 ) | rd sort > $1
+}
+rdget () 
+{ 
+    comment TRACE rdget $# ARGS $*;
+    quietly comment -- the history of the rd file;
+    case $1 in 
+        */*)
+            cd $(dirname $1);
+            f=$(basename $1);
+            shift;
+            rdget $0 $f $*
+        ;;
+    esac;
+    date=$(
+   date '+%y%m%d%H%M%S'
+   [ -f h.$1 -o -f h.$1.Z ] || rdinit $1
+time=$(Lymdhms ${2:-$date})
+CAT=cat
+[ -f h.$1.Z ]; CAT=z${CAT}
+selection=$(
+  printf "insert_time <= %s && (%s < delete_time || delete_time ~ /^$/)"   $time $time)
+$CAT h.$1 | row "$selection"
+) > /usr/tmp/x.$1;
+    ncolumn insert_time delete_time < /usr/tmp/x.$1 | sed 's/       *$//'
+}
+rdgetTest () 
+{ 
+    cp $HOME/lib/h.DocState .;
+    rdget DocState 89053012;
+    rdget DocState 8905301145;
+    rdget DocState 8904;
+    rdget DocState;
+    sh -x ~/rdb/bin/rdget Journal 890704;
+    cd $HOME/lib;
+    cd $HOME/lib;
+    sh2p ~/rdb/bin/rdget
+}
+rdget_test () 
+{ 
+    cp $HOME/lib/h.DocState .;
+    rdget DocState 89053012;
+    rdget DocState 8905301145;
+    rdget DocState 8904;
+    rdget DocState;
+    sh -x ~/rdb/bin/rdget Journal 890704;
+    cd $HOME/lib;
+    cd $HOME/lib;
+    sh2p ~/rdb/bin/rdget
+}
+rdgrep () 
+{ 
+    comment TRACE rdgrep $# ARGS $*;
+    quietly comment -- /rdb grep;
+    read HEAD;
+    read DASH;
+    cat <<EOF
+$HEAD
+$DASH
+EOF
+
+    case $0 in 
+        *rdegrep)
+            grep=egrep
+        ;;
+        *rdgrep)
+            grep=grep
+        ;;
+        *rdfgrep)
+            grep=fgrep
+        ;;
+    esac;
+    $grep $*
+}
+rdinit () 
+{ 
+    comment TRACE rdinit $# ARGS $*;
+    quietly comment -- create the h. file;
+    quietly comment default is file.Z, from compress, uncompress;
+    quietly comment System V default is file.z, from pack, unpack;
+    z=${2:-Z};
+    [ -f h.$1 -o -f h.$1.$z ] || { 
+        fields insert_time delete_time $(sed 1q $1) > h.$1
+    }
+}
+rdjointable () 
+{ 
+    comment TRACE jointable $# ARGS $*;
+    quietly comment -- Join rdb tables;
+    function setcol () 
+    { 
+        for col in $*;
+        do
+            case $column in 
+                *$col*)
+
+                ;;
+                *)
+                    echo $col
+                ;;
+            esac;
+        done
+    };
+    trap 'rm -f .tmp.[abcd12]$$' 0 1 2 3 15;
+    while [ -n "$1" ]; do
+        arg=$1;
+        case $arg in 
+            -)
+                break
+            ;;
+            -j)
+                continue
+            ;;
+            -*)
+                ARGS="$ARGS $arg"
+            ;;
+            *)
+                if [ -f $arg ]; then
+                    break;
+                else
+                    column="$column $arg";
+                fi
+            ;;
+        esac;
+        shift;
+    done;
+    [ -f "$2" ] || { 
+        echo "Usage: $0 column table table";
+        echo "$2 isnt a file";
+        exit 3
+    };
+    exec < $1;
+    read COL1;
+    read DASH1;
+    exec < $2;
+    read COL2;
+    read DASH2;
+    NEW1=$(setcol $COL1);
+    case "$NEW1" in 
+        "")
+            echo "No columns in first file: $1";
+            exit 1
+        ;;
+        *)
+
+        ;;
+    esac;
+    NEW2=$(setcol $COL2);
+    case "$NEW2" in 
+        "")
+            echo "No columns in first file: $2";
+            exit 2
+        ;;
+        *)
+
+        ;;
+    esac;
+    : DASHES=$(
+    : TODO: FIXME
+    : echo "$column${NEW1:+
+    : }$NEW1${NEW2:+
+    : }$NEW2" | tr -c "\012" "[-*]"  |tr "\012" "    "
+    : );
+    HEADER=$(echo "$column${NEW1:+\t}$NEW1${NEW2:+\t}$NEW2"                 |tr '\012' '        ');
+    column $column $NEW1 < $1 | tail +3 | sort | tee .tmp.a$$ | cut -f1 | sort -u > .tmp.1$$;
+    column $column $NEW2 < $2 | tail +3 | sort | tee .tmp.b$$ | cut -f1 | sort -u > .tmp.2$$;
+    ( fields "$COL2";
+    comm -23 .tmp.1$$ .tmp.2$$;
+    cat .tmp.b$$ ) | column $COL2 | tail +3 | sort > .tmp.d$$;
+    ( fields "$COL1";
+    comm -13 .tmp.1$$ .tmp.2$$;
+    cat .tmp.a$$ ) | column $COL1 | tail +3 | sort > .tmp.c$$;
+    fields $HEADER;
+    awk -f ${RDB:-$HOME/rdb}/lib/join.awk .tmp.c$$ .tmp.d$$
+}
+rdlcanon () 
+{ 
+    comment TRACE rdlcanon $# ARGS $*;
+    quietly comment -- Relational Data List CANONicalizer;
+    sed '
+       s/^  *//
+       s/[         ][      ]*/     /
+       s/^[^       ][^     ]*$/&   /
+       s/ *        /       /g
+    ' $*
+}
+rdlib_version () 
+{ 
+    printf "%s\t%s\n" rdlib 0.5.0
+}
+rdlint () 
+{ 
+    app_trace OBSOLESCENT, using CHECK;
+    check $*;
+    return;
+    comment TRACE rdlint $# ARGS $*;
+    quietly comment -- Relational Data Lint;
+    ncs $* | egrep '^[^     ]* (.*|[^  ]*      )$'
+}
+rdlint_doc () 
+{ 
+    cat <<'EOF'
+   use this on LIST format data.  it guarantees
+      a TAB before a SPACE.
+ return code is complement of files "goodness"
+   egrep returns 1 if NO matches were found
+                 0 if ANY were.
+ suggested usage:
+    if { not rdlint foo >/dev/null ; }
+    then
+       ok to use foo
+    else
+        edit foo
+    fi
+ OR
+    while { rdlint foo > foo.err ; }
+    do
+        edit foo.err foo
+    done
+EOF
+
+}
+rdsel () 
+{ 
+    : app_trace $*;
+    row "$1 ~ /$2/"
+}
+rdseq () 
+{ 
+    comment TRACE rdseq $# ARGS $*;
+    quietly comment -- Relational Data SEQence - a file;
+    rd awk '{ printf "%04d\t%s\n", NR, $0 }' | sed ' 1s/^/seqno     /
+           2s/^/-----      /
+    '
+}
+rdsort () 
+{ 
+    comment TRACE rdsort $# ARGS $*;
+    quietly comment -- on columns;
+    for arg in "$@";
+    do
+        case $arg in 
+            -*)
+                sortargs="$sortargs $arg"
+            ;;
+            *)
+                columns="$columns $arg"
+            ;;
+        esac;
+    done;
+    column $columns | rd sort $sortargs
+}
+rdtail () 
+{ 
+    : app_trace $*;
+    rd tail -24 $1
+}
+rdtimes () 
+{ 
+    comment TRACE rdtimes $# ARGS $*;
+    quietly comment -- deliver the event times in the history;
+    column insert_time delete_time
+}
+rduniq () 
+{ 
+    comment TRACE rduniq $# ARGS $*;
+    quietly comment -- Relational Data UNIQ;
+    uniq -c | awk '
+BEGIN  { OFS = "\t" }
+NR == 1 { $1 = "Count" }
+NR == 2 { $1 = "-----" }
+       { print }
+' | sed '
+#  s/^  *//
+ s/\(^ *[0123456789][0123456789]*\)  */\1	/
+'
+}
+rdupdate () 
+{ 
+    : -- Relational Data update;
+    : date: 2017-02-11;
+    : proper use of awk_file, report_notfile,;
+    : date: 2019-08-17;
+    report_notfile $1 && return 1;
+    set $1 $(hwrite $1);
+    now=$(date '+%y%m%d%H%M%S');
+    : awk program, rdupdate.awk depends on knowing;
+    : history, and before data file;
+    : app_trace "awk -F'	' -v now=$now -f $(awk_file) $2 -";
+    awk NF $1 | awk -F'	' -v now=$now -f $(awk_file) $2 -
+}
+_lesscolumn () 
+{ 
+    : remove arguments from the existing header;
+    : date: 2017-05-12;
+    report_notfile ${1:-"no FILE argument"} && return 1;
+    local hdr=$(sed 1q $1);
+    local rtn="";
+    : read -p "$(myname) ( file: $1, remove: $2 ); hdr =( $hdr )" < /dev/tty;
+    for col in $hdr;
+    do
+        for non in ${*:2};
+        do
+            [[ $non == $col ]] && continue;
+            rtn="$rtn $col";
+            : read -p "$(myname) ( $* ); rtn =( $rtn )" < /dev/tty;
+        done;
+    done;
+    echo $rtn
+}
+addcol () 
+{ 
+    : date: 2019-08-11;
+    read HEAD;
+    read DASH;
+    ( rdb_hdr $HEAD $@;
+    cat ) | column $HEAD $@
+}
+column () 
+{ 
+    : date: 2019-07-02;
+    : date: 2019-08-14 added the BLANK columns, not yet in table;
+    : -------------------------------------- begin template.fun --;
+    local HEAD;
+    local DASH;
+    local COL="";
+    local C;
+    :;
+    : app_trace $*;
+    read HEAD;
+    [[ -z "$HEAD" ]] && { 
+        ( echo;
+        cat ) | listtotable | $(myname) "$@" | tabletolist;
+        return 0
+    };
+    read DASH;
+    : ---------------------------------------- end template.fun --;
+    : default to HEADER fields;
+    set -- ${@:-$HEAD};
+    for ARG in $@;
+    do
+        case " $HEAD " in 
+            *$ARG*)
+                : the column is in the table, what number?;
+                (( C = 1 ));
+                for I in $HEAD;
+                do
+                    [[ "$I" = "$ARG" ]] && { 
+                        COL="${COL},\$$C"
+                    };
+                    (( C += 1 ));
+                done
+            ;;
+            *)
+                : the column is NOT in the table;
+                COL="${COL},blank"
+            ;;
+        esac;
+    done;
+    COL=${COL#,};
+    : app_trace COL: $COL;
+    : comment awk "BEGIN { FS = OFS = \"\t\"; blank = \"""\"; }; { print $COL; }";
+    rdb_hdr $@;
+    cat | awk "BEGIN { FS = OFS = \"\t\"; blank = \"""\"; }; { print $COL; }"
+}
+column_data () 
+{ 
+    : app_trace $*;
+    rdb_datafrom column $*
+}
+column_unique () 
+{ 
+    : app_trace $*;
+    cat $2 | rdb_datafrom column $1
+}
+compute () 
+{ 
+    : date: 2017-06-20;
+    : date: 2019-07-07;
+    :;
+    read HEAD;
+    if test -z "$HEAD"; then
+        ( echo;
+        cat ) | listtotable | compute "$@" | tabletolist;
+        return 0;
+    fi;
+    read DASH;
+    rdb_hdr $HEAD;
+    (( C = 1 ));
+    for I in $HEAD;
+    do
+        COLIN="$COLIN $I=\$$C;";
+        COLOUT="$COLOUT \$$C=$I;";
+        (( C += 1 ));
+    done;
+    : trace_call "IN, cmd, OUT: $COLIN; $cmmd; $COLOUT";
+    awklib='
+       function max(x,y) { return (x>y?x:y) }
+       function min(x,y) { return (x<y?x:y) }
+       function abs(x)   { return (x<0?-x:x) }
+    ';
+    [[ -n "$COLIN" ]] && { 
+        awk "
+        $awklib
+        BEGIN   { FS=OFS=\"\t\"}; { $COLIN $1; $COLOUT print }"
+    }
+}
+jointable () 
+{ 
+    : date 2017-03-26;
+    : app_trace $*;
+    COLS="";
+    ARGS="";
+    while [ -n "$1" ]; do
+        arg=$1;
+        case $arg in 
+            -)
+                break
+            ;;
+            -[jt])
+                continue
+            ;;
+            -[aveo12])
+                ARGS="$ARGS $arg $2";
+                shift
+            ;;
+            -*)
+                ARGS="$ARGS $arg"
+            ;;
+            *)
+                if [ -f $arg ]; then
+                    break;
+                else
+                    COLS="$COLS $arg";
+                fi
+            ;;
+        esac;
+        shift;
+    done;
+    report_notfile "${2:-column table table}" && return 2;
+    local f1=$1;
+    local f2=$2;
+    : app_trace $(wc -l $f1);
+    : app_trace $(wc -l $f2);
+    local COL1=$(sed 1q $f1);
+    local COL2=$(sed 1q $f2);
+    : app_trace COL1: $COL1, COL2: $COL2;
+    : default join on 1st field in first file;
+    set -- $COL1;
+    : ${COLS:=$1};
+    comment onTrap_rm .tmp.[ab]$$;
+    set -- $(args_uniq $COLS $COL1);
+    : app_trace file: $f1, cols: $*;
+    cat $f1 | column $* | tee .tmp.a.rdb | tail +3 | sort > .tmp.a$$;
+    set -- $(args_uniq $COLS $COL2);
+    : app_trace file: $f2, cols: $*;
+    cat $f2 | column $* | tee .tmp.b.rdb | tail +3 | sort > .tmp.b$$;
+    set -- $(args_uniq $COLS $COL1 $COL2);
+    : app_trace rdb_hdr $(args_uniq $COLS $COL1 $COL2);
+    rdb_hdr $(args_uniq $COLS $COL1 $COL2);
+    app_trace JOIN $ARGS -t '    ' .tmp.a$$ .tmp.b$$;
+    join $ARGS -t '	' .tmp.a$$ .tmp.b$$
+}
+ncolumn () 
+{ 
+    : date: 2019-07-02;
+    : date: 2019-08-14 added the BLANK columns, not yet in table;
+    : -------------------------------------- begin template.fun --;
+    : date: 2019-08-27;
+    local HEAD;
+    local DASH;
+    local COL="";
+    local C;
+    :;
+    read HEAD;
+    [[ -z "$HEAD" ]] && { 
+        ( echo;
+        cat ) | listtotable | $(myname) "$@" | tabletolist;
+        return 0
+    };
+    read DASH;
+    : ---------------------------------------- end template.fun --;
+    : extract names from HEADER fields;
+    COL=$(echo :$HEAD: | tr ' 	' :);
+    : app_trace COL: $COL;
+    for C in $@;
+    do
+        COL=${COL/:$C:/:};
+        : app_trace removed $C, COL: $COL;
+    done;
+    COL=$(echo $COL | tr : ' ');
+    : app_trace ARGS: $*;
+    : app_trace HEAD: $HEAD;
+    : app_trace COL: $COL;
+    ( rdb_hdr $HEAD;
+    cat ) | column $COL
+}
+row () 
+{ 
+    : reads STDIN for RDB list or TABLE format,;
+    : SELECT rows matching argument criteria,;
+    : expressed as AWK pattern. e.g. "date > 20170210";
+    : where "date" in this case is a field name in table header;
+    : date: 2017-05-11;
+    :;
+    : an empty first row is assumed to be in LIST format;
+    : date 2017-02-10;
+    read HEAD;
+    [[ -z "$HEAD" ]] && { 
+        : app_trace $*;
+        ( echo;
+        cat ) | listtotable | $0 "$@" | tabletolist;
+        exit 0
+    };
+    read DASH;
+    rdb_hdr $HEAD;
+    (( C = 1 ));
+    for I in $HEAD;
+    do
+        COL="$COL $I=\$$C;";
+        (( C += 1 ));
+    done;
+    : app_trace 1: $1, COL: $COL;
+    [[ -n "$COL" ]] && { 
+        echo awk "BEGIN { FS = OFS = \"\t\" }; { $COL } $1 { print }" 1>&2;
+        awk "BEGIN { FS = OFS = \"\t\" }; { $COL }; $1 { print }"
+    }
+}
+rowhas () 
+{ 
+    : app_trace $*;
+    row "$1 ~ /$2/"
+}
+rowis () 
+{ 
+    : app_trace $*;
+    row "$1 ~ /^$2$/"
+}
+rowisnot () 
+{ 
+    : app_trace $*;
+    row "$1 !~ /$2/"
+}
+tables_columns () 
+{ 
+    ${*:-echo} table nrecrds fields
+}
+todo_columns () 
+{ 
+    : the data columns in the TODO database;
+    : version: 1.0.0;
+    ${*:-echo} thru proj todo
+}
+tomorrow () 
+{ 
+    : todo: do what needs doing, tomorrow;
+    trace $*
+}
+wherefun_columns () 
+{ 
+    : version: 1.0.0;
+    ${*:-echo} fname library others
+}
+listtotable () 
+{ 
+    : reads stdin or named files in LIST format, converting to TABLE;
+    : date: 2020-04-05;
+    local awk=$(awk_file);
+    report_notfile $awk && return 1;
+    : trace_call awk -f $awk $@;
+    awk -f $awk $@ 2> $(myname).err | awk NF
+}
+rd_fun () 
+{ 
+    : date: 2019-08-12;
+    printf "%s\tverify\tfunction\t\n" $1
+}
+rd_implementd () 
+{ 
+    : date: 2019-08-12;
+    comm -12 <(cat command.rdb | column command 2>.column.err | headoff| sort) <(functions rdlib |sort )
+}
+rd_implemented () 
+{ 
+    : date: 2019-08-12;
+    comm -12 <(cat command.rdb | column command 2>.column.err | headoff| sort) <(functions rdlib |sort )
+}
+rd_printfirst () 
+{ 
+    : date: 2019-08-12;
+    compute "if (printed[$1]++) { next };"
+}
+rd_printlast () 
+{ 
+    : date: 2019-08-12;
+    rd sort -rn | compute "if (printed[$1]++) { next };"
+}
+rd_tallycolumn () 
+{ 
+    : date: 2019-08-12;
+    report_notpipe && return 1;
+    report_notargcount 1 $# field && return 2;
+    column $1 | addcol tally | compute "tally = ++count[$1]" | column tally $1 | rd_printlast $1
+}
+rd_unimplemented () 
+{ 
+    : date: 2019-08-12;
+    comm -23 <(cat command.rdb | column command 2>.column.err | headoff| sort) <(functions rdlib |sort )
+}
+rd_unrecorded () 
+{ 
+    : date: 2019-08-12;
+    comm -13 <(cat command.rdb | column command 2>.column.err | headoff| sort) <(functions rdlib |sort )
+}
+check () 
+{ 
+    : prints the HEAD of the table and;
+    : any other record with different TAB-separated Field counts;
+    : date: 2019-08-04;
+    : date: 2019-09-10;
+    awk -F'\t' '
+
+        NF != hdr { print NF, $0 };
+	NR == 1   { hdr = NF; }
+
+    ' $*
+}
+h_repair () 
+{ 
+    : todo: check to see if the FIELDS have Changed.;
+    : IF they have Changed, First update the Existing history,;
+    : adding empty fields if New. return an ERROR on missing field;
+    : match algorithm from ncolumn;
+    local r=$1;
+    local h=$2;
+    local table="$(sed 1q $r)";
+    set -- $(sed 1q $h);
+    trace_call table: $table, ARGS: $*;
+    : start with the 3rd field after insert, delete _time fields;
+    for history in ${*:3};
+    do
+        : app_trace table: $table, history: $history.;
+        case " $table " in 
+            *$history*)
+                : the column is in the table;
+                continue
+            ;;
+            *)
+                app_trace HISTORY: $history is NOT in the TABLE: $table;
+                return 1
+            ;;
+        esac;
+    done;
+    overwrite $h rd_newhistory $h $table || return 1
+}
+h_update () 
+{ 
+    : -- Relational Data update;
+    : date: 2017-02-11;
+    : proper use of awk_file, report_notfile, : app_trace;
+    : date: 2019-08-17;
+    : date: 2019-09-08 add feature: current TABLE Columns govern HISTORY;
+    report_notfile $1 && return 1;
+    set $1 $(hwrite $1);
+    set $* $(needir $(dirname $2));
+    set $1 $2 ${2%.rdb}.tmp;
+    app_trace file: $1, history: $2, TMP: $3;
+    [[ $(cat $2|wc -l) -lt 2 ]] && return;
+    column {insert,delete}_time $(sed 1q $1) < $2 | awk NF > $3;
+    : app_trace "column {insert,delete}_time $(sed 1q $1) From $2";
+    backup $2;
+    mv $3 $2;
+    rdupdate $1 > $3;
+    mv $3 $2;
+    backup $2;
+    : app_trace RETURN $(wc -l $* 2>/dev/null)
+}
+hwrite () 
+{ 
+    : date: 2019-08-17;
+    set -- $(dirname $1) $(basename $1);
+    echo $1/.hry/$2
+}
+hz () 
+{ 
+    : compressed history of an RDB file;
+    : default ZCAT;
+    : date: 2019-06-03;
+    : date: 2019-06-10;
+    set -- $(reverseArgs $*);
+    local history=$(dirname $1)/.hry/$(basename $1).Z;
+    report_notfile $history && return 1;
+    set -- $(reverseArgs ${*:2});
+    ${*:-zcat} $history
+}
+newest_first () 
+{ 
+    : date: 2019-08-31;
+    : date: 2020-02-24 ls -dt is 14x faster;
+    ls -dt $(onlyfiles $*);
+    : foreach stat_mtimefile $* PIPE sort -r PIPE field 2
+}
+overwrite () 
+{ 
+    : app_trace $*;
+    : copy standard input to output after EOF;
+    : from Kernighan and Pike, The UNIX Programming Environment, p154.;
+    : https://github.com/IanDarwin/scripts/blob/master/overwrite;
+    : opath=$PATH;
+    : nPATH=/bin:/usr/bin:/usr/local/bin;
+    export nPATH;
+    case $# in 
+        0 | 1)
+            echo 'Usage: overwrite file cmd [args]' 2>&1;
+            return 2
+        ;;
+    esac;
+    file=$1;
+    shift;
+    : app_trace file: $file, cmmd: $(ta $1 | grep -v '^ ');
+    new=$(mktemp /tmp/overwr1-XXXXXXXXXX) || return 1;
+    old=$(mktemp /tmp/overwr1-XXXXXXXXXX) || return 1;
+    trap 'rm -f $new $old; exit 1' 0 1 2 15;
+    if "$@" > $new; then
+        cp $file $old;
+        trap '' 1 2 15;
+        cp $new $file;
+        rm -f $new $old;
+    else
+        echo "overwrite: $1 failed, $file unchanged" 1>&2;
+        rm -f $new $old;
+        return 1;
+    fi
+}
+rd_newhistory () 
+{ 
+    : app_trace $*;
+    cat $1 | column {insert,delete}_time ${*:2}
+}
+rd_update () 
+{ 
+    : date: 2019-08-16;
+    set $1 $(hwrite $1.Z);
+    set $1 ${2%.Z} ${2%.*.Z}.nxt $2;
+    app_trace file: $1, history: $2, next: $3, packed: $4;
+    [[ -f $4 ]] && { 
+        rm -f $2;
+        uncompress $4
+    };
+    report_notfile $2 History of $1 && return 4;
+    app_trace RDUPDATE $(ls -l $1);
+    rdupdate $1 > $3;
+    app_trace RDUPDATE $(ls -l $3);
+    report_notfile $3 Temporary History of $1 && return 3;
+    mv -f $3 $2;
+    app_trace MOVED To $(ls -l $2);
+    report_notfile $2 Updated History of $1 && return 2;
+    compress $2;
+    app_trace COMPRESSED to $(ls -l $4);
+    report_notfile $4 Updated Packed History of $1 && return 4;
+    backup $4;
+    chmod -w $4;
+    app_trace UNWRITABLE at $(ls -l $4)
+}
+updates () 
+{ 
+    app_trace $*
+}
+stat_mtimefile () 
+{ 
+    : date: 2019-08-31;
+    [[ -f $1 ]] || return;
+    file=$1;
+    set -- $(stat -r $file 2>/dev/null);
+    echo ${10} $file
+}
+tabletolist () 
+{ 
+    comment TRACE tabletolist $# ARGS $*;
+    awk -f ${RDB:=$(rdbroot)}/lib/tbl2lst.awk ${*:--}
+}
+test_data () 
+{ 
+    : date: 2019-08-20;
+    wc $* | sed 's/^ *//; s/  */	/g'
+}
+test_list () 
+{ 
+    : date: 2019-08-20;
+    ${*:-echo} test_data test_list test_run test_sequence test_setup
+}
+test_run () 
+{ 
+    : date: 2019-08-20;
+    set ${1:-tst} test.rdb;
+    rm -fr $1;
+    test_setup $1;
+    pushd $1;
+    test_data ../*.rdb >> $2;
+    : 3rd step of Test Sequence;
+    rdb_canon $2;
+    popd
+}
+test_sequence () 
+{ 
+    : unit test sequence for list functions;
+    : test: tbl_fmlist tbltool fold_b listtotable tag_fmrecord;
+    : lesson: the function was ADDCOL, not add_col;
+    : date: 2020-04-05;
+    functions ./fixlib;
+    cat <<'EOF'
+    . shdlib; . fixlib; shd_listformat  $(functions fixlib); : e.g.
+    tbltool
+    tbl_fmlist
+    name_report
+    do_name_report $(columns)
+    fold_2
+    set -- $(fold_b); ea
+    fold_2 | addcol $*
+    fold_2 | addcol $* | justify
+    tag_fmrecord $*
+    fold_2 | from_trto $*
+    fold_2 | from_trto $* | hold_r 
+EOF
+
+}
+test_setup () 
+{ 
+    : date: 2019-08-20;
+    : date: 2020-03-04;
+    set ${1:-tst};
+    mkdir $1/.hry;
+    cp .hry/* $1/.hry;
+    sleep 1;
+    cp test.rdb $1
+}
+tbltool () 
+{ 
+    : first name in a list of functions names the data tables;
+    : date: 2020-04-05;
+    ${*:-llrt} $(myname)*
+}
+tbl_fmlist () 
+{ 
+    : from LIST to full-formed TABLE;
+    : test case is FUNCTION TAGS;
+    : lesson: DEFAULT is not acceptable TAG;
+    : date: 2020-04-05;
+    set -- ${1:-$(ls -t *_list.txt)};
+    report_notfile $1 && return 1;
+    set -- $1 ${1%_list.txt}.rdb;
+    ( hdr_row $1;
+    cat $1 ) | listtotable | awk NF | tee $2
+}
+hdr_row () 
+{ 
+    : produce the field names from a list format;
+    : date: 2020-04-05;
+    set -- ${1:-$(ls -t *_list.txt)};
+    set -- $1 ${1%_list.txt}.hdr;
+    newest $2 $1 || { 
+        field 1 < $1 | printfirst > $2
+    };
+    cat $2
+}
+fold_2 () 
+{ 
+    : just the ABSTR and TODO columns;
+    : sql: row;
+    : date: 2020-04-05;
+    tbl_fmlist | row 'tag ~ /abstr/ || tag ~ /todo/'
+}
+fold_b () 
+{ 
+    : the latet hdr record;
+    : date: 2020-04-05;
+    cat $(ls -t *.hdr | sed 1q)
+}
+tag_fmrecord () 
+{ 
+    : do require actual args, because;
+    : format as "if( tag ~ /{tagname}/ ) {tagname} = record";
+    : date: 2020-04-05;
+    awk -v fields="$*" '
+
+    BEGIN {
+            nc = split(fields, fn)
+	    printf "Fields: %s, NC: %d\n", fields, nc >/dev/stderr
+	    printf "fn[%d] %s\n", 1, fn[1] >/dev/stderr
+	    printf "fn[%d] %s\n", 2, fn[2] >/dev/stderr	    	    
+
+    	      c = ""
+	    fmt = "%s if( tag ~ /%s/) %s = record"
+	    
+            # for each field name
+
+	    for(i = 1; i <= nc; i++) {
+                t = fn[i]
+     	        printf "\nDEBUG\tc: <%s>\n", c > /dev/stderr
+                printf "\tN: %s         \n", t > /dev/stderr
+                printf fmt, c, t, t
+		c=";"
+	     }
+	}     
+    '
+}
+from_trto () 
+{ 
+    : move tag-record pairs to attirb ... columns;
+    : date: 2020-04-05;
+    report_notpipe && return 1;
+    addcol $* | compute "$(tag_fmrecord $*)" | ncolumn tag record
+}
+columns () 
+{ 
+    : names of columns in a table;
+    : date: 2020-04-04;
+    : date: 2020-04-05;
+    [[ -f $1 ]] && sed 1q $1 || table_report
+}
+name_report () 
+{ 
+    : date: 2020-04-04;
+    : date: 2020-04-05;
+    report_notpipe && return 1;
+    set -- ${1:-abstr};
+    column name $1 | row $1
+}
+do_name_report () 
+{ 
+    : date: 2020-04-05;
+    shift;
+    for field in $*;
+    do
+        cat tbltool.rdb | name_report $field | justify;
+        app_trace $field ===;
+        echo;
+    done
+}
+hold_r () 
+{ 
+    : attempt to collapse multiple keys to one-each record of multi-field data;
+    : todo: not ready for prime time. default isnt robust;
+    : date: 2020-04-05;
+    rd awk -F'\t' '
+        {
+	  key[$1] = $1
+	  two[$1] = (($2 !~ /""/)? $2: two[$1])
+	  three[$1] = (($3 !~ /""/)? $3: three[$1])
+	}
+    END {
+          for(r in key) {
+
+	      printf "%s\t%s\t%s\n", key[r], two[r], three[r]
+	  }
+	}
+     '
+}
+rdb_home () 
+{ 
+    : the HOME directory of /RDB development and runtime;
+    : date: 2020-04-11;
+    ${*:-echo} $(home)/rdb
+}
+rdb_commands () 
+{ 
+    : list the BOOK command names;
+    : date: 2020-04-11;
+    grep command $(rdb_home)/lib/command.lst | field 2 | sort -u
+}

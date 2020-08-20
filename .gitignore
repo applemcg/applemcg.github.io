@@ -13,7 +13,6 @@
 *.log
 *.nxt
 *.tsv
-*.rdb
 *.tmp
 
 # these directories
@@ -22,6 +21,7 @@ gdu
 ar/
 *_backup
 *_files
+rdb/lib/asfunctions
 
 # and these files
 

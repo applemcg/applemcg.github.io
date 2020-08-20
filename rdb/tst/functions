@@ -1,0 +1,12 @@
+library	oneline	body
+-------	-------	-----------
+rdb	datacol	column $1 | dataonly
+rdb	dataonly	tail +3 | grep -v '^ *$'
+rdb	cmdarg	row "command ~ /^$1\$/" < testStatus | datacol cmdarg
+rdb	table	row "command ~ /^$1\$/" < testStatus | datacol table 
+rdb	body	row "oneline ~ /^$1\$/" < functions  | datacol body
+rdb	oneline	cat functions                        | datacol oneline 
+rdb	rdb_oneline	oneline
+rdb	rdb_tabled	oneline | sort -u
+rdb	rdb_origin	comm $* <(functions rdblib) <(rdb_tabled)
+rdb	rdb_body	rdb_function $1; fbdy $1

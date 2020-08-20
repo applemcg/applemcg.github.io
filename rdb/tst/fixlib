@@ -1,0 +1,26 @@
+table_report () 
+{ 
+    : date: 2019-09-15;
+    local rdb="*.rdb"
+    case $# in
+    0 ) : app_trace rdb: $rdb
+        : app_trace list: $(table_list)
+        [[ -f tables.rdb ]] && { 
+
+	    set -- $(table_list); 
+	    : app_trace NO Args table_list: $* 
+        } || { 
+
+	    set $rdb
+	    : app_trace NO Args RDBs: $* 
+        };;
+
+    *)  set -- $(table_list) $*
+        : app_trace SOME Args, NOW: $*
+        ;;
+    esac
+
+    set -- $(args_uniq $*)
+    app_trace $*;    
+    tables $* | tee tables.rdb | rd sort -k3 | justify
+}
