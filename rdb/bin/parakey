@@ -1,0 +1,8 @@
+: parakey -- key lines in a paragraph file
+# %doit% %file% paragraphs
+
+cat <<EOF
+Paragraph      Title
+------ --------------------------------
+EOF
+egrep -v '^($|[         ]+)' $* | sort

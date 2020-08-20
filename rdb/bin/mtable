@@ -1,0 +1,19 @@
+: mtable -- multiple tables in list format
+
+for table in `
+cat |
+awk '
+$1 ~ /TABLE/   { of=$2; print of ; next }
+
+       { if(of)
+               print > of
+
+       }
+'
+`
+do
+       listtotable $table > $table.tbl
+done
+exit
+
+ sh -x $filename xenv

@@ -1,0 +1,106 @@
+: datatype -- type of data in column
+
+case $0 in
+    *whennew) all=-l;prtrec=print;;
+esac
+read HEAD
+case $1 in
+    -l)        shift; all=-l;prtrec=print;;
+esac
+
+[ $# -lt 1 ] && {
+       (echo "$HEAD"; cat ) | $0 $all $HEAD
+       exit
+       }
+
+( echo "$HEAD"; cat ) | column $* |
+{
+       read HEAD
+       read DASH
+
+       echo "$HEAD"
+       echo "$DASH"
+       case $0 in
+       */*)    function=`basename $0`;;
+       *)      function=$0;;
+       esac
+
+       awk     -F'	'       '
+
+       BEGIN   { OFS=" " }
+       function max(x,y) { return (x>y?x:y) }
+       function min(x,y) { return (x<y?x:y) }
+       function precision(col) {               # visible
+               idec = index($col,".")
+               if (idec > 0)
+                   _precision[col] = max(_precision[col], length($col)-idec)
+       }
+       function width(col) {                   # visible
+               _width[col] = max(_width[col], length($col))
+       }
+       function total(col) {                   # visible
+               _total[col] += $col
+       }
+       function mean(col) {                    # visible
+               total(col)
+               _mean[col] = _total[col]/NR
+       }
+       function subtotal(col, i) {
+               if (col == 1)  {
+                       if ($1 != last && NR > 3) {
+                               _subtotal[1] = last
+                               prfunct("%s\t")
+                               for (i=1; i<=fields; i++)
+                                       _subtotal[i] = 0
+                       }
+                       last = $1
+               }
+               _subtotal[col] += $col
+       }
+       function minimum(col) {                 # visible
+               _minimum[col] = min(_minimum[col], $col)
+       }
+       function maximum(col) {                 # visible
+               _maximum[col] = max(_maximum[col], $col)
+       }
+       function whennew(col) {                 # visible
+               if ($col != _valof[col]) {
+                       _valof[col] = $col
+                       _whennew[col] = $col
+               } else
+                       _whennew[col] = ""
+       }
+       function datatype(col) {                # visible
+               if (_datatype[col] < 0) return
+               idec = index($col,".")
+               if (idec > 0)
+                   _datatype[col] = max(_datatype[col], length($col)-idec)
+               else if (int($col) != $col) _datatype[col] = -1
+               else if (! _datatype[col])  _datatype[col] = 0
+       }
+# LESSON:  trick -- increment a "local" variable which is really global!!!
+       function prfunct(fmt1, i) {
+               if ( "-l" == "'"$all"'") print "'"$DASH"'"
+               printf fmt1?fmt1: "%d\t", _'"${function}"'[1]
+               for (i=2; i<=fields; i++)       {
+                       printf "%d\t", _'"${function}"'[i]
+               }
+               printf "\n"
+       }
+       {
+               for (i=1; i<=NF; i++) {
+                       '"$function"'(i)
+               }
+               '"$prtrec"';
+               fields = max(fields,NF)
+       }
+       END     { if ("'"$function"'" != "subtotal") 	{
+
+       	         # cut out a fragment, date stamped 7 Aug 1998
+                 # saved in ./ar/historicalrecord.txt
+
+			prfunct()  # echo trailing blank line for sub-total
+                 }
+	}'
+
+}

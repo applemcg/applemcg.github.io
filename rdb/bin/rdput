@@ -1,0 +1,31 @@
+: rdput -- Relational Data PUT in history
+# set -x
+case $1 in
+*/*)   pushd $(dirname $1) >/dev/null; exec $0 $(basename $1); popd >/dev/null
+esac
+#
+# default is  compress, uncompress.  Its faster and makes smaller files
+#   System V default is   pack, unpack.
+#
+: ${PACK:=compress}
+case $PACK in
+compress)      z=Z;;
+pack)          z=z;;
+esac
+
+if     [ -f h.$1.$z ]
+then   un${PACK} h.$1
+elif   [ ! -f h.$1 ]
+then   rdinit $1
+fi
+
+# cat h.$1 
+
+rdupdate $1 > x.$1 && {
+       chmod +w h.$1
+       cp x.$1 h.$1
+       chmod -w h.$1
+       ${PACK} h.$1
+
+} 
+rm -f x.$1

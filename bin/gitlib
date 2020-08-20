@@ -282,27 +282,41 @@ git_tostage ()
 	follow && /modified:/ { print $2 }
     '
 }
-toMIWreading () 
-{ 
-    : convert the reading list into the MyIdeaWarehouse format,;
+threeColumnTiddly ()
+{
+    : convert an rdb table into a 4-coulmn tiddly table
     : date: 2020-07-04;
-    sorttable -r < librarything.rdb | tawk '
+    report_notpipe && return 1
+    tawk '
     
     NR == 1 { printf "| !%s | !%s | !%s |\n", $1, $2, $3}
      NR < 3 { next };
             { printf "|%s |[[%s]] |[[%s]] |\n", $1, $2, $3}
    '
 }
-wiki_tablereport () 
+fourColumnTiddly () 
 { 
-    : convert the reading list into the MyIdeaWarehouse format,;
+    : convert an rdb table into a 4-coulmn tiddly table
     : date: 2020-07-04;
-    sorttable < tables.rdb | tawk '
+    report_notpipe && return 1    
+    tawk '
     
     NR == 1 { printf "| !%s | !%s | !%s | !%s |\n", $1, $2, $3, $4}
      NR < 3 { next };
             { printf "|%s |%s |%s |%s |\n", $1, $2, $3, $4 }
    '
+}
+toMIWreading () 
+{ 
+    : convert the reading list into the MyIdeaWarehouse format,;
+    : date: 2020-07-04;
+    sorttable -r < librarything.rdb | threeColumnTiddly
+}
+wiki_tablereport () 
+{ 
+    : convert the reading list into the MyIdeaWarehouse format,;
+    : date: 2020-07-04;
+    sorttable < tables.rdb | fourColumnTiddly
 }
 days_reading () 
 { 
@@ -457,5 +471,11 @@ date_finished ()
     set -- .hry/librarything.rdb.Z;
     report_notfile $1 && return 1;
     zcat $1 | sorttable -r latest | ncolumn insert_time | select_first book | row delete_time | ncolumn delete_time
+}
+readhistory () 
+{ 
+    : active and when finished books;
+    : date: 2020-08-18;
+    zcat .hry/librarything.rdb.Z | sorttable -r latest | select_first book | sorttable book | rename latest finish | compute 'finish = ((delete_time)? finish: "")' | ncolumn {insert,delete}_time
 }
 git_init  1>&2

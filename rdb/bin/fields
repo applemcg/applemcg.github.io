@@ -1,0 +1,11 @@
+: fields -- the first two lines
+
+(
+echo $*
+echo $* | sed 's/[^ ]/-/g'
+) | sed 's/  */	/g'
+
+
+
+
+

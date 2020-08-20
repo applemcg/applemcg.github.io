@@ -1,0 +1,5 @@
+: rdseq -- Relational Data SEQence - a file
+rd awk '{ printf "%04d\t%s\n", NR, $0 }'  |
+  sed ' 1s/^/seqno     /
+       2s/^/-----      /
+ '

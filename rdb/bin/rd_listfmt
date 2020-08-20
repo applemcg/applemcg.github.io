@@ -1,0 +1,7 @@
+: rd_listfmt -- Relational Data LIST ForMaT
+if test -z "$HEAD"
+then   echo    $0 $* 1>&2
+       (echo $DASH;cat) | listtotable | $0 $*
+       exit 0
+fi
+

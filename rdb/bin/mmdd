@@ -1,0 +1,3 @@
+: mmdd -- return todays MMDD
+
+date '+%m%d'

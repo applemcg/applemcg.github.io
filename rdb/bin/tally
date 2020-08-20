@@ -1,0 +1,19 @@
+: tally -- the named columns
+
+trap 'rm -f .tmp.$$' 0 1 2 3 15
+column $*              |
+       tee .tmp.$$     |
+       sed '
+               s/^/Count       /p
+               n
+               s/^/-----       /p
+               q
+       '
+
+       tail +3 .tmp.$$ |
+       sort            |
+       uniq -c         |
+       sed '
+               s/^  *//
+               s/ /    /
+       '

@@ -1,0 +1,3 @@
+: todaysdate -- yymmdd
+
+date '+%y%m%d'

@@ -1,0 +1,34 @@
+rd_devlist () 
+{ 
+    : date: 2019-08-14;
+    ${*:-echo} $(myname) rd_{devstate,{un,}implemented,unrecorded}
+}
+rd_devstate () 
+{ 
+    : date: 2019-08-14;
+    report_notfile command.rdb && return 1;
+    report_notfile rdlib && return 2;
+    comm $* <( column command < command.rdb | headoff | sort ) <( functions rdlib | sort)
+    ignore rd_devlist
+}
+rd_unimplemented () 
+{ 
+    : date: 2019-08-14;
+    rd_devstate -23
+}
+rd_implemented () 
+{ 
+    : date: 2019-08-14;
+    rd_devstate -12
+}
+rd_unrecorded () 
+{ 
+    : date: 2019-08-14;
+    rd_devstate -13
+}
+rd_undated () 
+{ 
+    : date: 2019-08-14;
+    rd_implemented | sort > .rdisorted;
+    comm -13 <(shd_latest $(< .rdisorted) | field 2 | sort) .rdisorted
+}

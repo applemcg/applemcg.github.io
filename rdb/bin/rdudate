@@ -1,0 +1,77 @@
+: rdput -- Relational Data PUT in history
+# set -x
+case $1 in
+*/*)   cd `dirname $1`; exec $0 `basename $1`
+esac
+#
+# default is  compress, uncompress.  Its faster and makes smaller files
+#   System V default is   pack, unpack.
+#
+: ${PACK:=compress}
+case $PACK in
+compress)      z=Z;;
+pack)          z=z;;
+esac
+
+if     [ -f h.$1.$z ]
+then   un${PACK} h.$1
+elif   [ ! -f h.$1 ]
+then   rdinit $1
+fi
+awk -F'        ' "
+BEGIN  { now = \"`date '+%y%m%d%H%M%S'`\""'    # make it a string
+         fmt = "%d: %12s\t%12s\t<%s>\n"
+         fmr = "%s\t%s\t%s\n"
+       }
+function nf(n,  i,r) {
+#-2    for (i=n; i<=NF; i++)
+       for (i=n; i<NF; i++)
+#-1             r = (r? r "    " : "" ) $i
+                r = r $i "     "
+       r = r $NF       #+2
+       return r
+}
+FILENAME ~ /^h\./   {
+#
+# deleted records
+#
+       if ($2) {
+               print $0
+               next
+       }
+#
+# current historical records, "delete" them by default,
+#
+       record =  nf(3)
+
+       insert[record] = $1
+       dtime[record]  = now
+       printf fmt, 0, $1, dtime[record], record > "awk.err"
+}
+FILENAME !~ /^h\./ && FNR > 2 {
+#
+# current records, "undelete" any here
+#
+       dtime[$0] = ""; inserted=insert[$0]
+       if(!inserted) inserted = now
+       printf fmt, 1,  inserted,"", $0 >"awk.err"
+       printf fmr,     inserted ,"", $0
+}
+#
+# now print deleted records
+#
+END    {
+       for (d in dtime)
+               if (dtime[d])
+                        printf fmt, 2, insert[d], dtime[d] "" , d >"awk.err"
+                        printf fmr,    insert[d], dtime[d] "" , d
+}' h.$1 $1 > x.$1 && {
+       chmod +w h.$1
+       mv x.$1 h.$1
+       chmod -w h.$1
+       ${PACK} h.$1
+
+} && rm -f x.$1
+exit
+
+ cd; nrdput DoList; pg h.DoList

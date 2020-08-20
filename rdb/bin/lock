@@ -1,0 +1,39 @@
+: lock -- locks an area, usually a record, of a file
+
+: ${TMP:=/usr/tmp}
+umask 000
+case $# in
+6)
+       LOCKROW="$2     $3      $4              $5$6"
+       LOCKFIL=$TMP/L$1
+       TMPFILE=$TMP/$$lock
+       if [ ! -s $LOCKFILE ]
+       then
+               echo "$LOCKROW" >$LOCKFILE
+               exit 0
+       else
+               echo "$LOCKROW" >>$LOCKFILE
+               exec 0<$LOCKFILE
+               while read PID FROM TO XFROM XTO
+               do
+                       if [ "$LOCKROW" = "$PID$FROM$TO$XFROM$XTO" ]
+                       then
+                               exit 0
+                       elif [ "$3" -ge "$FROM" -a "$3" -lt "$TO"
+                           -o "$4" -gt "$FROM" -a "$4" -le "$TO"
+                            ]
+                       then
+                               sed "/$LOCKROW/d" <$LOCKFILE>$TMPFILE
+                               mv $TMPFILE $LOCKFILE
+                               exit 2
+                       fi
+               done
+               # own lock gone means lock file updated w/ sed mv
+               exit 2
+       fi
+       ;;
+*)
+       echo "usage: $0 lock filename pid from to indexfrom indexto"
+       exit 1
+       ;;
+esac

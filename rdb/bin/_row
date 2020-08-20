@@ -1,0 +1,42 @@
+: select or row - output only selected rows of a table
+Illegal="BEGIN END
+ FS NF NR FNR FILENAME
+ RS OFS ORS OFMT SUBSEP
+ ARGC ARGV
+ length srand int substr index match split sub gsub
+ sprintf system getline function
+"
+read HEAD
+read DASH
+echo "$HEAD"
+echo "$DASH"
+
+. rd_listfmt
+
+command="$1"
+
+. rd_columns
+
+C=1
+for I in $HEAD
+do
+       case $Illegal in
+       *" $I "*)
+               cat <<-EOF
+               "$I" is not a legal field name.
+               These are the names you may not use:
+               $Illegal
+               EOF
+               exit
+               ;;
+       esac
+       COL="$COL $I=\$$C;"
+       eval C=\$nC$C
+done
+#
+# illegal field names:
+#
+cat <<EOF
+COL    $COL
+command        $command
+EOF

@@ -1,0 +1,328 @@
+
+name	check
+abstr	prints the NF and HEAD of the /RDB TABLE
+shdoc	prints the NF and HEAD of the /RDB TABLE
+shdoc	and any other record with different Field counts
+date	2019-08-04
+date	2019-09-10
+
+name	column
+date	2019-07-02
+date	2019-08-14 added the BLANK columns, not yet in table
+shdoc	
+shdoc	-------------------------------------- begin template.fun --
+
+name	h_repair
+todo	check to see if the FIELDS have Changed.
+shdoc	
+shdoc	IF they have Changed, First update the Existing history,
+shdoc	adding empty fields if New. return an ERROR on missing field
+shdoc	match algorithm from ncolumn
+
+name	h_update
+abstr	-- Relational Data update
+date	2017-02-11
+shdoc	-- Relational Data update
+shdoc	proper use of awk_file, report_notfile, : app_trace
+date	2019-08-17
+date	current TABLE Columns govern HISTORY
+
+name	headoff
+abstr	remove the RDB header from a TABLE, see Book p. 311
+shdoc	remove the RDB header from a TABLE, see Book p. 311
+shdoc	it makes NO sense to take the head off a LIST format
+shdoc	without first converting to a TABLE.
+date	2019-08-14
+
+name	hwrite
+date	2019-08-17
+
+name	hz
+abstr	compressed history of an RDB file
+shdoc	compressed history of an RDB file
+shdoc	default ZCAT
+date	2019-06-03
+date	2019-06-10
+
+name	length
+
+name	ncolumn
+date	2019-07-02
+date	2019-08-14 added the BLANK columns, not yet in table
+shdoc	
+shdoc	-------------------------------------- begin template.fun --
+date	2019-08-27
+
+name	newest_first
+date	2019-08-31
+date	2020-02-24 ls -dt is 14x faster
+
+name	number
+
+name	overwrite
+abstr	app_trace $*
+shdoc	app_trace $*
+shdoc	copy standard input to output after EOF
+shdoc	from Kernighan and Pike, The UNIX Programming Environment, p154.
+shdoc	https://github.com/IanDarwin/scripts/blob/master/overwrite
+shdoc	opath=$PATH
+shdoc	nPATH=/bin:/usr/bin:/usr/local/bin
+
+name	rd
+abstr	-- allow commands to preserve Relation Data header
+date	2017-05-11
+shdoc	-- allow commands to preserve Relation Data header
+shdoc	app_trace $*
+
+name	rd_addf_doc
+
+name	rd_copyright
+mfg	fam_iam
+date	2019-01-23
+
+name	rd_datarow
+mfg	rd_syncf
+date	2019-01-23
+
+name	rd_firsttime
+mfg	fam_iam
+date	2019-01-23
+
+name	rd_newhistory
+abstr	app_trace $*
+
+name	rd_nontoday
+date	2017-12-17
+
+name	rd_rowsof
+
+name	rd_syncf_doc
+
+name	rd_update
+date	2019-08-16
+
+name	rdb
+abstr	list all /RDB programs in rdb/bin directory
+date	2020-04-11
+
+name	_rdb_post
+abstr	supply alternative to condition rdb output
+date	2020-04-11
+
+name	updates
+
+name	rdb_canon
+abstr	default state of /RDB file: TABLE and PACKED HISTORY,
+shdoc	default state of /RDB file: TABLE and PACKED HISTORY,
+shdoc	existing HISTORY is PACKED, {un}compress toggles the state
+shdoc	new FEATURE, History will Add, Remove Fields
+shdoc	.. according to the fields currently in the TABLE. while this
+shdoc	.. may be risky, the intention is to facilitate adding fields
+shdoc	.. to the history rather than deleting any. ~ Later.
+rdb	ncolumn rdb_hdr
+sql	row
+uses	zcat compress
+date	2019-08-31
+date	2019-09-07, awk NF idiom = no empty records
+date	2019-09-08, new FEATURE
+
+name	rdb_cat
+todo	update HEADOFF to deal input redirection
+
+name	rdb_col
+abstr	app_trace $*
+
+name	rdb_create
+abstr	app_trace $# $*
+
+name	rdb_current
+date	2017-05-12
+shdoc	
+shdoc	app_trace $*
+
+name	rdb_dDate
+date	2019-06-11
+
+name	rdb_hdr
+date	2017-05-12
+shdoc	
+shdoc	app_trace $*
+shdoc	first the names, then equal-width dashes,
+shdoc	with one or more, spaces to a single TAB
+
+name	rdb_historydates
+abstr	collapse {insert,delete}_time into {i,d}_date
+date	2019-04-20
+date	2019-08-18
+date	2019-08-20
+
+name	rdb_iDate
+date	2019-06-11
+
+name	rdb_next
+abstr	repair RDB table with first COMMAND
+date	2017-04-07
+args	RDB-table "command with args"
+date	2017-04-09
+date	2017-05-12
+
+name	rdb_notime
+date	2017-05-12
+shdoc	
+shdoc	app_trace $*
+
+name	rdb_notinsert
+abstr	app_trace $*
+
+name	rdb_ondate
+abstr	RDB changes on YYMMDD, default TODAY
+date	2019-04-20
+
+name	rdb_repair
+
+name	rdb_repairhelp
+
+name	rdb_semiSplit2nd
+date	2017-07-10
+date	2017-07-18
+
+name	rdb_trc
+abstr	app_trace $*
+
+name	rdbroot
+abstr	app_trace $*
+
+name	rdlint
+
+name	rdsort
+
+name	rduniq
+
+name	rdupdate
+abstr	-- Relational Data update
+date	2017-02-11
+shdoc	-- Relational Data update
+shdoc	proper use of awk_file, report_notfile,
+date	2019-08-17
+
+name	record
+
+name	rename
+abstr	~ fromFieldName toNewName ...
+shdoc	~ fromFieldName toNewName ...
+shdoc	by modifying the matching column name
+date	2016-11-15
+date	2019-08-14
+
+name	stat_mtimefile
+date	2019-08-31
+
+name	tableorlist
+
+name	tabletolist
+
+name	test_data
+date	2019-08-20
+
+name	test_list
+date	2019-08-20
+
+name	test_run
+date	2019-08-20
+
+name	test_sequence
+abstr	unit test sequence for list functions
+test	tbl_fmlist tbltool fold_b listtotable tag_fmrecord
+lesson	the function was ADDCOL, not add_col
+
+name	test_setup
+date	2019-08-20
+date	2020-03-04
+
+name	tbltool
+abstr	first name in a list of functions names the data tables
+
+name	tbl_fmlist
+abstr	from LIST to full-formed TABLE
+shdoc	from LIST to full-formed TABLE
+shdoc	test case is FUNCTION TAGS
+lesson	DEFAULT is not acceptable TAG
+
+name	hdr_row
+abstr	produce the field names from a list format
+
+name	fold_2
+abstr	just the ABSTR and TODO columns
+sql	row
+
+name	fold_b
+abstr	the latet hdr record
+
+name	tag_fmrecord
+abstr	do require actual args, because
+shdoc	do require actual args, because
+shdoc	format as "if( tag ~ /{tagname}/ ) {tagname} = record"
+
+name	listtotable
+abstr	reads stdin or named files in LIST format, converting to TABLE
+uses	awk
+
+name	from_trto
+abstr	move tag-record pairs to attirb ... columns
+rdb	addcol compute ncolumn
+
+name	columns
+abstr	names of columns in a table
+date	2020-04-04
+
+name	name_report
+abstr	project NAME and VALUE of the ROWs with the ATTRIBUTE, default ABSTR
+sql	column row
+date	2020-04-04
+
+name	do_name_report
+abstr	for each field, give NAME_REPORT, trimming NAME and SHDOC from column names
+rdb	justify
+
+name	hold_r
+abstr	attempt to collapse multiple keys to one-each record of multi-field data
+todo	not ready for prime time. default isnt robust
+
+name	rdb_home
+abstr	the HOME directory of /RDB development and runtime
+date	2020-04-11
+
+name	rdb_commands
+abstr	list the BOOK command names
+date	2020-04-11
+
+name	sorttable
+abstr	sort /RDB table according to books p. 398
+todo	accomodate field NAMES
+date	2020-04-11
+
+name	jointable
+abstr	date 2017-03-26
+shdoc	date 2017-03-26
+shdoc	app_trace $*
+date	2020-04-11
+
+name	row
+abstr	reads STDIN for RDB list or TABLE format,
+shdoc	reads STDIN for RDB list or TABLE format,
+shdoc	SELECT rows matching argument criteria,
+shdoc	expressed as AWK pattern. e.g. "date > 20170210"
+shdoc	where "date" in this case is a field name in table header
+date	2017-05-11
+date	2020-03-04
+shdoc	
+shdoc	an empty first row is assumed to be in LIST format
+shdoc	date 2017-02-10
+
+name	shd_report
+abstr	report from the Functions SHDOC list format
+rdb	listtotable rd ncolumn
+
+name	latest_filesuf
+abstr	latest modifed file with suffix, default TXT
+uses	sed

@@ -1,0 +1,10 @@
+intersect () 
+{
+    : intersection of two tables the logical AND
+    : needs testing
+    report_notargcount 2 $# table1 table2 && return 1
+    report_notfile $1 && return 2
+    report_notfile $2 && return 3
+    sed 2q $1
+    (tail +3 $1; tail +3 $2) | sort | uniq -d
+}

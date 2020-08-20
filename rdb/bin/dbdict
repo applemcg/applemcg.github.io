@@ -1,0 +1,7 @@
+dbdict ()
+{
+    : produce a database dictionary
+    rdb_hdr field name
+    sed 1q |
+    awk '{ for (i=1; i<=NF; i++) printf "%5d\t%s\n", i, $i }'
+}

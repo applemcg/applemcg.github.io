@@ -1,0 +1,6 @@
+: rdbwc -- word count by rdb
+
+fields Lines Words Bytes Name
+
+wc $* | sed 's/^[      ]*//; s/[       ][      ]*/     /g'
+

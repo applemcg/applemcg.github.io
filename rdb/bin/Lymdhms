@@ -1,0 +1,25 @@
+: Lymdhms -- Latest Year Month Day Hour Min Sec
+
+case $1 in
+"")    tail=............;;
+??)    tail=..........;;
+????)  tail=........;;
+??????)        tail=......;;
+????????)      tail=....;;
+??????????)    tail=..;;
+????????????)  tail="";;
+*)
+       echo "Usage: $0 [yy[mm[dd[hh[mm[ss]]]]]]"
+       echo "$1 isnt valid arg"
+       exit 1
+esac
+
+echo $1`echo 991231235959 | sed "s/.*\($tail\)/\1/"`
+
+exit
+
+examples:
+
+  Lymdhms 890724
+  Lymdhms `date '+%y%m%d%H%M%S'`
+  Lymdhms 74

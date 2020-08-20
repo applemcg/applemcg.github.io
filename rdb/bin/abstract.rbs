@@ -1,0 +1,46 @@
+:  'widest length of each column in a /rdb table'
+: Lymdhms      -- Latest Year Month Day Hour Min Sec
+: addcol       -- put other columns in table
+: compute      -- compute and output rows of a table
+: computedate --
+: datatype     -- type of data in column
+: dbdict       -- produce a database dictionary
+: domain       -- searches the domain file for each field or input column ...
+# dow          -- Day of Week
+: dstp         -- date stamp
+: fd           -- is second functionally dependent on first
+: freqtbl      -- frequency table of a table
+: getpara      -- get a paragraph out of a /para table
+# gregorian:
+: inspara, delpara     -- insert, delete paragraph
+: jointable    -- Join rdb tables
+# julian       --  yrmoda to Julian Date
+: justify      -- a crude attempt at column spreading
+: lock         -- locks an area, usually a record, of a file
+: mjd          -- Modified Julian Day  or  Day number of the year
+: mmdd         -- return todays MMDD
+: ncolumn      -- NOT the columns
+: not          -- inverts result
+: nrdput       -- NEW rdput
+: parakey      -- key lines in a paragraph file
+: project or column    -- output only selected columns of a table
+: rd           -- allow commands to preserve Relation Data header
+: rdbwc        -- word count by rdb
+: rdget        -- the history of the rd file
+: rdgrep       -- /rdb grep
+: rdinit       -- create the h. file
+: rdlint       -- Relational Data Lint
+: rdpr         -- Relational Data PRint
+: rdput        -- a file in rdb histroy
+: rdtimes      -- deliver the event times in the history
+: rduniq       -- Relational Data UNIQ
+: schema       -- produce a database dictionary
+: select or row        -- output only selected rows of a table
+: sorttable --
+: splittable           -- breaks a table into smaller tables
+# tabletolist          -- convert from table to list format
+: tally        -- the named columns
+: today        -- gregoian -c
+: todaysdate           -- yymmdd
+: ucd --       rdb: update a column of data
+: union        -- concatentates two or more tables or lists

@@ -1,0 +1,60 @@
+: jointable -- Join rdb tables
+colist() { for col in $*
+       do
+       case $COLS in
+       $col)           ;;
+       *)              echo $col;;
+       esac; done
+}
+while [ -n "$1" ]
+do     arg=$1
+       case $arg in
+       -)              break;;
+       -j)             continue;;      # no-op
+       -o)             ARGS="$ARGS $arg $2"; shift;;
+       -*)             ARGS="$ARGS $arg";;
+       *)      if [ -f $arg ]
+               then     break
+               else    COLS="$COLS $arg"
+               fi
+               ;;
+       esac
+       shift
+done
+
+[ -f "$2" ] || {
+       echo "Usage: $0 column table table"
+       echo "$2 isnt a file"
+       exit 2
+       }
+
+f1=$1; f2=$2
+exec < $f1
+read COL1
+read DASH1
+exec < $f2
+read COL2
+read DASH2
+
+set -- $COL1   # default join on 1st field in first file
+
+: ${COLS:=$1}
+NEW1=$(colist $COL1)
+NEW2=$(colist $COL2)
+
+HEADER=`echo "$COLS${NEW1:+\t}$NEW1${NEW2:+\t}$NEW2"                   |tr '\012' '        '`
+
+trap 'rm -f .tmp.[ab]$$' 0 1 2 3 15
+
+column $COLS $NEW1 <$f1 |tail +3 |sort >.tmp.a$$
+column $COLS $NEW2 <$f2 |tail +3 |sort >.tmp.b$$
+
+
+# pg .tmp.[ab]$$
+
+fields $HEADER
+echo join $ARGS -t'    ' .tmp.a$$ .tmp.b$$ 1>&2
+join $ARGS -t'	' .tmp.a$$ .tmp.b$$
+
+
+

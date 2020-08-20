@@ -1,0 +1,24 @@
+: rmfd -- remove functional dependency
+
+USAGE="$0 col1 col2 old-table new-table"
+[ $# -lt 4 ] && {
+       echo $USAGE
+       echo too few arguments in :$*.
+       exit 1
+}
+[ -w $3 ] || {
+       echo $USAGE
+       echo "$3 isnt a writable file"
+       exit 2
+}
+[ -f $4 ] || touch $4
+[ -w $4 ] || {
+       echo $USAGE
+       echo $4 isnt a writable file
+       exit 3
+}
+column $1 $2 <$3   | rd sort -u > $4 && {
+       ncolumn $2 <  $3 > /tmp/$$.rmfd && mv /tmp/$$.rmfd $3
+}
+  exit
+ cp

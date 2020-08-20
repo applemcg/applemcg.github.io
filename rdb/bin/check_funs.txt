@@ -1,0 +1,480 @@
+
+name	check
+tag	abstr
+record	prints the NF and HEAD of the /RDB TABLE
+
+name	check
+tag	date
+record	2019-08-04
+
+name	check
+tag	date
+record	2019-09-10
+
+name	column
+tag	date
+record	2019-07-02
+
+name	column
+tag	date
+record	2019-08-14 added the BLANK columns, not yet in table
+
+name	h_repair
+tag	todo
+record	check to see if the FIELDS have Changed.
+
+name	h_update
+tag	abstr
+record	-- Relational Data update
+
+name	h_update
+tag	date
+record	2017-02-11
+
+name	h_update
+tag	date
+record	2019-08-17
+
+name	h_update
+tag	date
+record	current TABLE Columns govern HISTORY
+
+name	headoff
+tag	abstr
+record	remove the RDB header from a TABLE, see Book p. 311
+
+name	headoff
+tag	date
+record	2019-08-14
+
+name	hwrite
+tag	date
+record	2019-08-17
+
+name	hz
+tag	abstr
+record	compressed history of an RDB file
+
+name	hz
+tag	date
+record	2019-06-03
+
+name	hz
+tag	date
+record	2019-06-10
+
+name	ncolumn
+tag	date
+record	2019-07-02
+
+name	ncolumn
+tag	date
+record	2019-08-14 added the BLANK columns, not yet in table
+
+name	ncolumn
+tag	date
+record	2019-08-27
+
+name	newest_first
+tag	date
+record	2019-08-31
+
+name	newest_first
+tag	date
+record	2020-02-24 ls -dt is 14x faster
+
+name	overwrite
+tag	abstr
+record	app_trace $*
+
+name	rd
+tag	abstr
+record	-- allow commands to preserve Relation Data header
+
+name	rd
+tag	date
+record	2017-05-11
+
+name	rd_copyright
+tag	mfg
+record	fam_iam
+
+name	rd_copyright
+tag	date
+record	2019-01-23
+
+name	rd_datarow
+tag	mfg
+record	rd_syncf
+
+name	rd_datarow
+tag	date
+record	2019-01-23
+
+name	rd_firsttime
+tag	mfg
+record	fam_iam
+
+name	rd_firsttime
+tag	date
+record	2019-01-23
+
+name	rd_newhistory
+tag	abstr
+record	app_trace $*
+
+name	rd_nontoday
+tag	date
+record	2017-12-17
+
+name	rd_update
+tag	date
+record	2019-08-16
+
+name	rdb
+tag	abstr
+record	list all /RDB programs in rdb/bin directory
+
+name	rdb
+tag	date
+record	2020-04-11
+
+name	_rdb_post
+tag	abstr
+record	supply alternative to condition rdb output
+
+name	_rdb_post
+tag	date
+record	2020-04-11
+
+name	rdb_canon
+tag	abstr
+record	default state of /RDB file: TABLE and PACKED HISTORY,
+
+name	rdb_canon
+tag	rdb
+record	ncolumn rdb_hdr
+
+name	rdb_canon
+tag	sql
+record	row
+
+name	rdb_canon
+tag	uses
+record	zcat compress
+
+name	rdb_canon
+tag	date
+record	2019-08-31
+
+name	rdb_canon
+tag	date
+record	2019-09-07, awk NF idiom = no empty records
+
+name	rdb_canon
+tag	date
+record	2019-09-08, new FEATURE
+
+name	rdb_cat
+tag	todo
+record	update HEADOFF to deal input redirection
+
+name	rdb_col
+tag	abstr
+record	app_trace $*
+
+name	rdb_create
+tag	abstr
+record	app_trace $# $*
+
+name	rdb_current
+tag	date
+record	2017-05-12
+
+name	rdb_dDate
+tag	date
+record	2019-06-11
+
+name	rdb_hdr
+tag	date
+record	2017-05-12
+
+name	rdb_historydates
+tag	abstr
+record	collapse {insert,delete}_time into {i,d}_date
+
+name	rdb_historydates
+tag	date
+record	2019-04-20
+
+name	rdb_historydates
+tag	date
+record	2019-08-18
+
+name	rdb_historydates
+tag	date
+record	2019-08-20
+
+name	rdb_iDate
+tag	date
+record	2019-06-11
+
+name	rdb_next
+tag	abstr
+record	repair RDB table with first COMMAND
+
+name	rdb_next
+tag	date
+record	2017-04-07
+
+name	rdb_next
+tag	args
+record	RDB-table "command with args"
+
+name	rdb_next
+tag	date
+record	2017-04-09
+
+name	rdb_next
+tag	date
+record	2017-05-12
+
+name	rdb_notime
+tag	date
+record	2017-05-12
+
+name	rdb_notinsert
+tag	abstr
+record	app_trace $*
+
+name	rdb_ondate
+tag	abstr
+record	RDB changes on YYMMDD, default TODAY
+
+name	rdb_ondate
+tag	date
+record	2019-04-20
+
+name	rdb_semiSplit2nd
+tag	date
+record	2017-07-10
+
+name	rdb_semiSplit2nd
+tag	date
+record	2017-07-18
+
+name	rdb_trc
+tag	abstr
+record	app_trace $*
+
+name	rdbroot
+tag	abstr
+record	app_trace $*
+
+name	rdupdate
+tag	abstr
+record	-- Relational Data update
+
+name	rdupdate
+tag	date
+record	2017-02-11
+
+name	rdupdate
+tag	date
+record	2019-08-17
+
+name	rename
+tag	abstr
+record	~ fromFieldName toNewName ...
+
+name	rename
+tag	date
+record	2016-11-15
+
+name	rename
+tag	date
+record	2019-08-14
+
+name	stat_mtimefile
+tag	date
+record	2019-08-31
+
+name	test_data
+tag	date
+record	2019-08-20
+
+name	test_list
+tag	date
+record	2019-08-20
+
+name	test_run
+tag	date
+record	2019-08-20
+
+name	test_sequence
+tag	abstr
+record	unit test sequence for list functions
+
+name	test_sequence
+tag	test
+record	tbl_fmlist tbltool fold_b listtotable tag_fmrecord
+
+name	test_sequence
+tag	lesson
+record	the function was ADDCOL, not add_col
+
+name	test_setup
+tag	date
+record	2019-08-20
+
+name	test_setup
+tag	date
+record	2020-03-04
+
+name	tbltool
+tag	abstr
+record	first name in a list of functions names the data tables
+
+name	tbl_fmlist
+tag	abstr
+record	from LIST to full-formed TABLE
+
+name	tbl_fmlist
+tag	lesson
+record	DEFAULT is not acceptable TAG
+
+name	hdr_row
+tag	abstr
+record	produce the field names from a list format
+
+name	fold_2
+tag	abstr
+record	just the ABSTR and TODO columns
+
+name	fold_2
+tag	sql
+record	row
+
+name	fold_b
+tag	abstr
+record	the latet hdr record
+
+name	tag_fmrecord
+tag	abstr
+record	do require actual args, because
+
+name	listtotable
+tag	abstr
+record	reads stdin or named files in LIST format, converting to TABLE
+
+name	listtotable
+tag	uses
+record	awk
+
+name	from_trto
+tag	abstr
+record	move tag-record pairs to attirb ... columns
+
+name	from_trto
+tag	rdb
+record	addcol compute ncolumn
+
+name	columns
+tag	abstr
+record	names of columns in a table
+
+name	columns
+tag	date
+record	2020-04-04
+
+name	name_report
+tag	abstr
+record	project NAME and VALUE of the ROWs with the ATTRIBUTE, default ABSTR
+
+name	name_report
+tag	sql
+record	column row
+
+name	name_report
+tag	date
+record	2020-04-04
+
+name	do_name_report
+tag	abstr
+record	for each field, give NAME_REPORT, trimming NAME and SHDOC from column names
+
+name	do_name_report
+tag	rdb
+record	justify
+
+name	hold_r
+tag	abstr
+record	attempt to collapse multiple keys to one-each record of multi-field data
+
+name	hold_r
+tag	todo
+record	not ready for prime time. default isnt robust
+
+name	rdb_home
+tag	abstr
+record	the HOME directory of /RDB development and runtime
+
+name	rdb_home
+tag	date
+record	2020-04-11
+
+name	rdb_commands
+tag	abstr
+record	list the BOOK command names
+
+name	rdb_commands
+tag	date
+record	2020-04-11
+
+name	sorttable
+tag	abstr
+record	sort /RDB table according to books p. 398
+
+name	sorttable
+tag	todo
+record	accomodate field NAMES
+
+name	sorttable
+tag	date
+record	2020-04-11
+
+name	jointable
+tag	abstr
+record	date 2017-03-26
+
+name	jointable
+tag	date
+record	2020-04-11
+
+name	row
+tag	abstr
+record	reads STDIN for RDB list or TABLE format,
+
+name	row
+tag	date
+record	2017-05-11
+
+name	row
+tag	date
+record	2020-03-04
+
+name	shd_report
+tag	abstr
+record	report from the Functions SHDOC list format
+
+name	shd_report
+tag	rdb
+record	listtotable rd ncolumn
+
+name	latest_filesuf
+tag	abstr
+record	latest modifed file with suffix, default TXT
+
+name	latest_filesuf
+tag	uses
+record	sed

@@ -1,0 +1,39 @@
+: domain -- searches the domain file for each field or input column ...
+
+USAGE="usage: domain domaintable [string ...] [<one-column-table]
+EUSAGE=1
+
+EDOMAIN=2
+TMP=/tmp/$$domain
+
+trap 'rm -f $TMP' 0 1 2 3 15
+
+case "$#" in
+0)      echo $USAGE >&2
+        exit $EUSAGE
+        ;;
+1)
+        echo $USAGE >&2
+        echo "not implemented with one argument yet"
+        exit
+        cat >$TMP
+        search -mb $1 <$TMP >>$TMP
+        sort $TMP | uniq -u
+        ;;
+2)
+        grep "^$2\$" $1 >/dev/null && exit 0
+        echo "$2"
+        exit $EDOMAIN
+        ;;
+*)
+        file=$1; shift
+        for I
+        do      grep "^$I\$" >/dev/null && continue
+                echo "$I"
+                ERROR=true
+        done
+
+        [ -n "$ERROR" ] && exit $EDOMAIN
+
+esac
+

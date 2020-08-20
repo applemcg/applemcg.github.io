@@ -1,0 +1,51 @@
+: mk.join -- join or unjoin two or more columns
+
+case $# in
+0|1|2)
+       echo "Usage: $0 joined join1 join1 . . ."
+       echo "WARNING: mk.unjoin length of joinX names is width of fields"
+       exit 1
+       ;;
+esac
+joined=$1; shift
+
+read HEAD
+read DASH
+(cat <<EOF
+$HEAD
+$DASH
+EOF
+cat -
+) | (
+
+       case $0 in
+       *mk.join)
+               column $joined $HEAD                    |
+                       compute "$joined = $*"          |
+                       ncolumn $*
+               ;;
+       *mk.unjoin)
+               column $* $HEAD |
+#
+# because we don't assume anything about "compute",
+#  its better to write the commands into the script
+#  rather than play tricks with the argument to "compute"
+#
+#
+                       compute "`echo $joined $* |
+                               awk '{ jp = 1
+                                       for(i=2;i<=NF;i++) {
+                                               jl=length($i)
+                                               printf \"%s = substr(%s,%d,%d)\n\",$i,$1,jp,jl
+                                               jp+=jl
+                                       }
+                               }'
+                               `" | ncolumn $joined
+               ;;
+               esac
+)
+exit
+
+f="overfld ovl field";d=`dirname $filename`; sed 20q $d/Top.dd | $d/mk.join $f >/tmp/mcg/top.join
+f="overfld ovl field";d=`dirname $filename`; cat /tmp/mcg/top.join|$d/mk.unjoin $f
+f="overfld ovl field";d=`dirname $filename`; sed 20q $d/Top.dd | $d/mk.join $f | $d/mk.unjoin $f

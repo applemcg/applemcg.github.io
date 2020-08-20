@@ -1,0 +1,13 @@
+: rdinit -- create the h. file
+
+#
+# default is  file.Z, from compress, uncompress
+#   System V  default is file.z, from pack, unpack
+#
+z=${2:-Z}
+
+[ -f h.$1 -o -f h.$1.$z ] || {
+
+       fields insert_time delete_time `sed 1q $1` > h.$1
+
+}

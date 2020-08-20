@@ -1,0 +1,12 @@
+: rdsort -- on column
+
+for arg
+do
+       case $arg in
+       -*)     sortargs="$sortargs $arg";;
+       *)      columns="$columns $arg";;
+       esac
+done
+
+ column $columns | rd sort $sortargs
+

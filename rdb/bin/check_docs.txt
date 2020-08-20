@@ -1,0 +1,225 @@
+
+name	check
+seqn	0
+shdoc	prints the NF and HEAD of the /RDB TABLE
+
+name	check
+seqn	1
+shdoc	and any other record with different Field counts
+
+name	column
+seqn	0
+shdoc	
+
+name	column
+seqn	1
+shdoc	-------------------------------------- begin template.fun --
+
+name	h_repair
+seqn	0
+shdoc	
+
+name	h_repair
+seqn	1
+shdoc	IF they have Changed, First update the Existing history,
+
+name	h_repair
+seqn	2
+shdoc	adding empty fields if New. return an ERROR on missing field
+
+name	h_repair
+seqn	3
+shdoc	match algorithm from ncolumn
+
+name	h_update
+seqn	0
+shdoc	-- Relational Data update
+
+name	h_update
+seqn	1
+shdoc	proper use of awk_file, report_notfile, : app_trace
+
+name	headoff
+seqn	0
+shdoc	remove the RDB header from a TABLE, see Book p. 311
+
+name	headoff
+seqn	1
+shdoc	it makes NO sense to take the head off a LIST format
+
+name	headoff
+seqn	2
+shdoc	without first converting to a TABLE.
+
+name	hz
+seqn	0
+shdoc	compressed history of an RDB file
+
+name	hz
+seqn	1
+shdoc	default ZCAT
+
+name	ncolumn
+seqn	0
+shdoc	
+
+name	ncolumn
+seqn	1
+shdoc	-------------------------------------- begin template.fun --
+
+name	overwrite
+seqn	0
+shdoc	app_trace $*
+
+name	overwrite
+seqn	1
+shdoc	copy standard input to output after EOF
+
+name	overwrite
+seqn	2
+shdoc	from Kernighan and Pike, The UNIX Programming Environment, p154.
+
+name	overwrite
+seqn	3
+shdoc	https://github.com/IanDarwin/scripts/blob/master/overwrite
+
+name	overwrite
+seqn	4
+shdoc	opath=$PATH
+
+name	overwrite
+seqn	5
+shdoc	nPATH=/bin:/usr/bin:/usr/local/bin
+
+name	rd
+seqn	0
+shdoc	-- allow commands to preserve Relation Data header
+
+name	rd
+seqn	1
+shdoc	app_trace $*
+
+name	rdb_canon
+seqn	0
+shdoc	default state of /RDB file: TABLE and PACKED HISTORY,
+
+name	rdb_canon
+seqn	1
+shdoc	existing HISTORY is PACKED, {un}compress toggles the state
+
+name	rdb_canon
+seqn	2
+shdoc	new FEATURE, History will Add, Remove Fields
+
+name	rdb_canon
+seqn	3
+shdoc	.. according to the fields currently in the TABLE. while this
+
+name	rdb_canon
+seqn	4
+shdoc	.. may be risky, the intention is to facilitate adding fields
+
+name	rdb_canon
+seqn	5
+shdoc	.. to the history rather than deleting any. ~ Later.
+
+name	rdb_current
+seqn	0
+shdoc	
+
+name	rdb_current
+seqn	1
+shdoc	app_trace $*
+
+name	rdb_hdr
+seqn	0
+shdoc	
+
+name	rdb_hdr
+seqn	1
+shdoc	app_trace $*
+
+name	rdb_hdr
+seqn	2
+shdoc	first the names, then equal-width dashes,
+
+name	rdb_hdr
+seqn	3
+shdoc	with one or more, spaces to a single TAB
+
+name	rdb_notime
+seqn	0
+shdoc	
+
+name	rdb_notime
+seqn	1
+shdoc	app_trace $*
+
+name	rdupdate
+seqn	0
+shdoc	-- Relational Data update
+
+name	rdupdate
+seqn	1
+shdoc	proper use of awk_file, report_notfile,
+
+name	rename
+seqn	0
+shdoc	~ fromFieldName toNewName ...
+
+name	rename
+seqn	1
+shdoc	by modifying the matching column name
+
+name	tbl_fmlist
+seqn	0
+shdoc	from LIST to full-formed TABLE
+
+name	tbl_fmlist
+seqn	1
+shdoc	test case is FUNCTION TAGS
+
+name	tag_fmrecord
+seqn	0
+shdoc	do require actual args, because
+
+name	tag_fmrecord
+seqn	1
+shdoc	format as "if( tag ~ /{tagname}/ ) {tagname} = record"
+
+name	jointable
+seqn	0
+shdoc	date 2017-03-26
+
+name	jointable
+seqn	1
+shdoc	app_trace $*
+
+name	row
+seqn	0
+shdoc	reads STDIN for RDB list or TABLE format,
+
+name	row
+seqn	1
+shdoc	SELECT rows matching argument criteria,
+
+name	row
+seqn	2
+shdoc	expressed as AWK pattern. e.g. "date > 20170210"
+
+name	row
+seqn	3
+shdoc	where "date" in this case is a field name in table header
+
+name	row
+seqn	4
+shdoc	
+
+name	row
+seqn	5
+shdoc	an empty first row is assumed to be in LIST format
+
+name	row
+seqn	6
+shdoc	date 2017-02-10
+

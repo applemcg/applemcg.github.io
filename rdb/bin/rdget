@@ -1,0 +1,36 @@
+: rdget -- the history of the rd file
+
+case $1 in
+*/*)   cd `dirname $1`;f=`basename $1`; shift; exec $0 $f $*;;
+esac
+date=`
+date '+%y%m%d%H%M%S'`
+
+[ -f h.$1 -o -f h.$1.Z ] || rdinit $1
+
+time=`Lymdhms ${2:-$date}`
+#time row
+CAT=cat
+[ -f h.$1.Z ]; CAT=z${CAT}
+$CAT h.$1 | row "\
+   insert_time <= $time && ($time"' < delete_time \
+                       || delete_time ~ /^$/)\
+' >/usr/tmp/x.$1
+
+
+#time  ncolumn
+ncolumn insert_time delete_time </usr/tmp/x.$1 | sed 's/       *$//'
+
+exit
+#test cases
+ cp $HOME/lib/h.DocState .     # get data
+ rdget DocState 89053012       # noon
+ rdget DocState 8905301145     # just before change
+ rdget DocState 8904           # last month, empty
+ rdget DocState                        # right now
+sh -x ~/rdb/bin/rdget Journal  890704
+
+cd $HOME/lib;
+
+
+cd $HOME/lib;sh2p ~/rdb/bin/rdget #| sh -s DocState >/dev/null

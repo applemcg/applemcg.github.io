@@ -1,0 +1,65 @@
+: jointable -- Join rdb tables
+
+while [ -n "$1" ]
+do     arg=$1
+       case $arg in
+       -)              break;;
+       -j)             continue;;      # no-op
+       -*)             ARGS="$ARGS $arg";;
+       *)      if [ -f $arg ]
+               then    break
+               else    column="$column $arg"
+               fi
+               ;;
+       esac
+       shift
+done
+
+[ -f "$2" ] || {
+       echo "Usage: $0 column table table"
+       echo "$2 isnt a file"
+       exit 2
+       }
+exec < $1
+read COL1
+read DASH1
+
+exec < $2
+read COL2
+read DASH2
+
+NEW1=`for col in $COL1
+       do
+       case $column in
+       *$col*)         ;;
+       *)              echo $col;;
+       esac; done`
+
+NEW2=`for col in $COL2
+       do
+       case $column in
+       *$col*)         ;;
+       *)      echo $col;;
+       esac; done`
+HEADER=`echo "$column${NEW1:+\t}$NEW1${NEW2:+\t}$NEW2" |tr '\012' '    '`
+
+# trap 'rm -f .tmp.[abcd12]$$' 0 1 2 3 15
+column $column $NEW1<$1|tail +3|sort|tee .tmp.a$$|cut -f1 >.tmp.1$$
+column $column $NEW2<$2|tail +3|sort|tee .tmp.b$$|cut -f1 >.tmp.2$$
+(  echo "$COL2"
+   echo "$DASH2"
+   comm -23 .tmp.1$$ .tmp.2$$
+   cat .tmp.b$$ ) | column $COL2 | tail +3|sort>.tmp.d$$
+(  echo "$COL1"
+   echo "$DASH1"
+   comm -13 .tmp.1$$ .tmp.2$$
+   cat .tmp.a$$ ) | column $COL1 | tail +3|sort>.tmp.c$$
+
+
+fields $HEADER
+awk -f ${RDB:-$HOME/rdb}/lib/join.awk .tmp.c$$ .tmp.d$$
+exit
+
+sed 20q .tmp.c* >file1
+sed 20q .tmp.d* >file2
+

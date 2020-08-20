@@ -1,0 +1,36 @@
+# dow -- Day of Week
+dow=${1:-891101}
+case $dow in
+*/*)   oldIFS=$IFS
+               IFS=/; export IFS
+               set -- $dow
+               yrmoda=$3$1$2
+       IFS=$oldIFS
+       ;;
+*)     yrmoda=$dow
+       ;;
+esac
+case `expr \( \`julian $yrmoda\` + 2 \) % 7` in
+0)     echo Sunday;;
+1)     echo Monday;;
+2)     echo Tuesday;;
+3)     echo Wednesday;;
+4)     echo Thursday;;
+5)     echo Friday;;
+6)     echo Saturday;;
+esac
+
+exit
+#
+# Test Cases   --------------------------------------------------
+#
+  dow 11/01/89 # takes mm/da/yy format, with da => 01, 02, ... 31
+#
+# prefer yymmdd format -------------------------------------------
+#
+dow 420828     # mom, friday
+dow 440813     # dad, sunday
+dow 740419     # chip, friday
+dow 761002     # maura, saturday
+dow 801018     # katie, saturday
+dow            # 891101, wednesday

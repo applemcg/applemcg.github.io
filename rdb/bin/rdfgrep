@@ -1,0 +1,14 @@
+: rdgrep -- /rdb grep
+
+read HEAD
+read DASH
+cat <<EOF
+$HEAD
+$DASH
+EOF
+case $0 in
+*rdegrep)      grep=egrep;;
+*rdgrep)       grep=grep;;
+*rdfgrep)      grep=fgrep;;
+esac
+$grep $*

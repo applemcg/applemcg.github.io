@@ -1,0 +1,73 @@
+# julian --  yrmoda to Julian Date
+# based on algorithm
+#  from Practical Astronomy with Your Calculator, Peter Duffett-Smith
+#  (C) Cambridge University Press, 1979,1981
+# %doit% ./julian 871203
+awkp='
+function julian(yr, mo, da,   c,d) {
+       if (mo < 3) { yr -= 1; mo +=12 }
+       c = int (365.25*yr)
+       d = int (30.6001*(mo+1))
+#      print "yr mo  c  d da "
+#      print yr, mo, c, d, da
+       return(c+d+da+1720997)
+}
+function  julcol(col,  yr, mo, da) {
+   yr = int(substr(col,1,2))
+   mo = int(substr(col,3,2))
+   da = int(substr(col,5,2))
+   return julian(yr, mo, da)
+}
+'
+case $1 in
+([0-9][0-9][0-9][0-9][0-9][0-9])
+#
+#   BUG  ----  Echo previously had an extra "\n", causing an extra empty
+#              record at the end.
+#        here -------------+
+#                          |
+#                          V
+#      echo "Date\n----\n$1" | $0 Date | tail +3
+# ---------
+# revision:  eliminate need to pipe through two programs,
+# put awk program in shell variable, factor it out of shell and
+#
+
+awk "
+$awkp
+BEGIN { print julcol($1); exit }
+"
+# ---------
+       exit
+       ;;                              #(
+[1234567890]*)
+arg=$1; shift;
+awk "
+$awkp
+       { \$$arg = julcol(\$$arg); print \$0 }
+" $*
+exit ;;
+*)
+#
+# another bug;  1) arg is taken by colname,
+#
+       DateCol=${1:-Date}
+       . colname
+       [ -z "$COLIN" ] && exit
+       ;;
+esac
+set -x
+awk "
+BEGIN { FS=OFS=\"\t\"}
+$awkp
+{
+   $COLIN
+   $DateCol = julcol($DateCol);
+   print $COLNAME
+ }"
+
+exit
+
+julian 891101 | sh -x $RDB/bin/gregorian -e
+julian 891101 | sh -x $RDB/bin/gregorian -u
+julian 891101 | sh -x $RDB/bin/gregorian -c

@@ -1,0 +1,3 @@
+: computedate --
+
+expr `julian $1` + $2 | gregorian
