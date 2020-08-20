@@ -1,8 +1,0 @@
-table	nrecrds	fields
------	-------	------
-command.rdb	    151	2020-04-10	command render type attrib
-nonemptycommand.rdb	      0	2019-08-12	command render type attrib
-tables.rdb	      2	2020-04-12	table nrecrds fields
-todo.rdb	      1	2019-04-26	thru proj todo
-type.rdb	    250	2019-02-16	type name
-command.lst	   1057	2020-04-10	
