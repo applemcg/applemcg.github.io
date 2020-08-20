@@ -223,7 +223,7 @@ git_toio ()
     git add TTGL/index.html;
     git add shelf/index.html;
     git add reading/index.html;
-    git commit -m $(iso_ymd);
+    git commit -m "${1:-(iso_ymd)}";
     git push
 }
 git_diff () 
@@ -290,7 +290,7 @@ git_tostage ()
 }
 threeColumnTiddly ()
 {
-    : convert an rdb table into a 4-coulmn tiddly table
+    : convert an rdb table into a 4-column tiddly table
     : date: 2020-07-04;
     report_notpipe && return 1
     tawk '
@@ -302,7 +302,7 @@ threeColumnTiddly ()
 }
 fourColumnTiddly () 
 { 
-    : convert an rdb table into a 4-coulmn tiddly table
+    : convert an rdb table into a 4-column tiddly table
     : date: 2020-07-04;
     report_notpipe && return 1    
     tawk '
