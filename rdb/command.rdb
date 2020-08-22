@@ -279,8 +279,7 @@ w2	later			accounting
 whatis	add file: $(rdbhome)/man/whatis	file		/usr/bin/whatis
 whatwill	later			see whatis, ...
 wherefun_columns	verify	function	implemented	
-widest	use	function	implemented	
+widest	use	script	implemented	
 width	use	function	implemented	
 word	use	function	implemented	
 yourprog	later	function		sample template
-

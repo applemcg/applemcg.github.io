@@ -1070,3 +1070,28 @@ h_getold ()
     cp $9 .;
     compress librarything.rdb
 }
+width () 
+{
+    report_notpipe && return 1
+    column $* | tawk '
+
+    function max(x, y) { return ((x>y)? x : y); }
+    function min(x, y) { return ((x<y)? x : y); }    
+
+    NR == 1 { for (i=1; i<=NF; i++) {
+                  w[i] = 0
+              }
+              num = NF
+            }
+    NR <= 2 { print }	    
+    NR > 2  { for (i=1; i<=NF; i++) {
+                  w[i] = max(w[i], length( $i) )
+	      }
+            }
+    END     { printf "%7d", w[1];
+              for(i=2; i<=num; i++) {
+                    printf "\t%7d", w[i]
+              }
+              printf "\n"
+            }'
+}

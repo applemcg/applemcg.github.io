@@ -1,0 +1,233 @@
+column () 
+{ 
+    : PROJECT columns from named RDB -- first Row -- FIELDS;
+    : reads STDIN for RDB list or TABLE format,;
+    : date: 2019-07-02;
+    : date: 2019-08-14 added the BLANK columns, not yet in table;
+    : date: 2020-05-17 RCAT replaces CAT;
+    : -------------------------------------- begin template.fun --;
+    local HEAD;
+    local DASH;
+    local COL="";
+    local C;
+    :;
+    : app_trace $*;
+    read HEAD;
+    [[ -z "$HEAD" ]] && { 
+        ( echo;
+        rcat ) | listtotable | $(myname) "$@" | tabletolist;
+        return 0
+    };
+    read DASH;
+    : ---------------------------------------- end template.fun --;
+    : default to HEADER fields;
+    set -- ${@:-$HEAD};
+    for ARG in $@;
+    do
+        case " $HEAD " in 
+            *$ARG*)
+                : the column is in the table, what number?;
+                (( C = 1 ));
+                for I in $HEAD;
+                do
+                    [[ "$I" = "$ARG" ]] && { 
+                        COL="${COL},\$$C"
+                    };
+                    (( C += 1 ));
+                done
+            ;;
+            *)
+                : the column is NOT in the table;
+                COL="${COL},blank"
+            ;;
+        esac;
+    done;
+    COL=${COL#,};
+    : app_trace COL: $COL;
+    : comment awk "BEGIN { FS = OFS = \"\t\"; blank = \"""\"; }; { print $COL; }";
+    rdb_hdr $@;
+    rcat | awk "BEGIN { FS = OFS = \"\t\"; blank = \"""\"; }; { print $COL; }"
+}
+datatype () 
+{ 
+    comment TRACE $# datatype -- type of data in column;
+    case $0 in 
+        *whennew)
+            all=-l;
+            prtrec=print
+        ;;
+    esac;
+    read HEAD;
+    case $1 in 
+        -l)
+            shift;
+            all=-l;
+            prtrec=print
+        ;;
+    esac;
+    [ $# -lt 1 ] && { 
+        ( echo "$HEAD";
+        cat ) | $0 $all $HEAD;
+        exit
+    };
+    ( echo "$HEAD";
+    cat ) | column $* | { 
+        read HEAD;
+        read DASH;
+        comment EDIT_MARK deail with the ... =$0 s;
+        comment e.g. functions maximum, minimum, ....;
+        echo "$HEAD";
+        echo "$DASH";
+        case $0 in 
+            */*)
+                function=$(basename $0)
+            ;;
+            *)
+                function=$0
+            ;;
+        esac;
+        awkData
+    }
+}
+lock () 
+{ 
+    comment TRACE lock $# ARGS $*;
+    quietly comment -- locks an area, usually a record, of a file;
+    : ${TMP:=/usr/tmp};
+    umask 000;
+    case $# in 
+        6)
+            LOCKROW="$2     $3      $4              $5$6";
+            LOCKFIL=$TMP/L$1;
+            TMPFILE=$TMP/$$lock;
+            if [ ! -s $LOCKFILE ]; then
+                echo "$LOCKROW" > $LOCKFILE;
+                exit 0;
+            else
+                echo "$LOCKROW" >> $LOCKFILE;
+                exec < $LOCKFILE;
+                while read PID FROM TO XFROM XTO; do
+                    if [ "$LOCKROW" = "$PID$FROM$TO$XFROM$XTO" ]; then
+                        exit 0;
+                    else
+                        if [ "$3" -ge "$FROM" -a "$3" -lt "$TO";
+                        -o "$4" -gt "$FROM" -a "$4" -le "$TO";
+                        ]; then
+                            sed "/$LOCKROW/d" < $LOCKFILE > $TMPFILE;
+                            mv $TMPFILE $LOCKFILE;
+                            exit 2;
+                        fi;
+                    fi;
+                done;
+                exit 2;
+            fi
+        ;;
+        *)
+            echo "usage: $0 lock filename pid from to indexfrom indexto";
+            exit 1
+        ;;
+    esac
+}
+not () 
+{ 
+    comment TRACE not $# ARGS $*;
+    quietly comment -- inverts result;
+    if eval $*; then
+        exit 255;
+    else
+        exit 0;
+    fi
+}
+project () 
+{ 
+    comment TRACE project;
+    column "$@"
+}
+replace () 
+{ 
+    [[ $# -lt 2 ]] && { 
+        cat ${*:--};
+        return
+    };
+    sed "s/$1/$2/g" $*
+}
+todaysdate () 
+{ 
+    comment TRACE todaysdate $# ARGS $*;
+    quietly comment -- yymmdd;
+    date '+%y%m%d'
+}
+union () 
+{ 
+    comment TRACE union $# ARGS $*;
+    quietly comment -- concatentates two or more tables or lists;
+    USAGE='usage: union tableorlist ... [ - tableorlist ]';
+    EUSAGE=1;
+    [ "$#" -lt 1 ] && { 
+        echo $USAGE 1>&2;
+        exit $EUSAGE
+    };
+    cat $1;
+    shift;
+    case $1 in 
+        "")
+            headoff
+        ;;
+        *)
+            for FILE in "$@";
+            do
+                case $FILE in 
+                    -)
+                        headoff
+                    ;;
+                    *)
+                        headoff $FILE
+                    ;;
+                esac;
+            done
+        ;;
+    esac
+}
+widest () 
+{ 
+    comment TRACE widest $# ARGS $*;
+    quietly comment -- length of each column in a /rdb table;
+    awk '
+BEGIN  { FS=OFS="\t" }
+#       { printf "debug: %d %d %d %s\n", NR, NF, widest[1], $0 }
+NR <= 2 { print }
+       { for (i=1; i<=NF; i++) {
+               l = length($i)
+#             print NR, i, l, $i
+               if (l > widest[i]) widest[i] = l
+               }
+         if (NF > maxn) maxn = NF
+	 if (NF < maxn) {
+	    printf "ERROR: Record %d fields %d less than Max: %d\n", NR, NF, maxn
+	    exit
+	    }
+       }
+END    { for (i=1; i<=maxn; i++)
+               printf "%s\t", widest[i]
+         printf "\n"
+       }'
+}
+width () 
+{ 
+    cat $* | awk -F'    ' '
+    NR == 1 { for (i=1; i<=NF; i++) {
+                  w[i] = 0
+              }
+              n = NR
+             }
+    NR > 2   { for (i=1; i<=NF; i++) {
+                   w[i] = max(w[i], length( $i)
+                   }
+             }
+    END      { printf "%d" w[i];
+               for(i=2; i<=n; i++) {
+                    printf "\t%d" w[i]
+               }
+               printf "\n"
+             }'
+}

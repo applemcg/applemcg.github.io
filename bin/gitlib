@@ -199,14 +199,14 @@ git_remote ()
 remote_repo () 
 { 
     : addresses the linguistic shortfall of ORIGIN;
-    : and here we are capitualting for expedience
+    : and here we are capitualting for expedience;
     : date: 2020-05-03;
     : date: 2020-08-20 -- capitualtion;
     : set NoWAY;
     report_notdirectory .git && return 1;
-    echo origin
-    return
-    : save these for a recovery exercise?!
+    echo origin;
+    return;
+    : save these for a recovery exercise?!;
     set -- $(basename $PWD);
     echo ${1:0:5}
 }
@@ -250,10 +250,8 @@ git_location ()
 }
 git_open () 
 { 
-    : the associated repo;
-    : date: 2020-04-28;
-    : date: 2020-05-11;
-    ${*:-open} https://github.com/applemcg/bashapp
+    : date: 2020-08-22;
+    ${*:-open} https://${PWD#*git/}
 }
 git_sum () 
 { 
@@ -288,11 +286,11 @@ git_tostage ()
 	follow && /modified:/ { print $2 }
     '
 }
-threeColumnTiddly ()
-{
-    : convert an rdb table into a 4-column tiddly table
+threeColumnTiddly () 
+{ 
+    : convert an rdb table into a 4-column tiddly table;
     : date: 2020-07-04;
-    report_notpipe && return 1
+    report_notpipe && return 1;
     tawk '
     
     NR == 1 { printf "| !%s | !%s | !%s |\n", $1, $2, $3}
@@ -302,9 +300,9 @@ threeColumnTiddly ()
 }
 fourColumnTiddly () 
 { 
-    : convert an rdb table into a 4-column tiddly table
+    : convert an rdb table into a 4-column tiddly table;
     : date: 2020-07-04;
-    report_notpipe && return 1    
+    report_notpipe && return 1;
     tawk '
     
     NR == 1 { printf "| !%s | !%s | !%s | !%s |\n", $1, $2, $3, $4}
@@ -482,11 +480,16 @@ readhistory ()
 { 
     : active and when finished books;
     : date: 2020-08-18;
-    function _rh_select () { sorttable -r latest | select_first book | sorttable book; }
-    function _rh_finish () { rename latest finish | compute '
+    function _rh_select () 
+    { 
+        sorttable -r latest | select_first book | sorttable book
+    };
+    function _rh_finish () 
+    { 
+        rename latest finish | compute '
 
         finish = ((delete_time)? finish: "")' | ncolumn {insert,delete}_time
-    }
-    zcat .hry/librarything.rdb.Z | _rh_select | _rh_finish 
+    };
+    zcat .hry/librarything.rdb.Z | _rh_select | _rh_finish
 }
-git_init  1>&2
+echo git_init 1>&2
