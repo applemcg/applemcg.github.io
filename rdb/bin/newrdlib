@@ -1864,10 +1864,6 @@ rowisnot ()
     : app_trace $*;
     row "$1 !~ /$2/"
 }
-tables_columns () 
-{ 
-    ${*:-echo} table nrecrds fields
-}
 todo_columns () 
 { 
     : the data columns in the TODO database;
