@@ -1,6 +1,11 @@
 table	nrecrds	modate	fields
 -----	-------	------	------
-command.rdb	    284	2020-08-02	command render type status attrib 
+ar/commands.rdb	     63	2013-09-06	command status comment 
+command.rdb	    283	2020-08-23	command render type status attrib 
 instances.rdb	     77	2020-08-01	Count field value 
-tables.rdb	      4	2020-08-01	table nrecrds modate fields 
+tables.rdb	      8	2020-08-23	table nrecrds modate fields 
 testobject.rdb	     40	2020-08-01	object flag means 
+tst/sample.rdb	      6	2013-07-23	EMAIL_ADDRESS Last_Name First_Name Membership_Level Purchase_Date 
+tst/sample.rdb	      6	2013-07-23	Expiration_Date Status 
+tst/tables.rdb	      7	2020-04-12	table nrecrds modate fields 
+working.rdb	     35	2020-08-24	command status a b c 

@@ -1,0 +1,60 @@
+command      	type         	attrib                                                                
+-------      	----         	------                                                                
+append       	             	index                                                                 
+ask          	function     	implement from pp. 250                                                
+calcpay      	             	payroll                                                               
+cashflow     	             	Balance column specific                                               
+check        	function     	new manual page                                                       
+clear        	file         	/usr/bin/clear                                                        
+commands     	             	add table                                                             
+compress     	file         	/RDB use is unnecessary; command use COMPRESSES file, more in keeping 
+computedate  	file         	/Users/martymcgowan/Dropbox/rdb/bin/computedate                       
+cursor       	function     	novelty                                                               
+delete       	             	index related                                                         
+display      	C prog       	p. 142                                                                
+domain       	file         	/Users/martymcgowan/Dropbox/rdb/bin/domain                            
+formtoprogram	             	implement former screen as ~                                          
+gregorian    	file         	/Users/martymcgowan/Dropbox/rdb/bin/gregorian                         
+hashkey      	             	see append                                                            
+helpme       	function     	smart table                                                           
+index        	             	see append                                                            
+intersect    	file         	/Users/martymcgowan/Dropbox/rdb/bin/intersect                         
+julian       	file         	/Users/martymcgowan/Dropbox/rdb/bin/julian                            
+justify      	file         	/Users/martymcgowan/Dropbox/rdb/bin/justify                           
+label        	             	see letter                                                            
+letter       	             	see report, label                                                     
+like         	             	see soundex                                                           
+maximum      	file         	/Users/martymcgowan/Dropbox/rdb/bin/maximum                           
+mean         	file         	/Users/martymcgowan/Dropbox/rdb/bin/mean                              
+mininum      	file         	/Users/martymcgowan/Dropbox/rdb/bin/mininum                           
+padstring    	             	see screen, report                                                    
+paste        	file         	/usr/bin/paste                                                        
+path         	             	which                                                                 
+precision    	file         	/Users/martymcgowan/Dropbox/rdb/bin/precision                         
+reportwriter 	function     	sample                                                                
+rmcore       	             	obsolete                                                              
+screen       	file         	/usr/bin/screen                                                       
+search       	             	see index, seek, replace, append, delete, update                      
+searchtree   	function     	anticipated noSQL tables                                              
+seek         	             	see search, ...                                                       
+select       	shell keyword	take advice to use row                                                
+sorttable    	file         	/Users/martymcgowan/Dropbox/rdb/bin/sorttable                         
+splittable   	file         	/Users/martymcgowan/Dropbox/rdb/bin/splittable                        
+subtotal     	file         	/Users/martymcgowan/Dropbox/rdb/bin/subtotal                          
+tabletofix   	             	see fixtotable                                                        
+tabletotbl   	function     	how about tabletoorg?                                                 
+tax          	             	obsolete, too many tax programs                                       
+testall      	function     	integration testing                                                   
+testsearch   	function     	see search, ...                                                       
+timesearch   	function     	see testsearch                                                        
+total        	file         	/Users/martymcgowan/Dropbox/rdb/bin/total                             
+trim         	function     	for printing, fixed width, ...                                        
+tset         	file         	/usr/bin/tset                                                         
+uniondict    	function     	see translate                                                         
+update.inv   	             	sample                                                                
+ve           	             	use *vi*, emacs, ...                                                  
+vilock       	function     	rename EDITlock, using $EDITOR                                        
+vindex       	             	used by VE                                                            
+whatis       	file         	/usr/bin/whatis                                                       
+whatwill     	             	see whatis, ...                                                       
+yourprog     	function     	sample template                                                       

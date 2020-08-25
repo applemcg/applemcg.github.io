@@ -1,0 +1,37 @@
+command	status	a	b	c
+-------	------	-	-	-
+_lesscolumn				
+addcol				
+blank				
+check				
+column				
+column_data				
+column_unique				
+compute				
+cpdir				
+datatype				
+fd				
+headoff				
+jointable				
+listtotable				
+lock				
+ncolumn				
+not				
+project				
+replace				
+report				
+row				
+rowhas				
+rowis				
+rowisnot				
+schema				
+see				
+tables_columns				
+tabletolist				
+todaysdate				
+todo_columns				
+tomorrow				
+union				
+wherefun_columns				
+width				
+word				

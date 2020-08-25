@@ -8,7 +8,7 @@ rd_devstate ()
     : date: 2019-08-14;
     report_notfile command.rdb && return 1;
     report_notfile rdlib && return 2;
-    comm $* <( column command < command.rdb | headoff | sort ) <( functions rdlib | sort)
+    comm $* <( column command < command.rdb | headoff | sort ) <( functions rdlib | sort);
     ignore rd_devlist
 }
 rd_unimplemented () 
@@ -31,4 +31,10 @@ rd_undated ()
     : date: 2019-08-14;
     rd_implemented | sort > .rdisorted;
     comm -13 <(shd_latest $(< .rdisorted) | field 2 | sort) .rdisorted
+}
+worknotrd () 
+{ 
+    : date: 2020-08-24;
+    set -- ${1:--13};
+    comm $1 <(functions bin/rdlib|sort) <(column command < working.rdb  | headoff| sort)
 }

@@ -1071,8 +1071,8 @@ h_getold ()
     compress librarything.rdb
 }
 width () 
-{
-    report_notpipe && return 1
+{ 
+    report_notpipe && return 1;
     column $* | tawk '
 
     function max(x, y) { return ((x>y)? x : y); }
@@ -1094,4 +1094,77 @@ width ()
               }
               printf "\n"
             }'
+}
+difference () 
+{ 
+    : for nearly identical TABLE, report the DIFFERENT records;
+    : uses: sed, UNIQ, the minus U option;
+    report_notfile $1 && return 1;
+    report_notfile $2 && return 2;
+    sed 2q $1;
+    ( headoff < $1;
+    headoff < $2 ) | sort | uniq -u
+}
+compute () 
+{ 
+    : date: 2017-06-20;
+    : date: 2019-07-07;
+    : date: 2020-08-24;
+    :;
+    read HEAD;
+    if test -z "$HEAD"; then
+        ( echo;
+        cat ) | listtotable | compute "$@" | tabletolist;
+        return 0;
+    fi;
+    read DASH;
+    rdb_hdr $HEAD;
+    (( C = 1 ));
+    for I in $HEAD;
+    do
+        COLIN="$COLIN $I=\$$C;";
+        COLOUT="$COLOUT \$$C=$I;";
+        (( C += 1 ));
+    done;
+    : trace_call "IN, cmd, OUT: $COLIN; $cmmd; $COLOUT";
+    awklib='
+       function max(x,y) { return (x>y?x:y) }
+       function min(x,y) { return (x<y?x:y) }
+       function abs(x)   { return (x<0?-x:x) }
+    ';
+    [[ -n "$COLIN" ]] && { 
+        awk "
+        $awklib
+        BEGIN   { FS=OFS=\"\t\"}; { $COLIN $1; $COLOUT print }"
+    }
+}
+not () 
+{ 
+    : date: 2020-08-24;
+    comment TRACE not $# ARGS $*;
+    quietly comment -- inverts result;
+    if eval $*; then
+        exit 255;
+    else
+        exit 0;
+    fi
+}
+dbdict () 
+{ 
+    : prints a database dictionary: the field names;
+    : /RDB, p. 288;
+    : date: 2020-08-24;
+    :;
+    sed 1q ${*:--} | awk '
+
+    BEGIN {
+            OFS="\t";
+	    print "field", "name";
+	    print "-----", "----";
+	}
+	{
+	  n = split($0, field,"\t");
+	  for (i=1; i<=n; i++) print i, field[i];
+        }
+    '
 }
