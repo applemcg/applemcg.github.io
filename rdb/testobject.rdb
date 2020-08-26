@@ -1,5 +1,5 @@
 object	flag	means
-------	----	-----------------------
+------	----	-----
 file	b	is block special
 file	c	is character special
 file	d	is directory
@@ -39,4 +39,4 @@ express	o	either exparession is true
 syntax	!	negate expression truth
 syntax	(~)	if ~ is true
 		
-
+		
