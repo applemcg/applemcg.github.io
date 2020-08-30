@@ -286,9 +286,21 @@ git_tostage ()
 	follow && /modified:/ { print $2 }
     '
 }
+twoColumnTiddly () 
+{ 
+    : convert an rdb table into a 2-column tiddly table;
+    : date: 2020-07-04;
+    report_notpipe && return 1;
+    tawk '
+    
+    NR == 1 { printf "| !%s | !%s |\n", $1, $2}
+     NR < 3 { next };
+            { printf "|%s |[[%s]] |\n", $1, $2}
+   '
+}
 threeColumnTiddly () 
 { 
-    : convert an rdb table into a 4-column tiddly table;
+    : convert an rdb table into a 3-column tiddly table;
     : date: 2020-07-04;
     report_notpipe && return 1;
     tawk '

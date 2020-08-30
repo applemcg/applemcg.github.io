@@ -1200,3 +1200,10 @@ github ()
     : date: 2020-08-14;
     ${*:-echo} $HOME/Dropbox/git
 }
+applemcg () 
+{ 
+    : date: 2020-08-01;
+    : location: github REPO;
+    : date: 2020-08-27;
+    ${*:-echo} $(github)/applemcg.github.io
+}
