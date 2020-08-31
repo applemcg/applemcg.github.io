@@ -38,10 +38,21 @@ worknotrd ()
     set -- ${1:--13};
     comm $1 <(functions bin/rdlib|sort) <(column command < working.rdb  | headoff| sort)
 }
-tw_funtempl ()
-{
-   set -- ${1:-width}
-   printf "<<tabs \""
-   printf "[[${1}_code]] [[${1}%_testcase]] [[${1}_testdata]] [[${1}_testout]]"
-   printf "\" \"[[${1}_testcase]]\" \"\" \"tc-vertical\">>\n"
-}   
+tw_funtempl () 
+{ 
+    set -- ${1:-width};
+    printf "<<tabs \"";
+    printf "[[${1}_code]] [[${1}%_testcase]] [[${1}_testdata]] [[${1}_testout]]";
+    printf "\" \"[[${1}_testcase]]\" \"\" \"tc-vertical\">>\n"
+}
+rd_lslt () 
+{ 
+    : date: 2020-08-31;
+    rdb_hdr perms link owner group size month day hrmn name;
+    ls -lt | sed 's/  */	/g'
+}
+backup_oneperday () 
+{ 
+    : date: 2020-08-31;
+    rd_lslt | column month day name | select_first day | awk NF | column name | headoff
+}
