@@ -505,3 +505,46 @@ readhistory ()
     zcat .hry/librarything.rdb.Z | _rh_select | _rh_finish
 }
 echo git_init 1>&2
+tiddlylink () 
+{ 
+    : format column to wrap with TiddlyWiki LINK syntax;
+    compute "$1 = \"[[\" $1 \"]]\""
+}
+threeColumnTiddly () 
+{ 
+    : convert an rdb table into a 3-column tiddly table;
+    : date: 2020-07-04;
+    report_notpipe && return 1;
+    tawk '
+    
+    NR == 1 { printf "| !%s | !%s | !%s |\n", $1, $2, $3}
+     NR < 3 { next };
+            { printf "|%s |%s |%s |\n", $1, $2, $3}
+   '
+}
+_rh_linkify () 
+    { 
+        tiddlylink author | tiddlylink book | threeColumnTiddly
+    };
+toMIWreading () 
+{ 
+    : convert the reading list into the MyIdeaWarehouse format,;
+    : date: 2020-07-04;
+    sorttable -r < librarything.rdb | _rh_linkify
+}
+readhistory () 
+{ 
+    : active and when finished books;
+    : date: 2020-08-18;
+    function _rh_select () 
+    { 
+        sorttable -r latest | select_first book | sorttable book
+    };
+    function _rh_finish () 
+    { 
+        rename latest finish | compute '
+
+        finish = ((delete_time)? finish: "")' | ncolumn {insert,delete}_time
+    };
+    zcat .hry/librarything.rdb.Z | _rh_select | _rh_finish | _rh_linkify
+}

@@ -1186,7 +1186,6 @@ see ()
 repair () 
 { 
     : ~ table with inconsistent records;
-    : date: 2020-08-25;
     set -- ${1:-working.rdb};
     set $1 ${1%.rdb}.nxt;
     check < $1 && return;
@@ -1206,4 +1205,23 @@ applemcg ()
     : location: github REPO;
     : date: 2020-08-27;
     ${*:-echo} $(github)/applemcg.github.io
+}
+fun_template () 
+{ 
+    set -- ${1:-$(pick $(fun_emptylist))};
+    printf "<<tabs";
+    printf " \"";
+    printf "[[${1}_code]] ";
+    printf "[[${1}_testcase]] ";
+    printf "[[${1}_testdata]] ";
+    printf "[[${1}_testout]] ";
+    printf "\" ";
+    printf "\"[[${1}_code]]\" ";
+    printf "\"\" ";
+    printf "\"tc-vertical\">>\n"
+}
+fun_emptylist () 
+{ 
+    : produce a list of LT wiki commands;
+    row 'status !~ /wiki/' < working.rdb | column command | headoff
 }
