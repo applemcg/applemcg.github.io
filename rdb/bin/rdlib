@@ -194,7 +194,8 @@ length ()
     return
 }
 ncolumn () 
-{ 
+{
+    : removes columns from table, "Not Column"
     : date: 2019-07-02;
     : date: 2019-08-14 added the BLANK columns, not yet in table;
     : -------------------------------------- begin template.fun --;

@@ -56,3 +56,10 @@ backup_oneperday ()
     : date: 2020-08-31;
     rd_lslt | column month day name | select_first day | awk NF | column name | headoff
 }
+tw_funtempl () 
+{ 
+    set -- ${1:-width};
+    printf "<<tabs \"";
+    printf "[[${1}_code]] [[${1}_testcase]] [[${1}_testdata]] [[${1}_testout]]";
+    printf "\" \"[[${1}_testcase]]\" \"\" \"tc-vertical\">>\n"
+}

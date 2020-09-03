@@ -1,5 +1,6 @@
 status	seqn	explain
 ------	----	-------
-wiki	5	full wiki entry, including _testcase
-body	2	function in a library
-abstr	3	rdb commands page with an abstract
+tested	5	full wiki entry
+testing	4	testcase prepared
+outline	2	command page
+coded	1	code captured

@@ -1,285 +1,34 @@
-command	render	type	status	attrib
--------	------	----	------	------
-_lesscolumn	verify	function	implemented	
-act	later			accounting
-addcol	use	function	implemented	
-adjust	later			accounting
-append	later			index
-ascii	later	function		
-ask		function		implement from pp. 250
-balance	later			accounting
-blank	use	function	implemented	
-bom	later			accounting
-calcpay				payroll
-calculate	later			accounting
-cap	later	function		
-cashflow				Balance column specific
-chartdup	later			accounting
-check	use	function	implemented	new manual page
-chr	later	function		
-clear	use	file		/usr/bin/clear
-close	later			accounting
-column	use	function	implemented	
-column_data	verify	function	implemented	
-column_unique	verify	function	implemented	
-commands	later			add table
-compress	ignore	file		/RDB use is unnecessary; command use COMPRESSES file, more in keeping 
-compute	use	function	implemented	
-computedate	use	file		/Users/martymcgowan/Dropbox/rdb/bin/computedate
-consolidate	later			accounting
-cpdir	verify	function	implemented	
-cstate	later			accounting
-cursor	later	function		novelty
-datatype	use	function	implemented	
-dbdict	use	function		
-delete				index related
-difference	next	function	implemented	
-display	later	C prog		p. 142
-domain	use	file		/Users/martymcgowan/Dropbox/rdb/bin/domain
-enter	later	function		
-explode	much later			
-fd	use	function	implemented	
-filesize	next	function	implemented	
-fillform	later			accounting
-fixtotable	later			
-foot	later			accounting
-formtoprogram				implement former screen as ~
-getjournal	later			accounting
-gregorian	use	file		/Users/martymcgowan/Dropbox/rdb/bin/gregorian
-hashkey	later			see append
-headoff	verify	function	implemented	
-headon	next	function	implemented	
-helpme	next	function	implemented	smart table
-howmany	next	function	implemented	
-income	later			accounting
-index	later			see append
-interdash	next	function	implemented	
-intersect	use	file		/Users/martymcgowan/Dropbox/rdb/bin/intersect
-invoice	later			accounting
-jointable	use	function	implemented	
-julian	use	file		/Users/martymcgowan/Dropbox/rdb/bin/julian
-justify	use	file		/Users/martymcgowan/Dropbox/rdb/bin/justify
-label	later			see letter
-length	next	function	implemented	
-letter	later			see report, label
-like	later			see soundex
-listtosh	next	function	implemented	
-listtotable	use	function	implemented	
-lock	use	function	implemented	
-lowercase	next	function	implemented	
-makecatalog	later			accounting
-maximum	use	file		/Users/martymcgowan/Dropbox/rdb/bin/maximum
-mean	use	file		/Users/martymcgowan/Dropbox/rdb/bin/mean
-menu	later	function		
-mininum	use	file		/Users/martymcgowan/Dropbox/rdb/bin/mininum
-ncolumn	verify	function	implemented	
-not	use	function	implemented	
-number	next	function	implemented	
-onhand	later			accounting
-pad	later	function		
-padstring	later			see screen, report
-paste	ignore	file		/usr/bin/paste
-path	alias			which
-po	later			accounting
-post	later			accounting
-postap	later			accounting
-postar	later			accounting
-postpay	later			accounting
-precision	use	file		/Users/martymcgowan/Dropbox/rdb/bin/precision
-project	use	function	implemented	
-prompt	later	function		
-purchase	later			accounting
-rd	verify	function	implemented	
-rd_addf	verify	function	implemented	
-rd_addf_doc	verify	function	implemented	
-rd_addf_test	verify	function	implemented	
-rd_awk_builtin	verify	function	implemented	
-rd_before	verify	function	implemented	
-rd_canon	verify	function		
-rd_cat	verify	function	implemented	
-rd_columns	verify	function	implemented	
-rd_compress	verify	function	implemented	
-rd_copyright	verify	function	implemented	
-rd_current	verify	function	implemented	
-rd_data	verify	function	implemented	
-rd_datarow	verify	function	implemented	
-rd_demoinit	verify	function	implemented	
-rd_files	verify	function	implemented	
-rd_firsttime	verify	function	implemented	
-rd_fixhistory	verify	function	implemented	
-rd_head	verify	function		
-rd_help	verify	function	implemented	
-rd_historyfunctions	verify	function	implemented	
-rd_init	verify	function	implemented	
-rd_initcopy	verify	function	implemented	
-rd_initf	verify	function	implemented	
-rd_lastofkey	verify	function	implemented	
-rd_list	verify	function	implemented	
-rd_listfmt	verify	function	implemented	
-rd_locality	verify	function	implemented	
-rd_nontoday	verify	function	implemented	
-rd_nospace	verify	function	implemented	
-rd_packed	verify	function	implemented	
-rd_popular	verify	function	implemented	
-rd_reorder	verify	function	implemented	
-rd_rowsof	verify	function	implemented	
-rd_schema	verify	function		
-rd_settings	verify	function	implemented	
-rd_since	verify	function	implemented	
-rd_sortuniq	verify	function	implemented	
-rd_stat	verify	function	implemented	
-rd_syncf	verify	function	implemented	
-rd_syncf_doc	verify	function	implemented	
-rd_variable	verify	function	implemented	
-rd_vars	verify	function	implemented	
-rdb	use	function	implemented	
-rdb_active	verify	function	implemented	
-rdb_allHistory	verify	function	implemented	
-rdb_at	verify	function	implemented	
-rdb_canon	verify	function	implemented	
-rdb_cat	verify	function	implemented	
-rdb_changehistory	verify	function	implemented	
-rdb_col	verify	function	implemented	
-rdb_colrename	verify	function		
-rdb_column	verify	function	implemented	
-rdb_create	verify	function	implemented	
-rdb_current	verify	function	implemented	
-rdb_dDate	verify	function	implemented	
-rdb_data	verify	function	implemented	
-rdb_datafrom	verify	function	implemented	
-rdb_deletes	verify	function	implemented	
-rdb_editorusers	verify	function	implemented	
-rdb_fieldcheck	verify	function	implemented	
-rdb_fieldids	verify	function	implemented	
-rdb_hdr	verify	function	implemented	
-rdb_hdrOf	verify	function	implemented	
-rdb_hdx2	verify	function	implemented	
-rdb_history	verify	function	implemented	
-rdb_historydates	verify	function	implemented	
-rdb_historyname	verify	function	implemented	
-rdb_iDate	verify	function	implemented	
-rdb_init	verify	function		
-rdb_inserts	verify	function	implemented	
-rdb_join	verify	function	implemented	
-rdb_key	verify	function	implemented	
-rdb_match	verify	function	implemented	
-rdb_name	verify	function	implemented	
-rdb_next	verify	function	implemented	
-rdb_nodups	verify	function	implemented	
-rdb_nohistory	verify	function	implemented	
-rdb_notime	verify	function	implemented	
-rdb_notinsert	verify	function	implemented	
-rdb_ondate	verify	function	implemented	
-rdb_onlytime	verify	function	implemented	
-rdb_qshape	verify	function	implemented	
-rdb_rcheck	verify	function	implemented	
-rdb_record	verify	function	implemented	
-rdb_records	verify	function	implemented	
-rdb_repair	verify	function	implemented	
-rdb_repairhelp	verify	function	implemented	
-rdb_repairnotes	verify	function	implemented	
-rdb_semiSplit2nd	verify	function	implemented	
-rdb_smart	verify	function	implemented	
-rdb_sum	verify	function	implemented	
-rdb_timetally	verify	function	implemented	
-rdb_today	verify	function	implemented	
-rdb_trc	verify	function	implemented	
-rdb_whinsert	verify	function	implemented	
-rdb_write	verify	function	implemented	
-rdbcmd_init	verify	function	implemented	
-rdbcmd_qrf	verify	function	implemented	
-rdbcmdlib_version	verify	function	implemented	
-rdbfields	verify	function	implemented	
-rdbhome	verify	function	implemented	
-rdbkup	verify	function	implemented	
-rdbroot	verify	function	implemented	
-rdeditor	verify	function	implemented	
-rdget	verify	function	implemented	
-rdgetTest	verify	function	implemented	
-rdget_test	verify	function	implemented	
-rdgrep	verify	function	implemented	
-rdinit	verify	function	implemented	
-rdjointable	verify	function	implemented	
-rdlcanon	verify	function	implemented	
-rdlib_version	verify	function	implemented	
-rdlint	verify	function	implemented	
-rdlint_doc	verify	function	implemented	
-rdsel	verify	function	implemented	
-rdseq	verify	function	implemented	
-rdsort	verify	function	implemented	
-rdtail	verify	function	implemented	
-rdtimes	verify	function	implemented	
-rduniq	verify	function	implemented	
-rdupdate	verify	function	implemented	
-record	next	function	implemented	
-rename	next	function	implemented	
-replace	use	function	implemented	
-report	use	function	implemented	
-reportwriter	later	function		sample
-rmblank	next	function	implemented	
-rmcore	never			obsolete
-row	use	function	implemented	
-rowhas	verify	function	implemented	
-rowis	verify	function	implemented	
-rowisnot	verify	function	implemented	
-sale	later			accounting
-schema	use	function	implemented	
-screen	see formtoprogram	file		/usr/bin/screen
-search	later			see index, seek, replace, append, delete, update
-searchtree	later	function		anticipated noSQL tables
-see	use	function	implemented	
-seek	later			see search, ...
-select		shell keyword		take advice to use row
-ship	later			accounting
-shorttoaccount	later			accounting
-sorttable	use	file		/Users/martymcgowan/Dropbox/rdb/bin/sorttable
-soundex	next	function	implemented	
-splittable	use	file		/Users/martymcgowan/Dropbox/rdb/bin/splittable
-start	later			accounting
-substitute	next	function	implemented	
-subtotal	use	file		/Users/martymcgowan/Dropbox/rdb/bin/subtotal
-tableorlist	next	function	implemented	
-tables_columns	verify	function	implemented	
-tabletofact	next	function	implemented	
-tabletofix	later			see fixtotable
-tabletolist	use	function	implemented	
-tabletom4	next	function	implemented	
-tabletorule	next	function	implemented	
-tabletosed	next	function	implemented	
-tabletostruct	later	function		
-tabletotbl	later	function		how about tabletoorg?
-tax	never			obsolete, too many tax programs
-tax.calc	later			accounting
-termput	later	function		
-testall	final	function		integration testing
-testsearch	later	function		see search, ...
-timesearch	later	function		see testsearch
-todaysdate	use	function	implemented	
-todo_columns	verify	function	implemented	
-tomorrow	verify	function	implemented	
-total	use	file		/Users/martymcgowan/Dropbox/rdb/bin/total
-translate	later	function		
-trial	later			accounting
-trim	later	function		for printing, fixed width, ...
-trimblank	next	function	implemented	
-tset	ignore	file		/usr/bin/tset
-union	use	function	implemented	
-uniondict	later	function		see translate
-unlock	later	function		
-update	later	script		
-update.inv	later			sample
-update.sh	later	function		
-uppercase	next	function	implemented	
-validate	later	function		
-ve	never			use *vi*, emacs, ...
-vilock	later	function		rename EDITlock, using $EDITOR
-vindex	never			used by VE
-vstate	later			accounting
-w2	later			accounting
-whatis	add file: $(rdbhome)/man/whatis	file		/usr/bin/whatis
-whatwill	later			see whatis, ...
-wherefun_columns	verify	function	implemented	
-widest	use	script	implemented	
-width	use	function	implemented	
-word	use	function	implemented	
-yourprog	later	function		sample template
+command	status	fmt	abstract
+-------	------	---	--------
+addcol	tested		adds columns to a table
+blank	tested	*	replaces all data in a record with spaces
+check	tested		
+column		*	display columns of a table in any order
+compute		*	calculates columns of a table
+cpdir			
+datatype	tested		displays the datatype of each column selected
+dbdict			
+fd	testing		tests for functional dependency of columns
+headoff			
+jointable			
+listtotable			
+lock			
+ncolumn	tested	*	removes columns, "Not Column"
+not			
+project			
+rename		*	change column names in head line
+replace			
+report			
+row		*	makes new table where rows match logical condition
+rowhas			
+rowis			
+rowisnot			
+schema			
+see			
+sorttable		*	sorts a table by one or more columns
+tabletolist			
+todaysdate			
+tomorrow			
+union			
+width			
+word			
