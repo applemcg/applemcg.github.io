@@ -10,8 +10,8 @@ datatype	tested		displays the datatype of each column selected
 dbdict	tested		prints a database dictionary: the field names
 fd	testing		tests for functional dependency of columns
 headoff			
-jointable			
-listtotable			
+jointable	next			
+listtotable	next		
 lock			
 ncolumn	tested	*	removes columns, "Not Column"
 not			
@@ -23,7 +23,7 @@ row		*	makes new table where rows match logical condition
 rowhas			
 rowis			
 rowisnot			
-schema			
+schema	next		
 see			
 sorttable		*	sorts a table by one or more columns
 tabletolist			
