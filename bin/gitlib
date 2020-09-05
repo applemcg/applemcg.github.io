@@ -307,7 +307,7 @@ threeColumnTiddly ()
     
     NR == 1 { printf "| !%s | !%s | !%s |\n", $1, $2, $3}
      NR < 3 { next };
-            { printf "|%s |[[%s]] |[[%s]] |\n", $1, $2, $3}
+            { printf "|%s |%s |%s |\n", $1, $2, $3}
    '
 }
 fourColumnTiddly () 
@@ -326,7 +326,8 @@ toMIWreading ()
 { 
     : convert the reading list into the MyIdeaWarehouse format,;
     : date: 2020-07-04;
-    sorttable -r < librarything.rdb | threeColumnTiddly
+    report_notfile librarything.rdb && return 1
+    sorttable -r < librarything.rdb | _rh_linkify
 }
 wiki_tablereport () 
 { 
@@ -338,6 +339,7 @@ days_reading ()
 { 
     : a days -- todays -- reading;
     : date: 2020-07-10;
+    report_notfile librarything.rdb && return 1
     zcat .hry/librarything.rdb.Z | rd grep ${1:-$(yymmdd)} | sorttable
 }
 read_cycle () 
@@ -502,49 +504,35 @@ readhistory ()
 
         finish = ((delete_time)? finish: "")' | ncolumn {insert,delete}_time
     };
-    zcat .hry/librarything.rdb.Z | _rh_select | _rh_finish
+    report_notfile librarything.rdb && return 1
+    zcat .hry/librarything.rdb.Z | _rh_select | _rh_finish | _rh_linkify
 }
-echo git_init 1>&2
 tiddlylink () 
 { 
     : format column to wrap with TiddlyWiki LINK syntax;
     compute "$1 = \"[[\" $1 \"]]\""
 }
-threeColumnTiddly () 
-{ 
-    : convert an rdb table into a 3-column tiddly table;
-    : date: 2020-07-04;
-    report_notpipe && return 1;
-    tawk '
-    
-    NR == 1 { printf "| !%s | !%s | !%s |\n", $1, $2, $3}
-     NR < 3 { next };
-            { printf "|%s |%s |%s |\n", $1, $2, $3}
-   '
-}
 _rh_linkify () 
-    { 
-        tiddlylink author | tiddlylink book | threeColumnTiddly
-    };
-toMIWreading () 
 { 
-    : convert the reading list into the MyIdeaWarehouse format,;
-    : date: 2020-07-04;
-    sorttable -r < librarything.rdb | _rh_linkify
+    tiddlylink author | tiddlylink book | threeColumnTiddly
 }
-readhistory () 
+read_books () 
 { 
-    : active and when finished books;
-    : date: 2020-08-18;
-    function _rh_select () 
-    { 
-        sorttable -r latest | select_first book | sorttable book
-    };
-    function _rh_finish () 
-    { 
-        rename latest finish | compute '
-
-        finish = ((delete_time)? finish: "")' | ncolumn {insert,delete}_time
-    };
-    zcat .hry/librarything.rdb.Z | _rh_select | _rh_finish | _rh_linkify
+    : next n { two } books to read;
+    : date: 2020-08-07;
+    report_notfile librarything.rdb && return 1
+    sorttable < librarything.rdb | column book | headoff | sed ${1:-2}q
 }
+h_getold () 
+{
+    : example of how to retrive a history file
+    set -- ${1:-5734};
+    set -- $(find . -name librarything.rdb | xargs ls -lrt | grep $1 | tail -1);
+    declare -f $(myname)
+    return
+    echo $# $*;
+    report_notargcount 9 $# && return 1;
+    cp $9 .;
+    compress librarything.rdb
+}
+echo git_init 1>&2

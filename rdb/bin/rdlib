@@ -117,7 +117,8 @@ h_repair ()
     local h=$2;
     local table="$(sed 1q $r)";
     set -- $(sed 1q $h);
-    read_devtty table: $table, ARGS: $*;
+    app_trace table: $table, ARGS: $*;
+    : was read_devtty
     : start with the 3rd field after insert, delete _time fields;
     for history in ${*:3};
     do
@@ -424,6 +425,8 @@ rdb_canon ()
     runfrom $(dirname $1) $(basename $1) || return;
     set -- $(basename $1);
     report_notfile $1 && return 1;
+    local tracer=read_devtty
+    local tracer=app_trace
     : read_devtty $# $*;
     local r=$1;
     local h=$(needir .hry)/$1;
@@ -438,12 +441,12 @@ rdb_canon ()
         : read_devtty "$# $*";
         case $1 in 
             $z:*:$r | $z:$r:*)
-                read_devtty "case z::r, $*";
+                $tracer "case z::r, $*";
                 rm -f $h;
                 return
             ;;
             $r:$h:*)
-                read_devtty "case r:h:, $*";
+                $tracer "case r:h:, $*";
                 h_repair $r $h || { 
                     comment ERROR, unable to REPAIR $h from $r;
                     compress $h;
@@ -452,27 +455,27 @@ rdb_canon ()
                 h_update $r
             ;;
             $r:$z:*)
-                read_devtty "case r:z:, $*";
+                $tracer "case r:z:, $*";
                 uncompress -f $z;
                 touch $r
             ;;
             $r:*)
-                read_devtty "case r::, $*";
+                $tracer "case r::, $*";
                 local fields="{insert,delete}_time $(sed 1q $r)";
                 rdb_hdr $fields > $h;
                 touch $r
             ;;
             $h:*)
-                read_devtty "case h::, $*";
+                $tracer "case h::, $*";
                 compress -f $h
             ;;
             $z:*)
-                read_devtty "case z::, $*";
+                $tracer "case z::, $*";
                 zcat $z | row !delete_time | ncolumn {insert,delete}_time | awk NF > $r;
                 touch $z
             ;;
             *)
-                read_devtty "case ::, $*";
+                $tracer "case ::, $*";
                 app_trace ERROR, no matching files: $*;
                 return
             ;;
@@ -549,7 +552,7 @@ rdb_next ()
     set ${1%.rdb}.{rdb,nxt} "${*:2}";
     report_notfunction $3 && return 2;
     report_notfile $1 && return 3;
-    read_tty $* DOES ${*:3};
+    $tracer DOES ${*:3};
     awk NF $1 | does ${*:3} > $2;
     cat $2 | onlyChanged $1;
     nrdp $1;
@@ -1058,21 +1061,6 @@ sortable ()
     : date: 2020-08-01;
     sorttable $@
 }
-read_next () 
-{ 
-    : next n { two } books to read;
-    : date: 2020-08-07;
-    sorttable < librarything.rdb | column book | headoff | sed ${1:-2}q
-}
-h_getold () 
-{ 
-    set -- ${1:-5734};
-    set -- $(find . -name librarything.rdb | xargs ls -lrt | grep $1 | tail -1);
-    echo $# $*;
-    report_notargcount 9 $# && return 1;
-    cp $9 .;
-    compress librarything.rdb
-}
 width () 
 { 
     report_notpipe && return 1;
@@ -1155,10 +1143,11 @@ not ()
 dbdict () 
 { 
     : prints a database dictionary: the field names;
+    : i am still looking for the test which admits both pipes and io redirection 
     : /RDB, p. 288;
     : date: 2020-08-24;
     :;
-    sed 1q ${*:--} | awk '
+    sed 1q $* | awk '
 
     BEGIN {
             OFS="\t";

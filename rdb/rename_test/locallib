@@ -1,0 +1,21 @@
+date_tables () 
+{
+    : demonstration of STAT usage, RENAME column function, and table-producing function
+    : date: 2019-09-10;
+    set -- $(myname).rdb
+    rd_stat *.rdb | rename file table | column table date wkday | sorttable > $1
+    echo $1
+}
+rd_stat () 
+{ 
+    : date: 2017-12-23;
+    rdb_hdr date wkday chars file;
+    stat -t "%Y-%m-%d  %a" $* | sed '
+
+         s/"//g
+
+    ' | awk '
+        { printf "%s\t%s\t%7d\t%s\n", $11, $12, $8, $NF }
+    '
+}
+

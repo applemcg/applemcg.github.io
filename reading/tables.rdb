@@ -5,17 +5,10 @@ haveread.rdb	    296	2020-07-18	date_read isbn isbns subjects dewey_decimal lend
 haveread.rdb	    296	2020-07-18	review rating 
 haveread.rdb	    296	2020-07-18	source entry_date from_where page_count lccn acquired date_started 
 haveread.rdb	    296	2020-07-18	tags collections lc_classification book_id title primary_author copies 
-haveread.tsv	    295	2020-07-17	Author Secondary Author Roles Publication Date Review Rating Comment 
-haveread.tsv	    295	2020-07-17	Book Id Title Sort Character Primary Author Primary Author Role Secondary 
-haveread.tsv	    295	2020-07-17	Date Read Barcode BCID Tags Collections Languages Original Languages 
-haveread.tsv	    295	2020-07-17	LC Classification ISBN ISBNs Subjects Dewey Decimal Dewey Wording 
-haveread.tsv	    295	2020-07-17	Lending Patron Lending Status Lending Start Lending End 
-haveread.tsv	    295	2020-07-17	Other Call Number Copies Source Entry Date From Where OCLC Work id 
-haveread.tsv	    295	2020-07-17	Private Comment Summary Media Physical Description Weight Height 
-haveread.tsv	    295	2020-07-17	Thickness Length Dimensions Page Count LCCN Acquired Date Started 
 keybook.rdb	     14	2020-07-15	key book 
-librarything.rdb	      5	2020-08-21	latest author book 
+librarything.rdb	      5	2020-09-04	latest author book 
 readcycle.rdb	    120	2020-07-11	daynum bookkeys 
 readhistory.rdb	     13	2020-08-19	finish author book 
 readtwodays.rdb	      6	2020-07-11	key book 
+tables.rdb	     12	2020-09-05	table nrecrds modate fields 
 tags.rdb	    983	2020-07-18	tags book_id 

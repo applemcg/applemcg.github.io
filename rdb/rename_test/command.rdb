@@ -7,7 +7,7 @@ column		*	display columns of a table in any order
 compute		*	calculates columns of a table
 cpdir			
 datatype	tested		displays the datatype of each column selected
-dbdict	tested		prints a database dictionary: the field names
+dbdict			
 fd	testing		tests for functional dependency of columns
 headoff			
 jointable			
@@ -16,7 +16,7 @@ lock
 ncolumn	tested	*	removes columns, "Not Column"
 not			
 project			
-rename	tested	*	change column names in head line
+rename		*	change column names in head line
 replace			
 report			
 row		*	makes new table where rows match logical condition
