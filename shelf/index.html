@@ -12668,7 +12668,7 @@ exports.context = contextWidget;
 <div bag="default" created="20200810170615861" creator="M" modified="20200811134449245" modifier="Marty McGwan" revision="1" title="$:/status/UserName">
 <pre>Marty McGowan</pre>
 </div>
-<div created="20200906131550014" creator="Marty McGowan" list="listtotable tableorlist_code schema_code rename_code rdb_code ncolumn_code fd_code dbdict_code datatype_code check_code blank_code addcol_code tabletolist_code tabletolist listtotable_code [[rdb formats]] [[What's Here]] [[rdb commands]] [[untested commands]] [[On /RDB]] [[command history e.g.]] [[Table of Contents]]" modified="20200906181849320" modifier="Marty McGowan" title="$:/StoryList">
+<div created="20200906131550014" creator="Marty McGowan" list="tableorlist listtotable tableorlist_code schema_code rename_code rdb_code ncolumn_code fd_code dbdict_code datatype_code check_code blank_code addcol_code tabletolist_code tabletolist listtotable_code [[rdb formats]] [[What's Here]] [[rdb commands]] [[untested commands]] [[On /RDB]] [[command history e.g.]] [[Table of Contents]]" modified="20200906233831984" modifier="Marty McGowan" title="$:/StoryList">
 <pre></pre>
 </div>
 <div created="20200519141000553" list="$:/.giffmex/Buttons/more-tiddler-edit-actions $:/core/ui/Buttons/delete $:/core/ui/Buttons/cancel $:/core/ui/Buttons/save" modified="20200521145647980" tags="$:/giffmex/bigeditarea $:/giffmex/stroll" title="$:/tags/EditToolbar">
@@ -15318,55 +15318,46 @@ Most recently modified:
 &lt;&lt;tabs &quot;[[tableorlist_code]] [[tableorlist_testcase]] [[tableorlist_testdata]] [[tableorlist_testout]]&quot; &quot;[[tableorlist_testcase]]&quot; &quot;&quot; &quot;tc-vertical&quot;&gt;&gt;
 </pre>
 </div>
-<div created="20200906115217009" creator="Marty McGowan" modified="20200906122758423" modifier="Marty McGowan" tags="rdb" title="tableorlist_code">
+<div created="20200906115217009" creator="Marty McGowan" modified="20200906233957013" modifier="Marty McGowan" tags="rdb" title="tableorlist_code">
 <pre>[[tableorlist]] [[tableorlist_code]]
 
-The debugging statements, [[read_devtty]] ...  Use [[trace_off]] to turn them off.  Later remove them when satisfied. The caution is warranted.  In testing with *.rdb,tsv,lst files, the function now reports faulty arguments, i.e. &quot;not a file&quot; on [[stderr]].
+In testing with *.rdb,tsv,lst files, the function now reports faulty arguments, i.e. &quot;not a file&quot; on [[stderr]].
 
 ```
 tableorlist () 
 { 
-    : reports if a file is list, first character is a newline, or table if not;
-    function _f_TorF () 
-    { 
-        read_devtty _f, $*;
-        local HEAD;
-        : tableorlist;
-        report_notfile $1 &amp;&amp; return 1;
-        read HEAD &lt; $1;
-        read_devtty _f, HEAD: $HEAD;
-        [[ $HEAD = &quot;&quot; ]] &amp;&amp; { 
-            printf &quot;list\t$1\n&quot;
-        } || { 
-            printf &quot;table\t$1\n&quot;
-        }
-    };
-    local HEAD;
-    read_devtty $*;
+    : reports if a file is table, list or ignores non /rdb files;
+    : see: listtableornaught;
     case $# in 
         0 | 1)
             [[ $# = 1 ]] &amp;&amp; { 
-                report_notfile $1 &amp;&amp; return 1;
-                $(myname) &lt; $1;
+                listtableornaught $1;
                 return $?
             };
-            read HEAD;
-            read_devtty HEAD: $HEAD;
-            [[ $HEAD = &quot;&quot; ]] &amp;&amp; { 
-                echo list;
-                return 1
-            } || { 
-                echo table;
-                return 0
-            }
+            listtableornaught
         ;;
         *)
             rdb_hdr Type File;
-            foreach _f_TorF $*;
+            foreach listtableornaught $* 2&gt; /dev/null;
             return 0
         ;;
     esac
 }
+listtableornaught () 
+{ 
+    : table or list or ?? for one file or STDIN;
+    : date: 2020-09-06;
+    [[ $# -eq 1 ]] &amp;&amp; report_notfile $1 &amp;&amp; return 1;
+    awk -v name=${1:-&quot;&quot;} '
+    function found(type, ex) { printf fmt, type, name; exit ex }
+    BEGIN { FS = &quot;\t&quot;; fmt = &quot;%s\t%s\n&quot; }
+    NR == 1 &amp;&amp;  NF &lt; 1     { found( &quot;list&quot;,  1) }
+    NF &gt; 1 &amp;&amp; $2 ~ /^--*$/ { found( &quot;table&quot;, 0) }
+    $1 ~ /^--*$/           { found( &quot;table&quot;, 0) }
+    NR &gt; 2                 { exit; }
+    ' $1
+}
+
 
 ```
 </pre>
