@@ -1,0 +1,61 @@
+
+table	collections.rdb
+nrecrds	    991
+modate	2020-07-18
+fields	collections book_id 
+
+table	haveread.rdb
+nrecrds	    296
+modate	2020-07-18
+fields	date_read isbn isbns subjects dewey_decimal lending_start lending_end 
+
+table	haveread.rdb
+nrecrds	    296
+modate	2020-07-18
+fields	review rating 
+
+table	haveread.rdb
+nrecrds	    296
+modate	2020-07-18
+fields	source entry_date from_where page_count lccn acquired date_started 
+
+table	haveread.rdb
+nrecrds	    296
+modate	2020-07-18
+fields	tags collections lc_classification book_id title primary_author copies 
+
+table	keybook.rdb
+nrecrds	     14
+modate	2020-07-15
+fields	key book 
+
+table	librarything.rdb
+nrecrds	      5
+modate	2020-09-04
+fields	latest author book 
+
+table	readcycle.rdb
+nrecrds	    120
+modate	2020-07-11
+fields	daynum bookkeys 
+
+table	readhistory.rdb
+nrecrds	     13
+modate	2020-08-19
+fields	finish author book 
+
+table	readtwodays.rdb
+nrecrds	      6
+modate	2020-07-11
+fields	key book 
+
+table	tables.rdb
+nrecrds	     12
+modate	2020-09-05
+fields	table nrecrds modate fields 
+
+table	tags.rdb
+nrecrds	    983
+modate	2020-07-18
+fields	tags book_id 
+

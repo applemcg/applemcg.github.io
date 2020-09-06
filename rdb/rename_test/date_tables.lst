@@ -1,0 +1,33 @@
+
+table	checktestdata.rdb
+date	2020-08-25
+wkday	Tue
+
+table	command.rdb
+date	2020-09-02
+wkday	Wed
+
+table	date_tables.rdb
+date	2020-09-05
+wkday	Sat
+
+table	instances.rdb
+date	2020-08-01
+wkday	Sat
+
+table	statusvalue.rdb
+date	2020-09-02
+wkday	Wed
+
+table	tables.rdb
+date	2020-09-05
+wkday	Sat
+
+table	testobject.rdb
+date	2020-08-25
+wkday	Tue
+
+table	working.rdb
+date	2020-08-25
+wkday	Tue
+

@@ -719,10 +719,6 @@ stat_mtimefile ()
     set -- $(stat -r $file 2>/dev/null);
     echo ${10} $file
 }
-tableorlist () 
-{ 
-    return
-}
 tabletolist () 
 { 
     comment TRACE tabletolist $# ARGS $*;
@@ -1214,4 +1210,73 @@ fun_emptylist ()
 { 
     : produce a list of LT wiki commands;
     row 'status !~ /wiki/' < working.rdb | column command | headoff
+}
+tableorlist ()
+{
+    : reports if a file is list, first character is a newline or table, not
+    function _f_TorF ()
+    {
+        read_devtty _f, $*
+	local HEAD
+	: tableorlist
+	report_notfile $1 && return 1
+	read HEAD < $1
+        read_devtty _f, HEAD: $HEAD
+	[[ $HEAD = "" ]] && {
+
+            printf "list\t$1\n"
+	} || {	
+
+	    printf "table\t$1\n"		
+        }
+    }
+    local HEAD
+    read_devtty $*    
+    case $# in
+    0 | 1 )
+        [[ $# = 1 ]] && {
+	    report_notfile $1 && return 1
+            $(myname) < $1
+            return $?
+        }
+        read HEAD
+        read_devtty HEAD: $HEAD	
+	[[ $HEAD = "" ]] && {	
+            echo list
+    	    return 1
+	} || {	   	    
+            echo table
+            return 0
+        }
+	;;
+    * )
+        rdb_hdr Type File
+        foreach _f_TorF $*
+        return 0
+	;;
+    esac	
+}
+schema () 
+{ 
+    : lists the database dictionary from tables
+    function _do_schema () {
+
+        if tableorlist < $1 >/dev/null
+	then
+	    sed 1q $1
+	else
+	    listtotable $1 | sed 1q 
+
+        fi | awk -v name=$1 '
+
+           BEGIN { OFS = "\t" }
+	         {
+		   for (i=1; i <= NF; i++) {
+		       print name, i, $i
+		       }
+		 }
+           '		 
+    }
+    rdb_hdr Table Field Name;
+    foreach _do_schema $*
 }
