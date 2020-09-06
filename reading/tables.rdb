@@ -6,9 +6,9 @@ haveread.rdb	    296	2020-07-18	review rating
 haveread.rdb	    296	2020-07-18	source entry_date from_where page_count lccn acquired date_started 
 haveread.rdb	    296	2020-07-18	tags collections lc_classification book_id title primary_author copies 
 keybook.rdb	     14	2020-07-15	key book 
-librarything.rdb	      5	2020-09-04	latest author book 
+librarything.rdb	      6	2020-09-06	latest author book 
 readcycle.rdb	    120	2020-07-11	daynum bookkeys 
 readhistory.rdb	     13	2020-08-19	finish author book 
 readtwodays.rdb	      6	2020-07-11	key book 
-tables.rdb	     12	2020-09-05	table nrecrds modate fields 
+tables.rdb	     12	2020-09-06	table nrecrds modate fields 
 tags.rdb	    983	2020-07-18	tags book_id 

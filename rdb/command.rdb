@@ -10,8 +10,8 @@ datatype	tested		displays the datatype of each column selected
 dbdict	tested		prints a database dictionary: the field names
 fd	testing		tests for functional dependency of columns
 headoff			
-jointable	nextb			
-listtotable	nexta		
+jointable	nextb		
+listtotable	outline		
 lock			
 ncolumn	tested	*	removes columns, "Not Column"
 not			
@@ -23,11 +23,11 @@ row		*	makes new table where rows match logical condition
 rowhas			
 rowis			
 rowisnot			
-schema	tested		lists the database dictionary from table		
+schema	tested		lists the database dictionary from table
 see			
 sorttable		*	sorts a table by one or more columns
-tableorlist	tested	*	reports if a file is list, first character is a newline, or table if not			
-tabletolist	nexta			
+tableorlist	tested	*	reports if a file is list, first character is a newline, or table if not
+tabletolist	outline		
 todaysdate			
 tomorrow			
 union			

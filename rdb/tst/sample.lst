@@ -1,0 +1,49 @@
+
+EMAIL_ADDRESS	barbaraaltenburg@ucsd.edu
+Last_Name	Altenburg
+First_Name	Barbara
+Membership_Level	Life
+Purchase_Date	6/6/03
+Expiration_Date	
+Status	Current
+
+EMAIL_ADDRESS	oilstar@ucsd.edu
+Last_Name	Appelstein
+First_Name	Gerald
+Membership_Level	Life
+Purchase_Date	7/1/98
+Expiration_Date	
+Status	Current
+
+EMAIL_ADDRESS	gbainbridge@ucsd.edu
+Last_Name	Bainbridge
+First_Name	Gary
+Membership_Level	Contributing
+Purchase_Date	1/26/10
+Expiration_Date	6/30/13
+Status	Current
+
+EMAIL_ADDRESS	abequill@ucsd.edu
+Last_Name	Bequillard
+First_Name	Alfredo
+Membership_Level	Contributing
+Purchase_Date	7/24/12 20:50
+Expiration_Date	7/24/15 20:50
+Status	Current
+
+EMAIL_ADDRESS	broton@ucsd.edu
+Last_Name	Brotherton
+First_Name	William
+Membership_Level	Contributing
+Purchase_Date	1/26/10
+Expiration_Date	6/30/13
+Status	Current
+
+EMAIL_ADDRESS	tombryant@ucsd.edu
+Last_Name	Bryant
+First_Name	Thomas
+Membership_Level	Regular
+Purchase_Date	8/22/11
+Expiration_Date	6/30/12
+Status	Lapsed
+

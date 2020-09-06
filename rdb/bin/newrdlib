@@ -27,38 +27,6 @@ column_unique ()
     : app_trace $*;
     cat $2 | rdb_datafrom column $1
 }
-compute () 
-{ 
-    : date: 2017-06-20;
-    : date: 2019-07-07;
-    :;
-    read HEAD;
-    if test -z "$HEAD"; then
-        ( echo;
-        cat ) | listtotable | compute "$@" | tabletolist;
-        return 0;
-    fi;
-    read DASH;
-    rdb_hdr $HEAD;
-    (( C = 1 ));
-    for I in $HEAD;
-    do
-        COLIN="$COLIN $I=\$$C;";
-        COLOUT="$COLOUT \$$C=$I;";
-        (( C += 1 ));
-    done;
-    : trace_call "IN, cmd, OUT: $COLIN; $cmmd; $COLOUT";
-    awklib='
-       function max(x,y) { return (x>y?x:y) }
-       function min(x,y) { return (x<y?x:y) }
-       function abs(x)   { return (x<0?-x:x) }
-    ';
-    [[ -n "$COLIN" ]] && { 
-        awk "
-        $awklib
-        BEGIN   { FS=OFS=\"\t\"}; { $COLIN $1; $COLOUT print }"
-    }
-}
 cpdir () 
 { 
     report_notdirectory $1 && return 1;

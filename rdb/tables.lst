@@ -1,0 +1,51 @@
+
+table	checktestdata.rdb
+nrecrds	      2
+modate	2020-09-05
+fields	command status a b c
+
+table	column.nxt
+nrecrds	     33
+modate	2020-09-06
+fields	command status fmt abstract 
+
+table	command.rdb
+nrecrds	     33
+modate	2020-09-06
+fields	command status fmt abstract 
+
+table	date_tables.rdb
+nrecrds	      8
+modate	2020-09-05
+fields	table date wkday 
+
+table	instances.rdb
+nrecrds	     77
+modate	2020-09-05
+fields	Count field value 
+
+table	statusvalue.rdb
+nrecrds	      5
+modate	2020-09-06
+fields	status seqn explain 
+
+table	tables.nxt
+nrecrds	     52
+modate	2020-09-02
+fields	table nrecrds modate 
+
+table	tables.rdb
+nrecrds	     22
+modate	2020-09-06
+fields	table nrecrds modate fields 
+
+table	testobject.nxt
+nrecrds	     38
+modate	2020-08-25
+fields	object flag means 
+
+table	testobject.rdb
+nrecrds	     40
+modate	2020-09-05
+fields	object flag means 
+
