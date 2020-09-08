@@ -991,58 +991,100 @@ rdb_commands ()
 jointable () 
 { 
     : join two tables into one where keys match;
+    : for historic compatibility, -jN is preserved, and
+    : uses join with -j N
+    : todo: "sort" out leading column name
     : date: 2017-03-26;
     : date: 2020-04-11;
-    COLS="";
-    ARGS="";
-    while [ -n "$1" ]; do
+    local COLS="";
+    local ARGS="";
+    local f1="";
+    local f1="";
+    while [ $# -gt 0 ]; do
         arg=$1;
+        shift;
+        read_devtty arg: $arg;
         case $arg in 
             -)
-                break
+                if [ -z "$f1" ]; then
+                    cat - > .tmp;
+                    f1=.tmp;
+                else
+                    cat - > .tmp;
+                    f2=.tmp;
+                fi
             ;;
-            -[jt])
-                continue
+            -t)
+                : ignore the T, apply after args are parsed;
+                continut
             ;;
-            -[aveo12])
-                ARGS="$ARGS $arg $2";
+	    -j1 | -1 )
+		local j1=$1; shift
+		;;
+
+	    -j2 | -2 )
+		local j2=$1; shift
+		;;
+            -[aoj])
+	        : ignore 
+	        ;;
+            -[ajveo12])
+                ARGS="$ARGS $arg $1";
                 shift
             ;;
             -*)
                 ARGS="$ARGS $arg"
             ;;
             *)
-                if [ -f $arg ]; then
-                    break;
-                else
+                : column names or file args;
+                if [ ! -f $arg ]; then
                     COLS="$COLS $arg";
+                    :;
+                else
+                    if [ -z "$f1" ]; then
+                        f1=$arg;
+                        :;
+                    else
+                        if [ -z "$f2" ]; then
+                            f2=$arg;
+                        fi;
+                    fi;
                 fi
             ;;
         esac;
-        shift;
     done;
-    report_notfile "${2:-column table table}" && return 2;
-    local f1=$1;
-    local f2=$2;
-    : app_trace $(wc -l $f1);
-    : app_trace $(wc -l $f2);
+    read_devtty f1, f2: $f1, $f2
+    report_notfile $f1 && return 1;
+    report_notfile $f2 && return 2;
+    : --------------------------------------------------- clean up args	--
+    :
+    : ---------------------------- multi-arg resolution	--
+    :
+    [[ -n "$j1" ]] && {  ARGS="$ARGS -1 $(rdb_column $f1 $j1)"; }
+    [[ -n "$j2" ]] && {  ARGS="$ARGS -2 $(rdb_column $f2 $j2)"; }
+    : 
+    : ---------------- TAB  is tne only field separator	--
+    :
+    : date: 2020-09-08 in which i learned this bash syntax
+    : ref: "https://duckduckgo.com/?t=ffab&q=bash+join+tab"
+    ARGS="$ARGS -t $'\t'";
+    read_devtty ARGS: $ARGS
+    : --------------------------------------------- collect the columns	--
+    :
     local COL1=$(sed 1q $f1);
     local COL2=$(sed 1q $f2);
-    : default join on 1st field in first file;
-    set -- $COL1;
-    : ${COLS:=$1};
-    comment onTrap_rm .tmp.[ab]$$;
-    set -- $(args_uniq $COLS $COL1);
-    read_devtty file: $f1, args: $*;
-    cat $f1 | column $* | tee .tmp.a.rdb | tail +3 | sort > .tmp.a.join;
-    set -- $(args_uniq $COLS $COL2);
-    : app_trace file: $f2, cols: $*;
-    cat $f2 | column $* | tee .tmp.b.rdb | tail +3 | sort > .tmp.b.join;
-    set -- $(args_uniq $COLS $COL1 $COL2);
+    :
+    read_devtty FILE: $f1, COLUMNS: $COL1
+    cat $f1 | column $COL1 | sorttable $j1 | headoff > .tmp.a.join;
+    : 
+    read_devtty FILE: $f2, COLUMNS: $COL2;
+    cat $f2 | column $COL2 | sorttable $j2 | headoff > .tmp.b.join;
+    :
+    set -- $(args_uniq $COL1 $COL2);
     read_devtty rdb_hdr $*;
     rdb_hdr $*;
-    app_trace JOIN $ARGS -t '    ' .tmp.a.join .tmp.b.join;
-    join $ARGS -t '	' .tmp.a.join .tmp.b.join
+    read_devtty join $ARGS .tmp.{a,b}.join;
+    eval join $ARGS .tmp.{a,b}.join
 }
 row () 
 { 
@@ -1280,25 +1322,25 @@ fun_emptylist ()
 }
 tableorlist () 
 { 
-    : reports if a file is table, list or ignores non /rdb files
-    : see: listtableornaught 
+    : reports if a file is table, list or ignores non /rdb files;
+    : see: listtableornaught;
     case $# in 
         0 | 1)
             [[ $# = 1 ]] && { 
                 listtableornaught $1;
-		return $?
+                return $?
             };
-	    listtableornaught
+            listtableornaught
         ;;
         *)
             rdb_hdr Type File;
-            foreach listtableornaught $* 2>/dev/null;
+            foreach listtableornaught $* 2> /dev/null;
             return 0
         ;;
     esac
 }
 schema () 
-{ p
+{ 
     : lists the database dictionary from tables;
     function _do_schema () 
     { 
@@ -1320,16 +1362,30 @@ schema ()
     foreach _do_schema $*
 }
 listtableornaught () 
-{
-    : table or list or ?? for one file or STDIN
+{ 
+    : table or list or ?? for one file or STDIN;
+    : manual doesnt allow OTHER file type, and;
+    : LIST format needs to check the 2nd line for a single TAB;
     : date: 2020-09-06;
     [[ $# -eq 1 ]] && report_notfile $1 && return 1;
     awk -v name=${1:-""} '
     function found(type, ex) { printf fmt, type, name; exit ex }
     BEGIN { FS = "\t"; fmt = "%s\t%s\n" }
-    NR == 1 &&  NF < 1     { found( "list",  1) }
-    NF > 1 && $2 ~ /^--*$/ { found( "table", 0) }
-    $1 ~ /^--*$/           { found( "table", 0) }
-    NR > 2                 { exit; }
+    #
+    # --------------------------------- isolate the LIST format	--
+    #
+    NR == 1 && NF < 1           { qlist = 1; }
+    NR == 2 && NF == 2 && qlist { found( "list",  1) }
+    #
+    # -------------------------------- isolate the TABLE format	--
+    #
+    NR > 2                      { exit; }
+    NR == 1                     { next; }
+    #
+    # ------------------------- the second record, ?? Dashes ??	--
+    #
+    NF > 1 && $2 ~ /^--*$/      { found( "table", 0) }
+    $1 ~ /^--*$/                { found( "table", 0) }
+
     ' $1
 }

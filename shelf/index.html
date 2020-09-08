@@ -12587,7 +12587,7 @@ exports.context = contextWidget;
 <div created="20200811123953793" creator="Marty McGOwan" modified="20200811123953793" modifier="Marty McGOwan" title="$:/state/tab-1826487871">
 <pre>app</pre>
 </div>
-<div created="20200906115204115" creator="Marty McGowan" modified="20200906122344981" modifier="Marty McGowan" title="$:/state/tab-1946349733">
+<div created="20200906115204115" creator="Marty McGowan" modified="20200907133917374" modifier="Marty McGowan" title="$:/state/tab-1946349733">
 <pre>tableorlist_code</pre>
 </div>
 <div created="20200825153637702" creator="Marty McGowan" modified="20200825162121193" modifier="Marty McGowan" title="$:/state/tab-1960363643">
@@ -12668,7 +12668,7 @@ exports.context = contextWidget;
 <div bag="default" created="20200810170615861" creator="M" modified="20200811134449245" modifier="Marty McGwan" revision="1" title="$:/status/UserName">
 <pre>Marty McGowan</pre>
 </div>
-<div created="20200906131550014" creator="Marty McGowan" list="tableorlist listtotable tableorlist_code schema_code rename_code rdb_code ncolumn_code fd_code dbdict_code datatype_code check_code blank_code addcol_code tabletolist_code tabletolist listtotable_code [[rdb formats]] [[What's Here]] [[rdb commands]] [[untested commands]] [[On /RDB]] [[command history e.g.]] [[Table of Contents]]" modified="20200906233831984" modifier="Marty McGowan" title="$:/StoryList">
+<div created="20200906131550014" creator="Marty McGowan" list="tableorlist_testcase tableorlist_testout tableorlist tableorlist_code schema_code rename_code rdb_code ncolumn_code fd_code dbdict_code datatype_code check_code blank_code addcol_code tabletolist_code tabletolist listtotable_code [[rdb formats]] [[What's Here]] [[rdb commands]] [[untested commands]] [[On /RDB]] [[command history e.g.]] [[Table of Contents]]" modified="20200907133748127" modifier="Marty McGowan" title="$:/StoryList">
 <pre></pre>
 </div>
 <div created="20200519141000553" list="$:/.giffmex/Buttons/more-tiddler-edit-actions $:/core/ui/Buttons/delete $:/core/ui/Buttons/cancel $:/core/ui/Buttons/save" modified="20200521145647980" tags="$:/giffmex/bigeditarea $:/giffmex/stroll" title="$:/tags/EditToolbar">
@@ -14354,7 +14354,7 @@ One subject of interest:   Since awk may be invoked on the command line or withi
 
 </pre>
 </div>
-<div created="20200824162939716" creator="Marty McGowan" modified="20200906181838117" modifier="Marty McGowan" tags="[[rdb usage]]" title="rdb commands">
+<div created="20200824162939716" creator="Marty McGowan" modified="20200907134449833" modifier="Marty McGowan" tags="[[rdb usage]]" title="rdb commands">
 <pre>[[On /RDB]] [[rdb commands]] [[untested commands]]
 
 Commands with an asteriisk, e.g. &quot;-- *&quot; are list and table format sensitive. i.e. they deal with either format:
@@ -14408,10 +14408,12 @@ The sequence of steps:
 rdb.$ column &lt; statusvalue.rdb | sorttable seqn | justify
 status 	seqn	explain          
 ------ 	----	-------          
+next   	0   	to move up       
 coded  	1   	code captured    
 outline	2   	command page     
 testing	4   	testcase prepared
 tested 	5   	full wiki entry  
+rdb.$ 
 
 
 ```
@@ -15318,10 +15320,12 @@ Most recently modified:
 &lt;&lt;tabs &quot;[[tableorlist_code]] [[tableorlist_testcase]] [[tableorlist_testdata]] [[tableorlist_testout]]&quot; &quot;[[tableorlist_testcase]]&quot; &quot;&quot; &quot;tc-vertical&quot;&gt;&gt;
 </pre>
 </div>
-<div created="20200906115217009" creator="Marty McGowan" modified="20200906233957013" modifier="Marty McGowan" tags="rdb" title="tableorlist_code">
+<div created="20200906115217009" creator="Marty McGowan" modified="20200907134242978" modifier="Marty McGowan" tags="rdb" title="tableorlist_code">
 <pre>[[tableorlist]] [[tableorlist_code]]
 
-In testing with *.rdb,tsv,lst files, the function now reports faulty arguments, i.e. &quot;not a file&quot; on [[stderr]].
+In testing with arbitrary files, the function ignores non list or table files. 
+
+Non-file arguments are dumped.  And may be inspected on the [[stderr]] of the l//isttableornaught// function
 
 ```
 tableorlist () 
@@ -15346,71 +15350,136 @@ tableorlist ()
 listtableornaught () 
 { 
     : table or list or ?? for one file or STDIN;
+    : manual doesnt allow OTHER file type, and;
+    : LIST format needs to check the 2nd line for a single TAB;
     : date: 2020-09-06;
     [[ $# -eq 1 ]] &amp;&amp; report_notfile $1 &amp;&amp; return 1;
     awk -v name=${1:-&quot;&quot;} '
     function found(type, ex) { printf fmt, type, name; exit ex }
     BEGIN { FS = &quot;\t&quot;; fmt = &quot;%s\t%s\n&quot; }
-    NR == 1 &amp;&amp;  NF &lt; 1     { found( &quot;list&quot;,  1) }
-    NF &gt; 1 &amp;&amp; $2 ~ /^--*$/ { found( &quot;table&quot;, 0) }
-    $1 ~ /^--*$/           { found( &quot;table&quot;, 0) }
-    NR &gt; 2                 { exit; }
+    #
+    # --------------------------------- isolate the LIST format	--
+    #
+    NR == 1 &amp;&amp; NF &lt; 1           { qlist = 1; }
+    NR == 2 &amp;&amp; NF == 2 &amp;&amp; qlist { found( &quot;list&quot;,  1) }
+    #
+    # -------------------------------- isolate the TABLE format	--
+    #
+    NR &gt; 2                      { exit; }
+    NR == 1                     { next; }
+    #
+    # ------------------------- the second record, ?? Dashes ??	--
+    #
+    NF &gt; 1 &amp;&amp; $2 ~ /^--*$/      { found( &quot;table&quot;, 0) }
+    $1 ~ /^--*$/                { found( &quot;table&quot;, 0) }
+
     ' $1
 }
 
 
+
 ```
 </pre>
 </div>
-<div created="20200906121953492" creator="Marty McGowan" modified="20200906122113985" modifier="Marty McGowan" tags="" title="tableorlist_testcase">
+<div created="20200906121953492" creator="Marty McGowan" modified="20200907133814239" modifier="Marty McGowan" tags="" title="tableorlist_testcase">
 <pre>[[tableorlist]]   [[tableorlist_testcase]]
 
 
 ```
-set ignore; $1 pushd rename_test; tableorlist *.{lst,rdb,tsv}; $1 popd
+cat sample.rdb | compute 'EMAIL_ADDRESS = &quot;...&quot;; Last_Name = &quot;&quot;' |  row '!(NR%3)' | tabletolist | tee sample.lst
+
+comm &lt;(ls) &lt;(tableorlist * | column File | headoff | sort)
+
+tableorlist * 
 
 ```
 </pre>
 </div>
-<div created="20200906121437265" creator="Marty McGowan" modified="20200906121610110" modifier="Marty McGowan" tags="" title="tableorlist_testdata">
+<div created="20200906121437265" creator="Marty McGowan" modified="20200907132211032" modifier="Marty McGowan" tags="" title="tableorlist_testdata">
 <pre>[[tableorlist]]  [[tableorlist_testdata]]
 
 
 ```
-rdb.$ ls -l rename_test
-total 80
--rw-r--r--@ 1 martymcgowan  staff    61 Aug 25 13:01 checktestdata.rdb
--rw-r--r--@ 1 martymcgowan  staff   794 Sep  2 12:20 command.rdb
--rw-r--r--@ 1 martymcgowan  staff   379 Sep  6 08:01 date_tables.lst
--rw-r--r--@ 1 martymcgowan  staff   268 Sep  5 11:59 date_tables.rdb
--rw-r--r--@ 1 martymcgowan  staff  2504 Aug  1 15:21 instances.rdb
--rw-r--r--@ 1 martymcgowan  staff   461 Sep  5 11:57 locallib
--rw-r--r--@ 1 martymcgowan  staff   138 Sep  2 11:47 statusvalue.rdb
--rw-r--r--@ 1 martymcgowan  staff   855 Sep  5 11:27 tables.rdb
--rw-r--r--@ 1 martymcgowan  staff  1264 Aug 25 12:45 testobject.rdb
--rw-r--r--@ 1 martymcgowan  staff   546 Aug 25 12:58 working.rdb
+tst.$ ls -l; pwd
+total 104
+-rw-r--r--@ 1 martymcgowan  staff  234 Apr 10 14:28 chart
+-rwxr-xr-x@ 1 martymcgowan  staff  532 Apr 12 14:19 fixlib
+-rw-r--r--@ 1 martymcgowan  staff  530 Jul 23  2013 functions
+-rw-r--r--@ 1 martymcgowan  staff  204 Apr 10 14:37 journal
+-rw-r--r--@ 1 martymcgowan  staff  204 Apr  9 20:42 ledger
+-rwxr-xr-x@ 1 martymcgowan  staff  439 Apr 11 20:36 locallib
+-rwxr-xr-x@ 1 martymcgowan  staff   87 Jul 23  2013 rdblib
+-rw-r--r--@ 1 martymcgowan  staff  559 Apr 12 13:45 sample
+-rw-r--r--@ 1 martymcgowan  staff  958 Sep  6 15:34 sample.lst
+-rw-r--r--@ 1 martymcgowan  staff  593 Jul 23  2013 sample.rdb
+-rw-r--r--@ 1 martymcgowan  staff  335 Jul 23  2013 schema
+-rw-r--r--@ 1 martymcgowan  staff  768 Sep  6 15:13 tables.rdb
+-rw-r--r--@ 1 martymcgowan  staff  320 Sep  9  2012 testStatus
+/Users/martymcgowan/Dropbox/git/applemcg.github.io/rdb/tst
+
 
 ```
 </pre>
 </div>
-<div created="20200906122150941" creator="Marty McGowan" modified="20200906122310389" modifier="Marty McGowan" tags="" title="tableorlist_testout">
+<div created="20200906122150941" creator="Marty McGowan" modified="20200907133625148" modifier="Marty McGowan" tags="" title="tableorlist_testout">
 <pre>[[tableorlist]] [[tableorlist_testout]]
 
-The USAGE message comes on [[stderr]]
+# The three function libs are ignored
+# the list is detected
+# the list  format is shown
+# an awk facet of the query:  ''!( NR % 3 )'' is shown
 
 ```
+tst.$ comm &lt;(ls) &lt;(tableorlist * | column File | headoff | sort)
+		chart
+fixlib
+		functions
+		journal
+		ledger
+locallib
+rdblib
+		sample
+		sample.lst
+		sample.rdb
+		schema
+		tables.rdb
+		testStatus
+
+tst.$ tableorlist * 
 Type	File
 ----	----
-list	date_tables.lst
-table	checktestdata.rdb
-table	command.rdb
-table	date_tables.rdb
-table	instances.rdb
-table	statusvalue.rdb
+table	chart
+table	functions
+table	journal
+table	ledger
+table	sample
+list	sample.lst
+table	sample.rdb
+table	schema
 table	tables.rdb
-table	testobject.rdb
-table	working.rdb
-USAGE _f_TorF: *.tsv ISN'T a file
+table	testStatus
+tst.$
+
+tst.$ tst.$ cat sample.rdb | compute 'EMAIL_ADDRESS = &quot;...&quot;; Last_Name = &quot;&quot;' |  row '!(NR%3)' | tabletolist | tee sample.lst
+
+EMAIL_ADDRESS	...
+Last_Name	
+First_Name	Gary
+Membership_Level	Contributing
+Purchase_Date	1/26/10
+Expiration_Date	6/30/13
+Status	Current
+
+EMAIL_ADDRESS	...
+Last_Name	
+First_Name	Thomas
+Membership_Level	Regular
+Purchase_Date	8/22/11
+Expiration_Date	6/30/12
+Status	Lapsed
+
+tst.$ 
+
 ```
 
 </pre>

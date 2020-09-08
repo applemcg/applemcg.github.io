@@ -1,13 +1,13 @@
 join_test ()
 {
-join -t'	' ledger chart
-printf "join -t<TAB> ledger chart\n\n\n"
-join -t'	' -a1 ledger chart
-printf "join -t<TAB> -a1 ledger chart\n\n\n"
-join -t'	' -a2 ledger chart
-printf "join -t<TAB> -a2 ledger chart\n\n\n"
-join -t'	' -a1 -a2 ledger chart
-printf "join -t<TAB> -a1 -a2 ledger chart\n\n\n"
-join -t'	' -a1 -a2 <(tail +3 ledger|sort) <(tail +3 chart| sort)
-printf "join -t<TAB> -a1 -a2 TAIL _3 ledger  TAIL +3 chart\n\n\n"
+    join -t'	' ledger chart
+    printf "join -t<TAB> ledger chart\n\n\n"
+    join -t'	' -a1 ledger chart
+    printf "join -t<TAB> -a1 ledger chart\n\n\n"
+    join -t'	' -a2 ledger chart
+    printf "join -t<TAB> -a2 ledger chart\n\n\n"
+    join -t'	' -a1 -a2 ledger chart
+    printf "join -t<TAB> -a1 -a2 ledger chart\n\n\n"
+    join -t'	' -a1 -a2 <(tail +3 ledger|sort) <(tail +3 chart| sort)
+    printf "join -t<TAB> -a1 -a2 TAIL _3 ledger  TAIL +3 chart\n\n\n"
 }
