@@ -619,11 +619,15 @@ Error message and password prompt
 
 <li>Draft of 'Other Software' by Marty McGowan</li>
 
+<li>duplicate function problem</li>
+
 <li>entry points</li>
 
 <li>environement</li>
 
 <li>environment</li>
+
+<li>f2file</li>
 
 <li>family</li>
 
@@ -721,6 +725,8 @@ Error message and password prompt
 
 <li>prominent families</li>
 
+<li>qff</li>
+
 <li>rdb code</li>
 
 <li>rdb commands</li>
@@ -740,6 +746,8 @@ Error message and password prompt
 <li>RDB_SQL</li>
 
 <li>rdb_table</li>
+
+<li>rdlib</li>
 
 <li>re_charactercode</li>
 
@@ -770,6 +778,8 @@ Error message and password prompt
 <li>replace</li>
 
 <li>report</li>
+
+<li>retiredlib</li>
 
 <li>Rough Outline</li>
 
@@ -888,6 +898,8 @@ Error message and password prompt
 <li>where the /RDB tools, lib, etc call HOME</li>
 
 <li>where the GIT repos live</li>
+
+<li>whf</li>
 
 <li>width</li>
 
@@ -12718,7 +12730,7 @@ exports.context = contextWidget;
 <div bag="default" created="20200810170615861" creator="M" modified="20200811134449245" modifier="Marty McGwan" revision="1" title="$:/status/UserName">
 <pre>Marty McGowan</pre>
 </div>
-<div created="20200909191538328" creator="Marty McGowan" list="tw_code tw_help [[On My Nightstand]] [[What's Here]] [[Table of Contents]] [[Reader's Guide]]" modified="20200909192802767" modifier="Marty McGowan" title="$:/StoryList">
+<div created="20200909191538328" creator="Marty McGowan" list="[[duplicate function problem]] tw_help" modified="20200909192802767" modifier="Marty McGowan" title="$:/StoryList">
 <pre></pre>
 </div>
 <div created="20200519141000553" list="$:/.giffmex/Buttons/more-tiddler-edit-actions $:/core/ui/Buttons/delete $:/core/ui/Buttons/cancel $:/core/ui/Buttons/save" modified="20200521145647980" tags="$:/giffmex/bigeditarea $:/giffmex/stroll" title="$:/tags/EditToolbar">
@@ -13694,6 +13706,84 @@ field	name
 <div modified="20200906135508486" modifier="Marty McGowan" title="Draft of 'Other Software' by Marty McGowan">
 <pre></pre>
 </div>
+<div created="20200909194558453" creator="Marty McGowan" modified="20200909202004181" modifier="Marty McGowan" tags="" title="duplicate function problem">
+<pre>The duplicate function problem appears when moving functions from a less focused [[library]] to another.
+
+When i find a duplicate copy of a function, here's a good example:
+
+
+!! Identify duplicate functions
+
+Whf: WHere is the Function?    
+
+```
+bin.$ whf schema
+/Users/martymcgowan/Dropbox/bin/functionlib
+/Users/martymcgowan/Dropbox/bin/retiredlib
+/Users/martymcgowan/Dropbox/git/applemcg.github.io/rdb/bin/rdlib
+bin.$ 
+```
+
+identifies three libraries which currently have a copy.   the purpose of these libraries:
+
+* [[retiredlib]] -- functions being retired from play.  schema sat on the bench for some time
+* [[functionlib]] -- when a function is first typed on the command line, it goes here.
+* [[rdlib]] -- where the functions for the [[/rdb]] implementation will go.
+
+With this information in hand, the first thing to do is to remove it from [[retiredlib]], since it's now un-retired.  I've a tool [[qff]], Quick Function Fix, which uses the [[whf]] result to allow the programmer a choice of which copy to edit.  So let's start with:
+
+!! Eliminate one copy
+
+```
+$ qff schema
+```
+
+I might do this again, to remove it from the [[functionlib]], but the purpose of this exercise is to show how to compare separate copies of a function in two libraries, to select one, and remove the other, or sometimes pick up changes not adapted in the now-preferred copy.
+
+
+!! Compare two Copies
+
+For this task, i've for some time used a utility function [[f2file]], which splits a function library into separate files.
+
+
+```
+bin.$ f2file $(which functionlib)
+/Users/martymcgowan/Dropbox/lib/functionlib.d
+bin.$ pushd $(f2file $(which rdlib))
+~/Dropbox/lib/rdlib.d ~/Dropbox/bin ~ ...
+rdlib.d.$ 
+
+```
+
+Where we:
+
+* split the less-preferred instance
+* then, using pushd, split the more-preferred copy, and land in the directory where the individual copies are stored
+* and compare the separate copies,
+
+where we se:
+
+
+```
+rdlib.d.$ diff schema ../functionlib.d
+3a4
+&gt;     : date: 2020-09-06;
+rdlib.d.$ 
+
+
+```
+
+!! Eliminate the Last
+
+it would appear the copy in functionlib differs only in having a date [[tag]] applied to the function.  Since the copy in rdlib is where we'd like it, the only remaining action is to delete the instance in functionlib, again using qff.
+
+
+
+
+
+
+</pre>
+</div>
 <div created="20200811140523087" creator="Marty McGowan" modified="20200811140831997" modifier="Marty McGowan" tags="term" title="entry points">
 <pre>An application will have one or more [[entry points]],   An entry point is a function whose interface is detailed in user documentation.  Functions which are called from other entry points may also be an entry point.   The interface to a function not listed as an entry point is not guaranteed to remain unchanged.</pre>
 </div>
@@ -13713,6 +13803,9 @@ Therefore every app is constructed through functions in the gihub reposistory.
 
 * emacs
 </pre>
+</div>
+<div created="20200909201808624" creator="Marty McGowan" modified="20200909201808624" modifier="Marty McGowan" title="f2file">
+<pre></pre>
 </div>
 <div created="20200809180208768" creator="Marty McGowan" modified="20200909145847659" modifier="Marty McGowan" tags="term" title="family">
 <pre>[ [[function collections]] ][ [[family]] ]
@@ -14436,6 +14529,9 @@ names of prominent families:
 * graf
 </pre>
 </div>
+<div created="20200909201808623" creator="Marty McGowan" modified="20200909201808623" modifier="Marty McGowan" title="qff">
+<pre></pre>
+</div>
 <div created="20200826162201130" creator="Marty McGowan" modified="20200909144457170" modifier="Marty McGowan" tags="" title="rdb code">
 <pre>[ [[On /RDB]] ][ [[rdb code]] ]
 
@@ -14667,6 +14763,9 @@ tst/tables.rdb       	      7	2020-04-12	table nrecrds modate fields
 working.rdb          	     32	2020-08-25	command status a b c         
 ```</pre>
 </div>
+<div created="20200909201808622" creator="Marty McGowan" modified="20200909201808622" modifier="Marty McGowan" title="rdlib">
+<pre></pre>
+</div>
 <div created="20200727143303838" modified="20200727143409268" tags="reference" title="re_charactercode">
 <pre>* [[character code|https://www.ascii-code.com/]] </pre>
 </div>
@@ -14830,6 +14929,9 @@ working.rdb      	2020-08-25	Tue
 <pre></pre>
 </div>
 <div created="20200824182359461" creator="Marty McGowan" modified="20200824182359461" modifier="Marty McGowan" title="report">
+<pre></pre>
+</div>
+<div created="20200909201808621" creator="Marty McGowan" modified="20200909201808621" modifier="Marty McGowan" title="retiredlib">
 <pre></pre>
 </div>
 <div created="20200909190057645" creator="Marty McGowan" modified="20200909190133082" modifier="Marty McGowan" title="Rough Outline">
@@ -15957,6 +16059,9 @@ In the late '80s, I was fortunate to meet Rob Manis, one of the three authors of
 <pre></pre>
 </div>
 <div created="20200828154554872" creator="Marty McGowan" modified="20200828154554872" modifier="Marty McGowan" title="where the GIT repos live">
+<pre></pre>
+</div>
+<div created="20200909201808623" creator="Marty McGowan" modified="20200909201808623" modifier="Marty McGowan" title="whf">
 <pre></pre>
 </div>
 <div created="20200824182359469" creator="Marty McGowan" modified="20200824182359469" modifier="Marty McGowan" title="width">
