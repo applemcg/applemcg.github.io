@@ -9,8 +9,8 @@ cpdir
 datatype	tested		displays the datatype of each column selected
 dbdict	tested		prints a database dictionary: the field names
 fd	testing		tests for functional dependency of columns
-headoff			
-jointable	nextb		
+headoff	nexta		
+jointable	testing		
 listtotable	outline		
 lock			
 ncolumn	tested	*	removes columns, "Not Column"
@@ -20,9 +20,9 @@ rename	tested	*	change column names in head line
 replace			
 report			
 row		*	makes new table where rows match logical condition
-rowhas			
-rowis			
-rowisnot			
+rowhas	nextb		
+rowis	nextb		
+rowisnot	nextb			
 schema	tested		lists the database dictionary from table
 see			
 sorttable		*	sorts a table by one or more columns

@@ -495,17 +495,17 @@ readhistory ()
     : active and when finished books;
     : date: 2020-08-18;
     function _rh_select () 
-    { 
+    {
         sorttable -r latest | select_first book | sorttable book
     };
     function _rh_finish () 
     { 
         rename latest finish | compute '
 
-        finish = ((delete_time)? finish: "")' | ncolumn {insert,delete}_time
+        finish = ((delete_time)? finish: "")' | ncolumn {insert,delete}_time 
     };
     report_notfile librarything.rdb && return 1
-    zcat .hry/librarything.rdb.Z | _rh_select | _rh_finish | _rh_linkify
+    zcat .hry/librarything.rdb.Z | _rh_select | _rh_finish | sorttable $1 | _rh_linkify
 }
 tiddlylink () 
 { 

@@ -169,8 +169,15 @@ headoff ()
     : it makes NO sense to take the head off a LIST format;
     : without first converting to a TABLE.;
     : date: 2019-08-14;
-    report_notpipe && return 1;
-    tail +3
+    case $# in
+    0 )
+	 tail +3
+	 ;;
+    * )
+         report_notfile && return 1
+	 tail +3 < $1
+	 ;;
+    esac
 }
 hwrite () 
 { 
@@ -999,7 +1006,8 @@ jointable ()
     local COLS="";
     local ARGS="";
     local f1="";
-    local f1="";
+    local f2="";
+    read_devtty "$(myname) ( $* )"
     while [ $# -gt 0 ]; do
         arg=$1;
         shift;
@@ -1007,16 +1015,19 @@ jointable ()
         case $arg in 
             -)
                 if [ -z "$f1" ]; then
-                    cat - > .tmp;
-                    f1=.tmp;
+                    cat - > .tmp.i.join;
+                    f1=.tmp.i.join;
                 else
-                    cat - > .tmp;
-                    f2=.tmp;
+                    cat - > .tmp.i.join;
+                    f2=.tmp.i.join;
                 fi
+		read_devtty arg, f1, f2: $arg, $f1, $f2
+
+		
             ;;
             -t)
                 : ignore the T, apply after args are parsed;
-                continut
+                continue
             ;;
 	    -j1 | -1 )
 		local j1=$1; shift
@@ -1026,9 +1037,9 @@ jointable ()
 		local j2=$1; shift
 		;;
             -[aoj])
-	        : ignore 
+	        : ignore these 
 	        ;;
-            -[ajveo12])
+            -[ve12])
                 ARGS="$ARGS $arg $1";
                 shift
             ;;
@@ -1036,6 +1047,7 @@ jointable ()
                 ARGS="$ARGS $arg"
             ;;
             *)
+		read_devtty arg, f1, f2: $arg, $f1, $f2	    
                 : column names or file args;
                 if [ ! -f $arg ]; then
                     COLS="$COLS $arg";
@@ -1050,10 +1062,11 @@ jointable ()
                         fi;
                     fi;
                 fi
+		read_devtty now f1, f2: $f1, $f2
             ;;
         esac;
     done;
-    read_devtty f1, f2: $f1, $f2
+    read_devtty last f1, f2: $f1, $f2
     report_notfile $f1 && return 1;
     report_notfile $f2 && return 2;
     : --------------------------------------------------- clean up args	--

@@ -1,12 +1,12 @@
 table	nrecrds	modate	fields
 -----	-------	------	------
 checktestdata.rdb	      2	2020-09-05	command status a b c 
-column.nxt	     33	2020-09-06	command status fmt abstract 
+column.tsv	     33	2020-09-06	command status fmt abstract 
 command.rdb	     33	2020-09-06	command status fmt abstract 
 date_tables.rdb	      8	2020-09-05	table date wkday 
 instances.rdb	     77	2020-09-05	Count field value 
 statusvalue.rdb	      5	2020-09-06	status seqn explain 
 tables.nxt	     52	2020-09-02	table nrecrds modate 
-tables.rdb	     10	2020-09-07	table nrecrds modate fields 
+tables.rdb	     10	2020-09-10	table nrecrds modate fields 
 testobject.nxt	     38	2020-08-25	object flag means 
 testobject.rdb	     40	2020-09-05	object flag means 
