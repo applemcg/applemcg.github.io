@@ -141,6 +141,8 @@ Error message and password prompt
 
 <p>This <a class="tc-tiddlylink-external" href="https://tiddlywiki.com" rel="noopener noreferrer" target="_blank">TiddlyWiki</a> contains the following tiddlers:</p><p><ul>
 
+<li> --482370631</li>
+
 <li> --990033087</li>
 
 <li> ncolumn_testdata</li>
@@ -256,6 +258,8 @@ Error message and password prompt
 <li>$:/core/ui/ViewTemplate/title</li>
 
 <li>$:/DefaultTiddlers</li>
+
+<li>$:/Import</li>
 
 <li>$:/Import!!popup-Untitled</li>
 
@@ -951,6 +955,9 @@ Error message and password prompt
 <!--~~ Ordinary tiddlers ~~-->
 
 <div id="storeArea" style="display:none;">
+<div created="20200911205451945" creator="Marty McGowan" modified="20200911205454926" modifier="Marty McGowan" title=" --482370631">
+<pre>list_format</pre>
+</div>
 <div created="20200910184210859" creator="Marty McGowan" modified="20200910184254217" modifier="Marty McGowan" title=" --990033087">
 <pre>table format</pre>
 </div>
@@ -10981,6 +10988,16 @@ $:/config/ViewToolbarButtons/Visibility/$(listItem)$
 
 </pre>
 </div>
+<div plugin-type="import" status="pending" title="$:/Import" type="application/json">
+<pre>{
+    &quot;tiddlers&quot;: {
+        &quot;Untitled&quot;: {
+            &quot;title&quot;: &quot;Untitled&quot;,
+            &quot;text&quot;: &quot;stroll&quot;
+        }
+    }
+}</pre>
+</div>
 <div created="20200910121818126" creator="Marty McGowan" modified="20200910121818126" modifier="Marty McGowan" title="$:/Import!!popup-Untitled">
 <pre>yes</pre>
 </div>
@@ -12771,7 +12788,7 @@ exports.context = contextWidget;
 <div bag="default" created="20200810170615861" creator="M" modified="20200811134449245" modifier="Marty McGwan" revision="1" title="$:/status/UserName">
 <pre>Marty McGowan</pre>
 </div>
-<div created="20200910184151893" creator="Marty McGowan" list="[[shell stories]] [[many duplicated functions]] headoff [[rdb commands]] tableorlist_testout tableorlist_testdata tableorlist_testcase tableorlist_code tableorlist [[rdb formats]] [[table format]] rdb_table [[On /RDB]] [[What's Here]] [[Table of Contents]]" modified="20200910192710510" modifier="Marty McGowan" title="$:/StoryList">
+<div list="[[Table of Contents]]" title="$:/StoryList">
 <pre></pre>
 </div>
 <div created="20200519141000553" list="$:/.giffmex/Buttons/more-tiddler-edit-actions $:/core/ui/Buttons/delete $:/core/ui/Buttons/cancel $:/core/ui/Buttons/save" modified="20200521145647980" tags="$:/giffmex/bigeditarea $:/giffmex/stroll" title="$:/tags/EditToolbar">
@@ -12856,8 +12873,8 @@ exports.context = contextWidget;
 <div created="20200502174943975" modified="20200502174950301" title="$:/temp/RenameTags/search">
 <pre>tb</pre>
 </div>
-<div created="20200418122544376" creator="Marty McGowan" modified="20200910140459284" modifier="Marty McGowan" title="$:/temp/search">
-<pre>stroll</pre>
+<div created="20200418122544376" creator="Marty McGowan" modified="20200911205726731" modifier="Marty McGowan" title="$:/temp/search">
+<pre>macro</pre>
 </div>
 <div created="20200429214841632" modified="20200429214841632" tags="$:/tags/ServerConnection" title="$:/temp/ServerConnection/https://tiddlywiki.com/library/v5.1.22/index.html" url="https://tiddlywiki.com/library/v5.1.22/index.html">
 <pre>loaded</pre>
@@ -14824,8 +14841,7 @@ fields	tags book_id
 ```</pre>
 </div>
 <div created="20200727121634812" creator="Marty McGowan" modified="20200910121250504" modifier="Marty McGowan" title="RDB_SQL" type="">
-<pre>
-[ [[On /RDB]] ][ [[RDB_SQL]] ]
+<pre>[ [[On /RDB]] ][ [[RDB_SQL]] ]
 
 /RDB's authors make a strong point, that &quot;the command shell, with a few tools, is the only SQL you need&quot; to have a text-based full-featured database for *nix-like operating systems.  /RDB is in the category of a [[flat-file database|https://en.wikipedia.org/wiki/Flat-file_database]].  In particular, follow the reference to [[cql|http://static.usenix.org/publications/library/proceedings/sf94/full_papers/fowler.a]]
 
@@ -15717,9 +15733,10 @@ This particular table is the file ''tables.rdb'', which has 10 records, was last
 /RDB itself does not require a suffix to recognize an /RDB table.  The [[tsv suffix]] was added to support those O/S toolkits  which expect a suffix to identify a file's data type.   The [[tableorlist]] command detects any file format, returning table, list, or nothing. if the file is either an rdb [[table]], [[list]], or of neither type.
 . </pre>
 </div>
-<div created="20200726184417779" creator="Marty McGowan" modified="20200909192102094" modifier="Marty McGowan" tags="" title="Table of Contents">
-<pre>* [[The Family Circle]] -- links to my life's interest,  four documents in this format: these Shell Functions, a Book Club, Liberal Thought, and my Diary
+<div created="20200726184417779" creator="Marty McGowan" modified="20200912132448284" modifier="Marty McGowan" tags="" title="Table of Contents">
+<pre>
 * [[What's Here]]. --the main contents, my work with the [[bash]] shell, a first-time reader should see the [[Reader's Guide]]
+* [[The Family Circle]] -- links to my life's interest,  four documents in this format: these Shell Functions, a Book Club, Liberal Thought, and my Diary
 * [[Rough Outline]] -- of the hierarchical portion
 
 Most recently modified:
@@ -15997,8 +16014,7 @@ sample_function ()
 </pre>
 </div>
 <div created="20200726185214128" creator="Marty McGowan" modified="20200909191726239" modifier="Marty McGowan" tags="url" title="TiddlyWiki">
-<pre>
-https://TIddlyWiki.com</pre>
+<pre>https://TIddlyWiki.com</pre>
 </div>
 <div created="20200910142425966" creator="Marty McGowan" modified="20200910142425966" modifier="Marty McGowan" title="TIddlyWiki">
 <pre></pre>
@@ -16088,7 +16104,6 @@ And while we're here, it's worth mentioning a delimiter collision that I just en
 </div>
 <div created="20200909193626492" creator="Marty McGowan" modified="20200909193749434" modifier="Marty McGowan" tags="code" title="tw_code">
 <pre>
-
 ```
 tw_blockfind () 
 { 
