@@ -709,6 +709,8 @@ Error message and password prompt
 
 <li>jointable</li>
 
+<li>justify</li>
+
 <li>lib_tidy</li>
 
 <li>libcmd</li>
@@ -12661,7 +12663,7 @@ exports.context = contextWidget;
 <div created="20200812191620607" creator="Marty McGowan" modified="20200909183002042" modifier="Marty McGowan" title="$:/state/tab--249387259">
 <pre>family</pre>
 </div>
-<div created="20200731191706535" creator="Marty McGOwan" modified="20200910134005183" modifier="Marty McGowan" title="$:/state/tab--325356957">
+<div created="20200731191706535" creator="Marty McGOwan" modified="20200913141549358" modifier="Marty McGowan" title="$:/state/tab--325356957">
 <pre>On /RDB</pre>
 </div>
 <div created="20200909145655359" creator="Marty McGowan" modified="20200909183324992" modifier="Marty McGowan" title="$:/state/tab--375703149">
@@ -12754,8 +12756,8 @@ exports.context = contextWidget;
 <div created="20200824125645008" creator="Marty McGowan" modified="20200824125645008" modifier="Marty McGowan" title="$:/state/tab-258018815">
 <pre>rdb formats</pre>
 </div>
-<div created="20200913003551204" creator="Marty McGowan" modified="20200913004759565" modifier="Marty McGowan" title="$:/state/tab-284017445">
-<pre>headoff_testcase</pre>
+<div created="20200913003551204" creator="Marty McGowan" modified="20200913141604284" modifier="Marty McGowan" title="$:/state/tab-284017445">
+<pre>headoff_code</pre>
 </div>
 <div created="20200902160236812" creator="Marty McGowan" modified="20200902161145771" modifier="Marty McGowan" title="$:/state/tab-344415643">
 <pre>ncolumn_testout</pre>
@@ -12766,8 +12768,8 @@ exports.context = contextWidget;
 <div created="20200824125655449" creator="Marty McGowan" modified="20200910122515850" modifier="Marty McGowan" title="$:/state/tab-559060247">
 <pre>rdb formats</pre>
 </div>
-<div created="20200823181320536" creator="Marty McGowan" modified="20200910184208677" modifier="Marty McGowan" title="$:/state/tab-613428447">
-<pre>rdb formats</pre>
+<div created="20200823181320536" creator="Marty McGowan" modified="20200913141555781" modifier="Marty McGowan" title="$:/state/tab-613428447">
+<pre>rdb commands</pre>
 </div>
 <div created="20200826150453563" creator="Marty McGowan" modified="20200826150453563" modifier="Marty McGowan" title="$:/state/tab-778389196">
 <pre>prominent families</pre>
@@ -12808,7 +12810,7 @@ exports.context = contextWidget;
 <div bag="default" created="20200810170615861" creator="M" modified="20200811134449245" modifier="Marty McGwan" revision="1" title="$:/status/UserName">
 <pre>Marty McGowan</pre>
 </div>
-<div created="20200913003403767" creator="Marty McGowan" list="headoff headoff_testcase headoff_code headoff_testdata headoff_testout [[Table of Contents]]" modified="20200913003403767" modifier="Marty McGowan" title="$:/StoryList">
+<div created="20200913141543812" creator="Marty McGowan" list="[[rdb commands]] headoff [[On /RDB]] [[What's Here]] [[Table of Contents]]" modified="20200913142408131" modifier="Marty McGowan" title="$:/StoryList">
 <pre></pre>
 </div>
 <div created="20200519141000553" list="$:/.giffmex/Buttons/more-tiddler-edit-actions $:/core/ui/Buttons/delete $:/core/ui/Buttons/cancel $:/core/ui/Buttons/save" modified="20200521145647980" tags="$:/giffmex/bigeditarea $:/giffmex/stroll" title="$:/tags/EditToolbar">
@@ -14355,6 +14357,9 @@ After a day of muddling, the code to syncronize the .*profiles and .alias.rc fil
 <div created="20200824182359454" creator="Marty McGowan" modified="20200824182359454" modifier="Marty McGowan" title="jointable">
 <pre></pre>
 </div>
+<div created="20200913150219844" creator="Marty McGowan" modified="20200913150219844" modifier="Marty McGowan" title="justify">
+<pre></pre>
+</div>
 <div created="20200910195255819" creator="Marty McGowan" modified="20200910195255819" modifier="Marty McGowan" title="lib_tidy">
 <pre></pre>
 </div>
@@ -14814,51 +14819,52 @@ names of prominent families:
 
 </pre>
 </div>
-<div created="20200824162939716" creator="Marty McGowan" modified="20200910133045697" modifier="Marty McGowan" tags="[[rdb usage]]" title="rdb commands">
+<div created="20200824162939716" creator="Marty McGowan" modified="20200913150219842" modifier="Marty McGowan" tags="[[rdb usage]]" title="rdb commands">
 <pre>[ [[On /RDB]]  ][ [[rdb commands]] ][ [[untested commands]] ]
 
 Commands with an asteriisk, e.g. &quot;-- *&quot; are list and table format sensitive. i.e. they deal with either format:
 
 
 ```
-rdb.$ column &lt; command.rdb | sorttable | tiddlylink command | fourColumnTiddly 
-
+rdb.$ column &lt; command.rdb | sorttable | tiddlylink command | fiveColumnTiddly 
 ```
 
-| !command | !status | !fmt | !abstract |
-|[[addcol]] |tested | |adds columns to a table |
-|[[blank]] |tested |* |replaces all data in a record with spaces |
-|[[check]] |tested | | |
-|[[column]] | |* |display columns of a table in any order |
-|[[compute]] | |* |calculates columns of a table |
-|[[cpdir]] | | | |
-|[[datatype]] |tested | |displays the datatype of each column selected |
-|[[dbdict]] |tested | |prints a database dictionary: the field names |
-|[[fd]] |testing | |tests for functional dependency of columns |
-|[[headoff]] |nexta | | |
-|[[jointable]] |testing | | |
-|[[listtotable]] |outline | | |
-|[[lock]] | | | |
-|[[ncolumn]] |tested |* |removes columns, &quot;Not Column&quot; |
-|[[not]] | | | |
-|[[project]] | | | |
-|[[rename]] |tested |* |change column names in head line |
-|[[replace]] | | | |
-|[[report]] | | | |
-|[[row]] | |* |makes new table where rows match logical condition |
-|[[rowhas]] |nextb | | |
-|[[rowis]] |nextb | | |
-|[[rowisnot]] |nextb | | |
-|[[schema]] |tested | |lists the database dictionary from table |
-|[[see]] | | | |
-|[[sorttable]] | |* |sorts a table by one or more columns |
-|[[tableorlist]] |tested |* |reports if a file is list, first character is a newline, or table if not |
-|[[tabletolist]] |outline | | |
-|[[todaysdate]] | | | |
-|[[tomorrow]] | | | |
-|[[union]] | | | |
-|[[width]] | | | |
-|[[word]] | | | |
+| !command | !type | !status | !fmt | !abstract |
+|[[addcol]] |func |tested | |adds columns to a table |
+|[[blank]] |func |tested |* |replaces all data in a record with spaces |
+|[[check]] |func |tested | | |
+|[[column]] |func | |* |display columns of a table in any order |
+|[[compute]] |func | |* |calculates columns of a table |
+|[[cpdir]] |func | | | |
+|[[datatype]] |func |tested | |displays the datatype of each column selected |
+|[[dbdict]] |func |tested | |prints a database dictionary: the field names |
+|[[fd]] |func |testing | |tests for functional dependency of columns |
+|[[headoff]] |func |tested | | |
+|[[jointable]] |func |nextb | | |
+|[[justify]] |file | | | |
+|[[listtotable]] |func |nexta | | |
+|[[lock]] |func | | | |
+|[[ncolumn]] |func |tested |* |removes columns, &quot;Not Column&quot; |
+|[[not]] |func | | | |
+|[[project]] |func | | | |
+|[[rename]] |func |tested |* |change column names in head line |
+|[[replace]] |func | | | |
+|[[report]] |func | | | |
+|[[row]] |func | |* |makes new table where rows match logical condition |
+|[[rowhas]] |func | | | |
+|[[rowis]] |func | | | |
+|[[rowisnot]] |func | | | |
+|[[schema]] |func |tested | |lists the database dictionary from table |
+|[[see]] |func | | | |
+|[[sorttable]] |func | |* |sorts a table by one or more columns |
+|[[tableorlist]] |func |tested |* |reports if a file is list, first character is a newline, or table if not |
+|[[tabletolist]] |func |nexta | | |
+|[[todaysdate]] |func | | | |
+|[[tomorrow]] |func | | | |
+|[[union]] |func | | | |
+|[[width]] |func | | | |
+|[[word]] |func | | |
+
 
 
 The sequence of steps:

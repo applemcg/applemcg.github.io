@@ -322,6 +322,18 @@ fourColumnTiddly ()
             { printf "|%s |%s |%s |%s |\n", $1, $2, $3, $4 }
    '
 }
+fiveColumnTiddly () 
+{ 
+    : convert an rdb table into a 5-column tiddly table;
+    : date: 2020-07-04;
+    report_notpipe && return 1;
+    tawk '
+    
+    NR == 1 { printf "| !%s | !%s | !%s | !%s | !%s |\n", $1, $2, $3, $4, $5}
+     NR < 3 { next };
+            { printf "|%s |%s |%s |%s |%s |\n", $1, $2, $3, $4, $5 }
+   '
+}
 toMIWreading () 
 { 
     : convert the reading list into the MyIdeaWarehouse format,;

@@ -1,36 +1,36 @@
-command	status	fmt	abstract
--------	------	---	--------
-addcol	tested		adds columns to a table
-blank	tested	*	replaces all data in a record with spaces
-check	tested		
-column		*	display columns of a table in any order
-compute		*	calculates columns of a table
-cpdir			
-datatype	tested		displays the datatype of each column selected
-dbdict	tested		prints a database dictionary: the field names
-fd	testing		tests for functional dependency of columns
-headoff	nexta		
-jointable	testing		
-justify			
-listtotable	outline		
-lock			
-ncolumn	tested	*	removes columns, "Not Column"
-not			
-project			
-rename	tested	*	change column names in head line
-replace			
-report			
-row		*	makes new table where rows match logical condition
-rowhas	nextb		
-rowis	nextb		
-rowisnot	nextb		
-schema	tested		lists the database dictionary from table
-see			
-sorttable		*	sorts a table by one or more columns
-tableorlist	tested	*	reports if a file is list, first character is a newline, or table if not
-tabletolist	outline		
-todaysdate			
-tomorrow			
-union			
-width			
-word			
+command	type	status	fmt	abstract
+-------	----	------	---	--------
+addcol	func	tested		adds columns to a table
+blank	func	tested	*	replaces all data in a record with spaces
+check	func	tested		
+column	func		*	display columns of a table in any order
+compute	func		*	calculates columns of a table
+cpdir	func			
+datatype	func	tested		displays the datatype of each column selected
+dbdict	func	tested		prints a database dictionary: the field names
+fd	func	testing		tests for functional dependency of columns
+headoff	func	tested		
+jointable	func	nextb		
+justify	file			
+listtotable	func	nexta		
+lock	func			
+ncolumn	func	tested	*	removes columns, "Not Column"
+not	func			
+project	func			
+rename	func	tested	*	change column names in head line
+replace	func			
+report	func			
+row	func		*	makes new table where rows match logical condition
+rowhas	func			
+rowis	func			
+rowisnot	func			
+schema	func	tested		lists the database dictionary from table
+see	func			
+sorttable	func		*	sorts a table by one or more columns
+tableorlist	func	tested	*	reports if a file is list, first character is a newline, or table if not
+tabletolist	func	nexta		
+todaysdate	func			
+tomorrow	func			
+union	func			
+width	func			
+word	func			
