@@ -1,6 +1,6 @@
 Count	field	value
 -----	-----	-----
-   6	render	
+6	render	
    1	render	add file: $(rdbhome)/man/whatis
    1	render	alias
    1	render	final

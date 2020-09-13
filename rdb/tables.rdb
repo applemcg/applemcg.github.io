@@ -1,6 +1,6 @@
 table	nrecrds	modate	fields
 -----	-------	------	------
-checktestdata.rdb	      2	2020-09-05	command status a b c 
+checktestdata.rdb	      2	2020-09-05	command status a b c
 column.tsv	     33	2020-09-06	command status fmt abstract 
 command.rdb	     33	2020-09-10	command status fmt abstract 
 date_tables.rdb	      8	2020-09-05	table date wkday 

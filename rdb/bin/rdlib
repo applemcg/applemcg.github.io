@@ -1,3 +1,35 @@
+_rdb_post () 
+{ 
+    : supply alternative to condition rdb output;
+    : date: 2020-04-11;
+    report_notpipe && return 1;
+    pr -5 -t
+}
+addcol () 
+{ 
+    : adds columns to a table;
+    : date: 2019-08-11;
+    : date: 2020-05-17;
+    read HEAD;
+    read DASH;
+    ( rdb_hdr $HEAD $@;
+    rcat ) | column $HEAD $@
+}
+applemcg () 
+{ 
+    : date: 2020-08-01;
+    : location: github REPO;
+    : date: 2020-08-27;
+    ${*:-echo} $(github)/applemcg.github.io
+}
+blank () 
+{ 
+    : replace all data in records with spaces;
+    ( read HEAD;
+    read DASH;
+    rdb_hdr $HEAD;
+    sed 's/[^	]/ /g' ) | tabletolist
+}
 check () 
 { 
     : reports any rows in which columns do not match head;
@@ -61,51 +93,135 @@ column ()
     rdb_hdr $@;
     rcat | awk "BEGIN { FS = OFS = \"\t\"; blank = \"""\"; }; { print $COL; }"
 }
-sorttable () 
+columns () 
 { 
-    : sort /RDB table according to books p. 398;
-    : single lettter with following arg TkSo;
-    : todo: accomodate field NAMES;
-    : date: 2020-04-11;
-    : simple rd sort $*;
+    : names of columns in a table;
+    : date: 2020-04-04;
+    set -- ${1:-$(latest_filesuf rdb)};
+    [[ -f $1 ]] && sed 1q $1 || table_report
+}
+compute () 
+{ 
+    : date: 2017-06-20;
+    : date: 2019-07-07;
+    : date: 2020-08-24;
+    :;
     read HEAD;
-    [[ -z "$HEAD" ]] && { 
+    if test -z "$HEAD"; then
         ( echo;
-        cat ) | listtotable | sorttable "$@" | tabletolist;
-        return 0
-    };
+        cat ) | listtotable | compute "$@" | tabletolist;
+        return 0;
+    fi;
     read DASH;
-    : sort -t ...;
-    ARGS="";
-    while [ -n "$1" ]; do
-        case $1 in 
-            --*)
-                : eschew or IGNORE -- args;
-                continue
-            ;;
-            -t)
-                : -t is a TAB, none other;
-                continue
-            ;;
-            -[koST])
-                : allow -k N args, prefer Column Name;
-                ARGS="$ARGS $1 $2";
-                shift
-            ;;
-            -*)
-                ARGS="$ARGS $1"
-            ;;
-            *)
-                : detect Column Name;
-                local argn=$(argnumber $1 $HEAD);
-                [[ $argn == 0 ]] && continue;
-                ARGS="$ARGS -k $argn"
-            ;;
-        esac;
-        shift;
-    done;
     rdb_hdr $HEAD;
-    sort -t'	' $ARGS
+    (( C = 1 ));
+    for I in $HEAD;
+    do
+        COLIN="$COLIN $I=\$$C;";
+        COLOUT="$COLOUT \$$C=$I;";
+        (( C += 1 ));
+    done;
+    : trace_call "IN, cmd, OUT: $COLIN; $cmmd; $COLOUT";
+    awklib='
+       function max(x,y) { return (x>y?x:y) }
+       function min(x,y) { return (x<y?x:y) }
+       function abs(x)   { return (x<0?-x:x) }
+    ';
+    [[ -n "$COLIN" ]] && { 
+        awk "
+        $awklib
+        BEGIN   { FS=OFS=\"\t\"}; { $COLIN $1; $COLOUT print }"
+    }
+}
+dbdict () 
+{ 
+    : prints a database dictionary: the field names;
+    : i am still looking for the test which admits both pipes and io redirection;
+    : /RDB, p. 288;
+    : date: 2020-08-24;
+    :;
+    sed 1q $* | awk '
+
+    BEGIN {
+            OFS="\t";
+	    print "field", "name";
+	    print "-----", "----";
+	}
+	{
+	  n = split($0, field,"\t");
+	  for (i=1; i<=n; i++) print i, field[i];
+        }
+    '
+}
+difference () 
+{ 
+    : for nearly identical TABLE, report the DIFFERENT records;
+    : uses: sed, UNIQ, the minus U option;
+    report_notfile $1 && return 1;
+    report_notfile $2 && return 2;
+    sed 2q $1;
+    ( headoff < $1;
+    headoff < $2 ) | sort | uniq -u
+}
+do_name_report () 
+{ 
+    : for each field, give NAME_REPORT, trimming NAME and SHDOC from column names;
+    : rdb: justify;
+    local all="$(columns)";
+    all=${all/name/};
+    all=${all/shdoc/};
+    app_trace all: $all;
+    for field in $all;
+    do
+        cat $(latest_filesuf rdb) | name_report $field | justify;
+        echo;
+        trace_call $field ===;
+        echo;
+    done;
+    shd_report
+}
+fold_2 () 
+{ 
+    : just the ABSTR and TODO columns;
+    : sql: row;
+    tbl_fmlist | row 'tag ~ /abstr/ || tag ~ /todo/'
+}
+fold_b () 
+{ 
+    : the latet hdr record;
+    cat $(ls -t *.hdr | sed 1q)
+}
+from_trto () 
+{ 
+    : move tag-record pairs to attirb ... columns;
+    : rdb: addcol compute ncolumn;
+    addcol $* | compute "$(tag_fmrecord $*)" | ncolumn tag record
+}
+fun_emptylist () 
+{ 
+    : produce a list of LT wiki commands;
+    row 'status !~ /wiki/' < working.rdb | column command | headoff
+}
+fun_template () 
+{ 
+    set -- ${1:-$(pick $(fun_emptylist))};
+    printf "<<tabs";
+    printf " \"";
+    printf "[[${1}_code]] ";
+    printf "[[${1}_testcase]] ";
+    printf "[[${1}_testdata]] ";
+    printf "[[${1}_testout]] ";
+    printf "\" ";
+    printf "\"[[${1}_code]]\" ";
+    printf "\"\" ";
+    printf "\"tc-vertical\">>\n"
+}
+github () 
+{ 
+    : smart github, e.g. github pushd, github ls -l, ...;
+    : location: where the GIT repos live;
+    : date: 2020-08-14;
+    ${*:-echo} $HOME/Dropbox/git
 }
 h_repair () 
 { 
@@ -163,21 +279,49 @@ h_update ()
     mv $3 $2;
     backup $2
 }
+hdr_row () 
+{ 
+    : produce the field names from a list format;
+    set -- ${1:-$(ls -t *_list.txt)};
+    set -- $1 ${1%_list.txt}.hdr;
+    newest $2 $1 || { 
+        field 1 < $1 | printfirst > $2
+    };
+    cat $2
+}
 headoff () 
 { 
     : remove the RDB header from a TABLE, see Book p. 311;
     : it makes NO sense to take the head off a LIST format;
     : without first converting to a TABLE.;
     : date: 2019-08-14;
-    case $# in
-    0 )
-	 tail +3
-	 ;;
-    * )
-         report_notfile $1 && return 1
-	 tail +3 < $1
-	 ;;
+    case $# in 
+        0)
+            tail +3
+        ;;
+        *)
+            report_notfile $1 && return 1;
+            tail +3 < $1
+        ;;
     esac
+}
+hold_r () 
+{ 
+    : attempt to collapse multiple keys to one-each record of multi-field data;
+    : todo: not ready for prime time. default isnt robust;
+    rd awk -F'\t' '
+        {
+	  key[$1] = $1
+	  two[$1] = (($2 !~ /""/)? $2: two[$1])
+	  three[$1] = (($3 !~ /""/)? $3: three[$1])
+	}
+    END {
+          for(r in key) {
+
+	      printf "%s\t%s\t%s\n", key[r], two[r], three[r]
+	  }
+	}
+     '
 }
 hwrite () 
 { 
@@ -197,9 +341,218 @@ hz ()
     set -- $(reverseArgs ${*:2});
     ${*:-zcat} $history
 }
+jointable () 
+{ 
+    : join two tables into one where keys match;
+    : for historic compatibility, -jN is preserved, and;
+    : uses join with -j N;
+    : todo: "sort" out leading column name;
+    : date: 2017-03-26;
+    : date: 2020-04-11;
+    local COLS="";
+    local ARGS="";
+    local f1="";
+    local f2="";
+    read_devtty "$(myname) ( $* )";
+    while [ $# -gt 0 ]; do
+        arg=$1;
+        shift;
+        read_devtty arg: $arg;
+        case $arg in 
+            -)
+                if [ -z "$f1" ]; then
+                    cat - > .tmp.i.join;
+                    f1=.tmp.i.join;
+                else
+                    cat - > .tmp.i.join;
+                    f2=.tmp.i.join;
+                fi;
+                read_devtty arg, f1, f2: $arg, $f1, $f2
+            ;;
+            -t)
+                : ignore the T, apply after args are parsed;
+                continue
+            ;;
+            -j1 | -1)
+                local j1=$1;
+                shift
+            ;;
+            -j2 | -2)
+                local j2=$1;
+                shift
+            ;;
+            -[aoj])
+                : ignore these
+            ;;
+            -[ve12])
+                ARGS="$ARGS $arg $1";
+                shift
+            ;;
+            -*)
+                ARGS="$ARGS $arg"
+            ;;
+            *)
+                read_devtty arg, f1, f2: $arg, $f1, $f2;
+                : column names or file args;
+                if [ ! -f $arg ]; then
+                    COLS="$COLS $arg";
+                    :;
+                else
+                    if [ -z "$f1" ]; then
+                        f1=$arg;
+                        :;
+                    else
+                        if [ -z "$f2" ]; then
+                            f2=$arg;
+                        fi;
+                    fi;
+                fi;
+                read_devtty now f1, f2: $f1, $f2
+            ;;
+        esac;
+    done;
+    read_devtty last f1, f2: $f1, $f2;
+    report_notfile $f1 && return 1;
+    report_notfile $f2 && return 2;
+    : --------------------------------------------------- clean up args --;
+    :;
+    : ---------------------------- multi-arg resolution --;
+    :;
+    [[ -n "$j1" ]] && { 
+        ARGS="$ARGS -1 $(rdb_column $f1 $j1)"
+    };
+    [[ -n "$j2" ]] && { 
+        ARGS="$ARGS -2 $(rdb_column $f2 $j2)"
+    };
+    :;
+    : ---------------- TAB is tne only field separator --;
+    :;
+    : date: 2020-09-08 in which i learned this bash syntax;
+    : ref: "https://duckduckgo.com/?t=ffab&q=bash+join+tab";
+    ARGS="$ARGS -t $'\t'";
+    read_devtty ARGS: $ARGS;
+    : --------------------------------------------- collect the columns --;
+    :;
+    local COL1=$(sed 1q $f1);
+    local COL2=$(sed 1q $f2);
+    :;
+    read_devtty FILE: $f1, COLUMNS: $COL1;
+    cat $f1 | column $COL1 | sorttable $j1 | headoff > .tmp.a.join;
+    :;
+    read_devtty FILE: $f2, COLUMNS: $COL2;
+    cat $f2 | column $COL2 | sorttable $j2 | headoff > .tmp.b.join;
+    :;
+    set -- $(args_uniq $COL1 $COL2);
+    read_devtty rdb_hdr $*;
+    rdb_hdr $*;
+    read_devtty join $ARGS .tmp.{a,b}.join;
+    eval join $ARGS .tmp.{a,b}.join
+}
+latest_filesuf () 
+{ 
+    : latest modifed file with suffix, default TXT;
+    : uses: sed;
+    set -- ${1:-txt};
+    ls -t *.$1 | sed 1q
+}
 length () 
 { 
     return
+}
+listtableornaught () 
+{ 
+    : table or list or ?? for one file or STDIN;
+    : manual doesnt allow OTHER file type, and;
+    : LIST format needs to check the 2nd line for a single TAB;
+    : date: 2020-09-06;
+    [[ $# -eq 1 ]] && report_notfile $1 && return 1;
+    awk -v name=${1:-""} '
+    function found(type, ex) { printf fmt, type, name; exit ex }
+    BEGIN { FS = "\t"; fmt = "%s\t%s\n" }
+    #
+    # --------------------------------- isolate the LIST format	--
+    #
+    NR == 1 && NF < 1           { qlist = 1; }
+    NR == 2 && NF == 2 && qlist { found( "list",  1) }
+    #
+    # -------------------------------- isolate the TABLE format	--
+    #
+    NR > 2                      { exit; }
+    NR == 1                     { next; }
+    #
+    # ------------------------- the second record, ?? Dashes ??	--
+    #
+    NF > 1 && $2 ~ /^--*$/      { found( "table", 0) }
+    $1 ~ /^--*$/                { found( "table", 0) }
+
+    ' $1
+}
+listtotable () 
+{ 
+    : reads stdin or named files in LIST format, converting to TABLE;
+    : to relieve a possible non-EMPTY Line at the END of the file, added flushed;
+    : an awkism "!flushed" is not the same as "flushed > 0";
+    : uses: awk;
+    : 2020-09-06 added flushed. still needs a separate test .;
+    awk '
+#    
+# ------------------------------------------------------- awk functions	--
+#
+function concat(var,str) { return ((var)? (var OFS str): (str)); }
+
+function posset(n)       {
+	#
+        # -------------- store the field position names for later fetch	--
+        if(!posget[n]) {
+
+	    posget[n]=++nf
+        }
+        return posget[n]
+    }
+
+function send(f,i)    { printf f, field[i]; field[i]="" }
+function eachRecord() {
+
+         if (!head) { printf "%s\n%s", HEAD, DASH; head=1 }
+
+                         send("\n", "")  # preceed with a newline.
+                         send("%s",i=1)  # send all fields,
+         while(++i<=nf)  send("\t%s",i)  # some may have blanks
+
+         print "# RECORD, NR,NF,flushed: " NR, NF, flushed, $0 > stderr
+
+         flushed = 0
+       }
+# --------------------------------------------------------- listtotable	--
+BEGIN  {
+         FS = OFS = "\t";
+	 stderr = ".awk.err";
+       }
+
+NF < 1 { if (NR>1) { eachRecord();  next; }; }
+ 
+head != 1 && $1 != "" {
+
+         HEAD = concat(HEAD, $1)
+         DASH = concat(DASH, substr("--------------",1,length($1)))
+         field[posset($1)] = $2
+         next
+       }
+       { field[posget[$1]] = $2
+         flushed++
+       }
+       
+END    { if(flushed > 0) eachRecord() }       
+    '
+}
+name_report () 
+{ 
+    : project NAME and VALUE of the ROWs with the ATTRIBUTE, default ABSTR;
+    : sql: column row;
+    : date: 2020-04-04;
+    report_notpipe && return 1;
+    set -- ${1:-abstr};
+    column name $1 | row $1
 }
 ncolumn () 
 { 
@@ -242,6 +595,17 @@ newest_first ()
     : date: 2020-02-24 ls -dt is 14x faster;
     ls -dt $(onlyfiles $*);
     : foreach stat_mtimefile $* PIPE sort -r PIPE field 2
+}
+not () 
+{ 
+    : date: 2020-08-24;
+    comment TRACE not $# ARGS $*;
+    quietly comment -- inverts result;
+    if eval $*; then
+        exit 255;
+    else
+        exit 0;
+    fi
 }
 number () 
 { 
@@ -289,101 +653,20 @@ rd ()
     rdb_hdr $HEAD;
     "$@"
 }
-rd_addf_doc () 
+rdCount () 
 { 
-    cat <<EOF
-    name: rd_addf
-    args: table field(s) ...
-    test: rd_addf_test
-    insert an extra field in an RDB table, it's history, and current file.
-    the problem arises in that the history mechanism relies on a consistent set of fields
-    idea: this version appends the field(s) as the last columns in the table.
-EOF
-
-}
-rd_copyright () 
-{ 
-    : mfg: fam_iam;
-    : date: 2019-01-23;
-    comment "Copyright (C) 2019, JYATL - Just Yet Another Testing Lab;";
-    comment "mailto:edu <dot> MIT {dot} alum {aT} martymcgowan;";
-    : "mfgd:appleton.local//Users/martymcgowan 2019_0424_143349"
-}
-rd_datarow () 
-{ 
-    : mfg: rd_syncf;
-    : date: 2019-01-23;
-    report_notpipe && return 1;
-    row command | row render | row type | row attrib
-}
-rd_firsttime () 
-{ 
-    : mfg: fam_iam;
-    : date: 2019-01-23;
-    rd_copyright;
-    unset rd_firsttime
-}
-rd_newhistory () 
-{ 
-    : app_trace $*;
-    cat $1 | column {insert,delete}_time ${*:2}
-}
-rd_nontoday () 
-{ 
-    : date: 2017-12-17;
-    report_notpipe && return 1;
-    local sod=$(yymmdd)000000;
-    row "insert_time < $sod && delete_time < $sod"
-}
-rd_rowsof () 
-{ 
-    printf " row %s " $1;
-    shift;
-    for field in $*;
-    do
-        printf "| row %s " $field;
-    done
-}
-rd_syncf_doc () 
-{ 
-    cat <<EOF
-    name: rd_syncf
-    args: table field(s) ...
-    test: rd_syncf
-    establishes a class of
-    + file names ...: RD_ TABLE, TEMP, ERRF, HISTORY, and PACKED
-    + argument names: RD_ NAME, CFIELDS: suffix-less table name, Current field names
-    + and a user function rd_datarow, which returns only rows with no empty fields
-        since an idiom "awk NF" returns the nonempty rows.
-    for an existing file argument, it is assigned the TABLE name,
-      and either the PACKED or HISTORY file is also created.
-EOF
-
-}
-rd_update () 
-{ 
-    : date: 2019-08-16;
-    set $1 $(hwrite $1.Z);
-    set $1 ${2%.Z} ${2%.*.Z}.nxt $2;
-    app_trace file: $1, history: $2, next: $3, packed: $4;
-    [[ -f $4 ]] && { 
-        rm -f $2;
-        uncompress $4
-    };
-    report_notfile $2 History of $1 && return 4;
-    app_trace RDUPDATE $(ls -l $1);
-    rdupdate $1 > $3;
-    app_trace RDUPDATE $(ls -l $3);
-    report_notfile $3 Temporary History of $1 && return 3;
-    mv -f $3 $2;
-    app_trace MOVED To $(ls -l $2);
-    report_notfile $2 Updated History of $1 && return 2;
-    compress $2;
-    app_trace COMPRESSED to $(ls -l $4);
-    report_notfile $4 Updated Packed History of $1 && return 4;
-    backup $4;
-    chmod -w $4;
-    app_trace UNWRITABLE at $(ls -l $4)
+    : date: 2020-04-16;
+    comment TRACE rdCount $# ARGS $*;
+    quietly comment -- Relational Data UNIQ;
+    uniq -c | awk '
+BEGIN  { OFS = "\t" }
+NR == 1 { $1 = "Count" }
+NR == 2 { $1 = "-----" }
+       { print }
+' | sed '
+#  s/^  *//
+ s/\(^ *[0123456789][0123456789]*\)  */\1	/
+'
 }
 rdb () 
 { 
@@ -401,17 +684,6 @@ rdb ()
     };
     indir $(rdb_home)/bin _rdb | _rdb_post;
     unset _rdb
-}
-_rdb_post () 
-{ 
-    : supply alternative to condition rdb output;
-    : date: 2020-04-11;
-    report_notpipe && return 1;
-    pr -5 -t
-}
-updates () 
-{ 
-    app_trace $*
 }
 rdb_canon () 
 { 
@@ -503,6 +775,12 @@ rdb_col ()
     : app_trace $*;
     rdb_data $1 | rdb_current | column $2
 }
+rdb_commands () 
+{ 
+    : list the BOOK command names;
+    : date: 2020-04-11;
+    grep command $(rdb_home)/lib/command.lst | field 2 | sort -u
+}
 rdb_create () 
 { 
     : app_trace $# $*;
@@ -541,6 +819,12 @@ rdb_historydates ()
 	d_date = substr(delete_time,1,6)
 
    ' | ncolumn {insert,delete}_time
+}
+rdb_home () 
+{ 
+    : the HOME directory of /RDB development and runtime;
+    : date: 2020-04-11;
+    ${*:-echo} $(home)/rdb
 }
 rdb_iDate () 
 { 
@@ -718,6 +1002,136 @@ rename ()
     rdb_hdr $HEAD;
     cat
 }
+repair () 
+{ 
+    : ~ table with inconsistent records;
+    set -- ${1:-working.rdb};
+    set $1 ${1%.rdb}.nxt;
+    check < $1 && return;
+    column < $1 | awk NF > $2;
+    doit mv $2 $1
+}
+row () 
+{ 
+    : SELECT rows matching argument criteria,;
+    : expressed as AWK pattern. e.g. "date > 20170210";
+    : where "date" in this case is a field name in table header;
+    : reads STDIN for RDB list or TABLE format,;
+    : date: 2017-05-11;
+    : date: 2020-05-17 RCAT replaces CAT;
+    :;
+    : an empty first row is assumed to be in LIST format;
+    : date 2017-02-10;
+    local COL="";
+    local HEAD;
+    local DASH;
+    report_exceedargcount 1 $# "field ~ /pattern/ || ..." && return 2;
+    read HEAD;
+    [[ -z "$HEAD" ]] && { 
+        app_trace $*;
+        ( echo;
+        rcat ) | listtotable | row "$@" | tabletolist;
+        exit 0
+    };
+    read DASH;
+    rdb_hdr $HEAD;
+    (( C = 1 ));
+    for I in $HEAD;
+    do
+        COL="$COL $I=\$$C;";
+        (( C += 1 ));
+    done;
+    : app_trace 1: $1, COL: $COL;
+    [[ -n "$COL" ]] && { 
+        : comment awk "BEGIN { FS = OFS = \"\t\" }; { $COL } $1 { print }";
+        awk "BEGIN { FS = OFS = \"\t\" }; { $COL }; $1 { print }"
+    }
+}
+schema () 
+{ 
+    : lists the database dictionary from tables;
+    function _do_schema () 
+    { 
+        if tableorlist < $1 > /dev/null; then
+            sed 1q $1;
+        else
+            listtotable $1 | sed 1q;
+        fi | awk -v name=$1 '
+
+           BEGIN { OFS = "\t" }
+	         {
+		   for (i=1; i <= NF; i++) {
+		       print name, i, $i
+		       }
+		 }
+           '
+    };
+    rdb_hdr Table Field Name;
+    foreach _do_schema $*
+}
+see () 
+{ 
+    : displays non-printing, e.g. TABS, EOL as well as printing;
+    cat -v | sed 's/	/^I/g; s/$/$/'
+}
+shd_report () 
+{ 
+    : report from the Functions SHDOC list format;
+    : rdb: listtotable rd ncolumn;
+    cat ${1:-$(ls -t *_docs.txt|sed 1q)} | listtotable | rd sort | ncolumn seqn
+}
+sortable () 
+{ 
+    : shorthand for sorttable;
+    : date: 2020-08-01;
+    sorttable $@
+}
+sorttable () 
+{ 
+    : sort /RDB table according to books p. 398;
+    : single lettter with following arg TkSo;
+    : todo: accomodate field NAMES;
+    : date: 2020-04-11;
+    : simple rd sort $*;
+    read HEAD;
+    [[ -z "$HEAD" ]] && { 
+        ( echo;
+        cat ) | listtotable | sorttable "$@" | tabletolist;
+        return 0
+    };
+    read DASH;
+    : sort -t ...;
+    ARGS="";
+    while [ -n "$1" ]; do
+        case $1 in 
+            --*)
+                : eschew or IGNORE -- args;
+                continue
+            ;;
+            -t)
+                : -t is a TAB, none other;
+                continue
+            ;;
+            -[koST])
+                : allow -k N args, prefer Column Name;
+                ARGS="$ARGS $1 $2";
+                shift
+            ;;
+            -*)
+                ARGS="$ARGS $1"
+            ;;
+            *)
+                : detect Column Name;
+                local argn=$(argnumber $1 $HEAD);
+                [[ $argn == 0 ]] && continue;
+                ARGS="$ARGS -k $argn"
+            ;;
+        esac;
+        shift;
+    done;
+    rdb_hdr $HEAD;
+    sort -t'	' $ARGS
+}
 stat_mtimefile () 
 { 
     : date: 2019-08-31;
@@ -725,6 +1139,25 @@ stat_mtimefile ()
     file=$1;
     set -- $(stat -r $file 2>/dev/null);
     echo ${10} $file
+}
+tableorlist () 
+{ 
+    : reports if a file is table, list or ignores non /rdb files;
+    : see: listtableornaught;
+    case $# in 
+        0 | 1)
+            [[ $# = 1 ]] && { 
+                listtableornaught $1;
+                return $?
+            };
+            listtableornaught
+        ;;
+        *)
+            rdb_hdr Type File;
+            foreach listtableornaught $* 2> /dev/null;
+            return 0
+        ;;
+    esac
 }
 tabletolist () 
 { 
@@ -749,6 +1182,49 @@ tabletolist ()
                   printf "\n"
                 }
         ' $*
+}
+tag_fmrecord () 
+{ 
+    : do require actual args, because;
+    : format as "if( tag ~ /{tagname}/ ) {tagname} = record";
+    awk -v fields="$*" '
+
+    BEGIN {
+            nc = split(fields, fn)
+	    printf "Fields: %s, NC: %d\n", fields, nc >/dev/stderr
+	    printf "fn[%d] %s\n", 1, fn[1] >/dev/stderr
+	    printf "fn[%d] %s\n", 2, fn[2] >/dev/stderr	    	    
+
+    	      c = ""
+	    fmt = "%s if( tag ~ /%s/) %s = record"
+	    
+            # for each field name
+
+	    for(i = 1; i <= nc; i++) {
+                t = fn[i]
+     	        printf "\nDEBUG\tc: <%s>\n", c > /dev/stderr
+                printf "\tN: %s         \n", t > /dev/stderr
+                printf fmt, c, t, t
+		c=";"
+	     }
+	}     
+    '
+}
+tbl_fmlist () 
+{ 
+    : from LIST to full-formed TABLE;
+    : test case is FUNCTION TAGS;
+    : lesson: DEFAULT is not acceptable TAG;
+    set -- ${1:-$(ls -t *_list.txt)};
+    report_notfile $1 && return 1;
+    set -- $1 ${1%_list.txt}.rdb;
+    ( hdr_row $1;
+    cat $1 ) | listtotable | awk NF | tee $2
+}
+tbltool () 
+{ 
+    : first name in a list of functions names the data tables;
+    ${*:-llrt} $(myname)*
 }
 test_data () 
 { 
@@ -804,380 +1280,9 @@ test_setup ()
     sleep 1;
     cp test.rdb $1
 }
-tbltool () 
+updates () 
 { 
-    : first name in a list of functions names the data tables;
-    ${*:-llrt} $(myname)*
-}
-tbl_fmlist () 
-{ 
-    : from LIST to full-formed TABLE;
-    : test case is FUNCTION TAGS;
-    : lesson: DEFAULT is not acceptable TAG;
-    set -- ${1:-$(ls -t *_list.txt)};
-    report_notfile $1 && return 1;
-    set -- $1 ${1%_list.txt}.rdb;
-    ( hdr_row $1;
-    cat $1 ) | listtotable | awk NF | tee $2
-}
-hdr_row () 
-{ 
-    : produce the field names from a list format;
-    set -- ${1:-$(ls -t *_list.txt)};
-    set -- $1 ${1%_list.txt}.hdr;
-    newest $2 $1 || { 
-        field 1 < $1 | printfirst > $2
-    };
-    cat $2
-}
-fold_2 () 
-{ 
-    : just the ABSTR and TODO columns;
-    : sql: row;
-    tbl_fmlist | row 'tag ~ /abstr/ || tag ~ /todo/'
-}
-fold_b () 
-{ 
-    : the latet hdr record;
-    cat $(ls -t *.hdr | sed 1q)
-}
-tag_fmrecord () 
-{ 
-    : do require actual args, because;
-    : format as "if( tag ~ /{tagname}/ ) {tagname} = record";
-    awk -v fields="$*" '
-
-    BEGIN {
-            nc = split(fields, fn)
-	    printf "Fields: %s, NC: %d\n", fields, nc >/dev/stderr
-	    printf "fn[%d] %s\n", 1, fn[1] >/dev/stderr
-	    printf "fn[%d] %s\n", 2, fn[2] >/dev/stderr	    	    
-
-    	      c = ""
-	    fmt = "%s if( tag ~ /%s/) %s = record"
-	    
-            # for each field name
-
-	    for(i = 1; i <= nc; i++) {
-                t = fn[i]
-     	        printf "\nDEBUG\tc: <%s>\n", c > /dev/stderr
-                printf "\tN: %s         \n", t > /dev/stderr
-                printf fmt, c, t, t
-		c=";"
-	     }
-	}     
-    '
-}
-listtotable () 
-{ 
-    : reads stdin or named files in LIST format, converting to TABLE;
-    : to relieve a possible non-EMPTY Line at the END of the file, added flushed;
-    : an awkism "!flushed" is not the same as "flushed > 0";
-    : uses: awk;
-    : 2020-09-06 added flushed. still needs a separate test .;
-    awk '
-#    
-# ------------------------------------------------------- awk functions	--
-#
-function concat(var,str) { return ((var)? (var OFS str): (str)); }
-
-function posset(n)       {
-	#
-        # -------------- store the field position names for later fetch	--
-        if(!posget[n]) {
-
-	    posget[n]=++nf
-        }
-        return posget[n]
-    }
-
-function send(f,i)    { printf f, field[i]; field[i]="" }
-function eachRecord() {
-
-         if (!head) { printf "%s\n%s", HEAD, DASH; head=1 }
-
-                         send("\n", "")  # preceed with a newline.
-                         send("%s",i=1)  # send all fields,
-         while(++i<=nf)  send("\t%s",i)  # some may have blanks
-
-         print "# RECORD, NR,NF,flushed: " NR, NF, flushed, $0 > stderr
-
-         flushed = 0
-       }
-# --------------------------------------------------------- listtotable	--
-BEGIN  {
-         FS = OFS = "\t";
-	 stderr = ".awk.err";
-       }
-
-NF < 1 { if (NR>1) { eachRecord();  next; }; }
- 
-head != 1 && $1 != "" {
-
-         HEAD = concat(HEAD, $1)
-         DASH = concat(DASH, substr("--------------",1,length($1)))
-         field[posset($1)] = $2
-         next
-       }
-       { field[posget[$1]] = $2
-         flushed++
-       }
-       
-END    { if(flushed > 0) eachRecord() }       
-    '
-}
-from_trto () 
-{ 
-    : move tag-record pairs to attirb ... columns;
-    : rdb: addcol compute ncolumn;
-    addcol $* | compute "$(tag_fmrecord $*)" | ncolumn tag record
-}
-columns () 
-{ 
-    : names of columns in a table;
-    : date: 2020-04-04;
-    set -- ${1:-$(latest_filesuf rdb)};
-    [[ -f $1 ]] && sed 1q $1 || table_report
-}
-name_report () 
-{ 
-    : project NAME and VALUE of the ROWs with the ATTRIBUTE, default ABSTR;
-    : sql: column row;
-    : date: 2020-04-04;
-    report_notpipe && return 1;
-    set -- ${1:-abstr};
-    column name $1 | row $1
-}
-do_name_report () 
-{ 
-    : for each field, give NAME_REPORT, trimming NAME and SHDOC from column names;
-    : rdb: justify;
-    local all="$(columns)";
-    all=${all/name/};
-    all=${all/shdoc/};
-    app_trace all: $all;
-    for field in $all;
-    do
-        cat $(latest_filesuf rdb) | name_report $field | justify;
-        echo;
-        trace_call $field ===;
-        echo;
-    done;
-    shd_report
-}
-hold_r () 
-{ 
-    : attempt to collapse multiple keys to one-each record of multi-field data;
-    : todo: not ready for prime time. default isnt robust;
-    rd awk -F'\t' '
-        {
-	  key[$1] = $1
-	  two[$1] = (($2 !~ /""/)? $2: two[$1])
-	  three[$1] = (($3 !~ /""/)? $3: three[$1])
-	}
-    END {
-          for(r in key) {
-
-	      printf "%s\t%s\t%s\n", key[r], two[r], three[r]
-	  }
-	}
-     '
-}
-rdb_home () 
-{ 
-    : the HOME directory of /RDB development and runtime;
-    : date: 2020-04-11;
-    ${*:-echo} $(home)/rdb
-}
-rdb_commands () 
-{ 
-    : list the BOOK command names;
-    : date: 2020-04-11;
-    grep command $(rdb_home)/lib/command.lst | field 2 | sort -u
-}
-jointable () 
-{ 
-    : join two tables into one where keys match;
-    : for historic compatibility, -jN is preserved, and
-    : uses join with -j N
-    : todo: "sort" out leading column name
-    : date: 2017-03-26;
-    : date: 2020-04-11;
-    local COLS="";
-    local ARGS="";
-    local f1="";
-    local f2="";
-    read_devtty "$(myname) ( $* )"
-    while [ $# -gt 0 ]; do
-        arg=$1;
-        shift;
-        read_devtty arg: $arg;
-        case $arg in 
-            -)
-                if [ -z "$f1" ]; then
-                    cat - > .tmp.i.join;
-                    f1=.tmp.i.join;
-                else
-                    cat - > .tmp.i.join;
-                    f2=.tmp.i.join;
-                fi
-		read_devtty arg, f1, f2: $arg, $f1, $f2
-
-		
-            ;;
-            -t)
-                : ignore the T, apply after args are parsed;
-                continue
-            ;;
-	    -j1 | -1 )
-		local j1=$1; shift
-		;;
-
-	    -j2 | -2 )
-		local j2=$1; shift
-		;;
-            -[aoj])
-	        : ignore these 
-	        ;;
-            -[ve12])
-                ARGS="$ARGS $arg $1";
-                shift
-            ;;
-            -*)
-                ARGS="$ARGS $arg"
-            ;;
-            *)
-		read_devtty arg, f1, f2: $arg, $f1, $f2	    
-                : column names or file args;
-                if [ ! -f $arg ]; then
-                    COLS="$COLS $arg";
-                    :;
-                else
-                    if [ -z "$f1" ]; then
-                        f1=$arg;
-                        :;
-                    else
-                        if [ -z "$f2" ]; then
-                            f2=$arg;
-                        fi;
-                    fi;
-                fi
-		read_devtty now f1, f2: $f1, $f2
-            ;;
-        esac;
-    done;
-    read_devtty last f1, f2: $f1, $f2
-    report_notfile $f1 && return 1;
-    report_notfile $f2 && return 2;
-    : --------------------------------------------------- clean up args	--
-    :
-    : ---------------------------- multi-arg resolution	--
-    :
-    [[ -n "$j1" ]] && {  ARGS="$ARGS -1 $(rdb_column $f1 $j1)"; }
-    [[ -n "$j2" ]] && {  ARGS="$ARGS -2 $(rdb_column $f2 $j2)"; }
-    : 
-    : ---------------- TAB  is tne only field separator	--
-    :
-    : date: 2020-09-08 in which i learned this bash syntax
-    : ref: "https://duckduckgo.com/?t=ffab&q=bash+join+tab"
-    ARGS="$ARGS -t $'\t'";
-    read_devtty ARGS: $ARGS
-    : --------------------------------------------- collect the columns	--
-    :
-    local COL1=$(sed 1q $f1);
-    local COL2=$(sed 1q $f2);
-    :
-    read_devtty FILE: $f1, COLUMNS: $COL1
-    cat $f1 | column $COL1 | sorttable $j1 | headoff > .tmp.a.join;
-    : 
-    read_devtty FILE: $f2, COLUMNS: $COL2;
-    cat $f2 | column $COL2 | sorttable $j2 | headoff > .tmp.b.join;
-    :
-    set -- $(args_uniq $COL1 $COL2);
-    read_devtty rdb_hdr $*;
-    rdb_hdr $*;
-    read_devtty join $ARGS .tmp.{a,b}.join;
-    eval join $ARGS .tmp.{a,b}.join
-}
-row () 
-{ 
-    : SELECT rows matching argument criteria,;
-    : expressed as AWK pattern. e.g. "date > 20170210";
-    : where "date" in this case is a field name in table header;
-    : reads STDIN for RDB list or TABLE format,;
-    : date: 2017-05-11;
-    : date: 2020-05-17 RCAT replaces CAT;
-    :;
-    : an empty first row is assumed to be in LIST format;
-    : date 2017-02-10;
-    local COL="";
-    local HEAD;
-    local DASH;
-    report_exceedargcount 1 $# "field ~ /pattern/ || ..." && return 2;
-    read HEAD;
-    [[ -z "$HEAD" ]] && { 
-        app_trace $*;
-        ( echo;
-        rcat ) | listtotable | row "$@" | tabletolist;
-        exit 0
-    };
-    read DASH;
-    rdb_hdr $HEAD;
-    (( C = 1 ));
-    for I in $HEAD;
-    do
-        COL="$COL $I=\$$C;";
-        (( C += 1 ));
-    done;
-    : app_trace 1: $1, COL: $COL;
-    [[ -n "$COL" ]] && { 
-        : comment awk "BEGIN { FS = OFS = \"\t\" }; { $COL } $1 { print }";
-        awk "BEGIN { FS = OFS = \"\t\" }; { $COL }; $1 { print }"
-    }
-}
-shd_report () 
-{ 
-    : report from the Functions SHDOC list format;
-    : rdb: listtotable rd ncolumn;
-    cat ${1:-$(ls -t *_docs.txt|sed 1q)} | listtotable | rd sort | ncolumn seqn
-}
-latest_filesuf () 
-{ 
-    : latest modifed file with suffix, default TXT;
-    : uses: sed;
-    set -- ${1:-txt};
-    ls -t *.$1 | sed 1q
-}
-rdCount () 
-{ 
-    : date: 2020-04-16;
-    comment TRACE rdCount $# ARGS $*;
-    quietly comment -- Relational Data UNIQ;
-    uniq -c | awk '
-BEGIN  { OFS = "\t" }
-NR == 1 { $1 = "Count" }
-NR == 2 { $1 = "-----" }
-       { print }
-' | sed '
-#  s/^  *//
- s/\(^ *[0123456789][0123456789]*\)  */\1	/
-'
-}
-addcol () 
-{ 
-    : adds columns to a table;
-    : date: 2019-08-11;
-    : date: 2020-05-17;
-    read HEAD;
-    read DASH;
-    ( rdb_hdr $HEAD $@;
-    rcat ) | column $HEAD $@
-}
-sortable () 
-{ 
-    : shorthand for sorttable;
-    : date: 2020-08-01;
-    sorttable $@
+    app_trace $*
 }
 width () 
 { 
@@ -1203,202 +1308,4 @@ width ()
               }
               printf "\n"
             }'
-}
-difference () 
-{ 
-    : for nearly identical TABLE, report the DIFFERENT records;
-    : uses: sed, UNIQ, the minus U option;
-    report_notfile $1 && return 1;
-    report_notfile $2 && return 2;
-    sed 2q $1;
-    ( headoff < $1;
-    headoff < $2 ) | sort | uniq -u
-}
-compute () 
-{ 
-    : date: 2017-06-20;
-    : date: 2019-07-07;
-    : date: 2020-08-24;
-    :;
-    read HEAD;
-    if test -z "$HEAD"; then
-        ( echo;
-        cat ) | listtotable | compute "$@" | tabletolist;
-        return 0;
-    fi;
-    read DASH;
-    rdb_hdr $HEAD;
-    (( C = 1 ));
-    for I in $HEAD;
-    do
-        COLIN="$COLIN $I=\$$C;";
-        COLOUT="$COLOUT \$$C=$I;";
-        (( C += 1 ));
-    done;
-    : trace_call "IN, cmd, OUT: $COLIN; $cmmd; $COLOUT";
-    awklib='
-       function max(x,y) { return (x>y?x:y) }
-       function min(x,y) { return (x<y?x:y) }
-       function abs(x)   { return (x<0?-x:x) }
-    ';
-    [[ -n "$COLIN" ]] && { 
-        awk "
-        $awklib
-        BEGIN   { FS=OFS=\"\t\"}; { $COLIN $1; $COLOUT print }"
-    }
-}
-not () 
-{ 
-    : date: 2020-08-24;
-    comment TRACE not $# ARGS $*;
-    quietly comment -- inverts result;
-    if eval $*; then
-        exit 255;
-    else
-        exit 0;
-    fi
-}
-dbdict () 
-{ 
-    : prints a database dictionary: the field names;
-    : i am still looking for the test which admits both pipes and io redirection;
-    : /RDB, p. 288;
-    : date: 2020-08-24;
-    :;
-    sed 1q $* | awk '
-
-    BEGIN {
-            OFS="\t";
-	    print "field", "name";
-	    print "-----", "----";
-	}
-	{
-	  n = split($0, field,"\t");
-	  for (i=1; i<=n; i++) print i, field[i];
-        }
-    '
-}
-blank () 
-{ 
-    : replace all data in records with spaces;
-    ( read HEAD;
-    read DASH;
-    rdb_hdr $HEAD;
-    sed 's/[^	]/ /g' ) | tabletolist
-}
-see () 
-{ 
-    : displays non-printing, e.g. TABS, EOL as well as printing;
-    cat -v | sed 's/	/^I/g; s/$/$/'
-}
-repair () 
-{ 
-    : ~ table with inconsistent records;
-    set -- ${1:-working.rdb};
-    set $1 ${1%.rdb}.nxt;
-    check < $1 && return;
-    column < $1 | awk NF > $2;
-    doit mv $2 $1
-}
-github () 
-{ 
-    : smart github, e.g. github pushd, github ls -l, ...;
-    : location: where the GIT repos live;
-    : date: 2020-08-14;
-    ${*:-echo} $HOME/Dropbox/git
-}
-applemcg () 
-{ 
-    : date: 2020-08-01;
-    : location: github REPO;
-    : date: 2020-08-27;
-    ${*:-echo} $(github)/applemcg.github.io
-}
-fun_template () 
-{ 
-    set -- ${1:-$(pick $(fun_emptylist))};
-    printf "<<tabs";
-    printf " \"";
-    printf "[[${1}_code]] ";
-    printf "[[${1}_testcase]] ";
-    printf "[[${1}_testdata]] ";
-    printf "[[${1}_testout]] ";
-    printf "\" ";
-    printf "\"[[${1}_code]]\" ";
-    printf "\"\" ";
-    printf "\"tc-vertical\">>\n"
-}
-fun_emptylist () 
-{ 
-    : produce a list of LT wiki commands;
-    row 'status !~ /wiki/' < working.rdb | column command | headoff
-}
-tableorlist () 
-{ 
-    : reports if a file is table, list or ignores non /rdb files;
-    : see: listtableornaught;
-    case $# in 
-        0 | 1)
-            [[ $# = 1 ]] && { 
-                listtableornaught $1;
-                return $?
-            };
-            listtableornaught
-        ;;
-        *)
-            rdb_hdr Type File;
-            foreach listtableornaught $* 2> /dev/null;
-            return 0
-        ;;
-    esac
-}
-schema () 
-{ 
-    : lists the database dictionary from tables;
-    function _do_schema () 
-    { 
-        if tableorlist < $1 > /dev/null; then
-            sed 1q $1;
-        else
-            listtotable $1 | sed 1q;
-        fi | awk -v name=$1 '
-
-           BEGIN { OFS = "\t" }
-	         {
-		   for (i=1; i <= NF; i++) {
-		       print name, i, $i
-		       }
-		 }
-           '
-    };
-    rdb_hdr Table Field Name;
-    foreach _do_schema $*
-}
-listtableornaught () 
-{ 
-    : table or list or ?? for one file or STDIN;
-    : manual doesnt allow OTHER file type, and;
-    : LIST format needs to check the 2nd line for a single TAB;
-    : date: 2020-09-06;
-    [[ $# -eq 1 ]] && report_notfile $1 && return 1;
-    awk -v name=${1:-""} '
-    function found(type, ex) { printf fmt, type, name; exit ex }
-    BEGIN { FS = "\t"; fmt = "%s\t%s\n" }
-    #
-    # --------------------------------- isolate the LIST format	--
-    #
-    NR == 1 && NF < 1           { qlist = 1; }
-    NR == 2 && NF == 2 && qlist { found( "list",  1) }
-    #
-    # -------------------------------- isolate the TABLE format	--
-    #
-    NR > 2                      { exit; }
-    NR == 1                     { next; }
-    #
-    # ------------------------- the second record, ?? Dashes ??	--
-    #
-    NF > 1 && $2 ~ /^--*$/      { found( "table", 0) }
-    $1 ~ /^--*$/                { found( "table", 0) }
-
-    ' $1
 }

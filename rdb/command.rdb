@@ -11,6 +11,7 @@ dbdict	tested		prints a database dictionary: the field names
 fd	testing		tests for functional dependency of columns
 headoff	nexta		
 jointable	testing		
+justify			
 listtotable	outline		
 lock			
 ncolumn	tested	*	removes columns, "Not Column"
@@ -22,7 +23,7 @@ report
 row		*	makes new table where rows match logical condition
 rowhas	nextb		
 rowis	nextb		
-rowisnot	nextb			
+rowisnot	nextb		
 schema	tested		lists the database dictionary from table
 see			
 sorttable		*	sorts a table by one or more columns
