@@ -145,6 +145,8 @@ Error message and password prompt
 
 <li> --990033087</li>
 
+<li> headoff_testdata</li>
+
 <li> ncolumn_testdata</li>
 
 <li> prominent families</li>
@@ -469,6 +471,8 @@ Error message and password prompt
 
 <li>$:/state/tab-258018815</li>
 
+<li>$:/state/tab-284017445</li>
+
 <li>$:/state/tab-344415643</li>
 
 <li>$:/state/tab-367548225</li>
@@ -690,6 +694,16 @@ Error message and password prompt
 <li>graf</li>
 
 <li>headoff</li>
+
+<li>headoff_code</li>
+
+<li>headoff_testcase</li>
+
+<li>headoff_testcase 1</li>
+
+<li>headoff_testdata</li>
+
+<li>headoff_testout</li>
 
 <li>incorporating startlib in .bash_profile</li>
 
@@ -960,6 +974,9 @@ Error message and password prompt
 </div>
 <div created="20200910184210859" creator="Marty McGowan" modified="20200910184254217" modifier="Marty McGowan" title=" --990033087">
 <pre>table format</pre>
+</div>
+<div created="20200913004127774" creator="Marty McGowan" modified="20200913004127774" modifier="Marty McGowan" title=" headoff_testdata">
+<pre></pre>
 </div>
 <div created="20200902160959447" creator="Marty McGowan" modified="20200902160959447" modifier="Marty McGowan" title=" ncolumn_testdata">
 <pre></pre>
@@ -12737,6 +12754,9 @@ exports.context = contextWidget;
 <div created="20200824125645008" creator="Marty McGowan" modified="20200824125645008" modifier="Marty McGowan" title="$:/state/tab-258018815">
 <pre>rdb formats</pre>
 </div>
+<div created="20200913003551204" creator="Marty McGowan" modified="20200913004759565" modifier="Marty McGowan" title="$:/state/tab-284017445">
+<pre>headoff_testcase</pre>
+</div>
 <div created="20200902160236812" creator="Marty McGowan" modified="20200902161145771" modifier="Marty McGowan" title="$:/state/tab-344415643">
 <pre>ncolumn_testout</pre>
 </div>
@@ -12788,7 +12808,7 @@ exports.context = contextWidget;
 <div bag="default" created="20200810170615861" creator="M" modified="20200811134449245" modifier="Marty McGwan" revision="1" title="$:/status/UserName">
 <pre>Marty McGowan</pre>
 </div>
-<div list="[[Table of Contents]]" title="$:/StoryList">
+<div created="20200913003403767" creator="Marty McGowan" list="headoff headoff_testcase headoff_code headoff_testdata headoff_testout [[Table of Contents]]" modified="20200913003403767" modifier="Marty McGowan" title="$:/StoryList">
 <pre></pre>
 </div>
 <div created="20200519141000553" list="$:/.giffmex/Buttons/more-tiddler-edit-actions $:/core/ui/Buttons/delete $:/core/ui/Buttons/cancel $:/core/ui/Buttons/save" modified="20200521145647980" tags="$:/giffmex/bigeditarea $:/giffmex/stroll" title="$:/tags/EditToolbar">
@@ -12873,8 +12893,8 @@ exports.context = contextWidget;
 <div created="20200502174943975" modified="20200502174950301" title="$:/temp/RenameTags/search">
 <pre>tb</pre>
 </div>
-<div created="20200418122544376" creator="Marty McGowan" modified="20200911205726731" modifier="Marty McGowan" title="$:/temp/search">
-<pre>macro</pre>
+<div created="20200418122544376" creator="Marty McGowan" modified="20200913003357152" modifier="Marty McGowan" title="$:/temp/search">
+<pre>headoff</pre>
 </div>
 <div created="20200429214841632" modified="20200429214841632" tags="$:/tags/ServerConnection" title="$:/temp/ServerConnection/https://tiddlywiki.com/library/v5.1.22/index.html" url="https://tiddlywiki.com/library/v5.1.22/index.html">
 <pre>loaded</pre>
@@ -14235,6 +14255,90 @@ This motivates a discussion of the [[location tag]] of some shell functions.
 
 
 &lt;&lt;tabs &quot;[[headoff_code]] [[headoff_testcase]] [[headoff_testdata]] [[headoff_testout]]&quot; &quot;[[headoff_testcase]]&quot; &quot;&quot; &quot;tc-vertical&quot;&gt;&gt;</pre>
+</div>
+<div created="20200913004447698" creator="Marty McGowan" modified="20200913004613782" modifier="Marty McGowan" tags="rdb" title="headoff_code">
+<pre>[[headoff]] | [[headoff_code]]
+
+
+```
+rdb.$ declare -f headoff
+headoff () 
+{ 
+    : remove the RDB header from a TABLE, see Book p. 311;
+    : it makes NO sense to take the head off a LIST format;
+    : without first converting to a TABLE.;
+    : date: 2019-08-14;
+    case $# in 
+        0)
+            tail +3
+        ;;
+        *)
+            report_notfile $1 &amp;&amp; return 1;
+            tail +3 &lt; $1
+        ;;
+    esac
+}
+rdb.$ 
+
+```
+</pre>
+</div>
+<div created="20200913004802762" creator="Marty McGowan" modified="20200913004938645" modifier="Marty McGowan" tags="" title="headoff_testcase">
+<pre>[[headoff]] | [[headoff_testcase]]
+
+
+```
+headoff tables.rdb 
+table_report | justify | headoff
+```
+</pre>
+</div>
+<div created="20200913004909238" creator="Marty McGowan" modified="20200913004909238" modifier="Marty McGowan" title="headoff_testcase 1">
+<pre></pre>
+</div>
+<div created="20200913003933226" creator="Marty McGowan" modified="20200913004127773" modifier="Marty McGowan" tags="" title="headoff_testdata">
+<pre>[[headoff]] |[[ headoff_testdata]]
+
+
+```
+rdb.$ table_report | justify 
+table            	nrecrds	modate    	fields                      
+-----            	-------	------    	------                      
+checktestdata.rdb	      2	2020-09-05	command status a b c        
+column.tsv       	     33	2020-09-06	command status fmt abstract 
+command.rdb      	     33	2020-09-10	command status fmt abstract 
+date_tables.rdb  	      8	2020-09-05	table date wkday            
+instances.rdb    	     77	2020-09-05	Count field value           
+statusvalue.rdb  	      5	2020-09-06	status seqn explain         
+tables.nxt       	     52	2020-09-02	table nrecrds modate        
+tables.rdb       	     10	2020-09-12	table nrecrds modate fields 
+testobject.nxt   	     38	2020-08-25	object flag means           
+testobject.rdb   	     40	2020-09-05	object flag means           
+rdb.$ 
+```
+</pre>
+</div>
+<div created="20200913003602411" creator="Marty McGowan" modified="20200913003855537" modifier="Marty McGowan" tags="" title="headoff_testout">
+<pre>[[headoff]] | [[headoff_testout]]
+
+This is the [[headoff]] from the tables.rdb.  Count the number of records.
+
+```
+rdb.$ table_report | justify | headoff
+checktestdata.rdb	      2	2020-09-05	command status a b c        
+column.tsv       	     33	2020-09-06	command status fmt abstract 
+command.rdb      	     33	2020-09-10	command status fmt abstract 
+date_tables.rdb  	      8	2020-09-05	table date wkday            
+instances.rdb    	     77	2020-09-05	Count field value           
+statusvalue.rdb  	      5	2020-09-06	status seqn explain         
+tables.nxt       	     52	2020-09-02	table nrecrds modate        
+tables.rdb       	     10	2020-09-12	table nrecrds modate fields 
+testobject.nxt   	     38	2020-08-25	object flag means           
+testobject.rdb   	     40	2020-09-05	object flag means           
+rdb.$ 
+
+```
+</pre>
 </div>
 <div created="20200816153116983" creator="Marty McGowan" modified="20200817132235805" modifier="Marty McGowan" title="incorporating startlib in .bash_profile">
 <pre>Now, since startlib is available in both [[appleton]] and [[applesauce]], the narative shifts to integrating [[startlib]] on both machines.   For the moment, the library has been copied into the ''.user_profile '' on [[applesauce]], and is effective. 
@@ -15734,8 +15838,7 @@ This particular table is the file ''tables.rdb'', which has 10 records, was last
 . </pre>
 </div>
 <div created="20200726184417779" creator="Marty McGowan" modified="20200912132448284" modifier="Marty McGowan" tags="" title="Table of Contents">
-<pre>
-* [[What's Here]]. --the main contents, my work with the [[bash]] shell, a first-time reader should see the [[Reader's Guide]]
+<pre>* [[What's Here]]. --the main contents, my work with the [[bash]] shell, a first-time reader should see the [[Reader's Guide]]
 * [[The Family Circle]] -- links to my life's interest,  four documents in this format: these Shell Functions, a Book Club, Liberal Thought, and my Diary
 * [[Rough Outline]] -- of the hierarchical portion
 
@@ -16103,8 +16206,7 @@ And while we're here, it's worth mentioning a delimiter collision that I just en
 {{re_charactercode}}</pre>
 </div>
 <div created="20200909193626492" creator="Marty McGowan" modified="20200909193749434" modifier="Marty McGowan" tags="code" title="tw_code">
-<pre>
-```
+<pre>```
 tw_blockfind () 
 { 
     : discover the tw_blocks;

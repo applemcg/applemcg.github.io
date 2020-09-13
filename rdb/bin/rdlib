@@ -174,7 +174,7 @@ headoff ()
 	 tail +3
 	 ;;
     * )
-         report_notfile && return 1
+         report_notfile $1 && return 1
 	 tail +3 < $1
 	 ;;
     esac
