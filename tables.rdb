@@ -1,27 +1,6 @@
 table	nrecrds	modate	fields
 -----	-------	------	------
-rdb/command.rdb	    283	2020-08-23	command render type status attrib 
-rdb/instances.rdb	     77	2020-08-01	Count field value 
-rdb/tables.rdb	      9	2020-08-24	table nrecrds modate fields 
-rdb/testobject.rdb	     40	2020-08-01	object flag means 
-rdb/working.rdb	     35	2020-08-24	command status a b c 
-reading/collections.rdb	    991	2020-07-18	collections book_id 
-reading/haveread.rdb	    296	2020-07-18	date_read isbn isbns subjects dewey_decimal lending_start lending_end 
-reading/haveread.rdb	    296	2020-07-18	review rating 
-reading/haveread.rdb	    296	2020-07-18	source entry_date from_where page_count lccn acquired date_started 
-reading/haveread.rdb	    296	2020-07-18	tags collections lc_classification book_id title primary_author copies 
-reading/haveread.tsv	    295	2020-07-17	Author Secondary Author Roles Publication Date Review Rating Comment 
-reading/haveread.tsv	    295	2020-07-17	Book Id Title Sort Character Primary Author Primary Author Role Secondary 
-reading/haveread.tsv	    295	2020-07-17	Date Read Barcode BCID Tags Collections Languages Original Languages 
-reading/haveread.tsv	    295	2020-07-17	LC Classification ISBN ISBNs Subjects Dewey Decimal Dewey Wording 
-reading/haveread.tsv	    295	2020-07-17	Lending Patron Lending Status Lending Start Lending End 
-reading/haveread.tsv	    295	2020-07-17	Other Call Number Copies Source Entry Date From Where OCLC Work id 
-reading/haveread.tsv	    295	2020-07-17	Private Comment Summary Media Physical Description Weight Height 
-reading/haveread.tsv	    295	2020-07-17	Thickness Length Dimensions Page Count LCCN Acquired Date Started 
-reading/keybook.rdb	     14	2020-07-15	key book 
-reading/librarything.rdb	      5	2020-08-22	latest author book 
-reading/readcycle.rdb	    120	2020-07-11	daynum bookkeys 
-reading/readhistory.rdb	     13	2020-08-19	finish author book 
-reading/readtwodays.rdb	      6	2020-07-11	key book 
-reading/tables.rdb	     19	2020-08-21	table nrecrds modate fields 
-reading/tags.rdb	    983	2020-07-18	tags book_id 
+table_fields.tmp	     25	2020-08-25	table fields 
+tables.nxt	     15	2020-08-25	table nrecrds modate 
+tables.rdb	     25	2020-08-25	table nrecrds modate fields 
+tables.tmp	     15	2020-08-25	table nrecrds modate fields 
