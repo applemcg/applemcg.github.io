@@ -12,7 +12,7 @@ fd	func	testing		tests for functional dependency of columns
 headoff	func	tested		
 jointable	func	nextb		
 justify	file			
-listtotable	func	nexta		
+listtotable	func	tested		
 lock	func			
 ncolumn	func	tested	*	removes columns, "Not Column"
 not	func			
@@ -28,7 +28,7 @@ schema	func	tested		lists the database dictionary from table
 see	func			
 sorttable	func		*	sorts a table by one or more columns
 tableorlist	func	tested	*	reports if a file is list, first character is a newline, or table if not
-tabletolist	func	nexta		
+tabletolist	func	tested		
 todaysdate	func			
 tomorrow	func			
 union	func			
