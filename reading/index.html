@@ -253,6 +253,8 @@ Error message and password prompt
 
 <li>$:/giffmex/stroll</li>
 
+<li>$:/Import</li>
+
 <li>$:/isEncrypted</li>
 
 <li>$:/language/Buttons/NewHere/Hint</li>
@@ -392,6 +394,8 @@ Error message and password prompt
 <li>Download Stroll</li>
 
 <li>Educated: A Memoir</li>
+
+<li>Extending the Diary</li>
 
 <li>Falter: Has the Human Game Begun to Play Itself Out?</li>
 
@@ -10627,6 +10631,11 @@ $:/config/ViewToolbarButtons/Visibility/$(listItem)$
 <div created="20200603121652031" modified="20200603121652031" title="$:/giffmex/stroll">
 <pre></pre>
 </div>
+<div status="complete" title="$:/Import">
+<pre>The following tiddlers were imported:
+
+# [[Extending the Diary]]</pre>
+</div>
 <div bag="default" revision="0" title="$:/isEncrypted">
 <pre>no</pre>
 </div>
@@ -12173,11 +12182,11 @@ exports.context = contextWidget;
 <div created="20200820161024856" modified="20200820161029728" title="$:/state/tab-874220439">
 <pre>Next Book</pre>
 </div>
-<div created="20200823145352938" modified="20200823145401330" title="$:/state/tab/moresidebar-1850697562">
-<pre>$:/core/ui/MoreSideBar/System</pre>
+<div created="20200823145352938" modified="20200914131153798" title="$:/state/tab/moresidebar-1850697562">
+<pre>$:/core/ui/MoreSideBar/Tags</pre>
 </div>
-<div created="20200817193434172" modified="20200914125104978" title="$:/state/tab/sidebar--595412856">
-<pre>$:/core/ui/SideBar/Tools</pre>
+<div created="20200817193434172" modified="20200914131152065" title="$:/state/tab/sidebar--595412856">
+<pre>$:/core/ui/SideBar/More</pre>
 </div>
 <div bag="default" revision="1" title="$:/status/IsAnonymous">
 <pre>yes</pre>
@@ -12194,7 +12203,7 @@ exports.context = contextWidget;
 <div bag="default" revision="1" title="$:/status/UserName">
 <pre></pre>
 </div>
-<div created="20200914125035425" list="HitlersLastPlot [[MIT-Active list]] TableofContents [[MIT Club]]" modified="20200914125311744" title="$:/StoryList">
+<div created="20200914131019680" list="Active TableofContents [[MIT Club]]" modified="20200914131158197" title="$:/StoryList">
 <pre></pre>
 </div>
 <div created="20200519141000553" list="$:/.giffmex/Buttons/more-tiddler-edit-actions $:/core/ui/Buttons/delete $:/core/ui/Buttons/cancel $:/core/ui/Buttons/save" modified="20200521145647980" tags="$:/giffmex/bigeditarea $:/giffmex/stroll" title="$:/tags/EditToolbar">
@@ -12428,8 +12437,19 @@ The best way to see what Stroll can do is play with it. This interactive tutoria
 
 Use the tabs to the left to take a tour of its features. You can download an empty version of Stroll [ext[here|https://giffmex.org/stroll/empty.html]].</pre>
 </div>
-<div created="20200820160744756" modified="20200823162439302" title="Active">
-<pre>&lt;&lt;list-links filter:&quot;[tag[TableofContents]]+[!sort[modified]]&quot;&gt;&gt;</pre>
+<div created="20200820160744756" modified="20200914131409193" title="Active">
+<pre>
+```
+&lt;&lt;list-links filter:&quot;[tag[TableofContents]] [tag[active]] +[!sort[modified]]&quot;&gt;&gt;
+
+ read in an SQL:
+
+   row 'tag ~ /Table.../ || tag ~ /active// | sorttable -r modified
+
+```
+
+
+&lt;&lt;list-links filter:&quot;[tag[TableofContents]] [tag[active]] +[!sort[modified]]&quot;&gt;&gt;</pre>
 </div>
 <div created="20200423155839450" modified="20200521174448734" tags="$:/giffmex/tutorials" title="Add Stroll to your TW">
 <pre>!To add all of Stroll to your ~TiddlyWiki
@@ -12647,6 +12667,22 @@ at the moment:
 * My Status: [[Reading History]]
 * Library Thing Reviews: [[https://www.librarything.com/work/20290985/reviews|https://www.librarything.com/work/20290985/reviews]] 
 * Reader Comment:// I grew up in a home where mental illness and co-dependency was the reality. For those reviewers who doubt that this story is true- don't. In high school I had a terrific friend whom I confided in, later we stopped being friends because she just couldn't believe my reality. I err to the side of believing people and Tara seems to have come to terms with her childhood, which certainly isn't easy. This story isn't about Mormon's or preppers- it is a story of an American family that merely lives far enough out of the society that they can fly under the radar. I couldn't put it down although it made me angry, and sad. I'm so happy that the author was able to get out, stay out and make a life for herself.//
+</pre>
+</div>
+<div created="20200716131030473" creator="MartyMcGowan" modified="20200807183955030" modifier="MartyMcGowan" tags="reading,writing active" title="Extending the Diary">
+<pre>Yesterday, I watched TiddlyWiki hangout #108 of Jeremy Ruston with Dave GIffords.   I've recently picked up Dave's [[Stroll|A stroll through Stroll]], in which this wiki is wrapped.
+
+For a few weeks, I've been thinking of moving my LibraryThing records &quot;indoors&quot; -- to a wholly-owned subsidiary of my online self.
+
+What's at stake?
+
+* Kindle vs Nook
+* the MIT of Princeton Book Club
+* use of and life in Emacs, and
+* the command line
+* collaboration vs isolation, thinking of say, Bill Anderson a/o Carol Binkowski
+
+I've just added this TODO: develop specs to move [[LibraryThing indoors|https://applemcg.github.io/reading/#LibraryThing]].    Lets get started.
 </pre>
 </div>
 <div created="20200725134322824" creator="Marty McGowan" modified="20200823162712954" modifier="Marty McGowan" tags="book" title="Falter: Has the Human Game Begun to Play Itself Out?">

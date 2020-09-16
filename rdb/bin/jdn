@@ -1,0 +1,65 @@
+jdn ()
+{
+    : Julian Day Number, from Gregorian Y, M, D
+    : url: https://en.wikipedia.org/wiki/Julian_day#Converting_Gregorian_calendar_date_to_Julian_Day_Number
+    : debug, use these headers
+    : rdb_hdr year  month day  mprime mprim2 mbeta yprime yprim2 yalpha ybeta ydmjd nasa diff
+
+    rdb_hdr year  month day jdn
+    
+    awk '
+
+    function jdn_testdata () {
+
+    # formerly BEGIN 
+        m = 0
+	for (y = 1900; y <= 2020; y += 10) {
+              
+            m %= 12     # cycle thru the months
+	    m++         # 1 .. 12
+	    d = (y + 3*m) % 29
+	    d++
+	    jdn( y, m, d)
+    	    }
+    }
+
+    function idiv   (n, d)    { return int(n/d);     }
+    function rdiv   (n, r, d) { return idiv( n*r,d); }
+    function mprime (m)       { return idiv(m-14,12);                  }
+    function mprim2 (m)       { return m - 2 - 12*mprime(m);           }
+    function mbeta  (m)       { return rdiv( 367, mprim2(m),12);       }
+    
+    function yprime (y, m)    { return      y + 4800 + mprime(m);      }
+    function yprim2 (y, m)    { return idiv(y + 4900 + mprime(m),100); }
+    function yalpha (y, m)    { return rdiv(1461, yprime(y,m),4);      }
+    function ybeta  (y, m)    { return rdiv(   3, yprim2(y,m),4);      }
+
+    function ymdjd  (y, m, d) { return yalpha(y, m) + mbeta( m ) - ybeta(y, m) + d - 32075;  }
+
+    function jdn( y, m, d ) { 
+
+	       fmt = "%d\t"
+	       #  year  month day 
+               printf fmt, y
+	       printf fmt, m
+	       printf fmt, d
+	       if (debug) {
+	       # mprime mprim2 mbeta 
+	       printf fmt, mprime(m)
+	       printf fmt, mprim2(m)	       
+	       printf fmt, mbeta(m)
+               # yprime yprim2 yalphs ybeta
+	       printf fmt, yprime(y, m)
+	       printf fmt, yprim2(y, m)
+	       printf fmt, yalpha(y, m)
+	       printf fmt, ybeta( y, m)
+	       }
+	       # ydmjd
+	       result = ymdjd( y, m, d)
+	       printf fmt, result
+	       printf "\n"
+    }
+
+    NF > 2     { jdn( $1, $2, $3); }
+  '
+}
