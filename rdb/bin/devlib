@@ -3,11 +3,11 @@ backup_oneperday ()
     : date: 2020-08-31;
     rd_lslt | column month day name | select_first day | awk NF | column name | headoff
 }
-tw_cmdtempl ()
-{
-    : the tw template for an rdb command
-    set -- ${1:-julian}
-    printf "[[rdb commands]] | [[$1]]\n\n\n"
+tw_cmdtempl () 
+{ 
+    : the tw template for an rdb command;
+    set -- ${1:-julian};
+    printf "[[rdb commands]] | [[$1]]\n\n\n";
     tw_funtempl $1
 }
 tw_funtempl () 
@@ -22,4 +22,31 @@ worknotrd ()
     : date: 2020-08-24;
     set -- ${1:--13};
     comm $1 <(functions bin/rdlib|sort) <(column command < working.rdb  | headoff| sort)
+}
+awk_funs () 
+{ 
+    : date: 2020-09-18;
+    awk '$1 ~ /function/ { sub(/ *{.*/, ""); print  }' ../lib/awklib
+}
+gjtwotest () 
+{ 
+    : date: 2020-09-18;
+    column < juliantest.rdb | addcol jday gregday gjday diff | compute '
+    
+        jday = date
+
+    ' | julian jday | compute 'gregday = jday' | gregorian gregday | compute '
+
+        gjday = gregday
+
+    ' | julian gjday | compute '
+
+        diff = jday - gjday
+    '
+}
+gjonetest () 
+{ 
+    : date: 2020-09-18;
+    . rdlib;
+    column < juliantest.rdb | addcol jday gday | compute 'jday = date' | julian jday | compute 'gday = jday' | row 'NR < 2' | gregorian gday
 }

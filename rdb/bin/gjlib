@@ -1,7 +1,21 @@
+function tojdn  (yr, mo, da) {
+
+         fmt = "%d\t"
+     printf fmt, yr		       
+     printf fmt, mo
+   		       printf fmt, da
+     printf fmt, yalpha( yr, mo)
+     printf fmt, mbeta(      mo)
+     printf fmt, ybeta(  yr, mo)		       		       
+       jd = jdn( yr, mo, da)
+     printf fmt, jd
+     printf "\n"
+}
 jdn ()
 {
     : Julian Day Number, from Gregorian Y, M, D
-    : url: https://en.wikipedia.org/wiki/Julian_day#Converting_Gregorian_calendar_date_to_Julian_Day_Number
+    : url: https://en.wikipedia.org/wiki/...
+    : url: += Julian_day#Converting_Gregorian_calendar_date_to_Julian_Day_Number
     : debug, use these headers
     : rdb_hdr year  month day  mprime mprim2 mbeta yprime yprim2 yalpha ybeta ydmjd nasa diff
 
@@ -23,7 +37,7 @@ jdn ()
 	    jdn( y, m, d)
     	    }
     }
-    NF > 2     { jdn( $1, $2, $3); }
+    NF > 2     { tojdn( $1, $2, $3); }
   '
 }
 julc ()
@@ -35,4 +49,30 @@ julc ()
 	  }
 	
     '
+}
+# ----------------------------------------------------------- GREGORIAN	--
+function gregorian( J )
+{
+    # url: https://en.wikipedia.org/wiki/
+    # url: +Julian_day#Julian_or_Gregorian_calendar_from_Julian_day_number
+    # 
+    y = 4716;     v = 3
+    j = 1401;     u = 5
+    m = 2;        s =153
+    n = 12; 	  w = 2
+    r = 4;        B = 274277
+    p = 1461;     C = -38
+    #
+    f = J + j        # both Julian & Gregorian
+    # if( !juliandate ) {
+        f = f + idiv( 3*(idiv(4*J + B),146097),4) + C
+    # }
+    e = r*f + v
+    g = idiv( e%p, r)
+    h = u*g + w
+    D = idiv((h%s), u)+ 1
+    M = ((idiv(h,s) + m) % n) + 1
+    Y = idiv(e, p) - y + idiv((n + m - M),n)
+    # computer style YYYYMMDD
+    return D + 100 * ( M + 100 * Y)
 }
