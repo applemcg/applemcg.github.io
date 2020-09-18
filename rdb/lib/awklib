@@ -1,0 +1,72 @@
+
+function idiv   (n, d)    { return int(n/d);     }
+function rdiv   (n, r, d) { return idiv( n*r,d); }
+function mprime (m)       { return idiv(m-14,12);                  }
+function mprim2 (m)       { return m - 2 - 12*mprime(m);           }
+function mbeta  (m)       { return rdiv( 367, mprim2(m),12);       }
+
+function yprime (y, m)    { return      y + 4800 + mprime(m);      }
+function yprim2 (y, m)    { return idiv(y + 4900 + mprime(m),100); }
+function yalpha (y, m)    { return rdiv(1461, yprime(y,m),4);      }
+function ybeta  (y, m)    { return rdiv(   3, yprim2(y,m),4);      }
+
+function jdn    (y, m, d) {
+     #
+     # necessary Hack to guarantee numeric comparison
+     #
+         y += 0
+     #
+     # default: gregorian calendar, 1C = Unix time: 1/1/70 ...
+     #
+     y += ((y > 1581)? 0: ((y < 70)? 2000: 1900))
+
+    return yalpha(y, m) + mbeta( m ) - ybeta(y, m) + d - 32075;
+}
+function tojdn  (yr, mo, da) {
+
+         fmt = "%d\t"
+     printf fmt, yr		       
+     printf fmt, mo
+   		       printf fmt, da
+     printf fmt, yalpha( yr, mo)
+     printf fmt, mbeta(      mo)
+     printf fmt, ybeta(  yr, mo)		       		       
+       jd = jdn( yr, mo, da)
+     printf fmt, jd
+     printf "\n"
+}
+
+function julian(date)   {
+
+    printf "#DEBUG, julian( %s )\n", date > "/dev/stderr"
+    
+    # todo: accept the Four Flags formats:
+    #
+    # c -- computer {YY,}YYMMDD, the default
+    # e -- European dd/mm/yy 
+    # i -- ISO      YYYY-MM-DD
+    # u -- US       mm/dd/yy
+    #
+
+    if( date ~ /^[0-9][0-9]*$/)  {
+
+        # handles Six and Eight digit Year, Month, Day,
+	# with Two or Four digit year preface
+
+        # chop off MMDD from ....date
+	
+	ye = length(date) - 4
+	ys = ye + 1
+        ds = ms + 2
+
+        # may as well throw /s into the date
+        rtn = substr(date,1,ye) "/" substr(date,ms,2) "/" substr(date,ds,2)
+
+    } else {
+
+        printf "#FAULTY, julian( %s )\n", date  > "/dev/stderr"
+   	return date
+    }
+    split(rtn,ymd,"/")
+    return jdn(ymd[1], ymd[2], ymd[3])	
+}

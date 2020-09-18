@@ -3,6 +3,13 @@ backup_oneperday ()
     : date: 2020-08-31;
     rd_lslt | column month day name | select_first day | awk NF | column name | headoff
 }
+tw_cmdtempl ()
+{
+    : the tw template for an rdb command
+    set -- ${1:-julian}
+    printf "[[rdb commands]] | [[$1]]\n\n\n"
+    tw_funtempl $1
+}
 tw_funtempl () 
 { 
     set -- ${1:-width};

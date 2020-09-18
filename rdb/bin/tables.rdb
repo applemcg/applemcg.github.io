@@ -1,0 +1,8 @@
+table	nrecrds	modate	fields
+-----	-------	------	------
+jdn_test.rdb	     21	2020-09-16	year month day result 
+juliantest.rdb	      4	2020-09-18	date 
+tables.rdb	      0	2020-09-18	table nrecrds modate fields 
+tables.rdb	      0	2020-09-18	table nrecrds modate fields 
+tables.rdb	      3	2020-09-18	table nrecrds modate fields 
+tables.rdb	      3	2020-09-18	table nrecrds modate fields 

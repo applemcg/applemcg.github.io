@@ -5,6 +5,11 @@ _rdb_post ()
     report_notpipe && return 1;
     pr -5 -t
 }
+rdb_awklib ()
+{
+    : function lib for rdb commands;
+    ${*:-echo} $(applemcg echo)/rdb/lib/awklib;
+}
 addcol () 
 { 
     : adds columns to a table;
@@ -106,6 +111,8 @@ compute ()
     : date: 2019-07-07;
     : date: 2020-08-24;
     :;
+    local COLIN
+    local COLOUT
     read HEAD;
     if test -z "$HEAD"; then
         ( echo;
@@ -132,6 +139,70 @@ compute ()
         $awklib
         BEGIN   { FS=OFS=\"\t\"}; { $COLIN $1; $COLOUT print }"
     }
+}
+julian () 
+{
+    : performs julian day calculation on named Columns
+    _rdb_column_function $1
+}
+
+_rdb_column_function ()
+{
+    : PROJECT columns from named RDB -- first Row -- FIELDS;
+    : reads STDIN for RDB list or TABLE format,;
+    : date: 2019-07-02;
+    : date: 2019-08-14 added the BLANK columns, not yet in table;
+    : date: 2020-05-17 RCAT replaces CAT;
+    : -------------------------------------- begin template.fun --;
+    local HEAD;
+    local DASH;
+    local COL="";
+    local arg;
+    local C;
+    : calling function needs to be a function in the rdb_awklib
+    local awkfun=$(myname 2)
+    read_devtty awkfun: $awkfun
+    declare -A pos
+    :
+    read HEAD;
+    read_devtty HEAD: $HEAD    
+    [[ -z "$HEAD" ]] && { 
+        ( echo;
+        rcat ) | listtotable | $(myname) "$@" | tabletolist;
+        return 0
+    };
+    read DASH;
+    : ---------------------------------------- end template.fun --;
+    set -- $@
+    : read_devtty @: $@
+    (( C = 0 ));
+    for ARG in $HEAD
+    do
+        (( C += 1 ));	
+	arg[$C]="\$$C,"
+	pos[$ARG]=$C
+    done
+    read_devtty arg: ${!arg[@]}, ${arg[@]}
+    read_devtty pos: ${!pos[@]}, ${pos[@]}
+    for I in $@
+    do
+       local an=${pos[$I]}
+       : read_devtty I, pos[I]: $I $an 
+       arg[$an]="$awkfun(\$$an),"
+    done
+    : read_devtty arg: ${!arg[@]}, ${arg[@]}
+    COL="${arg[@]}"
+    read_devtty COL: $COL
+    read_devtty awk "BEGIN { FS = OFS = \"\t\"; blank = \"""\"; }; { print $COL }";
+    rdb_hdr $HEAD
+    rcat | awk "
+    $(rdb_awklib cat)
+    BEGIN { 
+            FS = OFS = \"\t\"
+	    blank = \"""\"
+          }
+          { print $COL \"\" }
+    "
 }
 dbdict () 
 { 

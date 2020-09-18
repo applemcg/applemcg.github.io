@@ -9,8 +9,10 @@ cpdir	func
 datatype	func	tested		displays the datatype of each column selected
 dbdict	func	tested		prints a database dictionary: the field names
 fd	func	testing		tests for functional dependency of columns
+gregorian	func	nexta	      
 headoff	func	tested		
-jointable	func	nextb		
+jointable	func	nextb
+julian	func	nexta			
 justify	file			
 listtotable	func	tested		
 lock	func			

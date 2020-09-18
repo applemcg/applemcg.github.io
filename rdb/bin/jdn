@@ -22,7 +22,7 @@ jdn ()
 	    jdn( y, m, d)
     	    }
     }
-
+    # begin awklib
     function idiv   (n, d)    { return int(n/d);     }
     function rdiv   (n, r, d) { return idiv( n*r,d); }
     function mprime (m)       { return idiv(m-14,12);                  }
@@ -33,9 +33,9 @@ jdn ()
     function yprim2 (y, m)    { return idiv(y + 4900 + mprime(m),100); }
     function yalpha (y, m)    { return rdiv(1461, yprime(y,m),4);      }
     function ybeta  (y, m)    { return rdiv(   3, yprim2(y,m),4);      }
-
+    
     function ymdjd  (y, m, d) { return yalpha(y, m) + mbeta( m ) - ybeta(y, m) + d - 32075;  }
-
+    # end
     function jdn( y, m, d ) { 
 
 	       fmt = "%d\t"
