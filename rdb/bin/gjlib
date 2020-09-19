@@ -1,4 +1,6 @@
-function tojdn  (yr, mo, da) {
+xx () {
+    awk '
+    function tojdn  (yr, mo, da) {
 
          fmt = "%d\t"
      printf fmt, yr		       
@@ -10,6 +12,16 @@ function tojdn  (yr, mo, da) {
        jd = jdn( yr, mo, da)
      printf fmt, jd
      printf "\n"
+     }'
+}
+gday ()
+{
+    : test gregporian from julian
+    :
+    rdb_hdr s J af bf f e g h da D ma M ya yb Y
+    awk "$(rdb_awklib cat)"'
+          { gregorian( $1 )    }
+    '
 }
 jdn ()
 {
@@ -20,7 +32,7 @@ jdn ()
     : rdb_hdr year  month day  mprime mprim2 mbeta yprime yprim2 yalpha ybeta ydmjd nasa diff
 
     rdb_hdr year  month day jdn
-    
+
     awk "$(awklib cat)"'
     
 
@@ -49,30 +61,4 @@ julc ()
 	  }
 	
     '
-}
-# ----------------------------------------------------------- GREGORIAN	--
-function gregorian( J )
-{
-    # url: https://en.wikipedia.org/wiki/
-    # url: +Julian_day#Julian_or_Gregorian_calendar_from_Julian_day_number
-    # 
-    y = 4716;     v = 3
-    j = 1401;     u = 5
-    m = 2;        s =153
-    n = 12; 	  w = 2
-    r = 4;        B = 274277
-    p = 1461;     C = -38
-    #
-    f = J + j        # both Julian & Gregorian
-    # if( !juliandate ) {
-        f = f + idiv( 3*(idiv(4*J + B),146097),4) + C
-    # }
-    e = r*f + v
-    g = idiv( e%p, r)
-    h = u*g + w
-    D = idiv((h%s), u)+ 1
-    M = ((idiv(h,s) + m) % n) + 1
-    Y = idiv(e, p) - y + idiv((n + m - M),n)
-    # computer style YYYYMMDD
-    return D + 100 * ( M + 100 * Y)
 }

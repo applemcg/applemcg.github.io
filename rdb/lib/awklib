@@ -3,12 +3,17 @@
 function idiv   (n, d)    { return int(n/d);     }
 function rdiv   (n, r, d) { return idiv( n*r,d); }
 #
+# ----------------------------------------------------- dignostic print	--
+#
+function dbprstr( str )   { return; printf "%s", str     > "/dev/stderr"; }
+function dbprint( val )   { return; printf "%d\t", val   > "/dev/stderr"; }
+#
 # ------------------------------------------------ julian day functions	--
-
+#
 function mprime (m)       { return idiv(m-14,12);                  }
 function mprim2 (m)       { return m - 2 - 12*mprime(m);           }
 function mbeta  (m)       { return rdiv( 367, mprim2(m),12);       }
-
+#
 function yprime (y, m)    { return      y + 4800 + mprime(m);      }
 function yprim2 (y, m)    { return idiv(y + 4900 + mprime(m),100); }
 function yalpha (y, m)    { return rdiv(1461, yprime(y,m),4);      }
@@ -24,7 +29,14 @@ function jdn    (y, m, d) {
      #
      y += ((y > 1581)? 0: ((y < 70)? 2000: 1900))
 
-    return yalpha(y, m) + mbeta( m ) - ybeta(y, m) + d - 32075;
+     # dbprint( y)
+     # dbprint( m)     
+     # dbprint( d)
+     # dbprint( yalpha(y,m))
+     # dbprint( mbeta(m))
+     # dbprint( ybeta(y,m))
+     # dbprstr( "\n")
+     return yalpha(y, m) + mbeta( m ) - ybeta(y, m) + d - 32075;
 }
 # -------------------------------------------------------------- JULIAN	--
 function julian(date)   {
@@ -45,21 +57,25 @@ function julian(date)   {
 	# with Two or Four digit year preface
 
         # chop off MMDD from ....date
-	
-	ye = length(date) - 4
-	ys = ye + 1
-        ds = ms + 2
 
-        # may as well throw /s into the date
-        rtn = substr(date,1,ye) "/" substr(date,ms,2) "/" substr(date,ds,2)
+	ye = length(date) - 4
+	ms = ye + 1
+        ds = ms + 2
+	yr = substr(date,1,ye)
+	mo = substr(date,ms,2)
+	da = substr(date,ds,2)
+	
+	dbprint( ye)
+	dbprint( yr)
+	dbprint( mo)
+	dbprint( da)
 
     } else {
 
         printf "#FAULTY, julian( %s )\n", date  > "/dev/stderr"
    	return date
     }
-    split(rtn,ymd,"/")
-    return jdn(ymd[1], ymd[2], ymd[3])	
+    return jdn(yr, mo, da)
 }
 # ----------------------------------------------------------- GREGORIAN	--
 function gregorian( J )
@@ -67,33 +83,56 @@ function gregorian( J )
     # url: https://en.wikipedia.org/wiki/
     # url: +Julian_day#Julian_or_Gregorian_calendar_from_Julian_day_number
     #
-    fmt = "%s\t%d\t"
-    y = 4716;     v = 3
-    j = 1401;     u = 5
-    m = 2;        s =153
-    n = 12; 	  w = 2
-    r = 4;        B = 274277
-    p = 1461;     C = -38
+
+    y = 4716;    v =   3;
+    j = 1401;    u =   5;
+    m =    2;    s = 153;
+    n =   12;    w =   2;
+    r =    4;    B = 274277;
+    p = 1461;    C = -38;
     #
+    dbprint( J)
     f = J + j        # both Julian & Gregorian
     if( !juliandate ) {
 
-        f = f + idiv( 3 * (idiv((4*J + B),146097)),4)  + C
+        af = idiv((4*J + B),146097)
+	bf = idiv( 3 * af,4)
+	dbprint( af)
+	dbprint( bf	)
+	
+        f = f + bf + C
+	
     }
-    printf fmt, "f", f 
+
     e = r*f + v
-    printf fmt, "e", e     
     g = idiv( e%p, r)
-    printf fmt, "g", g         
     h = u*g + w
-    printf fmt, "h", h             
-    D = idiv((h%s), u)+ 1
-    printf fmt, "D", D 
-    M = ((idiv(h,s) + m) % n) + 1
-    printf fmt, "M", M     
-    Y = idiv(e, p) - y + idiv((n + m - M),n)
-    printf fmt, "Y", Y
-    printf "\n"
+
+    da = h % s 
+    D = idiv(da, u)+ 1
+
+    ma = idiv( h,s)
+    M = ((ma + m) % n) + 1
+
+    ya = idiv(e, p)
+    yb = idiv((n + m - M),n) 
+    Y = ya - y + yb
+
+    dbprint( f )
+    dbprint( e)
+    dbprint( g)
+    dbprint( h                 )
+
+    dbprint( da)
+    dbprint( D)
+
+    dbprint( ma    )
+    dbprint( M         )
+
+    dbprint( ya)
+    dbprint( yb)
+    dbprint( Y)
+    dbprstr( "\n")
     # computer style YYYYMMDD
     return D + 100 * ( M + 100 * Y)
 }

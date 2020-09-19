@@ -50,3 +50,14 @@ gjonetest ()
     . rdlib;
     column < juliantest.rdb | addcol jday gday | compute 'jday = date' | julian jday | compute 'gday = jday' | row 'NR < 2' | gregorian gday
 }
+gregortest () 
+{ 
+    : date: 2020-09-19;
+    . rdlib;
+    column < gregortest.rdb | compute 'result = date' | gregorian result | compute 'diff = result - significance'
+}
+juliantest () 
+{ 
+    : date: 2020-09-19;
+    column < juliantest.rdb | compute 'jday = date' | julian jday | compute 'diff = expect - jday'
+}
