@@ -1,6 +1,6 @@
-date	significance
-----	------------
-19800311	Chip's Birthday	
-19451004	My Birthday	
-20210802	Happy New Year	
-20260111	next USA solar eclipse?	
+date    	jday   	expect 	diff	significance     
+----    	----   	------ 	----	------------     
+740419  	2442157	2442157	0   	Chip's Birthday  
+19440813	2431316	2431316	0   	My Birthday      
+711009  	2441234	2441234	0   	Just another date
+200813  	2459075	2459075	0   	My 76th          

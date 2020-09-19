@@ -65,11 +65,6 @@ function julian(date)   {
 	mo = substr(date,ms,2)
 	da = substr(date,ds,2)
 	
-	dbprint( ye)
-	dbprint( yr)
-	dbprint( mo)
-	dbprint( da)
-
     } else {
 
         printf "#FAULTY, julian( %s )\n", date  > "/dev/stderr"
