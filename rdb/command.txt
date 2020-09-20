@@ -1,60 +1,37 @@
-command      	type         	attrib                                                                
--------      	----         	------                                                                
-append       	             	index                                                                 
-ask          	function     	implement from pp. 250                                                
-calcpay      	             	payroll                                                               
-cashflow     	             	Balance column specific                                               
-check        	function     	new manual page                                                       
-clear        	file         	/usr/bin/clear                                                        
-commands     	             	add table                                                             
-compress     	file         	/RDB use is unnecessary; command use COMPRESSES file, more in keeping 
-computedate  	file         	/Users/martymcgowan/Dropbox/rdb/bin/computedate                       
-cursor       	function     	novelty                                                               
-delete       	             	index related                                                         
-display      	C prog       	p. 142                                                                
-domain       	file         	/Users/martymcgowan/Dropbox/rdb/bin/domain                            
-formtoprogram	             	implement former screen as ~                                          
-gregorian    	file         	/Users/martymcgowan/Dropbox/rdb/bin/gregorian                         
-hashkey      	             	see append                                                            
-helpme       	function     	smart table                                                           
-index        	             	see append                                                            
-intersect    	file         	/Users/martymcgowan/Dropbox/rdb/bin/intersect                         
-julian       	file         	/Users/martymcgowan/Dropbox/rdb/bin/julian                            
-justify      	file         	/Users/martymcgowan/Dropbox/rdb/bin/justify                           
-label        	             	see letter                                                            
-letter       	             	see report, label                                                     
-like         	             	see soundex                                                           
-maximum      	file         	/Users/martymcgowan/Dropbox/rdb/bin/maximum                           
-mean         	file         	/Users/martymcgowan/Dropbox/rdb/bin/mean                              
-mininum      	file         	/Users/martymcgowan/Dropbox/rdb/bin/mininum                           
-padstring    	             	see screen, report                                                    
-paste        	file         	/usr/bin/paste                                                        
-path         	             	which                                                                 
-precision    	file         	/Users/martymcgowan/Dropbox/rdb/bin/precision                         
-reportwriter 	function     	sample                                                                
-rmcore       	             	obsolete                                                              
-screen       	file         	/usr/bin/screen                                                       
-search       	             	see index, seek, replace, append, delete, update                      
-searchtree   	function     	anticipated noSQL tables                                              
-seek         	             	see search, ...                                                       
-select       	shell keyword	take advice to use row                                                
-sorttable    	file         	/Users/martymcgowan/Dropbox/rdb/bin/sorttable                         
-splittable   	file         	/Users/martymcgowan/Dropbox/rdb/bin/splittable                        
-subtotal     	file         	/Users/martymcgowan/Dropbox/rdb/bin/subtotal                          
-tabletofix   	             	see fixtotable                                                        
-tabletotbl   	function     	how about tabletoorg?                                                 
-tax          	             	obsolete, too many tax programs                                       
-testall      	function     	integration testing                                                   
-testsearch   	function     	see search, ...                                                       
-timesearch   	function     	see testsearch                                                        
-total        	file         	/Users/martymcgowan/Dropbox/rdb/bin/total                             
-trim         	function     	for printing, fixed width, ...                                        
-tset         	file         	/usr/bin/tset                                                         
-uniondict    	function     	see translate                                                         
-update.inv   	             	sample                                                                
-ve           	             	use *vi*, emacs, ...                                                  
-vilock       	function     	rename EDITlock, using $EDITOR                                        
-vindex       	             	used by VE                                                            
-whatis       	file         	/usr/bin/whatis                                                       
-whatwill     	             	see whatis, ...                                                       
-yourprog     	function     	sample template                                                       
+command    	explain          	fmt	abstract                                                                
+-------    	-------          	---	--------                                                                
+addcol     	full wiki entry  	   	adds columns to a table                                                 
+blank      	full wiki entry  	*  	replaces all data in a record with spaces                               
+check      	full wiki entry  	   	reports rows in which columns do not match head                         
+column     	empty            	*  	display columns of a table in any order                                 
+compute    	empty            	*  	calculates columns of a table                                           
+cpdir      	empty            	   	                                                                        
+datatype   	full wiki entry  	   	displays the datatype of each column selected                           
+dbdict     	full wiki entry  	   	prints a database dictionary: the field names                           
+fd         	testcase prepared	   	tests for functional dependency of columns                              
+gregorian  	testcase prepared	*  	convert column of dates for math and format change                      
+headoff    	full wiki entry  	   	removes the head from both table and list files                         
+jointable  	testcase prepared	   	joins two tables into one where keys match                              
+julian     	testcase prepared	*  	convert column of dates for math and format change                      
+justify    	empty            	   	                                                                        
+listtotable	full wiki entry  	   	for converting from list to table format                                
+lock       	empty            	   	                                                                        
+ncolumn    	full wiki entry  	*  	removes columns, "Not Column"                                           
+not        	empty            	   	                                                                        
+project    	empty            	   	                                                                        
+rename     	full wiki entry  	*  	change column names in head line                                        
+replace    	empty            	   	                                                                        
+report     	empty            	   	                                                                        
+row        	empty            	*  	makes new table where rows match logical condition                      
+rowhas     	empty            	   	                                                                        
+rowis      	empty            	   	                                                                        
+rowisnot   	empty            	   	                                                                        
+schema     	full wiki entry  	   	lists the database dictionary from table                                
+see        	empty            	   	                                                                        
+sorttable  	empty            	*  	sorts a table by one or more columns                                    
+tableorlist	full wiki entry  	*  	reports if a file is list, first character is a newline, or table if not
+tabletolist	full wiki entry  	   	converts a file from table to list format                               
+todaysdate 	code captured    	   	output the current date in the c,e,i,u format                           
+union      	empty            	   	                                                                        
+width      	empty            	   	                                                                        
+word       	empty            	   	                                                                        

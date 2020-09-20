@@ -140,15 +140,49 @@ compute ()
         BEGIN   { FS=OFS=\"\t\"}; { $COLIN $1; $COLOUT print }"
     }
 }
+gregorian_test () 
+{ 
+    : date: 2020-09-19;
+    report_notfile gregortest.rdb && return 1;
+    column < gregortest.rdb | compute '
+
+        result = date' | gregorian result | compute 'diff = result - significance'
+}
+julian_test () 
+{ 
+    : date: 2020-09-19;
+    report_notfile juliantest.rdb && return 1;
+    column < juliantest.rdb | compute '
+
+        jday = date' | julian jday | compute 'diff = expect - jday'
+}
+datearithmetic_test () 
+{ 
+    : combined julian, gregorian testing;
+    function date_fmtime () 
+    { 
+        rdb_iDate | rdb_dDate | ncolumn {insert,delete}_time
+    };
+    function j2g () 
+    { 
+        addcol $1 | julian i_date d_date | compute "
+
+        $1 = d_date - i_date
+
+    " | gregorian i_date d_date
+    };
+    report_notfile command.rdb && return 1;
+    zcat .hry/command.rdb.Z | row 'command ~ /tomorrow/' | date_fmtime | j2g days
+}
 gregorian () 
 { 
     : performs julian to gregorian day calculation on named Columns;
-    _rdb_column_function $1
+    _rdb_column_function $@
 }
 julian () 
 { 
     : performs gregorian formats julian day calculation on named Columns;
-    _rdb_column_function $1
+    _rdb_column_function $@
 }
 _rdb_column_function () 
 { 
@@ -174,7 +208,7 @@ _rdb_column_function ()
     read_devtty HEAD: $HEAD;
     [[ -z "$HEAD" ]] && { 
         ( echo;
-        rcat ) | listtotable | $(myname) "$@" | tabletolist;
+        rcat ) | listtotable | $awkfun $@ | tabletolist;
         return 0
     };
     read DASH;
@@ -420,6 +454,27 @@ hz ()
     set -- $(reverseArgs ${*:2});
     ${*:-zcat} $history
 }
+rdb_column () 
+{ 
+    read_devtty $*;
+    local file=$1;
+    shift;
+    local colm=$1;
+    shift;
+    set -- $(sed 1q $file);
+    read_devtty colm, args: $colm, $*;
+    local C=0;
+    for a in $*;
+    do
+        (( C += 1 ));
+        [[ "$colm" = $a ]] && { 
+            read_devtty FOUND colm, C: $colm, $C;
+            echo $C;
+            return 0
+        };
+    done;
+    return 1
+}
 jointable () 
 { 
     : join two tables into one where keys match;
@@ -432,11 +487,9 @@ jointable ()
     local ARGS="";
     local f1="";
     local f2="";
-    read_devtty "$(myname) ( $* )";
     while [ $# -gt 0 ]; do
         arg=$1;
         shift;
-        read_devtty arg: $arg;
         case $arg in 
             -)
                 if [ -z "$f1" ]; then
@@ -503,13 +556,14 @@ jointable ()
     [[ -n "$j2" ]] && { 
         ARGS="$ARGS -2 $(rdb_column $f2 $j2)"
     };
+    read_devtty ARGS: $ARGS;
     :;
-    : ---------------- TAB is tne only field separator --;
+    : ---------------- TAB is the only field separator --;
+    : and requires the EVAL in the join command
     :;
     : date: 2020-09-08 in which i learned this bash syntax;
     : ref: "https://duckduckgo.com/?t=ffab&q=bash+join+tab";
     ARGS="$ARGS -t $'\t'";
-    read_devtty ARGS: $ARGS;
     : --------------------------------------------- collect the columns --;
     :;
     local COL1=$(sed 1q $f1);
@@ -521,10 +575,12 @@ jointable ()
     read_devtty FILE: $f2, COLUMNS: $COL2;
     cat $f2 | column $COL2 | sorttable $j2 | headoff > .tmp.b.join;
     :;
-    set -- $(args_uniq $COL1 $COL2);
+    : columns of the JOINed table;
+    set -- $(args_uniq $j1 $j2 $COL1 $COL2);
     read_devtty rdb_hdr $*;
     rdb_hdr $*;
     read_devtty join $ARGS .tmp.{a,b}.join;
+    : the EVAL is mandated by the TAB syntax
     eval join $ARGS .tmp.{a,b}.join
 }
 latest_filesuf () 
@@ -1388,6 +1444,14 @@ width ()
               printf "\n"
             }'
 }
+todaysdate_test () 
+{ 
+    function _tdate_test () 
+    { 
+        printf "  $1:\t%s\n" $(todaysdate -$1)
+    };
+    foreach _tdate_test {a..z} 8 7 0 13
+}
 todaysdate () 
 { 
     : in ceiu formats, computer european, iso {default}, US, YYYYmmdd: 8;
@@ -1413,4 +1477,13 @@ todaysdate ()
             $(myname)
         ;;
     esac
+}
+jointable_test () 
+{ 
+    : join with the status value to sort in most to least mature functions;
+    : date: 2020-09-20;
+    set -- {command,statusvalue}.rdb;
+    report_notfile $1 && return 1;
+    report_notfile $2 && return 2;
+    sorttable status < $1 | jointable -j1 status - $2 | sorttable -r seqn | ncolumn status seqn
 }

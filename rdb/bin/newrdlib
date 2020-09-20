@@ -108,12 +108,6 @@ rdb_colrename ()
             { print }
     '
 }
-rdb_column () 
-{ 
-    : app_trace $*;
-    local boiler=": mfg: $(myname 2);: date: 2019-01-23";
-    eval "${1}_${2} () { $boiler; rdb_now $1 | column $2 | rd sort -u; }"
-}
 rdb_data () 
 { 
     set -- $1 ${2:-.};
