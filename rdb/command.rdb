@@ -31,8 +31,7 @@ see	func
 sorttable	func		*	sorts a table by one or more columns
 tableorlist	func	tested	*	reports if a file is list, first character is a newline, or table if not
 tabletolist	func	tested		converts a file from table to list format
-todaysdate	nexta			output the current date in the c,e,i,u format
-tomorrow	func			
+todaysdate	nexta	coded		output the current date in the c,e,i,u format
 union	func			
 width	func			
 word	func			

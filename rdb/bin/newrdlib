@@ -817,11 +817,6 @@ todo_columns ()
     : version: 1.0.0;
     ${*:-echo} thru proj todo
 }
-tomorrow () 
-{ 
-    : todo: do what needs doing, tomorrow;
-    trace $*
-}
 trimblank () 
 { 
     return

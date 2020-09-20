@@ -1390,7 +1390,7 @@ width ()
 }
 todaysdate () 
 { 
-    : in ceiu formats, computer european, iso {default}, US;
+    : in ceiu formats, computer european, iso {default}, US, YYYYmmdd: 8;
     : date: 2020-09-19;
     set -- ${1:--i};
     case $1 in 
@@ -1405,6 +1405,9 @@ todaysdate ()
         ;;
         -u)
             date +%x
+        ;;
+        -8)
+            date +%Y%m%d
         ;;
         *)
             $(myname)

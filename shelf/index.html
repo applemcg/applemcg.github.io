@@ -141,8 +141,6 @@ Error message and password prompt
 
 <p>This <a class="tc-tiddlylink-external" href="https://tiddlywiki.com" rel="noopener noreferrer" target="_blank">TiddlyWiki</a> contains the following tiddlers:</p><p><ul>
 
-<li> -z &quot;$HEAD&quot; </li>
-
 <li> headoff_testdata</li>
 
 <li> ncolumn_testdata</li>
@@ -434,6 +432,8 @@ Error message and password prompt
 <li>$:/state/tab--456652375</li>
 
 <li>$:/state/tab--509593366</li>
+
+<li>$:/state/tab--642659253</li>
 
 <li>$:/state/tab--660715619</li>
 
@@ -997,11 +997,11 @@ Error message and password prompt
 
 <li>todaysdate</li>
 
+<li>todaysdate_code</li>
+
 <li>todo</li>
 
 <li>todo_tag</li>
-
-<li>tomorrow</li>
 
 <li>trace_off</li>
 
@@ -1053,9 +1053,6 @@ Error message and password prompt
 <!--~~ Ordinary tiddlers ~~-->
 
 <div id="storeArea" style="display:none;">
-<div created="20200919192844979" creator="Marty McGowan" modified="20200919192844979" modifier="Marty McGowan" title=" -z &quot;$HEAD&quot; ">
-<pre></pre>
-</div>
 <div created="20200913004127774" creator="Marty McGowan" modified="20200913004127774" modifier="Marty McGowan" title=" headoff_testdata">
 <pre></pre>
 </div>
@@ -12782,6 +12779,9 @@ exports.context = contextWidget;
 <div created="20200423200357785" modified="20200423200357785" title="$:/state/tab--509593366">
 <pre>$:/core/ui/ControlPanel/Palette</pre>
 </div>
+<div created="20200920002348767" creator="Marty McGowan" modified="20200920003242209" modifier="Marty McGowan" title="$:/state/tab--642659253">
+<pre>todaysdate_code</pre>
+</div>
 <div created="20200802233910432" creator="Marty McGowan" modified="20200909184911850" modifier="Marty McGowan" title="$:/state/tab--660715619">
 <pre>function themes</pre>
 </div>
@@ -12887,7 +12887,7 @@ exports.context = contextWidget;
 <div created="20200919194326663" creator="Marty McGowan" modified="20200919194845141" modifier="Marty McGowan" title="$:/state/tab-566127383">
 <pre>gregorian_code</pre>
 </div>
-<div created="20200823181320536" creator="Marty McGowan" modified="20200916190648772" modifier="Marty McGowan" title="$:/state/tab-613428447">
+<div created="20200823181320536" creator="Marty McGowan" modified="20200920001945608" modifier="Marty McGowan" title="$:/state/tab-613428447">
 <pre>rdb commands</pre>
 </div>
 <div created="20200826150453563" creator="Marty McGowan" modified="20200826150453563" modifier="Marty McGowan" title="$:/state/tab-778389196">
@@ -12929,7 +12929,7 @@ exports.context = contextWidget;
 <div bag="default" created="20200810170615861" creator="M" modified="20200811134449245" modifier="Marty McGwan" revision="1" title="$:/status/UserName">
 <pre>Marty McGowan</pre>
 </div>
-<div created="20200919195122079" creator="Marty McGowan" list="[[rdb commands]] [[On /RDB]] [[Table of Contents]]" modified="20200919195441441" modifier="Marty McGowan" title="$:/StoryList">
+<div created="20200920001941559" creator="Marty McGowan" list="todaysdate todaysdate_code [[rdb commands]] [[On /RDB]] [[Table of Contents]]" modified="20200920003249770" modifier="Marty McGowan" title="$:/StoryList">
 <pre></pre>
 </div>
 <div created="20200519141000553" list="$:/.giffmex/Buttons/more-tiddler-edit-actions $:/core/ui/Buttons/delete $:/core/ui/Buttons/cancel $:/core/ui/Buttons/save" modified="20200521145647980" tags="$:/giffmex/bigeditarea $:/giffmex/stroll" title="$:/tags/EditToolbar">
@@ -13005,7 +13005,7 @@ exports.context = contextWidget;
     }
 }</pre>
 </div>
-<div created="20200418122623650" creator="Marty McGowan" modified="20200824183034155" modifier="Marty McGowan" title="$:/temp/NewTagName">
+<div created="20200418122623650" creator="Marty McGowan" modified="20200920002456178" modifier="Marty McGowan" title="$:/temp/NewTagName">
 <pre></pre>
 </div>
 <div created="20200502174947648" modified="20200502174955840" title="$:/temp/RenameTags/replace">
@@ -15196,7 +15196,7 @@ names of prominent families:
 
 </pre>
 </div>
-<div created="20200824162939716" creator="Marty McGowan" modified="20200919235316372" modifier="Marty McGowan" tags="[[rdb usage]]" title="rdb commands">
+<div created="20200824162939716" creator="Marty McGowan" modified="20200920003515269" modifier="Marty McGowan" tags="[[rdb usage]]" title="rdb commands">
 <pre>[ [[On /RDB]]  ][ [[rdb commands]] ][ [[untested commands]] ]
 
 Commands with an asteriisk, e.g. &quot;-- *&quot; are list and table format sensitive. i.e. they deal with either format:
@@ -15205,45 +15205,45 @@ Commands with an asteriisk, e.g. &quot;-- *&quot; are list and table format sens
 ```
 rdb.$ column &lt; command.rdb | sorttable | tiddlylink command | fiveColumnTiddly 
 ```
-
-
 | !command | !type | !status | !fmt | !abstract |
-|addcol |func |tested | |adds columns to a table |
-|blank |func |tested |* |replaces all data in a record with spaces |
-|check |func |tested | |reports rows in which columns do not match head |
-|column |func | |* |display columns of a table in any order |
-|compute |func | |* |calculates columns of a table |
-|cpdir |func | | | |
-|datatype |func |tested | |displays the datatype of each column selected |
-|dbdict |func |tested | |prints a database dictionary: the field names |
-|fd |func |testing | |tests for functional dependency of columns |
-|gregorian |func |outline | |convert column of dates for math and format change |
-|headoff |func |tested | |removes the head from both table and list files |
-|jointable |func |nextb | |joins two tables into one where keys match |
-|julian |func |outline | |convert column of dates for math and format change |
-|justify |file | | | |
-|listtotable |func |tested | |for converting from list to table format |
-|lock |func | | | |
-|ncolumn |func |tested |* |removes columns, &quot;Not Column&quot; |
-|not |func | | | |
-|project |func | | | |
-|rename |func |tested |* |change column names in head line |
-|replace |func | | | |
-|report |func | | | |
-|row |func | |* |makes new table where rows match logical condition |
-|rowhas |func | | | |
-|rowis |func | | | |
-|rowisnot |func | | | |
-|schema |func |tested | |lists the database dictionary from table |
-|see |func | | | |
-|sorttable |func | |* |sorts a table by one or more columns |
-|tableorlist |func |tested |* |reports if a file is list, first character is a newline, or table if not |
-|tabletolist |func |tested | |converts a file from table to list format |
-|todaysdate |nexta | | |output the current date in the c,e,i,u format |
-|tomorrow |func | | | |
-|union |func | | | |
-|width |func | | | |
-|word |func | | | |
+|[[addcol]] |func |tested | |adds columns to a table |
+|[[blank]] |func |tested |* |replaces all data in a record with spaces |
+|[[check]] |func |tested | |reports rows in which columns do not match head |
+|[[column]] |func | |* |display columns of a table in any order |
+|[[compute]] |func | |* |calculates columns of a table |
+|[[cpdir]] |func | | | |
+|[[datatype]] |func |tested | |displays the datatype of each column selected |
+|[[dbdict]] |func |tested | |prints a database dictionary: the field names |
+|[[fd]] |func |testing | |tests for functional dependency of columns |
+|[[gregorian]] |func |outline | |convert column of dates for math and format change |
+|[[headoff]] |func |tested | |removes the head from both table and list files |
+|[[jointable]] |func |nextb | |joins two tables into one where keys match |
+|[[julian]] |func |outline | |convert column of dates for math and format change |
+|[[justify]] |file | | | |
+|[[listtotable]] |func |tested | |for converting from list to table format |
+|[[lock]] |func | | | |
+|[[ncolumn]] |func |tested |* |removes columns, &quot;Not Column&quot; |
+|[[not]] |func | | | |
+|[[project]] |func | | | |
+|[[rename]] |func |tested |* |change column names in head line |
+|[[replace]] |func | | | |
+|[[report]] |func | | | |
+|[[row]] |func | |* |makes new table where rows match logical condition |
+|[[rowhas]] |func | | | |
+|[[rowis]] |func | | | |
+|[[rowisnot]] |func | | | |
+|[[schema]] |func |tested | |lists the database dictionary from table |
+|[[see]] |func | | | |
+|[[sorttable]] |func | |* |sorts a table by one or more columns |
+|[[tableorlist]] |func |tested |* |reports if a file is list, first character is a newline, or table if not |
+|[[tabletolist]] |func |tested | |converts a file from table to list format |
+|[[todaysdate]] |nexta |coded | |output the current date in the c,e,i,u format |
+|[[union]] |func | | | |
+|[[width]] |func | | | |
+|[[word]] |func | | | |
+
+
+
 
 
 The sequence of steps:
@@ -16660,8 +16660,50 @@ sample_function ()
 <div created="20200910142425966" creator="Marty McGowan" modified="20200910142425966" modifier="Marty McGowan" title="TIddlyWiki">
 <pre></pre>
 </div>
-<div created="20200824182359466" creator="Marty McGowan" modified="20200824182359466" modifier="Marty McGowan" title="todaysdate">
-<pre></pre>
+<div created="20200824182359466" creator="Marty McGowan" modified="20200920002844667" modifier="Marty McGowan" title="todaysdate">
+<pre>[[rdb commands]] | [[todaysdate]]
+
+todaysdate updates the textbook with two more date formats: ''ISO'', YYYY-mm-dd; ''8'', YYYYmmdd, and moved the default format from //computer// yymmdd to //ISO//.
+
+Bad arguments return the default, not an error, a subject I strongly believe in.
+
+
+&lt;&lt;tabs &quot;[[todaysdate_code]] [[todaysdate_testcase]] [[todaysdate_testdata]] [[todaysdate_testout]]&quot; &quot;[[todaysdate_testcase]]&quot; &quot;&quot; &quot;tc-vertical&quot;&gt;&gt;</pre>
+</div>
+<div created="20200920002353753" creator="Marty McGowan" modified="20200920002814708" modifier="Marty McGowan" tags="rdb" title="todaysdate_code">
+<pre>[[todaysdate]] | [[todaysdate_code]]
+
+
+```
+todaysdate () 
+{ 
+    : in ceiu formats: computer, european, iso {default}, US, and a new one: YYYYmmdd: 8;
+    : date: 2020-09-19;
+    set -- ${1:--i};
+    case $1 in 
+        -c)
+            date +%y%m%d
+        ;;
+        -e)
+            date +%d/%m/%y
+        ;;
+        -i)
+            date +%F
+        ;;
+        -u)
+            date +%x
+        ;;
+        -8)
+            date +%Y%m%d
+        ;;
+        *)
+            $(myname)
+        ;;
+    esac
+}
+
+```
+</pre>
 </div>
 <div created="20200803140200015" modified="20200809183518635" tags="code" title="todo">
 <pre>```
@@ -16719,9 +16761,6 @@ tomorrow              	do what needs doing, tomorrow
 trace_sub             	finds a way to unite these two off-by-one instances.         
 ```
 </pre>
-</div>
-<div created="20200824182359466" creator="Marty McGowan" modified="20200824182359466" modifier="Marty McGowan" title="tomorrow">
-<pre></pre>
 </div>
 <div created="20200906115754428" creator="Marty McGowan" modified="20200906115754428" modifier="Marty McGowan" title="trace_off">
 <pre></pre>
