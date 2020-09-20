@@ -15196,7 +15196,7 @@ names of prominent families:
 
 </pre>
 </div>
-<div created="20200824162939716" creator="Marty McGowan" modified="20200919195454361" modifier="Marty McGowan" tags="[[rdb usage]]" title="rdb commands">
+<div created="20200824162939716" creator="Marty McGowan" modified="20200919235316372" modifier="Marty McGowan" tags="[[rdb usage]]" title="rdb commands">
 <pre>[ [[On /RDB]]  ][ [[rdb commands]] ][ [[untested commands]] ]
 
 Commands with an asteriisk, e.g. &quot;-- *&quot; are list and table format sensitive. i.e. they deal with either format:
@@ -15206,43 +15206,44 @@ Commands with an asteriisk, e.g. &quot;-- *&quot; are list and table format sens
 rdb.$ column &lt; command.rdb | sorttable | tiddlylink command | fiveColumnTiddly 
 ```
 
+
 | !command | !type | !status | !fmt | !abstract |
-|[[addcol]] |func |tested | |adds columns to a table |
-|[[blank]] |func |tested |* |replaces all data in a record with spaces |
-|[[check]] |func |tested | | |
-|[[column]] |func | |* |display columns of a table in any order |
-|[[compute]] |func | |* |calculates columns of a table |
-|[[cpdir]] |func | | | |
-|[[datatype]] |func |tested | |displays the datatype of each column selected |
-|[[dbdict]] |func |tested | |prints a database dictionary: the field names |
-|[[fd]] |func |testing | |tests for functional dependency of columns |
-|[[gregorian]] |func |outline | |       |
-|[[headoff]] |func |tested | | |
-|[[jointable]] |func |nextb | | |
-|[[julian]] |func |outline | | |
-|[[justify]] |file | | | |
-|[[listtotable]] |func |tested | | |
-|[[lock]] |func | | | |
-|[[ncolumn]] |func |tested |* |removes columns, &quot;Not Column&quot; |
-|[[not]] |func | | | |
-|[[project]] |func | | | |
-|[[rename]] |func |tested |* |change column names in head line |
-|[[replace]] |func | | | |
-|[[report]] |func | | | |
-|[[row]] |func | |* |makes new table where rows match logical condition |
-|[[rowhas]] |func | | | |
-|[[rowis]] |func | | | |
-|[[rowisnot]] |func | | | |
-|[[schema]] |func |tested | |lists the database dictionary from table |
-|[[see]] |func | | | |
-|[[sorttable]] |func | |* |sorts a table by one or more columns |
-|[[tableorlist]] |func |tested |* |reports if a file is list, first character is a newline, or table if not |
-|[[tabletolist]] |func |tested | | |
-|[[todaysdate]] |func | | | |
-|[[tomorrow]] |func | | | |
-|[[union]] |func | | | |
-|[[width]] |func | | | |
-|[[word]] |func | | | |
+|addcol |func |tested | |adds columns to a table |
+|blank |func |tested |* |replaces all data in a record with spaces |
+|check |func |tested | |reports rows in which columns do not match head |
+|column |func | |* |display columns of a table in any order |
+|compute |func | |* |calculates columns of a table |
+|cpdir |func | | | |
+|datatype |func |tested | |displays the datatype of each column selected |
+|dbdict |func |tested | |prints a database dictionary: the field names |
+|fd |func |testing | |tests for functional dependency of columns |
+|gregorian |func |outline | |convert column of dates for math and format change |
+|headoff |func |tested | |removes the head from both table and list files |
+|jointable |func |nextb | |joins two tables into one where keys match |
+|julian |func |outline | |convert column of dates for math and format change |
+|justify |file | | | |
+|listtotable |func |tested | |for converting from list to table format |
+|lock |func | | | |
+|ncolumn |func |tested |* |removes columns, &quot;Not Column&quot; |
+|not |func | | | |
+|project |func | | | |
+|rename |func |tested |* |change column names in head line |
+|replace |func | | | |
+|report |func | | | |
+|row |func | |* |makes new table where rows match logical condition |
+|rowhas |func | | | |
+|rowis |func | | | |
+|rowisnot |func | | | |
+|schema |func |tested | |lists the database dictionary from table |
+|see |func | | | |
+|sorttable |func | |* |sorts a table by one or more columns |
+|tableorlist |func |tested |* |reports if a file is list, first character is a newline, or table if not |
+|tabletolist |func |tested | |converts a file from table to list format |
+|todaysdate |nexta | | |output the current date in the c,e,i,u format |
+|tomorrow |func | | | |
+|union |func | | | |
+|width |func | | | |
+|word |func | | | |
 
 
 The sequence of steps:
