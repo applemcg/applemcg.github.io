@@ -1,44 +1,3 @@
-datatype () 
-{ 
-    comment TRACE $# datatype -- type of data in column;
-    case $0 in 
-        *whennew)
-            all=-l;
-            prtrec=print
-        ;;
-    esac;
-    read HEAD;
-    case $1 in 
-        -l)
-            shift;
-            all=-l;
-            prtrec=print
-        ;;
-    esac;
-    [ $# -lt 1 ] && { 
-        ( echo "$HEAD";
-        cat ) | $0 $all $HEAD;
-        exit
-    };
-    ( echo "$HEAD";
-    cat ) | column $* | { 
-        read HEAD;
-        read DASH;
-        comment EDIT_MARK deail with the ... =$0 s;
-        comment e.g. functions maximum, minimum, ....;
-        echo "$HEAD";
-        echo "$DASH";
-        case $0 in 
-            */*)
-                function=$(basename $0)
-            ;;
-            *)
-                function=$0
-            ;;
-        esac;
-        awkData
-    }
-}
 lock () 
 { 
     comment TRACE lock $# ARGS $*;
@@ -90,12 +49,6 @@ replace ()
         return
     };
     sed "s/$1/$2/g" $*
-}
-todaysdate () 
-{ 
-    comment TRACE todaysdate $# ARGS $*;
-    quietly comment -- yymmdd;
-    date '+%y%m%d'
 }
 union () 
 { 

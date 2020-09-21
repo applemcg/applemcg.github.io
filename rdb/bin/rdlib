@@ -559,7 +559,7 @@ jointable ()
     read_devtty ARGS: $ARGS;
     :;
     : ---------------- TAB is the only field separator --;
-    : and requires the EVAL in the join command
+    : and requires the EVAL in the join command;
     :;
     : date: 2020-09-08 in which i learned this bash syntax;
     : ref: "https://duckduckgo.com/?t=ffab&q=bash+join+tab";
@@ -580,7 +580,7 @@ jointable ()
     read_devtty rdb_hdr $*;
     rdb_hdr $*;
     read_devtty join $ARGS .tmp.{a,b}.join;
-    : the EVAL is mandated by the TAB syntax
+    : the EVAL is mandated by the TAB syntax;
     eval join $ARGS .tmp.{a,b}.join
 }
 latest_filesuf () 
@@ -1486,4 +1486,75 @@ jointable_test ()
     report_notfile $1 && return 1;
     report_notfile $2 && return 2;
     sorttable status < $1 | jointable -j1 status - $2 | sorttable -r seqn | ncolumn status seqn
+}
+datatype () 
+{ 
+    : produces the rdb datatype in each column;
+    : /RDB, p. 287;
+    : date: 2020-08-24;
+    : date: 2020-09-21;
+    :;
+    local listall=0;
+    case $1 in 
+        -l)
+            listall=1;
+            shift
+        ;;
+    esac;
+    column $* | tawk -v listall=$listall '
+
+    function max(x,y)  { return ((x > y)? x : y); }
+
+    NR == 2 { dash = $0 }
+    NR < 3  { print; nfields = NF
+              for (i=1; i<= NF; i++) {
+                  dtype[i] = -1    # default is non-numberic Character strings      
+      }
+              next
+    }
+    listall == 1  { print }
+    NF != nfields { print "ERROR: %d has %d fields, Not %d\n", NR, NF, fields; exit; }
+
+        {   
+  n = split($0, field,"\t");
+  for (i=1; i<=nfields; i++) {
+
+              if( field[i] ~ /[0-9]/)  {
+
+                  num = field[i]
+                  dtype[i] = max( dtype[i], 0);
+                  dpoint   = index( num,".")
+          if (dpoint) {
+
+                      decimal  = length(substr(num,dpoint+1))
+      dtype[i] = max( dtype[i], decimal);
+                    }
+                 }
+             }
+ }
+    END {
+          if(listall) print dash
+
+  for (i=1; i< nfields; i++) {
+      printf "%6d\t", dtype[i]
+            }
+          printf "%6d\n", dtype[nfields]  
+        }
+    '
+}
+datatype_test () 
+{ 
+    : exercise the p. 287 example;
+    : date: 2020-09-21;
+    runfrom $(applemcg echo)/rdb/lib || return;
+    report_notfile typetable && return 1;
+    set typetable Float4 Char;
+    datatype < $1;
+    echo . . . .;
+    datatype -l < $1;
+    echo . . . .;
+    datatype -l ${*:2} < $1;
+    echo . . . .;
+    datatype ${*:2} < $1;
+    echo . . . .
 }
