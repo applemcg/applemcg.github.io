@@ -61,7 +61,7 @@ column ()
     local COL="";
     local C;
     :;
-    : app_trace $*;
+    : read_devtty $*
     read HEAD;
     [[ -z "$HEAD" ]] && { 
         ( echo;
@@ -93,8 +93,7 @@ column ()
         esac;
     done;
     COL=${COL#,};
-    : app_trace COL: $COL;
-    : comment awk "BEGIN { FS = OFS = \"\t\"; blank = \"""\"; }; { print $COL; }";
+    : read_devtty COL: $COL;
     rdb_hdr $@;
     rcat | awk "BEGIN { FS = OFS = \"\t\"; blank = \"""\"; }; { print $COL; }"
 }
@@ -1366,11 +1365,6 @@ test_data ()
     : date: 2019-08-20;
     wc $* | sed 's/^ *//; s/  */	/g'
 }
-test_list () 
-{ 
-    : date: 2019-08-20;
-    ${*:-echo} test_data test_list test_run test_sequence test_setup
-}
 test_run () 
 { 
     : date: 2019-08-20;
@@ -1382,28 +1376,6 @@ test_run ()
     : 3rd step of Test Sequence;
     rdb_canon $2;
     popd
-}
-test_sequence () 
-{ 
-    : unit test sequence for list functions;
-    : test: tbl_fmlist tbltool fold_b listtotable tag_fmrecord;
-    : lesson: the function was ADDCOL, not add_col;
-    functions ./fixlib;
-    cat <<'EOF'
-    . shdlib; . fixlib; shd_listformat  $(functions fixlib); : e.g.
-    tbl_fmlist
-    tbltool    
-    name_report
-    do_name_report $(columns)
-    fold_2
-    set -- $(fold_b); ea
-    fold_2 | addcol $*
-    fold_2 | addcol $* | justify
-    tag_fmrecord $*
-    fold_2 | from_trto $*
-    fold_2 | from_trto $* | hold_r 
-EOF
-
 }
 test_setup () 
 { 

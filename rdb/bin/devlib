@@ -28,7 +28,7 @@ awk_funs ()
     : date: 2020-09-18;
     awk '$1 ~ /function/ { sub(/ *{.*/, ""); print  }' ../lib/awklib
 }
-gjtwotest () 
+gjtwo_test () 
 { 
     : date: 2020-09-18;
     column < juliantest.rdb | addcol jday gregday gjday diff | compute '
@@ -44,10 +44,27 @@ gjtwotest ()
         diff = jday - gjday
     '
 }
-gjonetest () 
+gjone_test () 
 { 
     : date: 2020-09-18;
     . rdlib;
-    report_notfile juliantest.rdb && return 1        
+    report_notfile juliantest.rdb && return 1;
     column < juliantest.rdb | addcol jday gday | compute 'jday = date' | julian jday | compute 'gday = jday' | row 'NR < 2' | gregorian gday
+}
+hdr_use () 
+{ 
+    : where is rdb_hdr used in non-{HEAD,arg} situations;
+    : date: 2020-09-21;
+    fuse rdb_hdr | grep -v '$HEAD' | grep -v '$[*@]'
+}
+any_testfun ()
+{
+     set | functions | grep _test 
+}
+rdb_testfun () 
+{ 
+    : rdb TEST functions;
+    : date: 2020-09-23;
+    runfrom $(applemcg echo)/rdb || return 1;
+    declare -f $(column command < command.rdb | headoff | sed 's/$/_test/')
 }

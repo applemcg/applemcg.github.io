@@ -401,6 +401,8 @@ Error message and password prompt
 
 <li>$:/state/tab--1498284803</li>
 
+<li>$:/state/tab--1499124297</li>
+
 <li>$:/state/tab--1629370387</li>
 
 <li>$:/state/tab--1830371946</li>
@@ -638,6 +640,8 @@ Error message and password prompt
 <li>code walkthrough</li>
 
 <li>column</li>
+
+<li>column_code</li>
 
 <li>command history e.g.</li>
 
@@ -12751,6 +12755,9 @@ exports.context = contextWidget;
 <div created="20200418122550429" modified="20200504205519536" title="$:/state/tab--1498284803">
 <pre>$:/core/ui/AdvancedSearch/Filter</pre>
 </div>
+<div created="20200923202341913" creator="Marty McGowan" modified="20200923202341913" modifier="Marty McGowan" title="$:/state/tab--1499124297">
+<pre>column_code</pre>
+</div>
 <div created="20200802195700957" creator="Marty McGOwan" modified="20200910133346325" modifier="Marty McGowan" title="$:/state/tab--1629370387">
 <pre>shell stories</pre>
 </div>
@@ -12952,7 +12959,7 @@ exports.context = contextWidget;
 <div bag="default" created="20200810170615861" creator="M" modified="20200811134449245" modifier="Marty McGwan" revision="1" title="$:/status/UserName">
 <pre>Marty McGowan</pre>
 </div>
-<div created="20200921134953639" creator="Marty McGowan" list="read_devtty [[Important Tags]] [[Table of Contents]]" modified="20200921141023517" modifier="Marty McGowan" title="$:/StoryList">
+<div created="20200923195852353" creator="Marty McGowan" list="column column_code [[rdb commands]] [[On /RDB]] [[Table of Contents]]" modified="20200923195927554" modifier="Marty McGowan" title="$:/StoryList">
 <pre></pre>
 </div>
 <div created="20200519141000553" list="$:/.giffmex/Buttons/more-tiddler-edit-actions $:/core/ui/Buttons/delete $:/core/ui/Buttons/cancel $:/core/ui/Buttons/save" modified="20200521145647980" tags="$:/giffmex/bigeditarea $:/giffmex/stroll" title="$:/tags/EditToolbar">
@@ -13661,8 +13668,72 @@ today (2020-09-20) I walked through the [[common_gl_code]], and found these mist
 # the calling function needs to pass all arguments: e.g. not `$1`, but rather` $@`
 # the recursive myname call needs to be `$(myname 2),` the calling function, or more appropriately `$awkfun,` since its name has already been collected</pre>
 </div>
-<div created="20200823182132439" creator="Marty McGowan" modified="20200823182132439" modifier="Marty McGowan" title="column">
-<pre></pre>
+<div created="20200823182132439" creator="Marty McGowan" modified="20200923202339552" modifier="Marty McGowan" title="column">
+<pre>[[rdb commands]] | [[column]]
+
+
+displays the columns of a table in any order, creating blank columns where necessary
+
+&lt;&lt;tabs &quot;[[column_code]] [[column_testcase]] [[column_testdata]] [[column_testout]]&quot; &quot;[[column_testcase]]&quot; &quot;&quot; &quot;tc-vertical&quot;&gt;&gt;
+</pre>
+</div>
+<div created="20200923200206698" creator="Marty McGowan" modified="20200923202424530" modifier="Marty McGowan" tags="" title="column_code">
+<pre>[[column]] | [[column_code]]
+
+
+```
+column () 
+{ 
+    : PROJECT columns from named RDB -- first Row -- FIELDS;
+    : reads STDIN for RDB list or TABLE format,;
+    : date: 2019-07-02;
+    : date: 2019-08-14 added the BLANK columns, not yet in table;
+    : date: 2020-05-17 RCAT replaces CAT;
+    : -------------------------------------- begin template.fun --;
+    local HEAD;
+    local DASH;
+    local COL=&quot;&quot;;
+    local C;
+    :;
+    : read_devtty $*;
+    read HEAD;
+    [[ -z &quot;$HEAD&quot; ]] &amp;&amp; { 
+        ( echo;
+        rcat ) | listtotable | $(myname) &quot;$@&quot; | tabletolist;
+        return 0
+    };
+    read DASH;
+    : ---------------------------------------- end template.fun --;
+    : default to HEADER fields;
+    set -- ${@:-$HEAD};
+    for ARG in $@;
+    do
+        case &quot; $HEAD &quot; in 
+            *$ARG*)
+                : the column is in the table, what number?;
+                (( C = 1 ));
+                for I in $HEAD;
+                do
+                    [[ &quot;$I&quot; = &quot;$ARG&quot; ]] &amp;&amp; { 
+                        COL=&quot;${COL},\$$C&quot;
+                    };
+                    (( C += 1 ));
+                done
+            ;;
+            *)
+                : the column is NOT in the table;
+                COL=&quot;${COL},blank&quot;
+            ;;
+        esac;
+    done;
+    COL=${COL#,};
+    : read_devtty COL: $COL;
+    rdb_hdr $@;
+    rcat | awk &quot;BEGIN { FS = OFS = \&quot;\t\&quot;; blank = \&quot;&quot;&quot;\&quot;; }; { print $COL; }&quot;
+}
+
+```
+</pre>
 </div>
 <div created="20200906132452583" creator="Marty McGowan" modified="20200909144636316" modifier="Marty McGowan" tags="" title="command history e.g.">
 <pre>[ [[On /RDB]] ][ [[command history e.g.]] ]
@@ -15923,7 +15994,6 @@ working.rdb      	2020-08-25	Tue
 </div>
 <div created="20200921135416005" creator="Marty McGowan" modified="20200921140037955" modifier="Marty McGowan" tags="code" title="runfrom">
 <pre>
-
 ```
 $ libcmd $(whf runfrom) runfrom
 runfrom () 
