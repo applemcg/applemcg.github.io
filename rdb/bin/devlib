@@ -10,6 +10,13 @@ tw_cmdtempl ()
     printf "[[rdb commands]] | [[$1]]\n\n\n";
     tw_funtempl $1
 }
+tw_utltempl () 
+{ 
+    : the tw template for an rdb utility;
+    set -- ${1:-julian};
+    printf "[[utility commands]] | [[$1]]\n\n\n";
+    tw_funtempl $1
+}
 tw_funtempl () 
 { 
     set -- ${1:-width};
@@ -57,9 +64,9 @@ hdr_use ()
     : date: 2020-09-21;
     fuse rdb_hdr | grep -v '$HEAD' | grep -v '$[*@]'
 }
-any_testfun ()
-{
-     set | functions | grep _test 
+any_testfun () 
+{ 
+    set | functions | grep _test
 }
 rdb_testfun () 
 { 
@@ -67,4 +74,39 @@ rdb_testfun ()
     : date: 2020-09-23;
     runfrom $(applemcg echo)/rdb || return 1;
     declare -f $(column command < command.rdb | headoff | sed 's/$/_test/')
+}
+bad_status () 
+{ 
+    : date: 2020-09-24;
+    comm -13 <(column status < statusvalue.rdb  | sorttable -u | headoff) <(column status < command.rdb  | sorttable -u | headoff)
+}
+rdu_abstract () 
+{ 
+    : function one-line abstracts;
+    : date: 2020-09-24;
+    rdb_hdr name abstract;
+    foreach shd_abstract ${*:-shd_abstract} | nf gt 1
+}
+rdu_libtable () 
+{ 
+    : utility library home table report;
+    : date: 2020-09-24;
+    report_notfile $1 && return 1;
+    set $1 ${1%.*};
+    ( rdb_hdr name library table;
+    do_whf $(column name < $1 | headoff ) | onebyN ) | compute " table = \"$2\""
+}
+rdu_libtable_test () 
+{ 
+    : tests both rdu_{abstract,libtable}, joining the products, as intended;
+    : ~ PATH-findable library, extracts functions abstracts;
+    : date: 2020-09-24;
+    report_notargcount 1 $# && return 1;
+    lib=$(which $1);
+    report_notfile $lib && return 2;
+    file=$(basename $lib);
+    abstr=${file}_abstract.rdb;
+    read_devtty abstr: $abstr;
+    rdu_abstract $(functions $lib) | tee $abstr | tiddlylink name | twoColumnTiddly;
+    rdu_libtable $abstr | jointable - $abstr
 }

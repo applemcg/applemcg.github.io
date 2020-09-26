@@ -138,7 +138,7 @@ git_help ()
 }
 git_untracked () 
 { 
-    cgit status | sed '1,/Untracked files:/d; s/^#[     ]*//' | tail +3
+    cgit status | sed '1,/Untracked files:/d; s/^#[     ]*//' | tail +${1:-2}
 }
 git_needadd () 
 { 
@@ -295,7 +295,7 @@ twoColumnTiddly ()
     
     NR == 1 { printf "| !%s | !%s |\n", $1, $2}
      NR < 3 { next };
-            { printf "|%s |[[%s]] |\n", $1, $2}
+            { printf "|%s |%s |\n", $1, $2}
    '
 }
 threeColumnTiddly () 

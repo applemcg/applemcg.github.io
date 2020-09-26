@@ -1,0 +1,19 @@
+name	abstract
+----	--------
+datatype_test	exercise the p. 287 example
+datearithmetic_test	combined julian, gregorian testing
+expect_test	Runs a test, captures the return code, compares
+fix_latest	list the most recent FIXLIB, prepare to return functions to LIBRs
+fix_path_test	run from anywhere, once qfix fix_path and ~ restore are on PATH
+jointable_test	join with the status value to sort in most to least mature functions
+mfg_string_test	todo: more rigor, e.g. "eval () { ... }"
+mkdir_test	tests the MKDIR FUNCTION against the man page
+proc_parent_test	test both facets of proc_parent: terminal shell or SCRIPT?
+rcat_test	rcat HANGS on empty PIPE or REDIRECTION.
+sf_history_test	test return codes: not function, not smart, not file, table with history
+shd_latest	uses: shd_getdate awk
+shd_mydoc_test	test cases for shd_mydoc. One Argument is required
+shd_test	1. test default, NO arguments, then
+stdinSet_fileArgs_test	rot13, using stdinSet_fileArgs
+stdin_orargs_test	rot13, using stdin_orags, on STDIN, using ARGS, a FILE
+ver_dayslatest	remove ver_earlier, leaving days latest

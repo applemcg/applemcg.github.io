@@ -3,8 +3,9 @@ command	type	status	fmt	abstract
 addcol	func	tested		adds columns to a table
 blank	func	tested	*	replaces all data in a record with spaces
 check	func	tested		reports rows in which columns do not match head
-column	func	.	*	display columns of a table in any order
+column	func	coded	*	display columns of a table in any order
 compute	func	.	*	calculates columns of a table
+commands	n/a	.		   see [[rdb]]
 cpdir	func	.		
 datatype	func	tested		displays the datatype of each column selected
 dbdict	func	tested		prints a database dictionary: the field names
@@ -18,7 +19,8 @@ listtotable	func	tested		for converting from list to table format
 lock	func	.		
 ncolumn	func	tested	*	removes columns, "Not Column"
 not	func	.		
-project	func	.		
+project	func	.
+rdb	func	coded		lists all /rdb programs and functions, bin and rdlib
 rename	func	tested	*	change column names in head line
 replace	func	.		
 report	func	.		
@@ -34,4 +36,4 @@ tabletolist	func	tested		converts a file from table to list format
 todaysdate	func	coded		output the current date in the c,e,i,u format
 union	func	.		
 width	func	.		
-word	func	.		
+word	func	.
