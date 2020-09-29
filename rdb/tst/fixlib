@@ -1,6 +1,0 @@
-rdb_column () 
-{ 
-    : return column number of table, field;
-    report_notargcount 2 $# && return 1;
-    schema $1 | tee .tmp.1 | tee .tmp.2 | row "Name ~ /$2/" | column Field | headoff
-}

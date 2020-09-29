@@ -1,0 +1,25 @@
+command	abstract
+-------	--------
+addcol	adds columns to a table
+blank	replaces all data in a record with spaces
+check	reports rows in which columns do not match head
+column	display columns of a table in any order
+compute	calculates columns of a table
+commands	   see [[rdb]]
+datatype	displays the datatype of each column selected
+dbdict	prints a database dictionary: the field names
+fd	tests for functional dependency of columns
+gregorian	convert column of dates for math and format change
+headoff	removes the head from both table and list files
+jointable	joins two tables into one where keys match
+julian	convert column of dates for math and format change
+listtotable	for converting from list to table format
+ncolumn	removes columns, "Not Column"
+rdb	lists all /rdb programs and functions, bin and rdlib
+rename	change column names in head line
+row	makes new table where rows match logical condition
+schema	lists the database dictionary from table
+sorttable	sorts a table by one or more columns
+tableorlist	reports if a file is list, first character is a newline, or table if not
+tabletolist	converts a file from table to list format
+todaysdate	output the current date in the c,e,i,u format

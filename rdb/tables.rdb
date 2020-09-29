@@ -1,19 +1,23 @@
 table	nrecrds	modate	fields
 -----	-------	------	------
-checktestdata.rdb	      2	2020-09-13	command status a b c 
-column.tsv	     33	2020-09-06	command status fmt abstract 
-command.rdb	     37	2020-09-24	command type status fmt abstract 
-date_tables.rdb	      8	2020-09-05	table date wkday 
-devlib_abstract.rdb	      6	2020-09-24	name abstract 
-differences.rdb	      3	2020-09-24	book implementation 
-instances.rdb	     77	2020-09-24	Count field value 
-statusvalue.rdb	      6	2020-09-24	status seqn explain 
-tables.rdb	      0	2020-09-24	table nrecrds modate fields 
-tables.rdb	      0	2020-09-24	table nrecrds modate fields 
-tables.rdb	      9	2020-09-24	table nrecrds modate fields 
-tables.rdb	      9	2020-09-24	table nrecrds modate fields 
-test_abstract.rdb	     17	2020-09-24	name abstract 
-testobject.nxt	     40	2020-09-13	object flag means 
-testobject.rdb	     40	2020-09-05	object flag means 
-util_abstract.rdb	      2	2020-09-24	name abstract 
-utility.rdb	      3	2020-09-24	utility type status 
+checktestdata.rdb	      2	20200913	command status a b c 
+cmmd_abstract.rdb	     23	20200927	command abstract 
+cmmd_type.rdb	     37	20200928	command type 
+column.tsv	     33	20200906	command status fmt abstract 
+command.rdb	     37	20200924	command type status fmt abstract 
+date_tables.rdb	      8	20200905	table date wkday 
+devlib_abstract.rdb	      7	20200924	name abstract 
+devlib_libtable.rdb	      9	20200924	name library table abstract 
+differences.rdb	      3	20200924	book implementation 
+instances.rdb	     77	20200924	Count field value 
+statusvalue.rdb	      6	20200924	status seqn explain 
+table_created.rdb	      6	20200928	table created fromtables 
+tables.rdb	      0	20200928	table nrecrds modate fields 
+tables.rdb	      0	20200928	table nrecrds modate fields 
+tables.rdb	     13	20200928	table nrecrds modate fields 
+tables.rdb	     13	20200928	table nrecrds modate fields 
+test_abstract.rdb	     17	20200924	name abstract 
+testobject.nxt	     40	20200913	object flag means 
+testobject.rdb	     40	20200905	object flag means 
+util_abstract.rdb	      2	20200924	name abstract 
+util_status.rdb	      2	20200927	command status fmt 

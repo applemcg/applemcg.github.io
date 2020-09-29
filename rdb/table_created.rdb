@@ -1,0 +1,8 @@
+table	created	fromtables
+-----	-------	----------
+cmmd_type.rdb	self	cmmd_status.rdb
+differences.rdb	edited	
+statusvalue.rdb	edited	
+table_created.rdb	edited	
+tables.rdb	table_report	
+util_type.rdb	self	util_status.rdb

@@ -78,7 +78,8 @@ rdb_testfun ()
 bad_status () 
 { 
     : date: 2020-09-24;
-    comm -13 <(column status < statusvalue.rdb  | sorttable -u | headoff) <(column status < command.rdb  | sorttable -u | headoff)
+    set -- statusvalue.rdb cmmd_status.rdb;
+    comm -13 <(column status < $1  | sorttable -u | headoff) <(column status < $2  | sorttable -u | headoff)
 }
 rdu_abstract () 
 { 
@@ -107,6 +108,23 @@ rdu_libtable_test ()
     file=$(basename $lib);
     abstr=${file}_abstract.rdb;
     read_devtty abstr: $abstr;
-    rdu_abstract $(functions $lib) | tee $abstr | tiddlylink name | twoColumnTiddly;
-    rdu_libtable $abstr | jointable - $abstr
+    rdu_abstract $(functions $lib) | tee $abstr | tiddlylink name | twoColumnTiddly > rdu_abstract.out;
+    rdu_libtable $abstr | jointable - $abstr > rdu_libtable.out;
+    wc rdu_{abstract,libtable}.out 1>&2
+}
+cmmd_type () 
+{ 
+    : date: 2020-09-27;
+    ( rdb_hdr command type;
+    do_whf $(column command < cmmd_status.rdb  | headoff ) ) | compute 'type = ((!type)? "cmmd": "func")' > $(myname).rdb
+}
+table_csort () 
+{ 
+    : date: 2020-09-28;
+    set -- ${1:-tables.rdb};
+    set -- $1 ${1%.*}.nxt;
+    comment $*;
+    column < $1 | sorttable > $2;
+    wc $* 1>&2;
+    echo $2 $1
 }

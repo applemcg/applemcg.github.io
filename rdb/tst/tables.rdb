@@ -1,15 +1,12 @@
 table	nrecrds	modate	fields
 -----	-------	------	------
-chart	     10	2020-04-10	Account Name 
-fixlib	     24	2020-04-12	table_report () 
-functions	     10	2013-07-23	library oneline body 
-journal	      8	2020-04-10	Date Account Debit Credit 
-ledger	      8	2020-04-09	Account Date Debit Credit 
-locallib	     10	2020-04-11	join_test () 
-rdblib	      3	2013-07-23	rdb_q () 
-sample	      6	2020-04-12	email last first membership purchase expiration status 
-sample.rdb	      6	2013-07-23	EMAIL_ADDRESS Last_Name First_Name Membership_Level Purchase_Date 
-sample.rdb	      6	2013-07-23	Expiration_Date Status 
-schema	     16	2013-07-23	table name 
-tables.rdb	      0	2020-09-06	table nrecrds modate fields 
-testStatus	      6	2012-09-09	command date status table cmdarg 
+chart	     10	20200410	Account Name 
+functions	     10	20130723	library oneline body 
+journal	      8	20200410	Date Account Debit Credit 
+ledger	      8	20200409	Account Date Debit Credit 
+sample	      6	20200412	email last first membership purchase expiration status 
+sample.rdb	      6	20130723	EMAIL_ADDRESS Last_Name First_Name Membership_Level Purchase_Date 
+sample.rdb	      6	20130723	Expiration_Date Status 
+schema	     16	20130723	table name 
+tables.rdb	      0	20200928	table nrecrds modate fields 
+testStatus	      6	20120909	command date status table cmdarg 

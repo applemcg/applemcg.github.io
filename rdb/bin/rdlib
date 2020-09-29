@@ -31,7 +31,7 @@ blank ()
 check () 
 { 
     : reports any rows in which columns do not match head;
-    : tofix: what to do with empty records?;
+    : todo: tofix --  what to do with empty records?;
     : date: 2019-08-04;
     : date: 2019-09-10;
     tawk '
@@ -54,7 +54,7 @@ column ()
     local COL="";
     local C;
     :;
-    : read_devtty $*
+    : read_devtty $*;
     read HEAD;
     [[ -z "$HEAD" ]] && { 
         ( echo;
@@ -535,6 +535,11 @@ jointable ()
             ;;
         esac;
     done;
+    [[ -z "$f2" ]] && { 
+        : there was no table 2, it is on STDIN;
+        f2=.tmp.i.join;
+        cat - > $f2
+    };
     read_devtty last f1, f2: $f1, $f2;
     report_notfile $f1 && return 1;
     report_notfile $f2 && return 2;
@@ -573,6 +578,7 @@ jointable ()
     rdb_hdr $*;
     read_devtty join $ARGS .tmp.{a,b}.join;
     : the EVAL is mandated by the TAB syntax;
+    echo "join $ARGS .tmp.{a,b}.join" > .join.err;
     eval join $ARGS .tmp.{a,b}.join
 }
 latest_filesuf () 
@@ -589,21 +595,35 @@ length ()
 listtableornaught () 
 { 
     : table or list or ?? for one file or STDIN;
-    : manual doesnt allow OTHER file type, and;
-    : LIST format needs to check the 2nd line for a single TAB;
+    : the /rdb manual doesnt allow OTHER file type, and;
+    : todo: LIST format needs to check the 2nd line for a single TAB;
+    : hack: lone TAB does not indicate 2nd field unless occupied, so;
+    : ... constrain field names to LT 17 characaters in LIST format;
     : date: 2020-09-06;
+    : date: 2020-09-27;
     [[ $# -eq 1 ]] && report_notfile $1 && return 1;
+    case $1 in 
+        *.css | *.awk | *.html | *.org | *.md | *.sh)
+            return
+        ;;
+    esac;
     awk -v name=${1:-""} '
     function found(type, ex) { printf fmt, type, name; exit ex }
     BEGIN { FS = "\t"; fmt = "%s\t%s\n" }
+    #      { printf "A: NR, NF, qlist: %d, %d, %d\n", NR, NF, qlist > "/dev/stderr" ; }
     #
     # --------------------------------- isolate the LIST format	--
     #
-    NR == 1 && NF < 1           { qlist = 1; }
-    NR == 2 && NF == 2 && qlist { found( "list",  1) }
+    NR == 1 && NF < 1           { qlist = 1; next; }
+    #      { printf "B: NR, NF, qlist: %d, %d, %d\n", NR, NF, qlist > "/dev/stderr" ; }    
+    #
+    # ---------- NF < 3, the first record may have blank fields	--
+    #
+    NR == 2 && length($1) < 17 && qlist { found( "list",  1) }
     #
     # -------------------------------- isolate the TABLE format	--
     #
+    #      { printf "C: NR, NF, qlist: %d, %d, %d\n", NR, NF, qlist > "/dev/stderr" ; }        
     NR > 2                      { exit; }
     NR == 1                     { next; }
     #
@@ -798,7 +818,7 @@ NR == 2 { $1 = "-----" }
 rdb () 
 { 
     : list all /RDB programs in rdb/bin directory;
-    : hidden first argument, the # of columns. Book has 5, 4 looks better.
+    : hidden first argument, the;
     : date: 2020-04-11;
     function _rdb () 
     { 
@@ -816,7 +836,7 @@ rdb ()
         : date: 2020-04-11;
         report_notpipe && return 1;
         pr -${1:-4} -t
-    }
+    };
     indir ${RDB_HOME}/bin _rdb | _rdb_post $1;
     unset _rdb{,_post}
 }
@@ -1458,8 +1478,8 @@ jointable_test ()
     set -- {command,statusvalue}.rdb;
     report_notfile $1 && return 1;
     report_notfile $2 && return 2;
-    local rtn=$(bad_status)
-    report_notzerolengthstring $rtn && return 1
+    local rtn=$(bad_status);
+    report_notzerolengthstring $rtn && return 1;
     sorttable status < $1 | jointable -j1 status - $2 | sorttable -r seqn | ncolumn status seqn
 }
 datatype () 

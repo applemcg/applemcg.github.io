@@ -1,0 +1,39 @@
+command    	status 	fmt
+-------    	------ 	---
+addcol     	tested 	   
+blank      	tested 	*  
+check      	tested 	   
+column     	coded  	*  
+compute    	.      	*  
+commands   	.      	   
+cpdir      	.      	   
+datatype   	tested 	   
+dbdict     	tested 	   
+fd         	testing	   
+gregorian  	testing	*  
+headoff    	tested 	   
+jointable  	testing	   
+julian     	testing	*  
+justify    	.      	   
+listtotable	tested 	   
+lock       	.      	   
+ncolumn    	tested 	*  
+not        	.      	   
+project    	.      	   
+rdb        	coded  	   
+rename     	tested 	*  
+replace    	.      	   
+report     	.      	   
+row        	.      	*  
+rowhas     	.      	   
+rowis      	.      	   
+rowisnot   	.      	   
+schema     	tested 	   
+see        	.      	   
+sorttable  	.      	*  
+tableorlist	tested 	*  
+tabletolist	tested 	   
+todaysdate 	coded  	   
+union      	.      	   
+width      	.      	   
+word       	.      	   
