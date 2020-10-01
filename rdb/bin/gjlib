@@ -1,19 +1,3 @@
-xx () {
-    awk '
-    function tojdn  (yr, mo, da) {
-
-         fmt = "%d\t"
-     printf fmt, yr		       
-     printf fmt, mo
-   		       printf fmt, da
-     printf fmt, yalpha( yr, mo)
-     printf fmt, mbeta(      mo)
-     printf fmt, ybeta(  yr, mo)		       		       
-       jd = jdn( yr, mo, da)
-     printf fmt, jd
-     printf "\n"
-     }'
-}
 gday ()
 {
     : test gregporian from julian
