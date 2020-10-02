@@ -597,7 +597,7 @@ listtableornaught ()
     : table or list or ?? for one file or STDIN;
     : the /rdb manual doesnt allow OTHER file type, and;
     : todo: LIST format needs to check the 2nd line for a single TAB;
-    : hack: lone TAB does not indicate 2nd field unless occupied, so;
+    : ... lone TAB does not indicate 2nd field unless occupied, so;
     : ... constrain field names to LT 17 characaters in LIST format;
     : date: 2020-09-06;
     : date: 2020-09-27;
@@ -1298,7 +1298,6 @@ stat_mtimefile ()
 tableorlist () 
 { 
     : reports if a file is table, list or ignores non /rdb files;
-    : see: listtableornaught;
     case $# in 
         0 | 1)
             [[ $# = 1 ]] && { 

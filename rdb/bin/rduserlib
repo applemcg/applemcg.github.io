@@ -69,7 +69,7 @@ rd_canon ()
 { 
     : date: 2017-03-26;
     : date: 2017-12-18;
-    : from: rdb_canon;
+    : related: rdb_canon;
     : app_trace $*;
     case $1 in 
         h.*.rdb.Z)
@@ -370,7 +370,7 @@ rd_nospace ()
 rd_packed () 
 { 
     : Relational Data -- update packed history;
-    : from: rdput;
+    : related: rdput;
     : date: 2017-12-24;
     : date: 2018-01-15;
     :;
