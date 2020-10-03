@@ -19,12 +19,10 @@ _lesscolumn ()
 }
 column_data () 
 { 
-    : app_trace $*;
     rdb_datafrom column $*
 }
 column_unique () 
 { 
-    : app_trace $*;
     cat $2 | rdb_datafrom column $1
 }
 filesize () 
@@ -82,7 +80,6 @@ rdb_allHistory ()
 }
 rdb_at () 
 { 
-    : app_trace $*;
     row "insert_time ~ /^$1/ || delete_time ~ /^$1/"
 }
 rdb_changehistory () 
@@ -122,7 +119,6 @@ rdb_data ()
 }
 rdb_datafrom () 
 { 
-    : app_trace $*;
     "$@" | tail +3
 }
 rdb_deletes () 
@@ -135,12 +131,10 @@ rdb_deletes ()
         return
     };
     shift;
-    : app_trace $# $*;
     zcat $1 | column $2 | rd sort | rd uniq -c | sed 's/^ *//' | sp2tab | rdb_create count $2
 }
 rdb_editorusers () 
 { 
-    : app_trace $*;
     awk '$3 ~ /rdb_editor/ { print $4 }' ~/Dropbox/log/editor.log
 }
 rdb_fieldcheck () 
@@ -176,7 +170,6 @@ rdb_fieldids ()
         shift;
     done;
     local C=1;
-    : app_trace $HEAD;
     : ------------- align HEAD names with field numbers --;
     local COL="";
     for I in $HEAD;
@@ -191,7 +184,6 @@ rdb_fieldids ()
             ;;
         esac;
     done;
-    : app_trace COL: $COL;
     echo $COL
 }
 rdb_hdrOf () 
@@ -216,7 +208,6 @@ rdb_hdx2 ()
 }
 rdb_history () 
 { 
-    : app_trace $*;
     for_existing h.$(rdb_name $1).Z zcat
 }
 rdb_historyname () 
@@ -227,7 +218,6 @@ rdb_historyname ()
 }
 rdb_init () 
 { 
-    : app_trace $*;
     : source cmdlib
 }
 rdb_inserts () 
@@ -240,7 +230,6 @@ rdb_inserts ()
         return
     };
     shift;
-    : app_trace $# $*;
     rdb_hdr count $2;
     zcat $1 | column $2 | rd sort | rd uniq -c | sed 's/^ *//' | rdb_datrdb_data2tab
 }
@@ -312,12 +301,10 @@ rdb_join ()
 }
 rdb_key () 
 { 
-    : app_trace $*;
     rdb_col $1 $(rdb_fields $1) | rd sort -u
 }
 rdb_match () 
 { 
-    : app_trace $*;
     comm $* <(ls *.rdb) <(ls h.*.Z | sed 's/h.//; s/.Z//')
 }
 rdb_name () 
@@ -329,7 +316,6 @@ rdb_name ()
         ls *.rdb 1>&2;
         return 1
     };
-    : app_trace $# $*;
     newest h.$1.Z $1 || rd_syncf $1;
     echo $1
 }
@@ -357,7 +343,6 @@ rdb_nohistory ()
 }
 rdb_onlytime () 
 { 
-    : app_trace $*;
     column insert_time delete_time
 }
 rdb_qshape () 
@@ -375,7 +360,6 @@ rdb_rcheck ()
 }
 rdb_record () 
 { 
-    : app_trace $*;
     tail +3
 }
 rdb_records () 
@@ -435,13 +419,11 @@ rdb_timetally ()
 }
 rdb_today () 
 { 
-    : app_trace $# $*;
     set -- $(yymmdd)000000 ${1:-tasks};
     rdb_data $2 | row "delete_time > $1 || insert_time > $1" | rdb_notinsert
 }
 rdb_whinsert () 
 { 
-    : app_trace $*;
     rdb_history $1 | row '!delete_time' | ncolumn delete_time
 }
 rdb_write () 
@@ -451,7 +433,6 @@ rdb_write ()
 }
 rdbcmd_init () 
 { 
-    : app_trace $*;
     declare -f rdupdate > /dev/null || { 
         . rdblib
     };
@@ -461,7 +442,6 @@ rdbcmd_init ()
 }
 rdbcmd_qrf () 
 { 
-    : app_trace $*;
     wh functions rdbcmdlib
 }
 rdbcmdlib_version () 
@@ -504,7 +484,6 @@ rdeditor ()
     };
     set -- ${1%.rdb};
     set -- $1.rdb $1.fix $1.tbl ${2:-_rdtail};
-    : app_trace $# $*;
     [[ -f $1 ]] || { 
         comment "USAGE ${FUNCNAME[0]} table[.rdb]";
         comment "Tables (on stdout for user):";
@@ -740,7 +719,6 @@ EOF
 }
 rdsel () 
 { 
-    : app_trace $*;
     row "$1 ~ /$2/"
 }
 rdseq () 
@@ -753,7 +731,6 @@ rdseq ()
 }
 rdtail () 
 { 
-    : app_trace $*;
     rd tail -24 $1
 }
 rdtimes () 
@@ -768,12 +745,10 @@ rmblank ()
 }
 rowhas () 
 { 
-    : app_trace $*;
     row "$1 ~ /$2/"
 }
 rowis () 
 { 
-    : app_trace $*;
     row "$1 ~ /^$2$/"
 }
 rowisnot () 

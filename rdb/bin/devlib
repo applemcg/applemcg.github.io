@@ -85,7 +85,7 @@ rdu_abstract ()
 { 
     : function one-line abstracts;
     : date: 2020-09-24;
-    rdb_hdr name abstract;
+    rdb_hdr fun abstract;
     foreach shd_abstract ${*:-shd_abstract} | nf gt 1
 }
 rdu_libtable () 
@@ -127,4 +127,15 @@ table_csort ()
     column < $1 | sorttable > $2;
     wc $* 1>&2;
     echo $2 $1
+}
+fun_abstract () 
+{ 
+    : functions abstracts;
+    : date: 2020-10-03;
+    runfrom $(lib) || return;
+    set $(myname).rdb shd_alldata.lst;
+    newest $* || { 
+        cat $2 | column name abstr | listtotable | rename name fun abstr abstract | row abstract > $1
+    };
+    cat $1
 }

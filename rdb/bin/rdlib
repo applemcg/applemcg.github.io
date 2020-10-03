@@ -689,7 +689,10 @@ head != 1 && $1 != "" {
          flushed++
        }
        
-END    { if(flushed > 0) eachRecord() }       
+END    {
+         if(flushed > 0) eachRecord()
+	 printf "\n"
+       }       
     '
 }
 name_report () 
