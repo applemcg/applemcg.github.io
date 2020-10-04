@@ -1,14 +1,14 @@
 table	nrecrds	modate	fields
 -----	-------	------	------
-collections.rdb	    991	2020-07-18	collections book_id 
-haveread.rdb	    296	2020-07-18	date_read isbn isbns subjects dewey_decimal lending_start lending_end 
-haveread.rdb	    296	2020-07-18	review rating 
-haveread.rdb	    296	2020-07-18	source entry_date from_where page_count lccn acquired date_started 
-haveread.rdb	    296	2020-07-18	tags collections lc_classification book_id title primary_author copies 
-keybook.rdb	     14	2020-07-15	key book 
-librarything.rdb	      6	2020-09-06	latest author book 
-readcycle.rdb	    120	2020-07-11	daynum bookkeys 
-readhistory.rdb	     13	2020-08-19	finish author book 
-readtwodays.rdb	      6	2020-07-11	key book 
-tables.rdb	     12	2020-09-06	table nrecrds modate fields 
-tags.rdb	    983	2020-07-18	tags book_id 
+collections.rdb	    991	20200718	collections book_id 
+haveread.rdb	    296	20200718	tags collections lc_classification book_id title primary_author copies 
+keybook.rdb	     14	20200715	key book 
+librarything.rdb	      5	20200918	latest author book 
+readcycle.rdb	    120	20200711	daynum bookkeys 
+readhistory.rdb	     13	20200819	finish author book 
+readtwodays.rdb	      6	20200711	key book 
+table_fields.tmp	     19	20200821	table fields 
+tables.nxt	      9	20200821	table nrecrds modate 
+tables.rdb	     10	20201004	table nrecrds modate fields 
+tables.tmp	      9	20200821	table nrecrds modate fields 
+tags.rdb	    983	20200718	tags book_id 

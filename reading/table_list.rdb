@@ -1,0 +1,15 @@
+Type	File
+----	----
+table	collections.rdb
+table	haveread.rdb
+table	keybook.rdb
+table	librarything.rdb
+table	readcycle.rdb
+table	readhistory.rdb
+table	readtwodays.rdb
+table	table_fields.tmp
+list	tables.lst
+table	tables.nxt
+table	tables.rdb
+table	tables.tmp
+table	tags.rdb
