@@ -491,7 +491,7 @@ jointable ()
                     cat - > .tmp.i.join;
                     f2=.tmp.i.join;
                 fi;
-                read_devtty arg, f1, f2: $arg, $f1, $f2
+                read_devtty stdin, f1, f2: $arg, $f1, $f2
             ;;
             -t)
                 : ignore the T, apply after args are parsed;
@@ -516,7 +516,7 @@ jointable ()
                 ARGS="$ARGS $arg"
             ;;
             *)
-                read_devtty arg, f1, f2: $arg, $f1, $f2;
+                read_devtty file?, f1, f2: $arg, $f1, $f2;
                 : column names or file args;
                 if [ ! -f $arg ]; then
                     COLS="$COLS $arg";
@@ -531,15 +531,19 @@ jointable ()
                         fi;
                     fi;
                 fi;
-                read_devtty now f1, f2: $f1, $f2
             ;;
         esac;
+        read_devtty arg, f1, f2: $arg, $f1, $f2	
     done;
     [[ -z "$f2" ]] && { 
-        : there was no table 2, it is on STDIN;
+        : there was no table 2, is it on STDIN;
+	[[ "$f1" = ".tmp.i.join" ]] && {
+	   comment bad STDIN or missing FILE $arg
+	   return 3
+	}   
         f2=.tmp.i.join;
         cat - > $f2
-    };
+    }
     read_devtty last f1, f2: $f1, $f2;
     report_notfile $f1 && return 1;
     report_notfile $f2 && return 2;
