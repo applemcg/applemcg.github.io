@@ -139,3 +139,48 @@ fun_abstract ()
     };
     cat $1
 }
+tag_process () 
+{ 
+    : the steps for routine update;
+    : date: 2020-10-10;
+    cat <<'HERE'
+    foreach f2file $(lib_changed 6);
+    shd_tagcolumn
+    lib pushd
+    set -- $(pick < shd_datadict.txt)
+    listtototable < shd_alldata.lst | column name $* 
+HERE
+
+}
+lib_process () 
+{ 
+    : the steps for routine update;
+    : date: 2020-10-10;
+    cat <<'HERE'
+    foreach f2file $(lib_changed 6);
+    name_library;
+    table_report | rowhas table _library;
+HERE
+
+}
+tabcat () 
+{ 
+    : concatenate table files;
+    : date: 2020-10-11;
+    report_notargcount 1 $# && return 1;
+    local r=${1%.*};
+    for suf in .{rdb,lst,txt,nxt,tmp} "";
+    do
+        local f=$r$suf;
+        [[ -f $f ]] && { 
+            cat $f;
+            return
+        };
+    done
+}
+table_keycount () 
+{ 
+    : return Count, key of local tables;
+    : date: 2020-10-11;
+    table_report | column fields | rename fields key | compute 'key = substr(key,1,index(key," "))' | sorttable | rduniq
+}

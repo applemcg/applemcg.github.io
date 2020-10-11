@@ -744,16 +744,24 @@ rmblank ()
     return
 }
 rowhas () 
-{ 
+{
+    : a FIELD has a VALUE
+    report_notargcount 2 $# field value && return 1
+    report_notpipe && return 2
     row "$1 ~ /$2/"
 }
 rowis () 
 { 
+    : a FIELD is exactly the  VALUE
+    report_notargcount 2 $# field value && return 1    
+    report_notpipe && return 2
     row "$1 ~ /^$2$/"
 }
 rowisnot () 
 { 
-    : app_trace $*;
+    : a FIELD does not have the  VALUE
+    report_notargcount 2 $# field value && return 1        
+    report_notpipe && return 2
     row "$1 !~ /$2/"
 }
 soundex () 
