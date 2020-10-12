@@ -139,29 +139,19 @@ fun_abstract ()
     };
     cat $1
 }
-tag_process () 
-{ 
-    : the steps for routine update;
-    : date: 2020-10-10;
-    cat <<'HERE'
-    foreach f2file $(lib_changed 6);
-    shd_tagcolumn
-    lib pushd
-    set -- $(pick < shd_datadict.txt)
-    listtototable < shd_alldata.lst | column name $* 
-HERE
-
-}
-lib_process () 
+libtag_process () 
 { 
     : the steps for routine update;
     : date: 2020-10-10;
     cat <<'HERE'
     foreach f2file $(lib_changed 6);
     name_library;
-    table_report | rowhas table _library;
+    shd_tagcolumn
+    lib pushd
+    table_report | rowhas table _library;    
+    set -- $(pick < shd_datadict.txt)
+    listtototable < shd_alldata.lst | column fun $* 
 HERE
-
 }
 tabcat () 
 { 
