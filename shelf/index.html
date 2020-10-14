@@ -13464,7 +13464,7 @@ exports.context = contextWidget;
 <div bag="default" created="20200810170615861" creator="M" modified="20200811134449245" modifier="Marty McGwan" revision="1" title="$:/status/UserName">
 <pre>Marty McGowan</pre>
 </div>
-<div created="20201011183636454" creator="Marty McGowan" list="[[existing process]] [[Table of Contents]]" modified="20201011195418250" modifier="Marty McGowan" title="$:/StoryList">
+<div created="20201014140832854" creator="Marty McGowan" list="[[existing process]] [[Table of Contents]]" modified="20201014140832855" modifier="Marty McGowan" title="$:/StoryList">
 <pre></pre>
 </div>
 <div created="20200519141000553" list="$:/.giffmex/Buttons/more-tiddler-edit-actions $:/core/ui/Buttons/delete $:/core/ui/Buttons/cancel $:/core/ui/Buttons/save" modified="20200521145647980" tags="$:/giffmex/bigeditarea $:/giffmex/stroll" title="$:/tags/EditToolbar">
@@ -13549,8 +13549,8 @@ exports.context = contextWidget;
 <div created="20200502174943975" modified="20200502174950301" title="$:/temp/RenameTags/search">
 <pre>tb</pre>
 </div>
-<div created="20200418122544376" creator="Marty McGowan" modified="20201011194914947" modifier="Marty McGowan" title="$:/temp/search">
-<pre>libtag_</pre>
+<div created="20200418122544376" creator="Marty McGowan" modified="20201014140822753" modifier="Marty McGowan" title="$:/temp/search">
+<pre></pre>
 </div>
 <div created="20200429214841632" modified="20200429214841632" tags="$:/tags/ServerConnection" title="$:/temp/ServerConnection/https://tiddlywiki.com/library/v5.1.22/index.html" url="https://tiddlywiki.com/library/v5.1.22/index.html">
 <pre>loaded</pre>
@@ -15659,14 +15659,14 @@ Therefore every app is constructed through functions in the gihub reposistory.
 <div created="20200928194345271" creator="Marty McGowan" modified="20200928194345271" modifier="Marty McGowan" title="example">
 <pre></pre>
 </div>
-<div created="20201011185042930" creator="Marty McGowan" modified="20201011195003136" modifier="Marty McGowan" tags="active" title="existing process">
+<div created="20201011185042930" creator="Marty McGowan" modified="20201014151049872" modifier="Marty McGowan" tags="active" title="existing process">
 <pre>[[The Maintenance Story]] | [[existing process]]
 
 At the moment, this function describes routine maintenance actions.
 
 
 ```
-llibtag_process ()
+libtag_process ()
 {
     : the steps for routine update;
     : date: 2020-10-10;
@@ -15675,6 +15675,8 @@ llibtag_process ()
     name_library;
     shd_tagcolumn
     lib pushd
+    : to get in the mood for the possible
+    dfg lib | row 'context !~ /[(][)] *$/' | jm
     table_report | rowhas table _library;
     set -- $(pick &lt; shd_datadict.txt)
     listtototable &lt; shd_alldata.lst | column fun $*
