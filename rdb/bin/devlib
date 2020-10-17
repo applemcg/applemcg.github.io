@@ -148,10 +148,12 @@ libtag_process ()
     name_library;
     shd_tagcolumn
     lib pushd
+    tag_count
     table_report | rowhas table _library;    
     set -- $(pick < shd_datadict.txt)
     listtototable < shd_alldata.lst | column fun $* 
 HERE
+
 }
 tabcat () 
 { 
@@ -173,4 +175,28 @@ table_keycount ()
     : return Count, key of local tables;
     : date: 2020-10-11;
     table_report | column fields | rename fields key | compute 'key = substr(key,1,index(key," "))' | sorttable | rduniq
+}
+fun_column () 
+{ 
+    : functions with column ...;
+    : date: 2020-10-14;
+    runfrom $(lib) || return;
+    set -- ${1:-$(pick $(< shd_tagdatadict.txt))};
+    listtotable < shd_alldata.lst | row $1 | column fun $1
+}
+tiddly_tagtable () 
+{ 
+    : writes the "tag table" tiddler in Shell Functions;
+    : date: 2020-10-15;
+    function tag_table () { jointable tag_count.rdb tag_group.rdb; }
+    runfrom $(lib) || return;
+    cat $(table_me tag_table ) | tiddlylink tag | tiddlylink group | fourColumnTiddly
+    unset tag_table
+}
+tiddly_taggroup () 
+{ 
+    : writes the table for the "tag group" tiddler;
+    : date: 2020-10-15;
+    runfrom $(lib) || return;
+    column group < tag_group.rdb | awk NF | sorttable | rduniq | tiddlylink group | twoColumnTiddly
 }

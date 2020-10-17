@@ -4,12 +4,12 @@ table	collections.rdb
 table	haveread.rdb
 table	keybook.rdb
 table	librarything.rdb
+table	libthingbooks.rdb
 table	readcycle.rdb
 table	readhistory.rdb
 table	readtwodays.rdb
-table	table_fields.tmp
-list	tables.lst
-table	tables.nxt
-table	tables.rdb
-table	tables.tmp
+table	table_list.rdb
 table	tags.rdb
+table	tables.nxt
+list	libthingbooks.lst
+list	tables.lst

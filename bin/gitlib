@@ -416,7 +416,9 @@ read_twodays ()
     booksfrom $* | rowhas key '[A-Z]'
 }
 rawtsv_tordb () 
-{ 
+{
+    set -- ${1:-$(pick *.tsv /dev/null)}
+    report_notfile $1 && return 1
     rdb_hdr $(sed 1q $1 | sed 's/ /_/g' | lc);
     tail +2 $1
 }

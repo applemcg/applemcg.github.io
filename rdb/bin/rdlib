@@ -271,7 +271,6 @@ difference ()
 do_name_report () 
 { 
     : for each field, give NAME_REPORT, trimming NAME and SHDOC from column names;
-    : rdb: justify;
     local all="$(columns)";
     all=${all/name/};
     all=${all/shdoc/};
@@ -288,7 +287,6 @@ do_name_report ()
 fold_2 () 
 { 
     : just the ABSTR and TODO columns;
-    : sql: row;
     tbl_fmlist | row 'tag ~ /abstr/ || tag ~ /todo/'
 }
 fold_b () 
@@ -299,7 +297,6 @@ fold_b ()
 from_trto () 
 { 
     : move tag-record pairs to attirb ... columns;
-    : rdb: addcol compute ncolumn;
     addcol $* | compute "$(tag_fmrecord $*)" | ncolumn tag record
 }
 fun_emptylist () 
@@ -702,7 +699,6 @@ END    {
 name_report () 
 { 
     : project NAME and VALUE of the ROWs with the ATTRIBUTE, default ABSTR;
-    : sql: column row;
     : date: 2020-04-04;
     report_notpipe && return 1;
     set -- ${1:-abstr};
@@ -855,8 +851,6 @@ rdb_canon ()
     : .. according to the fields currently in the TABLE. while this;
     : .. may be risky, the intention is to facilitate adding fields;
     : .. to the history rather than deleting any. ~ Later.;
-    : rdb: ncolumn rdb_hdr;
-    : sql: row;
     : uses: zcat compress;
     : date: 2019-08-31;
     : date: 2019-09-07, awk NF idiom = no empty records;
@@ -1239,7 +1233,6 @@ see ()
 shd_report () 
 { 
     : report from the Functions SHDOC list format;
-    : rdb: listtotable rd ncolumn;
     cat ${1:-$(ls -t *_docs.txt|sed 1q)} | listtotable | rd sort | ncolumn seqn
 }
 sortable () 
