@@ -261,7 +261,6 @@ dbdict ()
 difference () 
 { 
     : for nearly identical TABLE, report the DIFFERENT records;
-    : uses: sed, UNIQ, the minus U option;
     report_notfile $1 && return 1;
     report_notfile $2 && return 2;
     sed 2q $1;
@@ -585,7 +584,6 @@ jointable ()
 latest_filesuf () 
 { 
     : latest modifed file with suffix, default TXT;
-    : uses: sed;
     set -- ${1:-txt};
     ls -t *.$1 | sed 1q
 }
@@ -640,8 +638,7 @@ listtotable ()
     : reads stdin or named files in LIST format, converting to TABLE;
     : to relieve a possible non-EMPTY Line at the END of the file, added flushed;
     : an awkism "!flushed" is not the same as "flushed > 0";
-    : uses: awk;
-    : 2020-09-06 added flushed. still needs a separate test .;
+    : 2020-09-06: added flushed. still needs a separate test .;
     awk '
 #    
 # ------------------------------------------------------- awk functions	--
@@ -851,7 +848,6 @@ rdb_canon ()
     : .. according to the fields currently in the TABLE. while this;
     : .. may be risky, the intention is to facilitate adding fields;
     : .. to the history rather than deleting any. ~ Later.;
-    : uses: zcat compress;
     : date: 2019-08-31;
     : date: 2019-09-07, awk NF idiom = no empty records;
     : date: 2019-09-08, new FEATURE;
@@ -1368,7 +1364,8 @@ tbl_fmlist ()
 { 
     : from LIST to full-formed TABLE;
     : test case is FUNCTION TAGS;
-    : lesson: DEFAULT is not acceptable TAG;
+    : DEFAULT is not acceptable TAG;
+    : todo: needs a ULR to the explanation
     set -- ${1:-$(ls -t *_list.txt)};
     report_notfile $1 && return 1;
     set -- $1 ${1%_list.txt}.rdb;

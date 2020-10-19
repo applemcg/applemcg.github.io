@@ -705,6 +705,8 @@ Error message and password prompt
 
 <li>bclub functions</li>
 
+<li>bclub mailing</li>
+
 <li>binding</li>
 
 <li>bitmeld</li>
@@ -814,6 +816,8 @@ Error message and password prompt
 <li>dd_app(1)</li>
 
 <li>devlib</li>
+
+<li>dfg</li>
 
 <li>diff_dotd</li>
 
@@ -1099,6 +1103,14 @@ Error message and password prompt
 
 <li>New Tiddler</li>
 
+<li>New Tiddler 1</li>
+
+<li>New Tiddler 2</li>
+
+<li>New Tiddler 3</li>
+
+<li>New Tiddler 4</li>
+
 <li>newest</li>
 
 <li>Newest is still worth it</li>
@@ -1236,6 +1248,8 @@ Error message and password prompt
 <li>Refresh Application</li>
 
 <li>related</li>
+
+<li>relates</li>
 
 <li>rename</li>
 
@@ -1474,6 +1488,8 @@ Error message and password prompt
 <li>tw_utltempl</li>
 
 <li>TwosAndZeros</li>
+
+<li>type_word</li>
 
 <li>union</li>
 
@@ -13519,7 +13535,7 @@ exports.context = contextWidget;
 <div bag="default" created="20200810170615861" creator="M" modified="20200811134449245" modifier="Marty McGwan" revision="1" title="$:/status/UserName">
 <pre>Marty McGowan</pre>
 </div>
-<div created="20201016201922165" creator="Marty McGowan" list="[[bclub functions]] tiddly_tagtable [[New Tiddler]] [[Table of Contents]]" modified="20201016201935237" modifier="Marty McGowan" title="$:/StoryList">
+<div created="20201018232143066" creator="Marty McGowan" list="related dfg [[tag group]] [[tag table]] [[Table of Contents]]" modified="20201019011811190" modifier="Marty McGowan" title="$:/StoryList">
 <pre></pre>
 </div>
 <div created="20200519141000553" list="$:/.giffmex/Buttons/more-tiddler-edit-actions $:/core/ui/Buttons/delete $:/core/ui/Buttons/cancel $:/core/ui/Buttons/save" modified="20200521145647980" tags="$:/giffmex/bigeditarea $:/giffmex/stroll" title="$:/tags/EditToolbar">
@@ -14352,9 +14368,7 @@ The first, setAllFiles encapsulates the commands listed when you search for //&q
 <pre></pre>
 </div>
 <div created="20201017163001353" creator="Marty McGowan" modified="20201017163334842" modifier="Marty McGowan" tags="code" title="bclub functions">
-<pre>
-
-```
+<pre>```
 bclub_active () 
 { 
     : members names who have shown up at any event;
@@ -14378,6 +14392,40 @@ bclub_ema ()
     row 'email ~ /@/' | column email name addr | rd sort -u | compute 'addr = sprintf(&quot;%s &lt;%s&gt;, &quot;, name, email)' | column addr
 }
 ```
+
+</pre>
+</div>
+<div created="20201018164356506" creator="Marty McGowan" modified="20201018165953383" modifier="Marty McGowan" tags="boolean" title="bclub mailing">
+<pre>[[bclub functions]] | [[bclub mailing]]
+
+
+These functions are the better part of the needs for the book club and used as follows:
+
+&gt; $ bclub_regulars | bclub_ema
+
+!!! bclub_active
+
+In bclub_active, the challenge  is in reading the boolean logic to select the active members.  Since the //group// attribute value grows with each meeting, it's easier to except those group lists to exclude:
+
+* //mit// -- those on the list willing to receive an arbitrary, possibly non-club related
+* //none// -- on no list at all
+* //_// -- may have signed up for an event, but didn't make it
+
+Also, the boolean is written &quot;Not (A or B or C)&quot; as opposed to &quot;Not A and Not B and Not C&quot;.  I think the former is easier to understand
+
+!!! bclub_regulars
+
+join the active list to the roster with emails
+
+!!! bclub_ema
+
+Constructs the //addr// value by combining the members full name with the email address:
+
+&gt;  First Last &lt;ema@site.domain&gt;,
+
+There are a few members who may show up with their spouses, hence the query for a &quot;@&quot; in their email.
+
+
 
 </pre>
 </div>
@@ -15498,6 +15546,26 @@ MartyMcGowan
 </div>
 <div created="20200924190505927" creator="Marty McGowan" modified="20200924190505927" modifier="Marty McGowan" title="devlib">
 <pre></pre>
+</div>
+<div created="20201019011815682" creator="Marty McGowan" modified="20201019012116422" modifier="Marty McGowan" tags="code" title="dfg">
+<pre>[[related]] | [[dfg]]
+
+is an example of  a  related tab. note [[f2file]] writes the files in $(lib)/dir/*/*. where the first asterisc is the library name, the second is the function name.
+
+```
+dfg () 
+{ 
+    : Directory Function Grep;
+    : related: f2file .;
+    : date: 2020-10-03;
+    runfrom $(lib)/dir $@ 2&gt; /dev/null || return;
+    rdb_hdr libname fun context;
+    grep -i ${1:-$(myname)} */* | sed 's/\//	/; s/: */	/'
+}
+
+
+```
+</pre>
 </div>
 <div created="20200910195255817" creator="Marty McGowan" modified="20200910195255817" modifier="Marty McGowan" title="diff_dotd">
 <pre></pre>
@@ -17851,6 +17919,18 @@ There are generic features to handle:
 <div created="20201015172024721" creator="Marty McGowan" modified="20201015172024721" modifier="Marty McGowan" title="New Tiddler">
 <pre></pre>
 </div>
+<div created="20201018172617389" creator="Marty McGowan" modified="20201018172617389" modifier="Marty McGowan" title="New Tiddler 1">
+<pre></pre>
+</div>
+<div created="20201018191247373" creator="Marty McGowan" modified="20201018191247373" modifier="Marty McGowan" title="New Tiddler 2">
+<pre></pre>
+</div>
+<div created="20201018233921328" creator="Marty McGowan" modified="20201018233921328" modifier="Marty McGowan" title="New Tiddler 3">
+<pre></pre>
+</div>
+<div created="20201019005441292" creator="Marty McGowan" modified="20201019005441292" modifier="Marty McGowan" title="New Tiddler 4">
+<pre></pre>
+</div>
 <div created="20201003202830232" creator="Marty McGowan" modified="20201003202830232" modifier="Marty McGowan" title="newest">
 <pre></pre>
 </div>
@@ -18979,7 +19059,12 @@ There are a few lower level functions in the app which are worth explaining here
 
 </pre>
 </div>
-<div created="20201002152047664" creator="Marty McGowan" modified="20201002152047664" modifier="Marty McGowan" title="related">
+<div created="20201002152047664" creator="Marty McGowan" modified="20201019011454665" modifier="Marty McGowan" title="related">
+<pre>[[tag table]] | [[related]]
+
+this tag names related function not evident from either a [[fuse]] or [[type_word]] analysis.   A typical usage would be where functions which don't share a [[library]], [[app]], or [[family]] connection use the same resource</pre>
+</div>
+<div created="20201019011423718" creator="Marty McGowan" modified="20201019011423718" modifier="Marty McGowan" title="relates">
 <pre></pre>
 </div>
 <div created="20200823182650850" creator="Marty McGowan" modified="20200913174028539" modifier="Marty McGowan" title="rename">
@@ -20799,43 +20884,36 @@ Here is a sample fo my first info project [[learning texinfo sample]]
 ```
 </pre>
 </div>
-<div created="20201015171912314" creator="Marty McGowan" modified="20201015172040189" modifier="Marty McGowan" tags="[[tag table]]" title="tiddly_tagtable">
+<div created="20201015171912314" creator="Marty McGowan" modified="20201019005441289" modifier="Marty McGowan" tags="[[tag table]]" title="tiddly_tagtable">
 <pre>[[tiddly_tagtable]]
 
 | !tag | !count | !group | !discuss |
-|[[abstr]] |   579 |[[implied]] |an assumed tag, with [[shdoc]] |
+|[[abstr]] |   566 |[[implied]] |an assumed tag, with [[shdoc]] |
 |[[add]] |     3 |[[repair]] | |
 |[[args]] |     8 |[[interface]] |seems appropriate, with the [[report_usage]] functions, an explicit format? |
-|[[date]] |  1342 |[[]] |supplied by [[shd_setdate]], but not in consistent use, function to add created, latest dates |
+|[[date]] |  1287 |[[]] |supplied by [[shd_setdate]], but not in consistent use, function to add created, latest dates |
 |[[doc]] |     5 |[[documentation]] | |
 |[[fix]] |     1 |[[repair]] |with [[bug]] to todo |
 |[[input]] |     1 |[[interface]] |named files |
 |[[lesson]] |     2 |[[documentation]] |link to some documentation, like [[url]], include &quot;gem&quot;, or highlight |
-|[[libr]] |    23 |[[obsolete]] |obsolete, derived from [[whf]] WHere is the Function |
 |[[location]] |     3 |[[interface]] |[[smart function]] supplying directory  |
-|[[mfg]] |    14 |[[]] |so long as files may be ManuFactured |
+|[[mfg]] |    12 |[[]] |so long as files may be ManuFactured |
 |[[modified]] |     1 |[[status]] | |
 |[[note]] |     2 |[[documentation]] | |
-|[[obsolescent]] |     5 |[[paired]] |indeed, if not in the [[retiredlib]] |
-|[[rdb]] |     4 |[[obsolete]] |obsolete, discover by [[fuse]] on [[row]], [[column]], etc.. |
-|[[ref]] |     4 |[[documentation]] |url, doc, |
+|[[obsolescent]] |     4 |[[paired]] |indeed, if not in the [[retiredlib]] |
+|[[ref]] |     3 |[[documentation]] |url, doc, |
 |[[related]] |     7 |[[interface]] |functions reading a/o writing same files |
 |[[reqts]] |     1 |[[documentation]] |suggests a taxonomy on [[url]] or [[ref] |
 |[[returns]] |     4 |[[interface]] |like [[effects]] |
-|[[shdoc]] |   777 |[[implied]] |the main implied tag |
-|[[sql]] |     8 |[[obsolete]] |like rdb, derived |
+|[[shdoc]] |   753 |[[implied]] |the main implied tag |
 |[[stdout]] |     1 |[[interface]] |effects |
-|[[todo]] |    30 |[[repair]] |with fix, etc |
+|[[todo]] |    28 |[[repair]] |with fix, etc |
 |[[update]] |     1 |[[paired]] |merge whit updates |
 |[[url]] |     3 |[[documentation]] |with doc,  |
 |[[usage]] |    14 |[[interface]] |flip side of args |
-|[[use]] |     1 |[[obsolete]] |probably obsolete with used, fuse,  |
-|[[used]] |     1 |[[obsolete]] |probably obsolete with used, fuse,  |
-|[[uses]] |    13 |[[obsolete]] |flip side of used |
 |[[vars]] |     1 |[[interface]] |args |
 |[[version]] |     3 |[[]] |libraries have version, this should be obsolete |
-|[[writes]] |     2 |[[interface]] |ditto files |
-</pre>
+|[[writes]] |     2 |[[interface]] |ditto files </pre>
 </div>
 <div created="20200726185214128" creator="Marty McGowan" modified="20200909191726239" modifier="Marty McGowan" tags="url" title="TiddlyWiki">
 <pre>https://TIddlyWiki.com</pre>
@@ -21167,6 +21245,9 @@ tw_funtempl ()
 2020-02-22,22:22:29
 ```
 </pre>
+</div>
+<div created="20201019011423719" creator="Marty McGowan" modified="20201019011423719" modifier="Marty McGowan" title="type_word">
+<pre></pre>
 </div>
 <div created="20200824182359468" creator="Marty McGowan" modified="20200824182359468" modifier="Marty McGowan" title="union">
 <pre></pre>

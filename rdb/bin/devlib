@@ -191,7 +191,6 @@ tiddly_tagtable ()
     function tag_table () { jointable tag_count.rdb tag_group.rdb; }
     runfrom $(lib) || return;
     cat $(table_me tag_table ) | tiddlylink tag | tiddlylink group | fourColumnTiddly
-    unset tag_table
 }
 tiddly_taggroup () 
 { 
