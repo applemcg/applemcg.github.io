@@ -291,7 +291,7 @@ twoColumnTiddly ()
     : convert an rdb table into a 2-column tiddly table;
     : date: 2020-07-04;
     report_notpipe && return 1;
-    tawk '
+    sed 's/|/\&#124;/g' | tawk '    
     
     NR == 1 { printf "| !%s | !%s |\n", $1, $2}
      NR < 3 { next };
@@ -301,9 +301,12 @@ twoColumnTiddly ()
 threeColumnTiddly () 
 { 
     : convert an rdb table into a 3-column tiddly table;
+    : and since the pipe is part of the table, then
+    : replace actual pipes with their character code
     : date: 2020-07-04;
+    : date: 2020-10-22;
     report_notpipe && return 1;
-    tawk '
+    sed 's/|/\&#124;/g' | tawk '
     
     NR == 1 { printf "| !%s | !%s | !%s |\n", $1, $2, $3}
      NR < 3 { next };
@@ -315,7 +318,7 @@ fourColumnTiddly ()
     : convert an rdb table into a 4-column tiddly table;
     : date: 2020-07-04;
     report_notpipe && return 1;
-    tawk '
+    sed 's/|/\&#124;/g' | tawk '        
     
     NR == 1 { printf "| !%s | !%s | !%s | !%s |\n", $1, $2, $3, $4}
      NR < 3 { next };

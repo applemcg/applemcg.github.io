@@ -213,26 +213,36 @@ rule_run ()
     : from the rdb_rules, select and run;
     : the magic is in the "source <( ... )", saving a TMP file;
     : date: 2020-10-21;
+    : date: 2020-10-22;
     local r=$(rule_file);
     read_devtty r: $r;
     report_notargcount 1 $# && { 
         $(rule_show);
         return 1
     };
-    source <(rule_show cat | rowhas rule $1 | rule_cmd)
+    source <(rule_show cat | row "rule ~ /^$1$/" | rule_cmd)
 }
 rule_cmd () 
 { 
-    : construct the source-able command from selected input, command, arguments fields;
+    : construct the source-able command from selected input, command fields;
+    : if both fields are set, then input PIPEs to command, otherwise, if;
+    : if either is set, then its is the whole command. otherwise;
+    : the command is empty;
+    : related: onstdout tiddlylink {two,three,four}ColumnTiddly;
     : date: 2020-10-21;
-    addcol out | compute 'out=sprintf("%s | %s %s", input, command, arguments)' | column out | headoff | tee .rule.out}
+    : date: 2020-10-22 removed arugment fields, added alternate input or command;
+    : date: 2020-10-22;
+    addcol out | compute 'out = ((input && command)? sprintf("%s | %s", input, command):     \
+                                 (input || command)? sprintf("%s", ((input)?input:command)): \
+				 "")    \
+				 ' | column out | headoff | tee .rule.out
 }
 rule_file () 
 { 
     : date: 2020-10-21;
     local file=rdb_rules.lst;
     [[ -f $file ]] || { 
-        rdb_hdr rule input command arguments | tabletolist > $file
+        rdb_hdr rule input command | tabletolist > $file
     };
     ${*:-echo} $file
 }
@@ -270,5 +280,22 @@ row_notcolumn ()
 rule_help () 
 { 
     : date: 2020-10-21;
-    sfg rule
+    sfg rule_
+}
+rule () 
+{ 
+    : just short of an app with a function family, default help;
+    local fun=$(myname)_${1};
+    isfunction $fun || { 
+        $(myname)_help;
+        return
+    };
+    $fun ${*:2}
+}
+todordbtable () 
+{ 
+    : cloned from the general shd_onetag, this collects TODO tags from function;
+    : and formats them suitable for a three-column table;
+    : date: 2020-10-22;
+    column fun todo < shd_alldata.lst | row todo | listtotable | jointable -a1 - fun_createdlatest.rdb | column fun latest todo | tiddlylink fun
 }

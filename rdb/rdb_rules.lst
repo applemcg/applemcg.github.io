@@ -1,12 +1,16 @@
 
 rule	listsmart
 input	row_notcolumn fmt [*] < command.rdb
-command	twotiddlylinks
-arguments	command status
+command	twotiddlylinks command status
 
 rule	untested
 input	row 'status !~ /^tested/'  < command.rdb
-command	twotiddlylinks
-arguments	command status  five
+command	twotiddlylinks command status  five
 
+rule	rules
+input	cat rdb_rules.lst
+command	listtotable
 
+rule	tiddlyrules
+input	rule run rules
+command	threeColumnTiddly
