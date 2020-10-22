@@ -1,0 +1,12 @@
+
+rule	listsmart
+input	row_notcolumn fmt [*] < command.rdb
+command	twotiddlylinks
+arguments	command status
+
+rule	untested
+input	row 'status !~ /^tested/'  < command.rdb
+command	twotiddlylinks
+arguments	command status  five
+
+

@@ -691,7 +691,7 @@ END    {
          if(flushed > 0) eachRecord()
 	 printf "\n"
        }       
-    '
+    '  | awk NF
 }
 name_report () 
 { 
@@ -1183,7 +1183,7 @@ row ()
         app_trace $*;
         ( echo;
         rcat ) | listtotable | row "$@" | tabletolist;
-        exit 0
+        return 00
     };
     read DASH;
     rdb_hdr $HEAD;
@@ -1330,7 +1330,19 @@ tabletolist ()
         NR > 2  { for (i=1; i<=Fields; i++)
                        printf "%s\t%s\n", name[i], $i
                   printf "\n"
+		  printed = 1
                 }
+	# ------------------------- for the empty table	-- 	
+	END     {
+
+                  if( !printed) {
+
+                     for (i=1; i<=Fields; i++) {
+                          printf "%s\t%s\n", name[i], ""
+                     }		       
+                     printf "\n"
+		 }
+        }
         ' $*
 }
 tag_fmrecord () 

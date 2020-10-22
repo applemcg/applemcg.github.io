@@ -188,7 +188,10 @@ tiddly_tagtable ()
 { 
     : writes the "tag table" tiddler in Shell Functions;
     : date: 2020-10-15;
-    function tag_table () { jointable tag_count.rdb tag_group.rdb; }
+    function tag_table () 
+    { 
+        jointable tag_count.rdb tag_group.rdb
+    };
     runfrom $(lib) || return;
     cat $(table_me tag_table ) | tiddlylink tag | tiddlylink group | fourColumnTiddly
 }
@@ -198,4 +201,74 @@ tiddly_taggroup ()
     : date: 2020-10-15;
     runfrom $(lib) || return;
     column group < tag_group.rdb | awk NF | sorttable | rduniq | tiddlylink group | twoColumnTiddly
+}
+tiddly_help () 
+{ 
+    : tiddly function names;
+    : date: 2020-10-20;
+    sfg -i tiddl
+}
+rule_run () 
+{ 
+    : from the rdb_rules, select and run;
+    : the magic is in the "source <( ... )", saving a TMP file;
+    : date: 2020-10-21;
+    local r=$(rule_file);
+    read_devtty r: $r;
+    report_notargcount 1 $# && { 
+        $(rule_show);
+        return 1
+    };
+    source <(rule_show cat | rowhas rule $1 | rule_cmd)
+}
+rule_cmd () 
+{ 
+    : construct the source-able command from selected input, command, arguments fields;
+    : date: 2020-10-21;
+    addcol out | compute 'out=sprintf("%s | %s %s", input, command, arguments)' | column out | headoff | tee .rule.out}
+}
+rule_file () 
+{ 
+    : date: 2020-10-21;
+    local file=rdb_rules.lst;
+    [[ -f $file ]] || { 
+        rdb_hdr rule input command arguments | tabletolist > $file
+    };
+    ${*:-echo} $file
+}
+rule_show () 
+{ 
+    : show the table of command rules, a local rule file.;
+    : date: 2020-10-21;
+    local r=$(rule_file);
+    read_devtty rdb_rules: $(ls -l ${r%.*}.*);
+    listtotable < ${r%.*}.lst | tee ${r%.*}.rdb | ${1:-justify}
+}
+twotiddlylinks () 
+{ 
+    : two tiddly links to an {N:four} column tiddly table;
+    : date: 2020-10-21;
+    set $1 $2 ${3:-four}ColumnTiddly;
+    report_notfunction $3 && return 1;
+    tee $(myname).rdb | tiddlylink $1 | tiddlylink $2 | $3
+}
+onetiddlylink () 
+{ 
+    : two tiddly links to an {N:four} column tiddly table;
+    : date: 2020-10-21;
+    set $1 ${2:-four}ColumnTiddly;
+    report_notfunction $2 && return 1;
+    tiddlylink $1 | $3
+}
+row_notcolumn () 
+{ 
+    : discard the column where a row matches the 2nd argument;
+    : date: 2020-10-21;
+    read_devtty 1, 2: $*;
+    row "$1 ~ /$2/" | ncolumn $1
+}
+rule_help () 
+{ 
+    : date: 2020-10-21;
+    sfg rule
 }

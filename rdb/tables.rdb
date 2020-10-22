@@ -2,20 +2,19 @@ table	nrecrds	modate	fields
 -----	-------	------	------
 checktestdata.rdb	      2	20200913	command status a b c 
 cmmd_abstract.rdb	     23	20200927	command abstract 
+cmmd_status.rdb	     37	20201020	command status fmt 
 cmmd_type.rdb	     37	20200928	command type 
-column.tsv	     33	20200906	command status fmt abstract 
 command.rdb	     37	20200924	command type status fmt abstract 
 date_tables.rdb	      8	20200905	table date wkday 
-devlib_abstract.rdb	      7	20200924	name abstract 
+devlib_abstract.rdb	      7	20200926	name abstract 
 devlib_libtable.rdb	      9	20200924	name library table abstract 
 differences.rdb	      3	20200924	book implementation 
 instances.rdb	     77	20200924	Count field value 
+rdb_rules.rdb	      2	20201020	rule input command arguments 
 statusvalue.rdb	      6	20200924	status seqn explain 
 table_created.rdb	      6	20200928	table created fromtables 
-tables.rdb	      0	20200928	table nrecrds modate fields 
-tables.rdb	      0	20200928	table nrecrds modate fields 
-tables.rdb	     13	20200928	table nrecrds modate fields 
-tables.rdb	     13	20200928	table nrecrds modate fields 
+table_list.rdb	     22	20201020	Type File 
+tables.rdb	     15	20201020	table nrecrds modate fields 
 test_abstract.rdb	     17	20200924	name abstract 
 testobject.nxt	     40	20200913	object flag means 
 testobject.rdb	     40	20200905	object flag means 
