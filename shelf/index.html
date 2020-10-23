@@ -451,6 +451,8 @@ Error message and password prompt
 
 <li>$:/state/tab--1896930937</li>
 
+<li>$:/state/tab--1955156327</li>
+
 <li>$:/state/tab--1963855381</li>
 
 <li>$:/state/tab--1978855377</li>
@@ -512,6 +514,8 @@ Error message and password prompt
 <li>$:/state/tab-1244108343</li>
 
 <li>$:/state/tab-1386723273</li>
+
+<li>$:/state/tab-144200842</li>
 
 <li>$:/state/tab-1522865277</li>
 
@@ -765,9 +769,13 @@ Error message and password prompt
 
 <li>collect tags</li>
 
+<li>Collections</li>
+
 <li>column</li>
 
 <li>column_code</li>
+
+<li>ColumnTiddly</li>
 
 <li>command</li>
 
@@ -1011,7 +1019,11 @@ Error message and password prompt
 
 <li>incorporating startlib in .bash_profile</li>
 
+<li>information base</li>
+
 <li>input</li>
+
+<li>instructions</li>
 
 <li>interact</li>
 
@@ -1072,6 +1084,8 @@ Error message and password prompt
 <li>list-smart commands</li>
 
 <li>listtableornaught</li>
+
+<li>listtableornaught_code</li>
 
 <li>listtotable</li>
 
@@ -1143,11 +1157,11 @@ Error message and password prompt
 
 <li>New Tiddler</li>
 
-<li>New Tiddler 1</li>
-
 <li>newest</li>
 
 <li>Newest is still worth it</li>
+
+<li>newesttodo</li>
 
 <li>noEcho</li>
 
@@ -1168,6 +1182,8 @@ Error message and password prompt
 <li>obsolete</li>
 
 <li>obsoloete</li>
+
+<li>oldesttodo</li>
 
 <li>On /RDB</li>
 
@@ -1485,6 +1501,8 @@ Error message and password prompt
 
 <li>tag table</li>
 
+<li>tag_group</li>
+
 <li>taglib(1)</li>
 
 <li>tags_exercise</li>
@@ -1525,6 +1543,8 @@ Error message and password prompt
 
 <li>TIddlyWiki</li>
 
+<li>TIddlyWIki</li>
+
 <li>todaysdate</li>
 
 <li>todaysdate_code</li>
@@ -1540,6 +1560,10 @@ Error message and password prompt
 <li>todo table</li>
 
 <li>todo_tag</li>
+
+<li>todotable</li>
+
+<li>todotiddly</li>
 
 <li>tofix</li>
 
@@ -1572,6 +1596,8 @@ Error message and password prompt
 <li>twotiddlylinks</li>
 
 <li>type_word</li>
+
+<li>undatetodo</li>
 
 <li>union</li>
 
@@ -11702,10 +11728,16 @@ $:/config/ViewToolbarButtons/Visibility/$(listItem)$
 
 </pre>
 </div>
-<div status="complete" title="$:/Import">
-<pre>The following tiddlers were imported:
-
-# [[Untitled 2]]</pre>
+<div plugin-type="import" status="pending" title="$:/Import" type="application/json">
+<pre>{
+    &quot;tiddlers&quot;: {
+        &quot;Untitled 1&quot;: {
+            &quot;title&quot;: &quot;Untitled 1&quot;,
+            &quot;text&quot;: &quot;{\\rtf1\\ansi\\ansicpg1252\\cocoartf2513\n\\cocoatextscaling0\\cocoaplatform0{\\fonttbl\\f0\\fnil\\fcharset0 Monaco;}\n{\\colortbl;\\red255\\green255\\blue255;\\red254\\green244\\blue139;}\n{\\*\\expandedcolortbl;;\\cssrgb\\c99608\\c95686\\c61176;}\n\\pard\\tx560\\tx1120\\tx1680\\tx2240\\tx2800\\tx3360\\tx3920\\tx4480\\tx5040\\tx5600\\tx6160\\tx6720\\pardirnatural\\partightenfactor0\n\n\\f0\\fs28 \\cf0 \\cb2 \\CocoaLigature0 $ rd_run tagtable\\\n| !tag | !count | !group | !discuss |\\\n|[[abstr]] |   583 |[[implied]] |an assumed tag, with [[shdoc]] |\\\n|[[args]] |     8 |[[interface]] |seems appropriate, with the [[report_usage]] functions, an explicit format? |\\\n|[[date]] |  1309 |[[]] |supplied by [[shd_setdate]], but not in consistent use, function to add created, latest dates |\\\n|[[doc]] |     5 |[[documentation]] | |\\\n|[[fix]] |     1 |[[repair]] |with [[bug]] to todo |\\\n|[[input]] |     1 |[[interface]] |named files |\\\n|[[location]] |     3 |[[interface]] |[[smart function]] supplying directory  |\\\n|[[mfg]] |    12 |[[]] |so long as files may be ManuFactured |\\\n|[[note]] |     2 |[[documentation]] | |\\\n|[[obsolescent]] |     4 |[[paired]] |indeed, if not in the [[retiredlib]] |\\\n|[[ref]] |     4 |[[documentation]] |url, doc, |\\\n|[[related]] |     9 |[[interface]] |functions reading a/o writing same files |\\\n|[[returns]] |     4 |[[interface]] |like [[effects]] |\\\n|[[shdoc]] |   763 |[[implied]] |the main implied tag |\\\n|[[todo]] |    32 |[[repair]] |with fix, etc |\\\n|[[url]] |     3 |[[documentation]] |with doc,  |\\\n|[[usage]] |    14 |[[interface]] |flip side of args |\\\n|[[vars]] |     1 |[[interface]] |args |\\\n|[[version]] |     3 |[[]] |libraries have version, this should be obsolete |\\\n|[[writes]] |     2 |[[interface]] |ditto files |\\\n}&quot;,
+            &quot;type&quot;: &quot;text/rtf&quot;
+        }
+    }
+}</pre>
 </div>
 <div created="20200910121818126" creator="Marty McGowan" modified="20200910121818126" modifier="Marty McGowan" title="$:/Import!!popup-Untitled">
 <pre>yes</pre>
@@ -13362,8 +13394,8 @@ exports.context = contextWidget;
 <div created="20200913174005418" creator="Marty McGowan" modified="20200913174011414" modifier="Marty McGowan" title="$:/state/tab--1256574430">
 <pre>rename_code</pre>
 </div>
-<div created="20200909185158587" creator="Marty McGowan" modified="20200909185158587" modifier="Marty McGowan" title="$:/state/tab--1258184361">
-<pre>uses tag</pre>
+<div created="20200909185158587" creator="Marty McGowan" modified="20201023194330687" modifier="Marty McGowan" title="$:/state/tab--1258184361">
+<pre>tags, what for</pre>
 </div>
 <div created="20200828181718362" creator="Marty McGowan" modified="20200930172855173" modifier="Marty McGowan" title="$:/state/tab--1267943434">
 <pre>collect tags</pre>
@@ -13374,11 +13406,11 @@ exports.context = contextWidget;
 <div created="20200910133559896" creator="Marty McGowan" modified="20200910192843514" modifier="Marty McGowan" title="$:/state/tab--1323315331">
 <pre>many duplicated functions</pre>
 </div>
-<div created="20200802233903007" creator="Marty McGOwan" modified="20201011190634726" modifier="Marty McGowan" title="$:/state/tab--1425329592">
+<div created="20200802233903007" creator="Marty McGOwan" modified="20201023194322238" modifier="Marty McGowan" title="$:/state/tab--1425329592">
 <pre>function themes</pre>
 </div>
-<div created="20200809165507233" creator="Marty McGowan" modified="20201011194200553" modifier="Marty McGowan" title="$:/state/tab--1435984000">
-<pre>from Slogging</pre>
+<div created="20200809165507233" creator="Marty McGowan" modified="20201023193653516" modifier="Marty McGowan" title="$:/state/tab--1435984000">
+<pre>Warehouse Functions</pre>
 </div>
 <div created="20200418122550429" modified="20200504205519536" title="$:/state/tab--1498284803">
 <pre>$:/core/ui/AdvancedSearch/Filter</pre>
@@ -13386,7 +13418,7 @@ exports.context = contextWidget;
 <div created="20200923202341913" creator="Marty McGowan" modified="20200924174316792" modifier="Marty McGowan" title="$:/state/tab--1499124297">
 <pre>column_code</pre>
 </div>
-<div created="20200802195700957" creator="Marty McGOwan" modified="20201020144658152" modifier="Marty McGowan" title="$:/state/tab--1629370387">
+<div created="20200802195700957" creator="Marty McGOwan" modified="20201023194702187" modifier="Marty McGowan" title="$:/state/tab--1629370387">
 <pre>Top Concepts</pre>
 </div>
 <div created="20200924185033857" creator="Marty McGowan" modified="20200924191131327" modifier="Marty McGowan" title="$:/state/tab--1746264377">
@@ -13395,11 +13427,14 @@ exports.context = contextWidget;
 <div created="20200810163810881" modified="20200810163813525" title="$:/state/tab--1830371946">
 <pre>family</pre>
 </div>
-<div created="20201011184030240" creator="Marty McGowan" modified="20201015133137091" modifier="Marty McGowan" title="$:/state/tab--1881255215">
+<div created="20201011184030240" creator="Marty McGowan" modified="20201023194714596" modifier="Marty McGowan" title="$:/state/tab--1881255215">
 <pre>maintenance challenge</pre>
 </div>
 <div created="20200824202404472" creator="Marty McGowan" modified="20200902155709381" modifier="Marty McGowan" title="$:/state/tab--1896930937">
 <pre>fd_testcase</pre>
+</div>
+<div created="20201023190119749" creator="Marty McGowan" modified="20201023193400637" modifier="Marty McGowan" title="$:/state/tab--1955156327">
+<pre>instructions</pre>
 </div>
 <div created="20200418132348763" modified="20200504200948507" title="$:/state/tab--1963855381">
 <pre>$:/core/ui/ControlPanel/Toolbars</pre>
@@ -13416,8 +13451,8 @@ exports.context = contextWidget;
 <div created="20200810170950313" creator="Marty McGOwan" modified="20200811134440678" modifier="Marty McGOwan" title="$:/state/tab--2112689675">
 <pre>$:/core/ui/ControlPanel/Basics</pre>
 </div>
-<div created="20200827142838728" creator="Marty McGowan" modified="20200909185023411" modifier="Marty McGowan" title="$:/state/tab--215922881">
-<pre>function tags</pre>
+<div created="20200827142838728" creator="Marty McGowan" modified="20201023194620900" modifier="Marty McGowan" title="$:/state/tab--215922881">
+<pre>information base</pre>
 </div>
 <div created="20200429214724797" modified="20200429214724797" title="$:/state/tab--219645345">
 <pre>$:/core/ui/ControlPanel/Plugins/Add/Themes</pre>
@@ -13431,8 +13466,8 @@ exports.context = contextWidget;
 <div created="20200913174315442" creator="Marty McGowan" modified="20200913174315442" modifier="Marty McGowan" title="$:/state/tab--253754676">
 <pre>listtotable_testdata</pre>
 </div>
-<div created="20200731191706535" creator="Marty McGOwan" modified="20201020144706387" modifier="Marty McGowan" title="$:/state/tab--325356957">
-<pre>On /RDB</pre>
+<div created="20200731191706535" creator="Marty McGOwan" modified="20201023194905769" modifier="Marty McGowan" title="$:/state/tab--325356957">
+<pre>Collections</pre>
 </div>
 <div created="20201022010135752" creator="Marty McGowan" modified="20201022010142491" modifier="Marty McGowan" title="$:/state/tab--375347621">
 <pre>tag table</pre>
@@ -13494,10 +13529,13 @@ exports.context = contextWidget;
 <div created="20200810164525335" modified="20200810164525335" title="$:/state/tab-1386723273">
 <pre>$:/core/ui/TiddlerInfo/References</pre>
 </div>
+<div created="20201023190323870" creator="Marty McGowan" modified="20201023194910055" modifier="Marty McGowan" title="$:/state/tab-144200842">
+<pre>rdb code</pre>
+</div>
 <div created="20201011192703769" creator="Marty McGowan" modified="20201011192710362" modifier="Marty McGowan" title="$:/state/tab-1522865277">
 <pre>utility commands</pre>
 </div>
-<div created="20200727000625471" creator="Marty McGowan" modified="20200924142105516" modifier="Marty McGowan" title="$:/state/tab-1528275152">
+<div created="20200727000625471" creator="Marty McGowan" modified="20201023190519723" modifier="Marty McGowan" title="$:/state/tab-1528275152">
 <pre>$:/core/ui/DefaultSearchResultList</pre>
 </div>
 <div created="20200920185445977" creator="Marty McGowan" modified="20200920190349781" modifier="Marty McGowan" title="$:/state/tab-1668824923">
@@ -13521,7 +13559,7 @@ exports.context = contextWidget;
 <div created="20200811123953793" creator="Marty McGOwan" modified="20200811123953793" modifier="Marty McGOwan" title="$:/state/tab-1826487871">
 <pre>app</pre>
 </div>
-<div created="20200909185156562" creator="Marty McGowan" modified="20201011190641814" modifier="Marty McGowan" title="$:/state/tab-1840659310">
+<div created="20200909185156562" creator="Marty McGowan" modified="20201023194417948" modifier="Marty McGowan" title="$:/state/tab-1840659310">
 <pre>function tags</pre>
 </div>
 <div created="20200913172231188" creator="Marty McGowan" modified="20200913175728173" modifier="Marty McGowan" title="$:/state/tab-1907983833">
@@ -13602,7 +13640,7 @@ exports.context = contextWidget;
 <div created="20200418122101344" creator="Marty McGowan" modified="20200921135125709" modifier="Marty McGowan" title="$:/state/tab/moresidebar-1850697562">
 <pre>$:/core/ui/MoreSideBar/Tags</pre>
 </div>
-<div created="20200418121835270" creator="Marty McGOwan" modified="20200928233103955" modifier="Marty McGowan" title="$:/state/tab/sidebar--595412856">
+<div created="20200418121835270" creator="Marty McGOwan" modified="20201023194913667" modifier="Marty McGowan" title="$:/state/tab/sidebar--595412856">
 <pre>$:/core/ui/SideBar/Recent</pre>
 </div>
 <div created="20200504200956301" modified="20200810170447722" title="$:/state/tabs/controlpanel/toolbars-1345989671">
@@ -13626,7 +13664,7 @@ exports.context = contextWidget;
 <div bag="default" created="20200810170615861" creator="M" modified="20200811134449245" modifier="Marty McGwan" revision="1" title="$:/status/UserName">
 <pre>Marty McGowan</pre>
 </div>
-<div created="20201022190846471" creator="Marty McGowan" list="todo [[Table of Contents]]" modified="20201022191915897" modifier="Marty McGowan" title="$:/StoryList">
+<div created="20201023193615255" creator="Marty McGowan" list="[[The Maintenance Story]] [[function themes]] [[information base]] [[Shell Functions]] [[Warehouse Functions]] [[What's Here]] [[Table of Contents]]" modified="20201023195026398" modifier="Marty McGowan" title="$:/StoryList">
 <pre></pre>
 </div>
 <div created="20200519141000553" list="$:/.giffmex/Buttons/more-tiddler-edit-actions $:/core/ui/Buttons/delete $:/core/ui/Buttons/cancel $:/core/ui/Buttons/save" modified="20200521145647980" tags="$:/giffmex/bigeditarea $:/giffmex/stroll" title="$:/tags/EditToolbar">
@@ -13702,7 +13740,7 @@ exports.context = contextWidget;
     }
 }</pre>
 </div>
-<div created="20200418122623650" creator="Marty McGowan" modified="20201015150132064" modifier="Marty McGowan" title="$:/temp/NewTagName">
+<div created="20200418122623650" creator="Marty McGowan" modified="20201023175716237" modifier="Marty McGowan" title="$:/temp/NewTagName">
 <pre></pre>
 </div>
 <div created="20200502174947648" modified="20200502174955840" title="$:/temp/RenameTags/replace">
@@ -13711,8 +13749,8 @@ exports.context = contextWidget;
 <div created="20200502174943975" modified="20200502174950301" title="$:/temp/RenameTags/search">
 <pre>tb</pre>
 </div>
-<div created="20200418122544376" creator="Marty McGowan" modified="20201022170827375" modifier="Marty McGowan" title="$:/temp/search">
-<pre>todo</pre>
+<div created="20200418122544376" creator="Marty McGowan" modified="20201023190747871" modifier="Marty McGowan" title="$:/temp/search">
+<pre>term</pre>
 </div>
 <div created="20200429214841632" modified="20200429214841632" tags="$:/tags/ServerConnection" title="$:/temp/ServerConnection/https://tiddlywiki.com/library/v5.1.22/index.html" url="https://tiddlywiki.com/library/v5.1.22/index.html">
 <pre>loaded</pre>
@@ -14844,8 +14882,10 @@ report
 <div created="20200928194345263" creator="Marty McGowan" modified="20200928194345263" modifier="Marty McGowan" title="cloned">
 <pre></pre>
 </div>
-<div created="20200809185742419" creator="Marty McGowan" modified="20200910120618756" modifier="Marty McGowan" tags="list-links" title="code">
-<pre>&lt;&lt;list-links filter:&quot;[tag[code]]+[sort[title]]&quot;&gt;&gt;</pre>
+<div created="20200809185742419" creator="Marty McGowan" modified="20201023190735703" modifier="Marty McGowan" tags="list-links" title="code">
+<pre>[[Collections]] | [[code]]
+
+&lt;&lt;list-links filter:&quot;[tag[code]]+[sort[title]]&quot;&gt;&gt;</pre>
 </div>
 <div created="20200920133228923" creator="Marty McGowan" modified="20200920133809934" modifier="Marty McGowan" tags="" title="code walkthrough">
 <pre>[[common_gj_code]].|  [[code walkthrough]]
@@ -14871,6 +14911,19 @@ shd_tagcolumn
 [[function abstract]]
 &quot;
 &quot;&quot; &quot;&quot; &quot;tc-vertical&quot;&gt;&gt;
+</pre>
+</div>
+<div created="20201023184938224" creator="Marty McGowan" modified="20201023190928114" modifier="Marty McGowan" tags="" title="Collections">
+<pre>[[What's Here]] | [[Collections]]
+
+As I become more TIddlyWIki savvy, these will hopefully become a pull-down menu or such, for the moment, a fixed menu:
+
+&lt;&lt;tabs &quot;
+ [[instructions]]
+ [[code]]
+ [[term]]
+ [[rdb code]]
+&quot; &quot;&quot; &quot;&quot; &quot;tc-vertical'&gt;&gt;
 </pre>
 </div>
 <div created="20200823182132439" creator="Marty McGowan" modified="20200923202339552" modifier="Marty McGowan" title="column">
@@ -14939,6 +14992,9 @@ column ()
 
 ```
 </pre>
+</div>
+<div created="20201023182000483" creator="Marty McGowan" modified="20201023182000483" modifier="Marty McGowan" title="ColumnTiddly">
+<pre></pre>
 </div>
 <div created="20200928194345264" creator="Marty McGowan" modified="20200928194345264" modifier="Marty McGowan" title="command">
 <pre></pre>
@@ -15645,7 +15701,7 @@ MartyMcGowan
 
 </pre>
 </div>
-<div created="20201019183103349" creator="Marty McGowan" modified="20201020172513595" modifier="Marty McGowan" tags="" title="development story">
+<div created="20201019183103349" creator="Marty McGowan" modified="20201023184244726" modifier="Marty McGowan" tags="instructions" title="development story">
 <pre>[[On /RDB]] | [[development story]]
 
 The holy grail of /rdb - shell integration.  The assertion that the shell is a query language, given a modest implementation of the organs of SQL, now has its flip side:  a table stores and serves shell commands.
@@ -15659,12 +15715,12 @@ Let's get to it.   Before cleaning up [[tag table]],  let's examine a developing
 
 ```
 lib.$ cat .rule.out
-rule_show cat | twotiddlylinks rule command
+rd_show cat | twotiddlylinks rule command
 ```
 
 
 
-for the record, the last ''.rule.out ''
+for the record, the last ''.rule.out '' shows the sourced command.
 
 </pre>
 </div>
@@ -15939,29 +15995,43 @@ Therefore every app is constructed through functions in the gihub reposistory.
 <div created="20200928194345271" creator="Marty McGowan" modified="20200928194345271" modifier="Marty McGowan" title="example">
 <pre></pre>
 </div>
-<div created="20201011185042930" creator="Marty McGowan" modified="20201014151049872" modifier="Marty McGowan" tags="active" title="existing process">
+<div created="20201011185042930" creator="Marty McGowan" modified="20201023182731743" modifier="Marty McGowan" tags="active instructions" title="existing process">
 <pre>[[The Maintenance Story]] | [[existing process]]
 
-At the moment, this function describes routine maintenance actions.
+At the moment, these steps describe the sequence of  routine maintenance actions.
 
 
 ```
-libtag_process ()
-{
-    : the steps for routine update;
-    : date: 2020-10-10;
-    cat &lt;&lt;'HERE'
-    foreach f2file $(lib_changed 6);
-    name_library;
-    shd_tagcolumn
+$ cat README
     lib pushd
-    : to get in the mood for the possible
-    dfg lib | row 'context !~ /[(][)] *$/' | jm
-    table_report | rowhas table _library;
+    foreach f2file $(lib_changed 6);
+    jm $(table_me name_library);
+    table_me fun_libname;
+    : optionally 
+    rm -f shd_datadict;
+    : daily or after above
+    shd_tagcolumn
+    bymodate
+    table_me tag_count
+    rule
+    rule show
+    
+    rule run ...
+    rule run tagtable    
+    mv twotiddlylinks.rdb tag_table.rdb
+
+    shd_onetag ...
+    shd_onetag modfied # eg
+
+    qff ...   # function
+
+    fun_createdlatest
+    
+    shd_onetag todo | listtotable | jointable -a1 - fun_createdlatest.rdb | column fun latest todo | tiddlylink fun | threeColumnTiddly
+    
     set -- $(pick &lt; shd_datadict.txt)
-    listtototable &lt; shd_alldata.lst | column fun $*
-HERE
-}
+    listtototable &lt; shd_alldata.lst | column fun $* 
+
 
 
 ```
@@ -16573,11 +16643,16 @@ d fun_libr fun_libr_tagless        : barlib
 ```
 </pre>
 </div>
-<div created="20200827142623842" creator="Marty McGowan" modified="20200928142859413" modifier="Marty McGowan" tags="" title="function themes">
+<div created="20200827142623842" creator="Marty McGowan" modified="20201023194617661" modifier="Marty McGowan" tags="" title="function themes">
 <pre>[[Shell Diary]] | [[function themes]] 
 
 
-&lt;&lt;tabs &quot;[[Smart Functions]] [[canonical format]] [[function tags]]&quot;  &quot;Smart Functions&quot; &quot;&quot; &quot;tc-vertical&quot;&gt;&gt;</pre>
+&lt;&lt;tabs &quot;
+  [[Smart Functions]] 
+  [[canonical format]]  
+  [[function tags]]
+  [[information base]]
+&quot;  &quot;[[Smart Functions]]&quot; &quot;&quot; &quot;tc-vertical&quot;&gt;&gt;</pre>
 </div>
 <div created="20200809185254587" creator="Marty McGowan" modified="20200811142502754" modifier="Marty McGowan" tags="term" title="functionlib">
 <pre>a [[functionlib]] is a library of shell functions with a few specific requirements.
@@ -17038,8 +17113,26 @@ A good deal of the [[starlib]] survived, but  for the time being, let's develop 
 
 After a day of muddling, the code to syncronize the .*profiles and .alias.rc files has been moved out to a [[sharelib]], which shows a sample of the functions.</pre>
 </div>
+<div created="20201023194625886" creator="Marty McGowan" modified="20201023195806412" modifier="Marty McGowan" tags="active" title="information base">
+<pre>[[function themes]] | [[information base
+]]
+An information base in a function-rich environment addresses the issues raised in [[The Maintenance Story]].   Rather than a top-down design, my practice has recently evolved in the process of balancing [[Shell Functions]] with supporting the [[/RDB]] as a function-based application.   And only in the last week (mid-October 2020) have I developed a tool to use [[/rdb]] tables to hold code which might otherwise be embedded in functions.  
+
+The practice is for the moment called rule-based maintenance.
+
+</pre>
+</div>
 <div created="20200928194345277" creator="Marty McGowan" modified="20200928194345277" modifier="Marty McGowan" title="input">
 <pre></pre>
+</div>
+<div created="20201023185129329" creator="Marty McGowan" modified="20201023190420335" modifier="Marty McGowan" title="instructions">
+<pre>[[Collections]] |  [[instructions]]
+
+visit these tiddlers when some support code may have changed. e.g. TestPipe makes use of the rd_run function, the rd_file of relational data rules, and ColumnTiddly functions to format results, mostly tables to include in these pages.
+
+`&lt;&lt;list-links filter:&quot;[tag[instructions]]+[!sort[modified]]&quot;&gt;&gt;`
+
+&lt;&lt;list-links filter:&quot;[tag[instructions]]+[!sort[modified]]&quot;&gt;&gt;</pre>
 </div>
 <div created="20200928201729573" creator="Marty McGowan" modified="20200928201729573" modifier="Marty McGowan" title="interact">
 <pre></pre>
@@ -17336,13 +17429,11 @@ And a extra note about the query.   The ''/^t/'' syntax in the selection uses th
 
 {{re_rdb_format}}</pre>
 </div>
-<div created="20200913173750759" creator="Marty McGowan" modified="20201020185043293" modifier="Marty McGowan" title="list-smart commands">
-<pre>```
-row_notcolumn fmt [*] &lt; command.rdb | twotiddlylinks command status # or ...
+<div created="20200913173750759" creator="Marty McGowan" modified="20201023183617086" modifier="Marty McGowan" tags="instructions" title="list-smart commands">
+<pre>
+`rdb.$ rd_run listsmart`
 
-rule_run listsmart
 
-```
 | !command | !type | !status | !abstract |
 |[[blank]] |func |[[tested]] |replaces all data in a record with spaces |
 |[[column]] |func |[[coded]] |display columns of a table in any order |
@@ -17356,20 +17447,76 @@ rule_run listsmart
 |[[tableorlist]] |func |[[tested]] |reports if a file is list, first character is a newline, or table if not |
 
 
+
 here's the [[rule_code]] and  the rdb rule table:
 
 
 ```
-rdb.$ rule_show
-rule     	input                              	command       	arguments     
-----     	-----                              	-------       	---------     
-listsmart	row_notcolumn fmt [*] &lt; command.rdb	twotiddlylinks	command status
-```
+rdb.$ rd_show
+rule       	input                                   	command                            
+----       	-----                                   	-------                            
+listsmart  	row_notcolumn fmt [*] &lt; command.rdb     	twotiddlylinks command status      
+untested   	row 'status !~ /^tested/'  &lt; command.rdb	twotiddlylinks command status  five
+rules      	cat rd_rules.lst                        	listtotable                        
+tiddlyrules	rd_run rules                            	threeColumnTiddly                  
+rdb.$ 
 
 </pre>
 </div>
-<div created="20201022010000784" creator="Marty McGowan" modified="20201022010000784" modifier="Marty McGowan" title="listtableornaught">
-<pre></pre>
+<div created="20201022010000784" creator="Marty McGowan" modified="20201023182906783" modifier="Marty McGowan" title="listtableornaught">
+<pre>
+[[listtableornaught_code]]</pre>
+</div>
+<div created="20201023182906783" creator="Marty McGowan" modified="20201023183037762" modifier="Marty McGowan" title="listtableornaught_code">
+<pre>[[listtableornaught]] | [[listtableornaught_code]]
+
+
+```
+isttableornaught () 
+{ 
+    : table or list or ?? for one file or STDIN;
+    : the /rdb manual doesnt allow OTHER file type, and;
+    : todo: LIST format needs to check the 2nd line for a single TAB;
+    : ... lone TAB does not indicate 2nd field unless occupied, so;
+    : ... constrain field names to LT 17 characaters in LIST format;
+    : date: 2020-09-06;
+    : date: 2020-09-27;
+    [[ $# -eq 1 ]] &amp;&amp; report_notfile $1 &amp;&amp; return 1;
+    case $1 in 
+        *.css | *.awk | *.html | *.org | *.md | *.sh)
+            return
+        ;;
+    esac;
+    awk -v name=${1:-&quot;&quot;} '
+    function found(type, ex) { printf fmt, type, name; exit ex }
+    BEGIN { FS = &quot;\t&quot;; fmt = &quot;%s\t%s\n&quot; }
+    #      { printf &quot;A: NR, NF, qlist: %d, %d, %d\n&quot;, NR, NF, qlist &gt; &quot;/dev/stderr&quot; ; }
+    #
+    # --------------------------------- isolate the LIST format	--
+    #
+    NR == 1 &amp;&amp; NF &lt; 1           { qlist = 1; next; }
+    #      { printf &quot;B: NR, NF, qlist: %d, %d, %d\n&quot;, NR, NF, qlist &gt; &quot;/dev/stderr&quot; ; }    
+    #
+    # ---------- NF &lt; 3, the first record may have blank fields	--
+    #
+    NR == 2 &amp;&amp; length($1) &lt; 17 &amp;&amp; qlist { found( &quot;list&quot;,  1) }
+    #
+    # -------------------------------- isolate the TABLE format	--
+    #
+    #      { printf &quot;C: NR, NF, qlist: %d, %d, %d\n&quot;, NR, NF, qlist &gt; &quot;/dev/stderr&quot; ; }        
+    NR &gt; 2                      { exit; }
+    NR == 1                     { next; }
+    #
+    # ------------------------- the second record, ?? Dashes ??	--
+    #
+    NF &gt; 1 &amp;&amp; $2 ~ /^--*$/      { found( &quot;table&quot;, 0) }
+    $1 ~ /^--*$/                { found( &quot;table&quot;, 0) }
+
+    ' $1
+}
+```
+
+</pre>
 </div>
 <div created="20200824182359455" creator="Marty McGowan" modified="20200913174338675" modifier="Marty McGowan" title="listtotable">
 <pre>[[rdb commands]] | [[listtotable]] | [[tabletolist]]
@@ -18095,9 +18242,6 @@ There are generic features to handle:
 <div created="20201015172024721" creator="Marty McGowan" modified="20201015172024721" modifier="Marty McGowan" title="New Tiddler">
 <pre></pre>
 </div>
-<div created="20201018172617389" creator="Marty McGowan" modified="20201018172617389" modifier="Marty McGowan" title="New Tiddler 1">
-<pre></pre>
-</div>
 <div created="20201003202830232" creator="Marty McGowan" modified="20201003202830232" modifier="Marty McGowan" title="newest">
 <pre></pre>
 </div>
@@ -18192,6 +18336,9 @@ For the record,  number of attempts at command-line edits for each function:
 * 20 allmybins
 (*) {{cups of coffee}}</pre>
 </div>
+<div created="20201023163159388" creator="Marty McGowan" modified="20201023163159388" modifier="Marty McGowan" title="newesttodo">
+<pre></pre>
+</div>
 <div created="20201020172613065" creator="Marty McGowan" modified="20201020172613065" modifier="Marty McGowan" title="noEcho">
 <pre></pre>
 </div>
@@ -18228,6 +18375,9 @@ Testing criteria:
 <pre></pre>
 </div>
 <div created="20200928201729569" creator="Marty McGowan" modified="20200928201729569" modifier="Marty McGowan" title="obsoloete">
+<pre></pre>
+</div>
+<div created="20201023163159389" creator="Marty McGowan" modified="20201023163159389" modifier="Marty McGowan" title="oldesttodo">
 <pre></pre>
 </div>
 <div created="20200727115751547" creator="Marty McGowan" modified="20201019183049352" modifier="Marty McGowan" tags="[[Table of Contents]]" title="On /RDB">
@@ -18514,8 +18664,8 @@ The [[Working Draft|https://compbio.soe.ucsc.edu/rdb/]] of an article implementi
 The book: [[UNIX (TM) Relational Database Management|https://www.amazon.com/Relational-Database-Management-Prentice-Hall-Software/dp/013938622X?SubscriptionId=AKIAILSHYYTFIVPWUY6Q&amp;tag=duckduckgo-ffab-20&amp;linkCode=xm2&amp;camp=2025&amp;creative=165953&amp;creativeASIN=013938622X]]
 </pre>
 </div>
-<div created="20200826162201130" creator="Marty McGowan" modified="20201022162257438" modifier="Marty McGowan" tags="" title="rdb code">
-<pre>[[On /RDB]] | [[rdb code]] 
+<div created="20200826162201130" creator="Marty McGowan" modified="20201023191954086" modifier="Marty McGowan" tags="" title="rdb code">
+<pre>[[On /RDB]] | [[Collections]] |  [[rdb code]] 
 
 &lt;&lt;list-links    filter:&quot;[tag[rdb]]&quot;&gt;&gt;
 
@@ -19138,7 +19288,7 @@ Also note, that because of the late (August 2019) Toni Morison, and a few others
 selectable:
 [[On My Night Stand]] [[toMIWreading]]</pre>
 </div>
-<div created="20201022010425823" creator="Marty McGowan" modified="20201022010516648" modifier="Marty McGowan" title="README">
+<div created="20201022010425823" creator="Marty McGowan" modified="20201023182233090" modifier="Marty McGowan" tags="instructions" title="README">
 <pre>```
     lib pushd
     foreach f2file $(lib_changed 6);
@@ -19464,70 +19614,101 @@ working.rdb      	2020-08-25	Tue
 <div created="20200824182359463" creator="Marty McGowan" modified="20200824182359463" modifier="Marty McGowan" title="rowisnot">
 <pre></pre>
 </div>
-<div created="20201020172441015" creator="Marty McGowan" modified="20201020172710066" modifier="Marty McGowan" tags="[[development story]]" title="rule_code">
+<div created="20201020172441015" creator="Marty McGowan" modified="20201023183931598" modifier="Marty McGowan" tags="[[development story]]" title="rule_code">
 <pre>[[development story]] | [[rule_code]]
 
 ```
-rule_run ()
-{
-    : from the rdb_rules, select and run;
+rd_run () 
+{ 
+    : from the rd_rules, select and run;
     : the magic is in the &quot;source &lt;( ... )&quot;, saving a TMP file;
-    local r=$(rule_file);
+    : date: 2020-10-21;
+    : date: 2020-10-22;
+    : date: 2020-10-23;
+    local r=$(rd_file);
     read_devtty r: $r;
-    report_notargcount 1 $# &amp;&amp; {
-        $(rule_show);
+    report_notargcount 1 $# &amp;&amp; { 
+        $(rd_show);
         return 1
     };
-    source &lt;(rule_show cat | rowhas rule $1 | rule_cmd)
+    source &lt;(rd_show cat | row &quot;rule ~ /^$1$/&quot; | rd_cmd)
 }
-rule_cmd ()
-{
-    : construct the source-able command from selected input, command, arguments fields;
-    addcol out | compute 'out=sprintf(&quot;%s | %s %s&quot;, input, command, arguments)' | column out | headoff | tee .rule.out}
-}
-rule_file ()
-{
-    local file=rdb_rules.lst;
-    [[ -f $file ]] || {
-        rdb_hdr rule input command arguments &gt; $file
+rd_file () 
+{ 
+    : return the name of the RULES file, create if non-existant;
+    : date: 2020-10-21;
+    : date: 2020-10-23;
+    local file=rd_rules.lst;
+    [[ -f $file ]] || { 
+        rdb_hdr rule input command | tabletolist &gt; $file
     };
     ${*:-echo} $file
 }
-rule_show ()
-{
+rd_show () 
+{ 
     : show the table of command rules, a local rule file.;
-    local r=$(rule_file);
-    read_devtty rdb_rules: $(ls -l ${r%.*}.*);
+    : date: 2020-10-21;
+    : date: 2020-10-23;
+    local r=$(rd_file);
+    read_devtty rd_rules: $(ls -l ${r%.*}.*);
     listtotable &lt; ${r%.*}.lst | tee ${r%.*}.rdb | ${1:-justify}
 }
-twotiddlylinks ()
-{
-    : two tiddly links to a four column tiddly table;
-    tiddlylink $1 | tiddlylink $2 | fourColumnTiddly
+rd_edit () 
+{ 
+    : edit and show the rd_rule file;
+    : date: 2020-10-23;
+    ${EDITOR:-vi} $(rd_file);
+    rd_show
 }
+twotiddlylinks () 
+{ 
+    : two tiddly links to an {N:four} column tiddly table;
+    : date: 2020-10-21;
+    set $1 $2 ${3:-four}ColumnTiddly;
+    report_notfunction $3 &amp;&amp; return 1;
+    tee $(myname).rdb | tiddlylink $1 | tiddlylink $2 | $3
+}
+
 ```</pre>
 </div>
-<div created="20201020172010350" creator="Marty McGowan" modified="20201022164137217" modifier="Marty McGowan" tags="[[development story]]" title="rule_table">
+<div created="20201020172010350" creator="Marty McGowan" modified="20201023175926793" modifier="Marty McGowan" tags="[[development story]] instructions" title="rule_table">
 <pre>[[development story]] | [[rule_table]]
 
 !!! applemcg/rdb
 
+```
+
+.$ rd_run tiddlyrules
+```
+
 | !rule | !input | !command |
 |listsmart |row_notcolumn fmt [*] &lt; command.rdb |twotiddlylinks command status |
 |untested |row 'status !~ /^tested/'  &lt; command.rdb |twotiddlylinks command status  five |
-|rules |cat rdb_rules.lst |listtotable |
-|tiddlyrules |rule run rules |threeColumnTiddly |
+|rules |cat rd_rules.lst |listtotable |
+|tiddlyrules |rd_run rules |threeColumnTiddly |
 
 !!! lib
 
+
+```
+$ rd_run tablerule
+```
+
 | !rule | !input | !command |
+|[[tag_group]] |cat tag_table.rdb  |sorttable group |
 |[[smart_funs]] |dfg . |row 'context ~ /^\${[123*@]:-/' |
-|[[noEcho]] |rule_run smart_funs |row 'context !~ /echo/' |
-|[[trimcontext]] |rule_run smart_funs |compute 'sub(/}.*/,&quot;&quot;,context); sub(/^.*-/,&quot;&quot;,context)' |
-|[[countcontext]] |rule_run trimcontext |tabulate_column context |
-|[[tablerule]] |rule_show cat |onetiddlylink rule |
+|[[noEcho]] |rd_run smart_funs |row 'context !~ /echo/' |
+|[[trimcontext]] |rd_run smart_funs |compute 'sub(/}.*/,&quot;&quot;,context); sub(/^.*-/,&quot;&quot;,context)' |
+|[[countcontext]] |rd_run trimcontext |tabulate_column context |
+|[[tablerule]] |rd_show cat |onetiddlylink rule three |
 |[[tagtable]] |jointable tag_{count,group}.rdb |twotiddlylinks tag group |
-|[[test]] |cat rdb_rules.lst |listtotable &amp;#124; sorttable &amp;#124; row 'input ~ /rule/' |
+|[[test]] |cat rd_rules.lst |listtotable &amp;#124; sorttable &amp;#124; row 'input ~ /rule/' |
+|[[todotable]] | |onstdout todolink.rdb todordbtable shd_alldata.lst fun_createdlatest.rdb |
+|[[todotiddly]] |rd_run todotable; cat todolink.rdb |threeColumnTiddly |
+|[[undatetodo]] |rd_run todotable; cat todolink.rdb |row '!latest' &amp;#124; ncolumn latest &amp;#124; twoColumnTiddly |
+|[[newesttodo]] |rd_run todotable; cat todolink.rdb &amp;#124; rename latest newest |sorttable -r newest &amp;#124; rd sed 12q &amp;#124; threeColumnTiddly |
+|[[oldesttodo]] |rd_run todotable; cat todolink.rdb &amp;#124; rename latest oldest  |row oldest &amp;#124; sorttable oldest &amp;#124; rd sed 12q &amp;#124; threeColumnTiddly |
+
 </pre>
 </div>
 <div created="20201003202830235" creator="Marty McGowan" modified="20201003202830235" modifier="Marty McGowan" title="run_with_timeout">
@@ -20841,7 +21022,7 @@ command.rdb      	     34	2020-09-13	command type status fmt abstract
 <div created="20200828205336326" creator="Marty McGowan" modified="20200828205336326" modifier="Marty McGowan" title="tag">
 <pre></pre>
 </div>
-<div created="20201015143554545" creator="Marty McGowan" modified="20201015150604249" modifier="Marty McGowan" tags="active" title="tag group" type=" ">
+<div created="20201015143554545" creator="Marty McGowan" modified="20201023184445564" modifier="Marty McGowan" tags="active instructions" title="tag group" type=" ">
 <pre>[[tags, what for]] | [[tag group]] | [[tag table]]
 
 ```
@@ -20923,7 +21104,7 @@ After a pre-mature dive into tabling and organizing tags, and a decent nap,  the
 * Functions are formatted by the declare -f builtin, and must follow limitations on the [[null command|canonical format]] .
 </pre>
 </div>
-<div created="20200928194304741" creator="Marty McGowan" modified="20201015171927186" modifier="Marty McGowan" tags="active" title="tag table">
+<div created="20200928194304741" creator="Marty McGowan" modified="20201023175745307" modifier="Marty McGowan" tags="active instructions" title="tag table">
 <pre>[[tags, what for]] | [[tag table]] | [[tag group]]
 
 this is my work in progress since 9/28
@@ -20975,6 +21156,9 @@ lib.$
 ```
 
 I'll manually edit the libraries in turn to eliminate the tag.</pre>
+</div>
+<div created="20201023163159384" creator="Marty McGowan" modified="20201023163159384" modifier="Marty McGowan" title="tag_group">
+<pre></pre>
 </div>
 <div created="20180408170458890" creator="MartyMcGowan" modified="20180715131827727" modifier="MartyMcGowan" tags="slogging manpp" title="taglib(1)">
 <pre>Here's an effort, let's call it research into  [[tagging files|http://mcgowans.org/pubs/marty3/commonplace/software/tagging.html#tagging]].   
@@ -21032,7 +21216,7 @@ Tagging is best accomplished on time-stamped media files.
 
 </pre>
 </div>
-<div created="20200930173414202" creator="Marty McGowan" modified="20200930173604453" modifier="Marty McGowan" tags="[[collect tags]]" title="tags_exercise">
+<div created="20200930173414202" creator="Marty McGowan" modified="20201023180032920" modifier="Marty McGowan" tags="[[collect tags]] instructions" title="tags_exercise">
 <pre>[[collect tags]] |
 [[tags_exercise]]
 
@@ -21129,8 +21313,10 @@ sample_function ()
 <div created="20201022010000794" creator="Marty McGowan" modified="20201022010000794" modifier="Marty McGowan" title="tbl_fmlist">
 <pre></pre>
 </div>
-<div created="20200811194951899" creator="Marty McGowan" modified="20200910120729867" modifier="Marty McGowan" tags="list-links" title="term">
-<pre>&lt;&lt;list-links filter:&quot;[tag[term]]&quot;&gt;&gt;</pre>
+<div created="20200811194951899" creator="Marty McGowan" modified="20201023190902227" modifier="Marty McGowan" tags="list-links" title="term">
+<pre>[[Collections]] | [[term]]
+
+&lt;&lt;list-links filter:&quot;[tag[term]]&quot;&gt;&gt;</pre>
 </div>
 <div created="20200928194345286" creator="Marty McGowan" modified="20200928194345286" modifier="Marty McGowan" title="test">
 <pre></pre>
@@ -21173,16 +21359,23 @@ sample_function ()
 <div created="20180825154754018" creator="MartyMcGowan" modified="20180912150255165" modifier="MartyMcGowan" tags="slogging" title="TestingSeaMonkey">
 <pre>Follow the 'save w/o regard to browser' instructions in  [[TiddlyWiki|https://tiddlywiki.com/]]</pre>
 </div>
-<div created="20201022130254651" creator="Marty McGowan" modified="20201022131442029" modifier="Marty McGowan" tags="" title="TestPipe">
-<pre>`rule_run test`
+<div created="20201022130254651" creator="Marty McGowan" modified="20201023182123878" modifier="Marty McGowan" tags="instructions" title="TestPipe">
+<pre>`lib.$ rd_run test`
+
+This demonstrates the ability of the {...}ColumnTiddly functions to deal with the Pipe Symbol in the table.
+
+The raw output:
 
 
-| !rule | !input | !command | !arguments |
-|countcontext |rule_run trimcontext |tabulate_column |context |
-|noEcho |rule_run smart_funs |row |'context !~ /echo/' |
-|tablerule |rule_show cat |twotiddlylinks |rule command |
-|test |cat rdb_rules.lst &amp;#124; listtotable &amp;#124; sorttable  |row 'input ~ /rule/' | |
-|trimcontext |rule_run smart_funs |compute |'sub(/}.*/,&quot;&quot;,context); sub(/^.*-/,&quot;&quot;,context)' |
+```
+| !rule | !input | !command |
+|test |cat rd_rules.lst |listtotable &amp;#124; sorttable &amp;#124; row 'rule ~ /test/' &amp;#124; threeColumnTiddly |
+```
+
+the formatted table:
+
+| !rule | !input | !command |
+|test |cat rd_rules.lst |listtotable &amp;#124; sorttable &amp;#124; row 'rule ~ /test/' &amp;#124; threeColumnTiddly |
 </pre>
 </div>
 <div created="20200313204835141" creator="MartyMcGowan" modified="20200313205950935" modifier="MartyMcGowan" tags="slogging" title="Texinfo">
@@ -21233,28 +21426,33 @@ Here is a sample fo my first info project [[learning texinfo sample]]
 ```
 </pre>
 </div>
-<div created="20201015171912314" creator="Marty McGowan" modified="20201022165616373" modifier="Marty McGowan" tags="[[tag table]]" title="tiddly_tagtable">
+<div created="20201015171912314" creator="Marty McGowan" modified="20201023175721468" modifier="Marty McGowan" tags="[[tag table]] instructions" title="tiddly_tagtable">
 <pre>[[tiddly_tagtable]]
 
+
+```
+$ rd_run totiddlytag
+onstdout NEWEST TARGET tag_table.rdb
+```
+
+
+
 | !tag | !count | !group | !discuss |
-|[[abstr]] |   583 |[[implied]] |an assumed tag, with [[shdoc]] |
+|[[abstr]] |   596 |[[implied]] |an assumed tag, with [[shdoc]] |
 |[[args]] |     8 |[[interface]] |seems appropriate, with the [[report_usage]] functions, an explicit format? |
-|[[date]] |  1309 |[[]] |supplied by [[shd_setdate]], but not in consistent use, function to add created, latest dates |
-|[[doc]] |     5 |[[documentation]] | |
-|[[fix]] |     1 |[[repair]] |with [[bug]] to todo |
-|[[input]] |     1 |[[interface]] |named files |
+|[[date]] |  1332 |[[]] |supplied by [[shd_setdate]], but not in consistent use, function to add created, latest dates |
+|[[doc]] |     4 |[[documentation]] | |
 |[[location]] |     3 |[[interface]] |[[smart function]] supplying directory  |
 |[[mfg]] |    12 |[[]] |so long as files may be ManuFactured |
 |[[note]] |     2 |[[documentation]] | |
 |[[obsolescent]] |     4 |[[paired]] |indeed, if not in the [[retiredlib]] |
 |[[ref]] |     4 |[[documentation]] |url, doc, |
-|[[related]] |     9 |[[interface]] |functions reading a/o writing same files |
+|[[related]] |    10 |[[interface]] |functions reading a/o writing same files |
 |[[returns]] |     4 |[[interface]] |like [[effects]] |
-|[[shdoc]] |   763 |[[implied]] |the main implied tag |
-|[[todo]] |    32 |[[repair]] |with fix, etc |
+|[[shdoc]] |   779 |[[implied]] |the main implied tag |
+|[[todo]] |    33 |[[repair]] |with fix, etc |
 |[[url]] |     3 |[[documentation]] |with doc,  |
 |[[usage]] |    14 |[[interface]] |flip side of args |
-|[[vars]] |     1 |[[interface]] |args |
 |[[version]] |     3 |[[]] |libraries have version, this should be obsolete |
 |[[writes]] |     2 |[[interface]] |ditto files |</pre>
 </div>
@@ -21262,6 +21460,9 @@ Here is a sample fo my first info project [[learning texinfo sample]]
 <pre>https://TIddlyWiki.com</pre>
 </div>
 <div created="20200910142425966" creator="Marty McGowan" modified="20200910142425966" modifier="Marty McGowan" title="TIddlyWiki">
+<pre></pre>
+</div>
+<div created="20201023185129328" creator="Marty McGowan" modified="20201023185129328" modifier="Marty McGowan" title="TIddlyWIki">
 <pre></pre>
 </div>
 <div created="20200824182359466" creator="Marty McGowan" modified="20200920002844667" modifier="Marty McGowan" title="todaysdate">
@@ -21370,7 +21571,7 @@ the data is in the testcase:
 ```
 </pre>
 </div>
-<div created="20200803140200015" creator="Marty McGowan" modified="20201022192625394" modifier="Marty McGowan" tags="code active" title="todo">
+<div created="20200803140200015" creator="Marty McGowan" modified="20201023182557503" modifier="Marty McGowan" tags="code active instructions" title="todo">
 <pre>[[tag table]] | [[todo]] | [[todo table]]
 
 The todo tag suggests or requests needed fixes, possible enhancements, or need for more testing.
@@ -21392,29 +21593,30 @@ The todo tag suggests or requests needed fixes, possible enhancements, or need f
 
 
 ```
-lib.$ rule show | rd grep todotable |tabletolist
+lib.$ rd_show | rd grep todotable |tabletolist
 
 rule	todotable   
-input	                                                            
+input	                                                          
 command	onstdout todolink.rdb todordbtable shd_alldata.lst fun_createdlatest.rdb
 
 rule	todotiddly  
-input	rule run todotable; cat todolink.rdb                        
+input	rd_run todotable; cat todolink.rdb                        
 command	threeColumnTiddly                                                       
 
 rule	undatetodo  
-input	rule run todotable; cat todolink.rdb                        
+input	rd_run todotable; cat todolink.rdb                        
 command	row '!latest' | ncolumn latest | twoColumnTiddly                        
 
 rule	newesttodo  
-input	rule run todotable; cat todolink.rdb | rename latest newest 
+input	rd_run todotable; cat todolink.rdb | rename latest newest 
 command	sorttable -r newest | rd sed 12q | threeColumnTiddly                    
 
 rule	oldesttodo  
-input	rule run todotable; cat todolink.rdb | rename latest oldest 
+input	rd_run todotable; cat todolink.rdb | rename latest oldest 
 command	row oldest | sorttable oldest | rd sed 12q | threeColumnTiddly          
 
 lib.$ 
+
 ```
 
 
@@ -21500,10 +21702,12 @@ lib.$ </pre>
 |[[trace_on]] |2020-09-24 |collapse calls to app_trace, read_devtty. one to the other |
 |[[trace_sub]] |2020-04-23 |finds a way to unite these two off-by-one instances. |</pre>
 </div>
-<div created="20200828142113501" creator="Marty McGowan" modified="20201022010425821" modifier="Marty McGowan" tags="" title="todo_tag">
+<div created="20200828142113501" creator="Marty McGowan" modified="20201023182354249" modifier="Marty McGowan" tags="instructions" title="todo_tag">
 <pre>[[function tags]] | [[todo_tag]]
 
 see the [[README]] file:
+
+this might go well in the rd_rule table
 
 ```
  shd_onetag todo | listtotable | jointable -a1 - fun_createdlatest.rdb | column fun latest todo | tiddlylink fun | threeColumnTiddly
@@ -21544,6 +21748,12 @@ produces:
 |[[trace_sub]] |2020-04-23 |finds a way to unite these two off-by-one instances. |
 
 </pre>
+</div>
+<div created="20201023163159385" creator="Marty McGowan" modified="20201023163159385" modifier="Marty McGowan" title="todotable">
+<pre></pre>
+</div>
+<div created="20201023163159386" creator="Marty McGowan" modified="20201023163159386" modifier="Marty McGowan" title="todotiddly">
+<pre></pre>
 </div>
 <div created="20200928194345287" creator="Marty McGowan" modified="20200928194345287" modifier="Marty McGowan" title="tofix">
 <pre></pre>
@@ -21719,6 +21929,9 @@ tw_funtempl ()
 <div created="20201019011423719" creator="Marty McGowan" modified="20201019011423719" modifier="Marty McGowan" title="type_word">
 <pre></pre>
 </div>
+<div created="20201023163159387" creator="Marty McGowan" modified="20201023163159387" modifier="Marty McGowan" title="undatetodo">
+<pre></pre>
+</div>
 <div created="20200824182359468" creator="Marty McGowan" modified="20200824182359468" modifier="Marty McGowan" title="union">
 <pre></pre>
 </div>
@@ -21729,7 +21942,7 @@ tw_funtempl ()
 <div created="20200928194345288" creator="Marty McGowan" modified="20200928194345288" modifier="Marty McGowan" title="unnecessary">
 <pre></pre>
 </div>
-<div created="20200902162350063" creator="Marty McGowan" modified="20201022161446623" modifier="Marty McGowan" title="untested commands">
+<div created="20200902162350063" creator="Marty McGowan" modified="20201023180127191" modifier="Marty McGowan" tags="instructions" title="untested commands">
 <pre>[[On /RDB]] | [[untested commands]]
 
 The [[untested commands]], which i'll use for work focus, and keep this the active, or working table.
@@ -21891,10 +22104,12 @@ $ aa this is aa   # stores a new value, phrase
 <div created="20200928194345292" creator="Marty McGowan" modified="20200928194345292" modifier="Marty McGowan" title="version">
 <pre></pre>
 </div>
-<div created="20200909145117297" creator="Marty McGowan" modified="20200909145225000" modifier="Marty McGowan" tags="" title="Warehouse Functions">
-<pre>[ [[Shell Functions]] ][ [[Warehouse Functions]] ]</pre>
+<div created="20200909145117297" creator="Marty McGowan" modified="20201023194309709" modifier="Marty McGowan" tags="" title="Warehouse Functions">
+<pre> [[Shell Functions]] | [[Warehouse Functions]]
+
+This collection has been imported, those who'd made it to the MIW.  This will be the HQ for recover from the history,  since '12 - '13.   It may be slim pickings. Bui I know there are gems in there.   Maybe a theme of what big things were discarded, and why.  One name comes to mind, that of the fapi. -- The Functional API.  It did give rise to another still-active idea: the graf, --GRAFlib.</pre>
 </div>
-<div created="20200727000713026" creator="Marty McGowan" modified="20200909192758313" modifier="Marty McGowan" tags="[[Table of Contents]]" title="What's Here">
+<div created="20200727000713026" creator="Marty McGowan" modified="20201023184922748" modifier="Marty McGowan" tags="[[Table of Contents]]" title="What's Here">
 <pre>In this document, I'm collecting the lessons learned in programming [[Shell Functions |http://leanpub.com/shellfunctions]]over the Years.   Pages from my [[Commonplace book|http://mcgowans.org/pubs/marty3/commonplace]], are being selected for the imporatant and enduring lessons.
 
 The tab of the first work is the [[/RDB|https://www.librarything.com/work/2340177/book/170933338]]
@@ -21904,7 +22119,12 @@ In the late '80s, I was fortunate to meet Rob Manis, one of the three authors of
 
 !!! The Themes
 
-&lt;&lt;tabs &quot;[[On /RDB]] [[Shell Functions]] [[Other Software]]&quot; '&quot;On /RDB&quot; &quot;&quot; &quot;tc-vertical&quot;&gt;&gt;
+&lt;&lt;tabs &quot;
+  [[On /RDB]] 
+  [[Shell Functions]] 
+  [[Other Software]]
+  [[Collections]]
+&quot; '&quot;On /RDB&quot; &quot;&quot; &quot;tc-vertical&quot;&gt;&gt;
 
 
 !!! References

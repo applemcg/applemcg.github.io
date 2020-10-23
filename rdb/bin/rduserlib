@@ -65,40 +65,6 @@ rd_before ()
     : app_trace $*;
     row "date < $(rd_date $1)"
 }
-rd_canon () 
-{ 
-    : date: 2017-03-26;
-    : date: 2017-12-18;
-    : related: rdb_canon;
-    : app_trace $*;
-    case $1 in 
-        h.*.rdb.Z)
-            set ${1#h.};
-            set h.$1 ${1%.Z};
-            zcat $1 | rdb_current | rdb_write $2
-        ;;
-        h.*.rdb)
-            : backs up, removes compressed history;
-            : compresses an existing history;
-            : recursively deals with compressed history;
-            back up $1.Z;
-            rm -f $1.Z;
-            doit compress $1;
-            rd_canon $1.Z
-        ;;
-        *.rdb)
-            rd_syncf $* || return 1;
-            newest $RD_PACKED $RD_TABLE || rd_syncf $RD_TABLE
-        ;;
-        *)
-            [[ -f $1.rdb ]] && { 
-                $(myname) $1.rdb;
-                return
-            };
-            comment rm -f $1
-        ;;
-    esac
-}
 rd_cat () 
 { 
     : date: 2017-05-12;
@@ -231,9 +197,17 @@ rd_head ()
     done
 }
 rd_help () 
-{ 
-    rd_addf_doc;
-    rd_syncf_doc
+{
+    : the whole rd_ family
+    : date: 2020-10-21;
+    : date: 2020-10-23;
+    ${*:-echo} rdr $(sfg ^rd_)
+}
+rd_table ()
+{
+    : those of us rd_ functions which manage rd_rule tables
+    : date: 2020-10-23;
+    ${*:-echo} rdr rd_{help,file,table,run,cmd,edit,show}
 }
 rd_historyfunctions () 
 { 
@@ -603,3 +577,74 @@ rd_vars ()
 { 
     set | grep ^RD_
 }
+rdr () 
+{ 
+    : just short of an app with a function family, default help;
+    : former rule. just plan RD is taken, paean to rd rule...;
+    : date: 2020-10-23;
+    local fun=rd_${1};
+    isfunction $fun || { 
+        rd_help;
+        return
+    };
+    $fun ${*:2}
+}
+rd_cmd () 
+{ 
+    : construct the source-able command from selected input, command fields;
+    : if both fields are set, then input PIPEs to command, otherwise, if;
+    : if either is set, then its is the whole command. otherwise;
+    : the command is empty;
+    : related: onstdout tiddlylink {two,three,four}ColumnTiddly;
+    : date: 2020-10-21;
+    : date: 2020-10-22 removed arugment fields, added alternate input or command;
+    : date: 2020-10-22;
+    : date: 2020-10-23;
+    addcol out | compute 'out = ((input && command)? sprintf("%s | %s", input, command):     \
+                                 (input || command)? sprintf("%s", ((input)?input:command)): \
+				 "")    \
+				 ' | column out | headoff | tee .rule.out
+}
+rd_file () 
+{ 
+    : return the name of the RULES file, create if non-existant;
+    : date: 2020-10-21;
+    : date: 2020-10-23;
+    local file=rd_rules.lst;
+    [[ -f $file ]] || { 
+        rdb_hdr rule input command | tabletolist > $file
+    };
+    ${*:-echo} $file
+}
+rd_run () 
+{ 
+    : from the rd_rules, select and run;
+    : the magic is in the "source <( ... )", saving a TMP file;
+    : date: 2020-10-21;
+    : date: 2020-10-22;
+    : date: 2020-10-23;
+    local r=$(rd_file);
+    read_devtty r: $r;
+    report_notargcount 1 $# && { 
+        $(rd_show);
+        return 1
+    };
+    source <(rd_show cat | row "rule ~ /^$1$/" | rd_cmd)
+}
+rd_show () 
+{ 
+    : show the table of command rules, a local rule file.;
+    : date: 2020-10-21;
+    : date: 2020-10-23;
+    local r=$(rd_file);
+    read_devtty rd_rules: $(ls -l ${r%.*}.*);
+    listtotable < ${r%.*}.lst | tee ${r%.*}.rdb | ${1:-justify}
+}
+rd_edit () 
+{ 
+    : edit and show the rd_rule file;
+    : date: 2020-10-23;
+    ${EDITOR:-vi} $(rd_file);
+    rd_show
+}
+echo rd_init 1>&2
