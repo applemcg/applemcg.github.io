@@ -1,6 +1,7 @@
 Type	File
 ----	----
 table	collections.rdb
+table	count_libthing.rdb
 table	haveread.rdb
 table	keybook.rdb
 table	librarything.rdb
@@ -9,7 +10,9 @@ table	readcycle.rdb
 table	readhistory.rdb
 table	readtwodays.rdb
 table	table_list.rdb
+table	tables.rdb
 table	tags.rdb
 table	tables.nxt
+list	collections.lst
 list	libthingbooks.lst
 list	tables.lst

@@ -196,19 +196,6 @@ rd_head ()
         eval C=\$nC${C};
     done
 }
-rd_help () 
-{
-    : the whole rd_ family
-    : date: 2020-10-21;
-    : date: 2020-10-23;
-    ${*:-echo} rdr $(sfg ^rd_)
-}
-rd_table ()
-{
-    : those of us rd_ functions which manage rd_rule tables
-    : date: 2020-10-23;
-    ${*:-echo} rdr rd_{help,file,table,run,cmd,edit,show}
-}
 rd_historyfunctions () 
 { 
     ${*:-echo} flip_mddyy rd_nontoday;
@@ -595,26 +582,17 @@ rd_cmd ()
     : if both fields are set, then input PIPEs to command, otherwise, if;
     : if either is set, then its is the whole command. otherwise;
     : the command is empty;
+    : the .rule.out may show other commands, the default is 1st.;
     : related: onstdout tiddlylink {two,three,four}ColumnTiddly;
     : date: 2020-10-21;
     : date: 2020-10-22 removed arugment fields, added alternate input or command;
     : date: 2020-10-22;
     : date: 2020-10-23;
+    : date: 2020-10-25;
     addcol out | compute 'out = ((input && command)? sprintf("%s | %s", input, command):     \
                                  (input || command)? sprintf("%s", ((input)?input:command)): \
 				 "")    \
-				 ' | column out | headoff | tee .rule.out
-}
-rd_file () 
-{ 
-    : return the name of the RULES file, create if non-existant;
-    : date: 2020-10-21;
-    : date: 2020-10-23;
-    local file=rd_rules.lst;
-    [[ -f $file ]] || { 
-        rdb_hdr rule input command | tabletolist > $file
-    };
-    ${*:-echo} $file
+				 ' | column out | headoff | tee .rule.out | sed 1q
 }
 rd_run () 
 { 
@@ -623,28 +601,100 @@ rd_run ()
     : date: 2020-10-21;
     : date: 2020-10-22;
     : date: 2020-10-23;
-    local r=$(rd_file);
+    : date: 2020-10-25;
+    : date: 2020-10-27;
+    local r=$(rd_rules);
     read_devtty r: $r;
+    function _rd_mkcmd () 
+    { 
+        rd_show cat | row "rule ~ /^$1$/" | rd_cmd
+    };
     report_notargcount 1 $# && { 
         $(rd_show);
         return 1
     };
-    source <(rd_show cat | row "rule ~ /^$1$/" | rd_cmd)
+    source <( _rd_mkcmd "$1" )
 }
 rd_show () 
 { 
     : show the table of command rules, a local rule file.;
     : date: 2020-10-21;
     : date: 2020-10-23;
-    local r=$(rd_file);
+    : date: 2020-10-27;
+    local r=$(rd_rules);
     read_devtty rd_rules: $(ls -l ${r%.*}.*);
     listtotable < ${r%.*}.lst | tee ${r%.*}.rdb | ${1:-justify}
 }
+rd_base () 
+{ 
+    : the base name of the local table;
+    : date: 2020-10-25;
+    basename $PWD
+}
 rd_edit () 
 { 
-    : edit and show the rd_rule file;
+    : prepend blank record, edit and show the rd_rule file;
     : date: 2020-10-23;
-    ${EDITOR:-vi} $(rd_file);
+    : date: 2020-10-25;
+    : date: 2020-10-27;
+    set -- $(rd_global) .tmp.global
+    ( rd_rulehdr;
+    cat $1 ) | uniq > $2;
+    mv $2 $1;
+    ${EDITOR:-vi} $1;
+    rd_local;
     rd_show
+}
+rd_local () 
+{ 
+    : selects the directory appropriate rules from the global file;
+    : where the key might rule.base. its ok the keep the base in the local file;
+    : edit the global file in rd_edit;
+    : date: 2020-10-25;
+    : date: 2020-10-27;
+    local base=$(rd_base);
+    backup $(rd_rules);
+    row "base ~ /$base/ || base ~ /any/" < $(rd_global) > $(rd_rules);
+    ${*:-echo} $(rd_rules)
+}
+rd_global ()
+{
+    : date: 2020-10-27;
+    local file=$(lib)/global_rules.lst;
+    [[ -f $file ]] || { 
+        rd_rulehdr > $file
+    };
+    ${*:-echo} $file
+}
+rd_help () 
+{ 
+    : the whole rd_ family;
+    : date: 2020-10-21;
+    : date: 2020-10-23;
+    ${*:-echo} rdr $(sfg ^rd_)
+}
+rd_table () 
+{ 
+    : those of us rd_ functions which manage rd_rule tables;
+    : date: 2020-10-23;
+    ${*:-echo} rdr rd_{help,base,rules,rulehdr,local,table,run,cmd,edit,show}
+}
+rd_rules () 
+{ 
+    : return the name of the RULES file, create if non-existant;
+    : date: 2020-10-21;
+    : date: 2020-10-23;
+    : date: 2020-10-25;
+    local file=rd_rules.lst;
+    [[ -f $file ]] || { 
+        rd_rulehdr > $file
+    };
+    ${*:-echo} $file
+}
+rd_rulehdr () 
+{ 
+    : edit-ready rule table record;
+    : date: 2020-10-27;
+    rdb_hdr base rule input command | tabletolist
 }
 echo rd_init 1>&2

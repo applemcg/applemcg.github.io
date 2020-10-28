@@ -48,6 +48,7 @@ git_init ()
     : is invoked _after_ any _init function;
     git_account applemcg;
     comment main
+    git_rdfun
 }
 git_account () 
 { 
@@ -357,79 +358,30 @@ days_reading ()
     report_notfile librarything.rdb && return 1
     zcat .hry/librarything.rdb.Z | rd grep ${1:-$(yymmdd)} | sorttable
 }
-read_cycle () 
-{ 
-    : produce RDB Table of the Reader Cycle BookKeys by Day number;
-    : date: 2020-07-11;
-    rdb_hdr daynum bookkeys;
-    tail +3 cycle.rdb | awk '
-    BEGIN { ncombo = 1; }
-    NF > 1 {
-            # Better: ncombo = smallest common factor of each rows count
-            ncombo *= ( NF - 1 )
-            cycle[$1] = $1 
-            nx[$1] = $2;
-            for(i=2; i < NF; i++) {
 
-                nx[$i] = $(i+1);
-  	    }
-            nx[$NF] = $2;
-        }
-    END {
-         fmtp = "\t\t\t\t%s[%s] = %s\n"
-         for (i in cycle) { printf fmtp, "cycle", i, cycle[i] > /dev/stderr; }
-         for (n in nx)    { printf fmtp, "nx",    n, nx[n]    > /dev/stderr; }
-
-	 for( i = 1; i <= ncombo; i++) {
-            sp = sprintf("%3d\t", i);
-            for (c in cycle) { 
-	        cc = cycle[c]
-                # printf fmtp, "cycle", c, cc       > /dev/stderr
-                # printf fmtp, "nx",   cc, nx[cc]   > /dev/stderr
-		cycle[c] = nx[cc]
-                printf "%s", sp nx[cc]
-	        sp = " "
-	    }
-	    printf "\n"
-        }
-    }
-    '
-}
-dayone_two () 
-{ 
-    : date: 2020-07-11;
-    row "daynum == $1 || daynum ==$2" < readcycle.rdb | column bookkeys | headoff | wpl
-}
 keysmatch () 
 { 
     : date: 2020-07-11;
     rowhas key $1 < keybook.rdb | headoff
 }
-booksfrom () 
-{ 
-    : date: 2020-07-11;
-    rdb_hdr key book;
-    foreach keysmatch $(dayone_two $*)
-}
-read_twodays () 
-{ 
-    : date: 2020-07-11;
-    set -- ${1:-6};
-    set $1 $(expr $1 + 1);
-    booksfrom $* | rowhas key '[A-Z]'
-}
 rawtsv_tordb () 
 {
+    : pick a file from the list of TSVs, write a HDR as a TABLE
     set -- ${1:-$(pick *.tsv /dev/null)}
     report_notfile $1 && return 1
     rdb_hdr $(sed 1q $1 | sed 's/ /_/g' | lc);
     tail +2 $1
 }
+
 field_tolc () 
-{ 
+{
+    : convert a field to lower case
+    : related: rdb
     report_notpipe && return 1;
     compute "$1 = tolower($1)"
 }
+
+
 field_xref () 
 { 
     : convert book_id field to field book_id, where field is multi-valued;
@@ -442,6 +394,7 @@ goodfields ()
     : the field list must be trimmed. it seems 49 fields is too many for compute, etc...;
     ${*:-echo} tags collections lc_classification book_id title primary_author copies source entry_date from_where page_count lccn acquired date_{started,read} isbn{,s} subjects dewey_decimal lending_{start,end} review rating
 }
+
 lower_canon () 
 { 
     report_notfile haveread.tsv && return 1;
@@ -451,6 +404,8 @@ lower_canon ()
         collectionss = tolower(collections)	
     '
 }
+
+
 book_tordb () 
 { 
     : date: 2020-07-18;
@@ -495,10 +450,12 @@ tab_count ()
     report_notpipe && return 1;
     sorttable | rduniq | sorttable -n | column Count | rename Count oc | rduniq | rename Count tabul8 oc Count
 }
+
 main () 
 { 
     book_tordb
 }
+
 date_finished () 
 { 
     : from the history, finished and date last read;
@@ -524,15 +481,18 @@ readhistory ()
     report_notfile librarything.rdb && return 1
     zcat .hry/librarything.rdb.Z | _rh_select | _rh_finish | sorttable $1 | _rh_linkify
 }
+
+
 tiddlylink () 
 { 
     : format column to wrap with TiddlyWiki LINK syntax;
     compute "$1 = \"[[\" $1 \"]]\""
 }
-_rh_linkify () 
+n_rh_linkify () 
 { 
     tiddlylink author | tiddlylink book | threeColumnTiddly
 }
+
 read_books () 
 { 
     : next n { two } books to read;
@@ -540,6 +500,18 @@ read_books ()
     report_notfile librarything.rdb && return 1
     sorttable < librarything.rdb | column book | headoff | sed ${1:-2}q
 }
+git_rdfun () { ${*:-echo}	\
+	  $(myname)		\
+	  keysmatch		\
+	  field_tolc 		\
+	  field_xref 		\
+	  lower_canon		\
+	  book_tordb 		\
+	  tab_count 		\
+	  date_finished 	\
+	  readhistory		\
+	  read_books
+}	  
 h_getold () 
 {
     : example of how to retrive a history file

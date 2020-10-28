@@ -1,14 +1,15 @@
 table	nrecrds	modate	fields
 -----	-------	------	------
-collections.rdb	    991	20200718	collections book_id 
-haveread.rdb	    296	20200718	tags collections lc_classification book_id title primary_author copies 
-keybook.rdb	     14	20200715	key book 
-librarything.rdb	      5	20201015	latest author book 
-libthingbooks.rdb	    801	20201015	summary media physical_description weight height thickness length 
-readcycle.rdb	    120	20200711	daynum bookkeys 
-readhistory.rdb	     13	20200819	finish author book 
-readtwodays.rdb	      6	20200711	key book 
-table_list.rdb	     13	20201015	Type File 
-tables.nxt	      9	20200821	table nrecrds modate 
-tables.rdb	      0	20201015	table nrecrds modate fields 
-tags.rdb	    983	20200718	tags book_id 
+collections.rdb	    991	2020-07-18	collections book_id 
+count_libthing.rdb	    123	2020-10-15	Count collections 
+haveread.rdb	    296	2020-07-18	tags collections lc_classification book_id title primary_author copies 
+keybook.rdb	     14	2020-07-15	key book 
+librarything.rdb	      5	2020-10-15	latest author book 
+libthingbooks.rdb	    801	2020-10-15	entry_date 
+readcycle.rdb	    120	2020-07-11	daynum bookkeys 
+readhistory.rdb	     13	2020-08-19	finish author book 
+readtwodays.rdb	      6	2020-07-11	key book 
+table_list.rdb	     16	2020-10-26	Type File 
+tables.nxt	      9	2020-08-21	table nrecrds modate 
+tables.rdb	     11	2020-10-26	table nrecrds modate fields 
+tags.rdb	    983	2020-07-18	tags book_id 

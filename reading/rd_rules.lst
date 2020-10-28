@@ -1,0 +1,21 @@
+
+base	reading
+rule	finishedtiddly
+input	rd_run datefinished
+command	twotiddlylinks author book three
+
+base	reading
+rule	datefinished
+input	zcat .hry/librarything.rdb.Z
+command	sorttable -r latest | ncolumn insert_time | select_first book | row delete_time | ncolumn delete_time
+
+base	any
+rule	rules
+input	rd_rules cat
+command	listtotable
+
+base	any
+rule	tiddlyrules
+input	rd_run rules
+command	fourColumnTiddly
+
