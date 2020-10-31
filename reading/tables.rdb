@@ -3,13 +3,12 @@ table	nrecrds	modate	fields
 collections.rdb	    991	2020-07-18	collections book_id 
 count_libthing.rdb	    123	2020-10-15	Count collections 
 haveread.rdb	    296	2020-07-18	tags collections lc_classification book_id title primary_author copies 
-keybook.rdb	     14	2020-07-15	key book 
 librarything.rdb	      5	2020-10-15	latest author book 
 libthingbooks.rdb	    801	2020-10-15	entry_date 
-readcycle.rdb	    120	2020-07-11	daynum bookkeys 
+rd_rules.rdb	      4	2020-10-27	base rule input command 
 readhistory.rdb	     13	2020-08-19	finish author book 
-readtwodays.rdb	      6	2020-07-11	key book 
-table_list.rdb	     16	2020-10-26	Type File 
+table_list.rdb	     15	2020-10-30	Type File 
 tables.nxt	      9	2020-08-21	table nrecrds modate 
-tables.rdb	     11	2020-10-26	table nrecrds modate fields 
+tables.rdb	      0	2020-10-30	table nrecrds modate fields 
 tags.rdb	    983	2020-07-18	tags book_id 
+twotiddlylinks.rdb	      9	2020-10-27	latest author book 

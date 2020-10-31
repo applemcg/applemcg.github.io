@@ -396,12 +396,14 @@ goodfields ()
 }
 
 lower_canon () 
-{ 
+{
+    : translate any collection name to lower_case
+    runfrom $(applemcg echo)/reading || return
     report_notfile haveread.tsv && return 1;
     rawtsv_tordb haveread.tsv | goodfields column | compute '
-
+    
         tags = tolower(tags)
-        collectionss = tolower(collections)	
+        collections = tolower(collections)	
     '
 }
 
