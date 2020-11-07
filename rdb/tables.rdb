@@ -1,22 +1,24 @@
 table	nrecrds	modate	fields
 -----	-------	------	------
-checktestdata.rdb	      2	20200913	command status a b c 
-cmmd_abstract.rdb	     23	20200927	command abstract 
-cmmd_status.rdb	     37	20201020	command status fmt 
-cmmd_type.rdb	     37	20200928	command type 
-command.rdb	     37	20200924	command type status fmt abstract 
-date_tables.rdb	      8	20200905	table date wkday 
-devlib_abstract.rdb	      7	20200926	name abstract 
-devlib_libtable.rdb	      9	20200924	name library table abstract 
-differences.rdb	      3	20200924	book implementation 
-instances.rdb	     77	20200924	Count field value 
-rdb_rules.rdb	      2	20201020	rule input command arguments 
-statusvalue.rdb	      6	20200924	status seqn explain 
-table_created.rdb	      6	20200928	table created fromtables 
-table_list.rdb	     22	20201020	Type File 
-tables.rdb	     15	20201020	table nrecrds modate fields 
-test_abstract.rdb	     17	20200924	name abstract 
-testobject.nxt	     40	20200913	object flag means 
-testobject.rdb	     40	20200905	object flag means 
-util_abstract.rdb	      2	20200924	name abstract 
-util_status.rdb	      2	20200927	command status fmt 
+checktestdata.rdb	      2	2020-09-13	command status a b c 
+cmmd_abstract.rdb	     23	2020-09-27	command abstract 
+cmmd_status.rdb	     37	2020-10-20	command status fmt 
+cmmd_type.rdb	     37	2020-09-28	command type 
+command.rdb	     37	2020-09-24	command type status fmt abstract 
+date_tables.rdb	      8	2020-09-05	table date wkday 
+devlib_abstract.rdb	      7	2020-09-26	name abstract 
+devlib_libtable.rdb	      9	2020-09-24	name library table abstract 
+differences.rdb	      3	2020-09-24	book implementation 
+instances.rdb	     77	2020-09-24	Count field value 
+rd_rules.rdb	      5	2020-10-25	base rule input command 
+rdb_rules.rdb	      4	2020-10-22	rule input command 
+statusvalue.rdb	      6	2020-09-24	status seqn explain 
+table_created.rdb	      6	2020-09-28	table created fromtables 
+table_list.rdb	     25	2020-11-04	Type File 
+tables.rdb	     16	2020-11-04	table nrecrds modate fields 
+test_abstract.rdb	     17	2020-09-24	name abstract 
+testobject.nxt	     40	2020-09-13	object flag means 
+testobject.rdb	     40	2020-09-05	object flag means 
+twotiddlylinks.rdb	     10	2020-10-23	command type status abstract 
+util_abstract.rdb	      2	2020-09-24	name abstract 
+util_status.rdb	      2	2020-09-27	command status fmt 

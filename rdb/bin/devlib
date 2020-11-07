@@ -75,12 +75,6 @@ rdb_testfun ()
     runfrom $(applemcg echo)/rdb || return 1;
     declare -f $(column command < command.rdb | headoff | sed 's/$/_test/')
 }
-bad_status () 
-{ 
-    : date: 2020-09-24;
-    set -- statusvalue.rdb cmmd_status.rdb;
-    comm -13 <(column status < $1  | sorttable -u | headoff) <(column status < $2  | sorttable -u | headoff)
-}
 rdu_abstract () 
 { 
     : function one-line abstracts;

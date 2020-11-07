@@ -481,11 +481,11 @@ jointable ()
         case $arg in 
             -)
                 if [ -z "$f1" ]; then
-                    cat - > .tmp.i.join;
-                    f1=.tmp.i.join;
+                    cat - > ~/tmp/i.join;
+                    f1=~/tmp/i.join;
                 else
-                    cat - > .tmp.i.join;
-                    f2=.tmp.i.join;
+                    cat - > ~/tmp/i.join;
+                    f2=~/tmp/i.join;
                 fi;
                 read_devtty stdin, f1, f2: $arg, $f1, $f2
             ;;
@@ -533,11 +533,11 @@ jointable ()
     done;
     [[ -z "$f2" ]] && { 
         : there was no table 2, is it on STDIN;
-	[[ "$f1" = ".tmp.i.join" ]] && {
+	[[ "$f1" = "~/tmp/i.join" ]] && {
 	   comment bad STDIN or missing FILE $arg
 	   return 3
 	}   
-        f2=.tmp.i.join;
+        f2=~/tmp/i.join;
         cat - > $f2
     }
     read_devtty last f1, f2: $f1, $f2;
@@ -567,19 +567,19 @@ jointable ()
     local COL2=$(sed 1q $f2);
     :;
     read_devtty FILE: $f1, COLUMNS: $COL1;
-    cat $f1 | column $COL1 | sorttable $j1 | headoff > .tmp.a.join;
+    cat $f1 | column $COL1 | sorttable $j1 | headoff > ~/tmp/a.join;
     :;
     read_devtty FILE: $f2, COLUMNS: $COL2;
-    cat $f2 | column $COL2 | sorttable $j2 | headoff > .tmp.b.join;
+    cat $f2 | column $COL2 | sorttable $j2 | headoff > ~/tmp/b.join;
     :;
     : columns of the JOINed table;
     set -- $(args_uniq $j1 $j2 $COL1 $COL2);
     read_devtty rdb_hdr $*;
     rdb_hdr $*;
-    read_devtty join $ARGS .tmp.{a,b}.join;
+    read_devtty join $ARGS ~/tmp/{a,b}.join;
     : the EVAL is mandated by the TAB syntax;
-    echo "join $ARGS .tmp.{a,b}.join" > .join.err;
-    eval join $ARGS .tmp.{a,b}.join
+    echo "join $ARGS ~/tmp/{a,b}.join" > .join.err;
+    eval join $ARGS ~/tmp/{a,b}.join
 }
 latest_filesuf () 
 { 
@@ -587,6 +587,8 @@ latest_filesuf ()
     set -- ${1:-txt};
     ls -t *.$1 | sed 1q
 }
+
+
 length () 
 { 
     return
@@ -911,15 +913,6 @@ rdb_canon ()
                 return
             ;;
         esac;
-    done
-}
-rdb_cat () 
-{ 
-    : todo: update HEADOFF to deal input redirection;
-    rdb_hdr $(sed 1q $1);
-    for t in $(shell_onlyfiles $*);
-    do
-        cat $t | headoff;
     done
 }
 rdb_col () 
@@ -1483,12 +1476,20 @@ jointable_test ()
 { 
     : join with the status value to sort in most to least mature functions;
     : date: 2020-09-20;
+    runfrom $(applemcg echo)/rdb/rename_test
     set -- {command,statusvalue}.rdb;
     report_notfile $1 && return 1;
     report_notfile $2 && return 2;
-    local rtn=$(bad_status);
-    report_notzerolengthstring $rtn && return 1;
+    good_status || return 3
     sorttable status < $1 | jointable -j1 status - $2 | sorttable -r seqn | ncolumn status seqn
+}
+good_status () 
+{ 
+    : date: 2020-09-24;
+    set -- statusvalue.rdb cmmd_status.rdb;
+    report_notfile $1 && return 1;
+    report_notfile $2 && return 2;
+    comm -13 <(column status < $1  | sorttable -u | headoff) <(column status < $2  | sorttable -u | headoff)
 }
 datatype () 
 { 

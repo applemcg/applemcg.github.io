@@ -368,9 +368,11 @@ rawtsv_tordb ()
 {
     : pick a file from the list of TSVs, write a HDR as a TABLE
     set -- ${1:-$(pick *.tsv /dev/null)}
+    set -- $1 ${1%*.tsv}.tmp
     report_notfile $1 && return 1
-    rdb_hdr $(sed 1q $1 | sed 's/ /_/g' | lc);
-    tail +2 $1
+    fmdos $1 > $2;
+    rdb_hdr $(sed 1q $2 | sed 's/ /_/g' | lc);
+    tail +2 $2 
 }
 
 field_tolc () 
