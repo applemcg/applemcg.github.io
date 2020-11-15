@@ -640,6 +640,7 @@ listtotable ()
     : reads stdin or named files in LIST format, converting to TABLE;
     : to relieve a possible non-EMPTY Line at the END of the file, added flushed;
     : an awkism "!flushed" is not the same as "flushed > 0";
+    : todo: functions totable and tolist, take either, convert only as requird
     : 2020-09-06: added flushed. still needs a separate test .;
     awk '
 #    
@@ -657,7 +658,12 @@ function posset(n)       {
         return posget[n]
     }
 
-function send(f,i)    { printf f, field[i]; field[i]="" }
+function send(f,i)    {
+
+    printf f, field[i]; 
+    # print i, field[i] > stderr
+    field[i]=""
+}
 function eachRecord() {
 
          if (!head) { printf "%s\n%s", HEAD, DASH; head=1 }
@@ -1298,7 +1304,7 @@ tableorlist ()
         *)
             rdb_hdr Type File;
             foreach listtableornaught $* 2> /dev/null;
-            return 0
+            return 0p
         ;;
     esac
 }
@@ -1306,6 +1312,7 @@ tabletolist ()
 { 
     : convert TABLE format to LIST format;
     : use in format-smart functions -- e.g. row, column, ...;
+    : todo: functions totable and tolist, take either, convert only as required
     awk '
 
         BEGIN { FS = OFS = "\t" }

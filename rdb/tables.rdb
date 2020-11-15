@@ -9,16 +9,18 @@ date_tables.rdb	      8	2020-09-05	table date wkday
 devlib_abstract.rdb	      7	2020-09-26	name abstract 
 devlib_libtable.rdb	      9	2020-09-24	name library table abstract 
 differences.rdb	      3	2020-09-24	book implementation 
-instances.rdb	     77	2020-09-24	Count field value 
+instances.rdb	     77	2020-09-13	Count field value 
 rd_rules.rdb	      5	2020-10-25	base rule input command 
 rdb_rules.rdb	      4	2020-10-22	rule input command 
-statusvalue.rdb	      6	2020-09-24	status seqn explain 
+statimes.rdb	     38	2020-11-12	statfile dev ino mode nlink uid gid rdev size atime mtime ctime birthtime 
+statmtime.rdb	     38	2020-11-12	statfile mtime 
+statusvalue.rdb	      6	2020-09-20	status seqn explain 
 table_created.rdb	      6	2020-09-28	table created fromtables 
-table_list.rdb	     25	2020-11-04	Type File 
-tables.rdb	     16	2020-11-04	table nrecrds modate fields 
+table_list.rdb	     28	2020-11-12	Type File 
+tables.rdb	     18	2020-11-12	table nrecrds modate fields 
 test_abstract.rdb	     17	2020-09-24	name abstract 
 testobject.nxt	     40	2020-09-13	object flag means 
 testobject.rdb	     40	2020-09-05	object flag means 
-twotiddlylinks.rdb	     10	2020-10-23	command type status abstract 
+twotiddlylinks.rdb	     10	2020-10-22	command type status abstract 
 util_abstract.rdb	      2	2020-09-24	name abstract 
 util_status.rdb	      2	2020-09-27	command status fmt 

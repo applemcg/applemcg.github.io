@@ -37,7 +37,7 @@ rd_addf ()
 }
 rd_addf_doc () 
 { 
-    cat <<EOF
+    cat  <<EOF
     name: rd_addf
     args: table field(s) ...
     test: rd_addf_test
@@ -492,7 +492,7 @@ rd_syncf ()
 }
 rd_syncf_doc () 
 { 
-    cat <<EOF
+    cat  <<EOF
     name: rd_syncf
     args: table field(s) ...
     test: rd_syncf
@@ -597,23 +597,27 @@ rd_cmd ()
 rd_run () 
 { 
     : from the rd_rules, select and run;
-    : the magic is in the "source <( ... )", saving a TMP file;
+    : the magic is in the "source  CMD", now using a TMP file;
+    : note: lesson, the 2nd rd_show was wrongly wrapped executable
     : date: 2020-10-21;
-    : date: 2020-10-22;
-    : date: 2020-10-23;
-    : date: 2020-10-25;
     : date: 2020-10-27;
     local r=$(rd_rules);
     read_devtty r: $r;
-    function _rd_mkcmd () 
+    function _rd_run_cmd () 
     { 
-        rd_show cat | row "rule ~ /^$1$/" | rd_cmd
-    };
-    report_notargcount 1 $# && { 
-        $(rd_show);
+        read_devtty 1: $1
+        read_devtty cmd: $2
+        rd_show | row "rule ~ /^$1$/" | rd_cmd > $2
+        source $2
+	read_devtty RULE: $(cat $2)
+        rm -f  $2
+    } 
+    report_notargcount 1 $# RULE && { 
+
+        rd_show | ncolumn command | justify;
         return 1
     };
-    source <( _rd_mkcmd "$1" )
+    _rd_run_cmd "$1" .cmd.$RANDOM
 }
 rd_show () 
 { 
@@ -621,9 +625,10 @@ rd_show ()
     : date: 2020-10-21;
     : date: 2020-10-23;
     : date: 2020-10-27;
+    : date: 2020-11-11;
     local r=$(rd_rules);
-    read_devtty rd_rules: $(ls -l ${r%.*}.*);
-    listtotable < ${r%.*}.lst | tee ${r%.*}.rdb | ${1:-justify}
+    read_devtty rd_rules: ${r%.*}.*;
+    listtotable < ${r%.*}.lst | tee ${r%.*}.rdb
 }
 rd_base () 
 { 
@@ -637,12 +642,12 @@ rd_edit ()
     : date: 2020-10-23;
     : date: 2020-10-25;
     : date: 2020-10-27;
-    set -- $(rd_global) .tmp.global
+    : date: 2020-11-11;
+    set -- $(rd_global) .tmp.global;
     ( rd_rulehdr;
     cat $1 ) | uniq > $2;
     mv $2 $1;
     ${EDITOR:-vi} $1;
-    rd_local;
     rd_show
 }
 rd_local () 
@@ -657,8 +662,8 @@ rd_local ()
     row "base ~ /$base/ || base ~ /any/" < $(rd_global) > $(rd_rules);
     ${*:-echo} $(rd_rules)
 }
-rd_global ()
-{
+rd_global () 
+{ 
     : date: 2020-10-27;
     local file=$(lib)/global_rules.lst;
     [[ -f $file ]] || { 
@@ -677,6 +682,7 @@ rd_table ()
 { 
     : those of us rd_ functions which manage rd_rule tables;
     : date: 2020-10-23;
+    : date: 2020-11-11;
     ${*:-echo} rdr rd_{help,base,rules,rulehdr,local,table,run,cmd,edit,show}
 }
 rd_rules () 
@@ -696,5 +702,44 @@ rd_rulehdr ()
     : edit-ready rule table record;
     : date: 2020-10-27;
     rdb_hdr base rule input command | tabletolist
+}
+shd_setdate () 
+{ 
+    : appends date tag to functions shdoc -- this -- block,;
+    : returning updated funciton body;
+    : avoiding redundancy, as last line among leading shdoc comments;
+    : this uses the local function trick. trailing UNSET;
+    : date: 2016-09-30 changed date from comment to TAG;
+    : args: .. function .. library ..;
+    : date: 2018-01-17;
+    : date: 2018-02-16;
+    : date: 2020-11-11;
+    function _dffx () 
+    { 
+        read_devtty $1;
+        declare -f $1 | awk -v date=$(date +%F) '
+
+        BEGIN       { code = 0 }
+        #           { printf "NR: %d, code: %d, line: %s\n", NR, code, $0 > "/dev/stderr" ; }
+        NR < 3 || ( \
+        NR > 2 && !code && $1 ~ /^:$/ \
+	          ) {
+	              print; next
+		    }
+        !code       {
+	              printf "    : date: %s;\n", date
+		      code = 1
+		    }
+		    { print }
+
+     ' | uniq | tee .$(myname).out
+    };
+    foreach _dffx $(fun_allnames ${*:-shd_setdate})
+}
+rd_checkwords () 
+{ 
+    : list of command situation words not in FIELDS, COMMANDS, or TYPED;
+    : date: 2020-11-11;
+    local_sets -13 | comm -23 - <(local_fields)
 }
 echo rd_init 1>&2
