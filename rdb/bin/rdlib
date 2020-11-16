@@ -1,7 +1,64 @@
-rdb_awklib () 
+_rdb_column_function () 
 { 
-    : function lib for rdb commands;
-    ${*:-echo} $(applemcg echo)/rdb/lib/awklib
+    : PROJECT columns from named RDB -- first Row -- FIELDS;
+    : reads STDIN for RDB list or TABLE format,;
+    : date: 2019-07-02;
+    : date: 2019-08-14 added the BLANK columns, not yet in table;
+    : date: 2020-05-17 RCAT replaces CAT;
+    : date: 2020-09-18 generic function for column function;
+    :;
+    local HEAD;
+    local DASH;
+    local COL="";
+    local arg;
+    local C;
+    : calling function needs to be a function in the rdb_awklib;
+    local awkfun=$(myname 2);
+    read_devtty awkfun: $awkfun;
+    : an associative array, to replace column;
+    declare -A pos;
+    :;
+    read HEAD;
+    read_devtty HEAD: $HEAD;
+    [[ -z "$HEAD" ]] && { 
+        ( echo;
+        rcat ) | listtotable | $awkfun $@ | tabletolist;
+        return 0
+    };
+    read DASH;
+    : ---------------------------------------- end template.fun --;
+    set -- $@;
+    : read_devtty @: $@;
+    (( C = 0 ));
+    : the columns default to their un-modified value;
+    for ARG in $HEAD;
+    do
+        (( C += 1 ));
+        arg[$C]="\$$C,";
+        pos[$ARG]=$C;
+    done;
+    : read_devtty arg: ${!arg[@]}, ${arg[@]};
+    : read_devtty pos: ${!pos[@]}, ${pos[@]};
+    :;
+    : find the column;
+    for I in $@;
+    do
+        local an=${pos[$I]};
+        : read_devtty I, pos[I]: $I $an;
+        arg[$an]="$awkfun(\$$an),";
+    done;
+    : read_devtty arg: ${!arg[@]}, ${arg[@]};
+    COL="${arg[@]}";
+    read_devtty COL: $COL;
+    rdb_hdr $HEAD;
+    rcat | awk "
+    $(rdb_awklib cat)
+    BEGIN { 
+            FS = OFS = \"\t\"
+	    blank = \"""\"
+          }
+          { print $COL \"\" }
+    "
 }
 addcol () 
 { 
@@ -31,7 +88,7 @@ blank ()
 check () 
 { 
     : reports any rows in which columns do not match head;
-    : todo: tofix --  what to do with empty records?;
+    : todo: tofix -- what to do with empty records?;
     : date: 2019-08-04;
     : date: 2019-09-10;
     tawk '
@@ -132,21 +189,76 @@ compute ()
         BEGIN   { FS=OFS=\"\t\"}; { $COLIN $1; $COLOUT print }"
     }
 }
-gregorian_test () 
+datatype () 
 { 
-    : date: 2020-09-19;
-    report_notfile gregortest.rdb && return 1;
-    column < gregortest.rdb | compute '
+    : produces the rdb datatype in each column;
+    : /RDB, p. 287;
+    : date: 2020-08-24;
+    : date: 2020-09-21;
+    :;
+    local listall=0;
+    case $1 in 
+        -l)
+            listall=1;
+            shift
+        ;;
+    esac;
+    column $* | tawk -v listall=$listall '
 
-        result = date' | gregorian result | compute 'diff = result - significance'
+    function max(x,y)  { return ((x > y)? x : y); }
+
+    NR == 2 { dash = $0 }
+    NR < 3  { print; nfields = NF
+              for (i=1; i<= NF; i++) {
+                  dtype[i] = -1    # default is non-numberic Character strings      
+      }
+              next
+    }
+    listall == 1  { print }
+    NF != nfields { print "ERROR: %d has %d fields, Not %d\n", NR, NF, fields; exit; }
+
+        {   
+  n = split($0, field,"\t");
+  for (i=1; i<=nfields; i++) {
+
+              if( field[i] ~ /[0-9]/)  {
+
+                  num = field[i]
+                  dtype[i] = max( dtype[i], 0);
+                  dpoint   = index( num,".")
+          if (dpoint) {
+
+                      decimal  = length(substr(num,dpoint+1))
+      dtype[i] = max( dtype[i], decimal);
+                    }
+                 }
+             }
+ }
+    END {
+          if(listall) print dash
+
+  for (i=1; i< nfields; i++) {
+      printf "%6d\t", dtype[i]
+            }
+          printf "%6d\n", dtype[nfields]  
+        }
+    '
 }
-julian_test () 
+datatype_test () 
 { 
-    : date: 2020-09-19;
-    report_notfile juliantest.rdb && return 1;
-    column < juliantest.rdb | compute '
-
-        jday = date' | julian jday | compute 'diff = expect - jday'
+    : exercise the p. 287 example;
+    : date: 2020-09-21;
+    runfrom $(applemcg echo)/rdb/lib || return;
+    report_notfile typetable && return 1;
+    set typetable Float4 Char;
+    datatype < $1;
+    echo . . . .;
+    datatype -l < $1;
+    echo . . . .;
+    datatype -l ${*:2} < $1;
+    echo . . . .;
+    datatype ${*:2} < $1;
+    echo . . . .
 }
 datearithmetic_test () 
 { 
@@ -165,78 +277,6 @@ datearithmetic_test ()
     };
     report_notfile command.rdb && return 1;
     zcat .hry/command.rdb.Z | row 'command ~ /tomorrow/' | date_fmtime | j2g days
-}
-gregorian () 
-{ 
-    : performs julian to gregorian day calculation on named Columns;
-    _rdb_column_function $@
-}
-julian () 
-{ 
-    : performs gregorian formats julian day calculation on named Columns;
-    _rdb_column_function $@
-}
-_rdb_column_function () 
-{ 
-    : PROJECT columns from named RDB -- first Row -- FIELDS;
-    : reads STDIN for RDB list or TABLE format,;
-    : date: 2019-07-02;
-    : date: 2019-08-14 added the BLANK columns, not yet in table;
-    : date: 2020-05-17 RCAT replaces CAT;
-    : date: 2020-09-18 generic function for column function;
-    :;
-    local HEAD;
-    local DASH;
-    local COL="";
-    local arg;
-    local C;
-    : calling function needs to be a function in the rdb_awklib;
-    local awkfun=$(myname 2);
-    read_devtty awkfun: $awkfun;
-    : an associative array, to replace column;
-    declare -A pos;
-    :;
-    read HEAD;
-    read_devtty HEAD: $HEAD;
-    [[ -z "$HEAD" ]] && { 
-        ( echo;
-        rcat ) | listtotable | $awkfun $@ | tabletolist;
-        return 0
-    };
-    read DASH;
-    : ---------------------------------------- end template.fun --;
-    set -- $@;
-    : read_devtty @: $@;
-    (( C = 0 ));
-    : the columns default to their un-modified value;
-    for ARG in $HEAD;
-    do
-        (( C += 1 ));
-        arg[$C]="\$$C,";
-        pos[$ARG]=$C;
-    done;
-    : read_devtty arg: ${!arg[@]}, ${arg[@]};
-    : read_devtty pos: ${!pos[@]}, ${pos[@]};
-    :;
-    : find the column;
-    for I in $@;
-    do
-        local an=${pos[$I]};
-        : read_devtty I, pos[I]: $I $an;
-        arg[$an]="$awkfun(\$$an),";
-    done;
-    : read_devtty arg: ${!arg[@]}, ${arg[@]};
-    COL="${arg[@]}";
-    read_devtty COL: $COL;
-    rdb_hdr $HEAD;
-    rcat | awk "
-    $(rdb_awklib cat)
-    BEGIN { 
-            FS = OFS = \"\t\"
-	    blank = \"""\"
-          }
-          { print $COL \"\" }
-    "
 }
 dbdict () 
 { 
@@ -323,6 +363,27 @@ github ()
     : location: where the GIT repos live;
     : date: 2020-08-14;
     ${*:-echo} $HOME/Dropbox/git
+}
+good_status () 
+{ 
+    : date: 2020-09-24;
+    set -- statusvalue.rdb cmmd_status.rdb;
+    report_notfile $1 && return 1;
+    report_notfile $2 && return 2;
+    comm -13 <(column status < $1  | sorttable -u | headoff) <(column status < $2  | sorttable -u | headoff)
+}
+gregorian () 
+{ 
+    : performs julian to gregorian day calculation on named Columns;
+    _rdb_column_function $@
+}
+gregorian_test () 
+{ 
+    : date: 2020-09-19;
+    report_notfile gregortest.rdb && return 1;
+    column < gregortest.rdb | compute '
+
+        result = date' | gregorian result | compute 'diff = result - significance'
 }
 h_repair () 
 { 
@@ -442,27 +503,6 @@ hz ()
     set -- $(reverseArgs ${*:2});
     ${*:-zcat} $history
 }
-rdb_column () 
-{ 
-    read_devtty $*;
-    local file=$1;
-    shift;
-    local colm=$1;
-    shift;
-    set -- $(sed 1q $file);
-    read_devtty colm, args: $colm, $*;
-    local C=0;
-    for a in $*;
-    do
-        (( C += 1 ));
-        [[ "$colm" = $a ]] && { 
-            read_devtty FOUND colm, C: $colm, $C;
-            echo $C;
-            return 0
-        };
-    done;
-    return 1
-}
 jointable () 
 { 
     : join two tables into one where keys match;
@@ -526,20 +566,20 @@ jointable ()
                             f2=$arg;
                         fi;
                     fi;
-                fi;
+                fi
             ;;
         esac;
-        read_devtty arg, f1, f2: $arg, $f1, $f2	
+        read_devtty arg, f1, f2: $arg, $f1, $f2;
     done;
     [[ -z "$f2" ]] && { 
         : there was no table 2, is it on STDIN;
-	[[ "$f1" = "~/tmp/i.join" ]] && {
-	   comment bad STDIN or missing FILE $arg
-	   return 3
-	}   
+        [[ "$f1" = "~/tmp/i.join" ]] && { 
+            comment bad STDIN or missing FILE $arg;
+            return 3
+        };
         f2=~/tmp/i.join;
         cat - > $f2
-    }
+    };
     read_devtty last f1, f2: $f1, $f2;
     report_notfile $f1 && return 1;
     report_notfile $f2 && return 2;
@@ -581,14 +621,36 @@ jointable ()
     echo "join $ARGS ~/tmp/{a,b}.join" > .join.err;
     eval join $ARGS ~/tmp/{a,b}.join
 }
+jointable_test () 
+{ 
+    : join with the status value to sort in most to least mature functions;
+    : date: 2020-09-20;
+    runfrom $(applemcg echo)/rdb/rename_test;
+    set -- {command,statusvalue}.rdb;
+    report_notfile $1 && return 1;
+    report_notfile $2 && return 2;
+    good_status || return 3;
+    sorttable status < $1 | jointable -j1 status - $2 | sorttable -r seqn | ncolumn status seqn
+}
+julian () 
+{ 
+    : performs gregorian formats julian day calculation on named Columns;
+    _rdb_column_function $@
+}
+julian_test () 
+{ 
+    : date: 2020-09-19;
+    report_notfile juliantest.rdb && return 1;
+    column < juliantest.rdb | compute '
+
+        jday = date' | julian jday | compute 'diff = expect - jday'
+}
 latest_filesuf () 
 { 
     : latest modifed file with suffix, default TXT;
     set -- ${1:-txt};
     ls -t *.$1 | sed 1q
 }
-
-
 length () 
 { 
     return
@@ -640,7 +702,7 @@ listtotable ()
     : reads stdin or named files in LIST format, converting to TABLE;
     : to relieve a possible non-EMPTY Line at the END of the file, added flushed;
     : an awkism "!flushed" is not the same as "flushed > 0";
-    : todo: functions totable and tolist, take either, convert only as requird
+    : todo: functions totable and tolist, take either, convert only as requird;
     : 2020-09-06: added flushed. still needs a separate test .;
     awk '
 #    
@@ -699,7 +761,7 @@ END    {
          if(flushed > 0) eachRecord()
 	 printf "\n"
        }       
-    '  | awk NF
+    ' | awk NF
 }
 name_report () 
 { 
@@ -848,6 +910,11 @@ rdb ()
     indir ${RDB_HOME}/bin _rdb | _rdb_post $1;
     unset _rdb{,_post}
 }
+rdb_awklib () 
+{ 
+    : function lib for rdb commands;
+    ${*:-echo} $(applemcg echo)/rdb/lib/awklib
+}
 rdb_canon () 
 { 
     : default state of /RDB file: TABLE and PACKED HISTORY,;
@@ -925,6 +992,27 @@ rdb_col ()
 { 
     : app_trace $*;
     rdb_data $1 | rdb_current | column $2
+}
+rdb_column () 
+{ 
+    read_devtty $*;
+    local file=$1;
+    shift;
+    local colm=$1;
+    shift;
+    set -- $(sed 1q $file);
+    read_devtty colm, args: $colm, $*;
+    local C=0;
+    for a in $*;
+    do
+        (( C += 1 ));
+        [[ "$colm" = $a ]] && { 
+            read_devtty FOUND colm, C: $colm, $C;
+            echo $C;
+            return 0
+        };
+    done;
+    return 1
 }
 rdb_commands () 
 { 
@@ -1282,14 +1370,6 @@ sorttable ()
     rdb_hdr $HEAD;
     sort -t'	' $ARGS
 }
-stat_mtimefile () 
-{ 
-    : date: 2019-08-31;
-    [[ -f $1 ]] || return;
-    file=$1;
-    set -- $(stat -r $file 2>/dev/null);
-    echo ${10} $file
-}
 tableorlist () 
 { 
     : reports if a file is table, list or ignores non /rdb files;
@@ -1312,7 +1392,7 @@ tabletolist ()
 { 
     : convert TABLE format to LIST format;
     : use in format-smart functions -- e.g. row, column, ...;
-    : todo: functions totable and tolist, take either, convert only as required
+    : todo: functions totable and tolist, take either, convert only as required;
     awk '
 
         BEGIN { FS = OFS = "\t" }
@@ -1377,7 +1457,7 @@ tbl_fmlist ()
     : from LIST to full-formed TABLE;
     : test case is FUNCTION TAGS;
     : DEFAULT is not acceptable TAG;
-    : todo: needs a ULR to the explanation
+    : todo: needs a ULR to the explanation;
     set -- ${1:-$(ls -t *_list.txt)};
     report_notfile $1 && return 1;
     set -- $1 ${1%_list.txt}.rdb;
@@ -1416,6 +1496,40 @@ test_setup ()
     sleep 1;
     cp test.rdb $1
 }
+todaysdate () 
+{ 
+    : in ceiu formats, computer european, iso {default}, US, YYYYmmdd: 8;
+    : date: 2020-09-19;
+    set -- ${1:--i};
+    case $1 in 
+        -c)
+            date +%y%m%d
+        ;;
+        -e)
+            date +%d/%m/%y
+        ;;
+        -i)
+            date +%F
+        ;;
+        -u)
+            date +%x
+        ;;
+        -8)
+            date +%Y%m%d
+        ;;
+        *)
+            $(myname)
+        ;;
+    esac
+}
+todaysdate_test () 
+{ 
+    function _tdate_test () 
+    { 
+        printf "  $1:\t%s\n" $(todaysdate -$1)
+    };
+    foreach _tdate_test {a..z} 8 7 0 13
+}
 updates () 
 { 
     app_trace $*
@@ -1444,128 +1558,4 @@ width ()
               }
               printf "\n"
             }'
-}
-todaysdate_test () 
-{ 
-    function _tdate_test () 
-    { 
-        printf "  $1:\t%s\n" $(todaysdate -$1)
-    };
-    foreach _tdate_test {a..z} 8 7 0 13
-}
-todaysdate () 
-{ 
-    : in ceiu formats, computer european, iso {default}, US, YYYYmmdd: 8;
-    : date: 2020-09-19;
-    set -- ${1:--i};
-    case $1 in 
-        -c)
-            date +%y%m%d
-        ;;
-        -e)
-            date +%d/%m/%y
-        ;;
-        -i)
-            date +%F
-        ;;
-        -u)
-            date +%x
-        ;;
-        -8)
-            date +%Y%m%d
-        ;;
-        *)
-            $(myname)
-        ;;
-    esac
-}
-jointable_test () 
-{ 
-    : join with the status value to sort in most to least mature functions;
-    : date: 2020-09-20;
-    runfrom $(applemcg echo)/rdb/rename_test
-    set -- {command,statusvalue}.rdb;
-    report_notfile $1 && return 1;
-    report_notfile $2 && return 2;
-    good_status || return 3
-    sorttable status < $1 | jointable -j1 status - $2 | sorttable -r seqn | ncolumn status seqn
-}
-good_status () 
-{ 
-    : date: 2020-09-24;
-    set -- statusvalue.rdb cmmd_status.rdb;
-    report_notfile $1 && return 1;
-    report_notfile $2 && return 2;
-    comm -13 <(column status < $1  | sorttable -u | headoff) <(column status < $2  | sorttable -u | headoff)
-}
-datatype () 
-{ 
-    : produces the rdb datatype in each column;
-    : /RDB, p. 287;
-    : date: 2020-08-24;
-    : date: 2020-09-21;
-    :;
-    local listall=0;
-    case $1 in 
-        -l)
-            listall=1;
-            shift
-        ;;
-    esac;
-    column $* | tawk -v listall=$listall '
-
-    function max(x,y)  { return ((x > y)? x : y); }
-
-    NR == 2 { dash = $0 }
-    NR < 3  { print; nfields = NF
-              for (i=1; i<= NF; i++) {
-                  dtype[i] = -1    # default is non-numberic Character strings      
-      }
-              next
-    }
-    listall == 1  { print }
-    NF != nfields { print "ERROR: %d has %d fields, Not %d\n", NR, NF, fields; exit; }
-
-        {   
-  n = split($0, field,"\t");
-  for (i=1; i<=nfields; i++) {
-
-              if( field[i] ~ /[0-9]/)  {
-
-                  num = field[i]
-                  dtype[i] = max( dtype[i], 0);
-                  dpoint   = index( num,".")
-          if (dpoint) {
-
-                      decimal  = length(substr(num,dpoint+1))
-      dtype[i] = max( dtype[i], decimal);
-                    }
-                 }
-             }
- }
-    END {
-          if(listall) print dash
-
-  for (i=1; i< nfields; i++) {
-      printf "%6d\t", dtype[i]
-            }
-          printf "%6d\n", dtype[nfields]  
-        }
-    '
-}
-datatype_test () 
-{ 
-    : exercise the p. 287 example;
-    : date: 2020-09-21;
-    runfrom $(applemcg echo)/rdb/lib || return;
-    report_notfile typetable && return 1;
-    set typetable Float4 Char;
-    datatype < $1;
-    echo . . . .;
-    datatype -l < $1;
-    echo . . . .;
-    datatype -l ${*:2} < $1;
-    echo . . . .;
-    datatype ${*:2} < $1;
-    echo . . . .
 }
