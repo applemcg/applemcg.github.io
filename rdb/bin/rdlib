@@ -1384,7 +1384,7 @@ tableorlist ()
         *)
             rdb_hdr Type File;
             foreach listtableornaught $* 2> /dev/null;
-            return 0p
+            return 0
         ;;
     esac
 }

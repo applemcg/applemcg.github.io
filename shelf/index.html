@@ -13517,8 +13517,8 @@ exports.context = contextWidget;
 <div created="20200906130938977" creator="Marty McGowan" modified="20200906131537448" modifier="Marty McGowan" title="$:/state/tab--416848723">
 <pre>schema_testout</pre>
 </div>
-<div created="20201116203819077" creator="Marty McGowan" modified="20201116204913322" modifier="Marty McGowan" title="$:/state/tab--425157797">
-<pre>f2file_code</pre>
+<div created="20201116203819077" creator="Marty McGowan" modified="20201117173915572" modifier="Marty McGowan" title="$:/state/tab--425157797">
+<pre>f2file_awk</pre>
 </div>
 <div created="20200902154753854" creator="Marty McGowan" modified="20200902154753854" modifier="Marty McGowan" title="$:/state/tab--456652375">
 <pre>addcol_testout</pre>
@@ -13637,8 +13637,8 @@ exports.context = contextWidget;
 <div created="20201015134304807" creator="Marty McGowan" modified="20201015150108562" modifier="Marty McGowan" title="$:/state/tab-229205759">
 <pre>tag group</pre>
 </div>
-<div created="20200827142842384" creator="Marty McGowan" modified="20201011193918710" modifier="Marty McGowan" title="$:/state/tab-231717767">
-<pre>function tags</pre>
+<div created="20200827142842384" creator="Marty McGowan" modified="20201117165200395" modifier="Marty McGowan" title="$:/state/tab-231717767">
+<pre>canonical format</pre>
 </div>
 <div created="20200809180001865" modified="20200809181722418" title="$:/state/tab-256710528">
 <pre>app</pre>
@@ -13709,7 +13709,7 @@ exports.context = contextWidget;
 <div bag="default" created="20200810170615861" creator="M" modified="20200811134449245" modifier="Marty McGwan" revision="1" title="$:/status/UserName">
 <pre>Marty McGowan</pre>
 </div>
-<div created="20201116200348758" creator="Marty McGowan" list="[[duplicate function problem]] [[information base]] [[function themes]] [[canonical format]] f2file f2file_awk f2file_code [[Other Software]] [[What's Here]] [[Shell Functions]] [[Table of Contents]]" modified="20201116205904814" modifier="Marty McGowan" title="$:/StoryList">
+<div created="20201117165118546" creator="Marty McGowan" list="f2file_awk f2file_code f2file [[canonical format]] [[Shell Diary]] [[function themes]] [[information base]] [[Table of Contents]]" modified="20201117173942518" modifier="Marty McGowan" title="$:/StoryList">
 <pre></pre>
 </div>
 <div created="20200519141000553" list="$:/.giffmex/Buttons/more-tiddler-edit-actions $:/core/ui/Buttons/delete $:/core/ui/Buttons/cancel $:/core/ui/Buttons/save" modified="20200521145647980" tags="$:/giffmex/bigeditarea $:/giffmex/stroll" title="$:/tags/EditToolbar">
@@ -13794,8 +13794,8 @@ exports.context = contextWidget;
 <div created="20200502174943975" modified="20200502174950301" title="$:/temp/RenameTags/search">
 <pre>tb</pre>
 </div>
-<div created="20200418122544376" creator="Marty McGowan" modified="20201116205156854" modifier="Marty McGowan" title="$:/temp/search">
-<pre>information base</pre>
+<div created="20200418122544376" creator="Marty McGowan" modified="20201117173710900" modifier="Marty McGowan" title="$:/temp/search">
+<pre>duplicate</pre>
 </div>
 <div created="20200429214841632" modified="20200429214841632" tags="$:/tags/ServerConnection" title="$:/temp/ServerConnection/https://tiddlywiki.com/library/v5.1.22/index.html" url="https://tiddlywiki.com/library/v5.1.22/index.html">
 <pre>loaded</pre>
@@ -15841,24 +15841,46 @@ for the record, the last ''.rule.out '' shows the sourced command.
 <div created="20200924190505927" creator="Marty McGowan" modified="20200924190505927" modifier="Marty McGowan" title="devlib">
 <pre></pre>
 </div>
-<div created="20201019011815682" creator="Marty McGowan" modified="20201019012116422" modifier="Marty McGowan" tags="code" title="dfg">
+<div created="20201019011815682" creator="Marty McGowan" modified="20201117173807578" modifier="Marty McGowan" tags="code" title="dfg">
 <pre>[[related]] | [[dfg]]
 
-is an example of  a  related tab. note [[f2file]] writes the files in $(lib)/dir/*/*. where the first asterisc is the library name, the second is the function name.
+is an example of  a  related tab. note [[f2file]] writes the files in $(lib)/dir/*/*. where the first asterisk is the library name, the second is the function name.
+The `rm -fr` statement cleans out any stray directories which may have wandered in.  One did recently.
 
 ```
+$ declare -f dfg; dfg | justify
 dfg () 
 { 
     : Directory Function Grep;
     : related: f2file .;
     : date: 2020-10-03;
     runfrom $(lib)/dir $@ 2&gt; /dev/null || return;
-    rdb_hdr libname fun context;
-    grep -i ${1:-$(myname)} */* | sed 's/\//	/; s/: */	/'
+    : only files -- functions -- in library directories;
+    rm -fr $(find */* -type d);
+    function _dfg () 
+    { 
+        rdb_hdr libname fun context;
+        read_devtty $*;
+        grep -i &quot;$1&quot; */* | sed 's/\//	/; s/: */	/'
+    };
+    _dfg &quot;${1:-dfg}&quot; | column
 }
-
+libname    	fun       	context                                                            
+-------    	---       	-------                                                            
+functionlib	dfg       	dfg ()                                                             
+functionlib	dfg       	function _dfg ()                                                   
+functionlib	dfg       	grep -i ${1:-dfg} */* | sed 's/\//                                 
+functionlib	dfg       	_dfg $1 | column                                                   
+functionlib	dfg_fun   	dfg_fun ()                                                         
+functionlib	dfg_fun   	dfg $1 | sorttable fun                                             
+functionlib	smart_funs	dfg . | row 'context ~ /^\${[12*@]:-/' | column | tee $(myname).rdb
+functionlib	whf_all   	: related: dfg;                                                    
+newrdlib   	rdgrep    	*rdfgrep)                                                          
+retiredlib 	whf_all   	: related: dfg;      
 
 ```
+
+Note the //whf_all// function appears in both the ''functionlib'' and ''retiredlib''.   That's a subject to be cleared up. Follow that discussion in  the [[duplicate function problem]].
 </pre>
 </div>
 <div created="20200910195255817" creator="Marty McGowan" modified="20200910195255817" modifier="Marty McGowan" title="diff_dotd">
@@ -16252,30 +16274,31 @@ This is a good point to check out  the [[rdb commands]]
 <div created="20201022010000777" creator="Marty McGowan" modified="20201022010000777" modifier="Marty McGowan" title="expect_test">
 <pre></pre>
 </div>
-<div created="20200909201808624" creator="Marty McGowan" modified="20201116205719324" modifier="Marty McGowan" title="f2file">
+<div created="20200909201808624" creator="Marty McGowan" modified="20201117165957947" modifier="Marty McGowan" title="f2file">
 <pre>[[Other Software]] | [[f2file]]
 
 F2file is a shell function supported by a significant awk script. 
 
-It writes each function in the library as a separate file in another conventional directory.  One of it's purposes is to serve as the search table for queries on function use, function syntax conventions, function dependency trees, and code browsing tools.   See the discussion around [[shdoc]]
+It copies each function in a function library into a separate file in another conventional directory.  One of its purposes is to serve as the search table for queries on function use, function syntax conventions, function dependency trees, and code browsing tools.   See the discussion around [[shdoc]]
 
-A requirement of the method is all functions must be stored in what I call their [[canonical format]]. This is hardly as daunting as it may seem.  Study the reference.  There are a few cautions.  Heads-up:  the canonical format of any function, or list of functions is displayed as:
+A requirement of the method is all functions must be stored in what I call their [[canonical format]]. This is hardly so daunting as it may seem.  Study the reference.  There are a few cautions.  Heads-up:  the canonical format of any function, or list of functions is displayed as:
 
 &gt; $ declare -f function ...
 
-Here are the function and the awk script.
+Here are the f2file function and awk script.
 
 &lt;&lt;tabs &quot;
 [[f2file_code]]
 [[f2file_awk]]
 &quot; &quot;&quot; &quot;&quot; &quot;tc-vertical&quot;&gt;&gt;</pre>
 </div>
-<div created="20201116203436970" creator="Marty McGowan" modified="20201116203809751" modifier="Marty McGowan" tags="" title="f2file_awk">
+<div created="20201116203436970" creator="Marty McGowan" modified="20201117173958393" modifier="Marty McGowan" tags="" title="f2file_awk">
 <pre>[[f2file]] | [[f2file_awk]]
+
 The heart of the operation is this awk script.
 
 ```
-cat $(awk_file f2file)
+$ cat $(awk_file f2file)
 # separates a function library into function per file -- f2file.{g,}awk	--
 #
 # usage:   from shell function, f2file, using awk_file
