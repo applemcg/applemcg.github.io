@@ -1,6 +1,7 @@
 Type	File
 ----	----
 table	author_book.rdb
+table	book_page.rdb
 table	collections.rdb
 table	haveread.rdb
 table	librarything.rdb

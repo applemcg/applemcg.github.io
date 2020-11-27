@@ -36,11 +36,38 @@ table.  The **page* column there contains a page number, or if an
 e-book where the equivalent page is not available, then either a
 location (l) or chapter (ch) prefix.
 
-This README exists then to organize the tools i use from the data
+This README exists then to organize the tools I use from the data
 tables here to update the Online Reading Notebook and local content
 here as well.
 
 ** Operation
+
+The frequently update On My Nightstand reports
+
++ the most recent reading date,
++ the page tally to date,
++ the Author, and
++ the Title 
+
+The input tables:
+
+** command repository
+
+
+#+BEGIN_SRC 
+
+i_timeDate      () { row '!delete_time' | rdb_iDate | rename i_date ${1:-i_date} | ncolumn  {insert,delete}_time; } ; qf i_timeDate
+
+link_authorBook () { set -- ${1:-four}; tiddlylink author | tiddlylink book | ${1}ColumnTiddly; };  qf link_authorBookw
+
+onMyNightstand () { zcat .hry/book_page.rdb.Z | i_timeDate latest | jointable -1 book -2 book - author_book.rdb  | column latest  page author book  | sorttable | link_authorBook; }; qf onMyNightstand
+
+#+END_SRC
+
+
+
+
+
 
 ** References
 

@@ -521,4 +521,22 @@ book_author ()
     };
     cat $1 | row "book ~ /$2/"
 }
+i_timeDate () 
+{ 
+    : date: 2020-11-27;
+    row '!delete_time' | rdb_iDate | rename i_date ${1:-i_date} | ncolumn {insert,delete}_time
+}
+link_authorBook () 
+{ 
+    : date: 2020-11-27;
+    set -- ${1:-four};
+    tiddlylink author | tiddlylink book | ${1}ColumnTiddly
+}
+onMyNightstand () 
+{ 
+    : date: 2020-11-27;
+    set -- .hry/book_page.rdb.Z
+    report_notfile $1 && return 1
+    zcat $1 | sorttable -r | i_timeDate latest | jointable -1 book -2 book - author_book.rdb | column latest page author book | sorttable | link_authorBook
+}
 echo git_init 1>&2
