@@ -1,0 +1,4 @@
+#+AUTHOR:    Marty McGowan
+#+EMAIL:     martymcgowan@alum.mit.edu
+#+OPTIONS:   ^:nil
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="./style.css" />

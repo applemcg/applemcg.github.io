@@ -1,0 +1,49 @@
+#+TITLE:   My Reading Notebook
+#+INCLUDE: orgheader.org
+
+* My Reading Notebook
+
+Here is my [[https://applemcg.github.io/reading][Online Reading Notebook]].  The copy is edited from the
+[[https://tiddlywiki.com/static/TiddlyDesktop.html][Tiddly Desktop app]], where the file is [[./index.html][located here]], but please don't
+edit it directly thru a browser or a text editor.
+
+** Purpose
+
+The diary exists to support the MIT Club of Princeton's Book Club, which
+I moderate.   From the Home Page of the Online Reading Diary, go to the 
+//TableOfContents//, and from the the //MIT Book Club//.  The outline
+presents:
+
++ Reading Lists
++ Next Book
++ Latest Book, 
++ Working the Mail (soon to be obsolete)
+
+The page was started to connect my [[https://www.librarything.com/catalog.php?view=applemcg&collection=-1&shelf=list&sort=dateread&sort=dateread][Library Thing]] account to my writing
+home; this is one of the four chapters in what I call my [[https://applemcg.github.io/reading/#The%20Family%20Circle][Family Circle]].
+The chapters are:
+
++ My Idea Warehouse, which started it all, a daily diary,
++ Time to Get Liberal, a blog which started in the early '00s, and was
+  resuscitated out of great need,
++ My Reading Notebook, i.e. this story, and my professional interests with
++ Shell Functions. Follow the previous links.
+
+It seems going forward, the Library Thing account is the catalogue,
+the directory, and My Reading Notebook will be where the story
+develops.  For example, I'll routinely update the [[file:///Users/martymcgowan/Dropbox/git/applemcg.github.io/reading/index.html#On%20My%20Nightstand][On My Nightstand]]
+table.  The **page* column there contains a page number, or if an
+e-book where the equivalent page is not available, then either a
+location (l) or chapter (ch) prefix.
+
+This README exists then to organize the tools i use from the data
+tables here to update the Online Reading Notebook and local content
+here as well.
+
+** Operation
+
+** References
+
++ [[https://applemcg.github.io/reading][Online Reading Notebook]].  
++ [[https://tiddlywiki.com/static/TiddlyDesktop.html][Tiddly Desktop app]]
++ [[https://www.librarything.com/catalog.php?view=applemcg&collection=-1&shelf=list&sort=dateread&sort=dateread][Library Thing]]

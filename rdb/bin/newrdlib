@@ -420,7 +420,7 @@ rdb_timetally ()
 rdb_today () 
 { 
     set -- $(yymmdd)000000 ${1:-tasks};
-    rdb_data $2 | row "delete_time > $1 || insert_time > $1" | rdb_notinsert
+    rdb_data $2 | row "delete_time > $1 || insert_time > $1" 
 }
 rdb_whinsert () 
 { 

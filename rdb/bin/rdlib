@@ -1094,11 +1094,6 @@ rdb_notime ()
     : app_trace $*;
     ncolumn insert_time delete_time
 }
-rdb_notinsert () 
-{ 
-    : app_trace $*;
-    ncolumn insert_time
-}
 rdb_ondate () 
 { 
     : RDB changes on YYMMDD, default TODAY;

@@ -47,7 +47,7 @@ git_init ()
     : by defining a git_user, which in the App World,;
     : is invoked _after_ any _init function;
     git_account applemcg;
-    comment main
+    comment main;
     git_rdfun
 }
 git_account () 
@@ -302,8 +302,8 @@ twoColumnTiddly ()
 threeColumnTiddly () 
 { 
     : convert an rdb table into a 3-column tiddly table;
-    : and since the pipe is part of the table, then
-    : replace actual pipes with their character code
+    : and since the pipe is part of the table, then;
+    : replace actual pipes with their character code;
     : date: 2020-07-04;
     : date: 2020-10-22;
     report_notpipe && return 1;
@@ -342,7 +342,7 @@ toMIWreading ()
 { 
     : convert the reading list into the MyIdeaWarehouse format,;
     : date: 2020-07-04;
-    report_notfile librarything.rdb && return 1
+    report_notfile librarything.rdb && return 1;
     sorttable -r < librarything.rdb | n_rh_linkify
 }
 wiki_tablereport () 
@@ -355,35 +355,31 @@ days_reading ()
 { 
     : a days -- todays -- reading;
     : date: 2020-07-10;
-    report_notfile librarything.rdb && return 1
+    report_notfile librarything.rdb && return 1;
     zcat .hry/librarything.rdb.Z | rd grep ${1:-$(yymmdd)} | sorttable
 }
-
 keysmatch () 
 { 
     : date: 2020-07-11;
     rowhas key $1 < keybook.rdb | headoff
 }
 rawtsv_tordb () 
-{
-    : pick a file from the list of TSVs, write a HDR as a TABLE
-    set -- ${1:-$(pick *.tsv /dev/null)}
-    set -- $1 ${1%*.tsv}.tmp
-    report_notfile $1 && return 1
+{ 
+    : pick a file from the list of TSVs, write a HDR as a TABLE;
+    set -- ${1:-$(pick *.tsv /dev/null)};
+    set -- $1 ${1%*.tsv}.tmp;
+    report_notfile $1 && return 1;
     fmdos $1 > $2;
     rdb_hdr $(sed 1q $2 | sed 's/ /_/g' | lc);
-    tail +2 $2 
+    tail +2 $2
 }
-
 field_tolc () 
-{
-    : convert a field to lower case
-    : related: rdb
+{ 
+    : convert a field to lower case;
+    : related: rdb;
     report_notpipe && return 1;
     compute "$1 = tolower($1)"
 }
-
-
 field_xref () 
 { 
     : convert book_id field to field book_id, where field is multi-valued;
@@ -396,11 +392,10 @@ goodfields ()
     : the field list must be trimmed. it seems 49 fields is too many for compute, etc...;
     ${*:-echo} tags collections lc_classification book_id title primary_author copies source entry_date from_where page_count lccn acquired date_{started,read} isbn{,s} subjects dewey_decimal lending_{start,end} review rating
 }
-
 lower_canon () 
-{
-    : translate any collection name to lower_case
-    runfrom $(applemcg echo)/reading || return
+{ 
+    : translate any collection name to lower_case;
+    runfrom $(applemcg echo)/reading || return;
     report_notfile haveread.tsv && return 1;
     rawtsv_tordb haveread.tsv | goodfields column | compute '
     
@@ -408,8 +403,6 @@ lower_canon ()
         collections = tolower(collections)	
     '
 }
-
-
 book_tordb () 
 { 
     : date: 2020-07-18;
@@ -454,12 +447,10 @@ tab_count ()
     report_notpipe && return 1;
     sorttable | rduniq | sorttable -n | column Count | rename Count oc | rduniq | rename Count tabul8 oc Count
 }
-
 main () 
 { 
     book_tordb
 }
-
 date_finished () 
 { 
     : from the history, finished and date last read;
@@ -473,16 +464,16 @@ readhistory ()
     : active and when finished books;
     : date: 2020-08-18;
     function _rh_select () 
-    {
+    { 
         sorttable -r latest | select_first book | sorttable book
     };
     function _rh_finish () 
     { 
         rename latest finish | compute '
 
-        finish = ((delete_time)? finish: "")' | ncolumn {insert,delete}_time 
+        finish = ((delete_time)? finish: "")' | ncolumn {insert,delete}_time
     };
-    report_notfile librarything.rdb && return 1
+    report_notfile librarything.rdb && return 1;
     zcat .hry/librarything.rdb.Z | _rh_select | _rh_finish | sorttable $1 | n_rh_linkify four
 }
 tiddlylink () 
@@ -491,39 +482,43 @@ tiddlylink ()
     compute "$1 = \"[[\" $1 \"]]\""
 }
 n_rh_linkify () 
-{
-    set -- ${1:-three}
+{ 
+    set -- ${1:-three};
     tiddlylink author | tiddlylink book | ${1}ColumnTiddly
 }
 read_books () 
 { 
     : next n { two } books to read;
     : date: 2020-08-07;
-    report_notfile librarything.rdb && return 1
+    report_notfile librarything.rdb && return 1;
     sorttable < librarything.rdb | column book | headoff | sed ${1:-2}q
 }
-git_rdfun () { ${*:-echo}	\
-	  $(myname)		\
-	  keysmatch		\
-	  field_tolc 		\
-	  field_xref 		\
-	  lower_canon		\
-	  book_tordb 		\
-	  tab_count 		\
-	  date_finished 	\
-	  readhistory		\
-	  read_books
-}	  
+git_rdfun () 
+{ 
+    ${*:-echo} $(myname) keysmatch field_tolc field_xref lower_canon book_tordb tab_count date_finished readhistory read_books
+}
 h_getold () 
-{
-    : example of how to retrive a history file
+{ 
+    : example of how to retrive a history file;
     set -- ${1:-5734};
     set -- $(find . -name librarything.rdb | xargs ls -lrt | grep $1 | tail -1);
-    declare -f $(myname)
-    return
+    declare -f $(myname);
+    return;
     echo $# $*;
     report_notargcount 9 $# && return 1;
     cp $9 .;
     compress librarything.rdb
+}
+book_author () 
+{ 
+    : return author, book of matching books;
+    : date: 2020-11-27;
+    set -- author_book.rdb "$1";
+    report_notfile $1 && return 1;
+    [[ -z "$2" ]] && { 
+        column book < $1 | headoff;
+        return
+    };
+    cat $1 | row "book ~ /$2/"
 }
 echo git_init 1>&2
