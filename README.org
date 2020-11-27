@@ -6,10 +6,11 @@ this directory.
 {user}.github.io for a  [[https://tiddlywiki.com][Tiddly Wiki]]: 
 
 | directory | Contents                           |
-| .         |MyIdeaWarehouse                     |
-| TTGL      |Time to Get Liberal                 |
-| shelf     |Lessons Learned in Shell Functions  |
-| reading   |Import Library Thing                |
+| --------- | ---------------------------------- |
+| .         | MyIdeaWarehouse                    |
+| TTGL      | Time to Get Liberal                |
+| shelf     | Lessons Learned in Shell Functions |
+| reading   | Import Library Thing               |
 
 
 

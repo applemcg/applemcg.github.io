@@ -1,16 +1,15 @@
 Type	File
 ----	----
 table	collections.rdb
-table	count_libthing.rdb
 table	haveread.rdb
 table	librarything.rdb
 table	libthingbooks.rdb
 table	rd_rules.rdb
 table	readhistory.rdb
 table	table_list.rdb
+table	tables.rdb
 table	tags.rdb
 table	twotiddlylinks.rdb
-table	tables.nxt
 list	collections.lst
 list	libthingbooks.lst
 list	rd_rules.lst

@@ -343,7 +343,7 @@ toMIWreading ()
     : convert the reading list into the MyIdeaWarehouse format,;
     : date: 2020-07-04;
     report_notfile librarything.rdb && return 1
-    sorttable -r < librarything.rdb | _rh_linkify
+    sorttable -r < librarything.rdb | n_rh_linkify
 }
 wiki_tablereport () 
 { 
@@ -483,20 +483,18 @@ readhistory ()
         finish = ((delete_time)? finish: "")' | ncolumn {insert,delete}_time 
     };
     report_notfile librarything.rdb && return 1
-    zcat .hry/librarything.rdb.Z | _rh_select | _rh_finish | sorttable $1 | _rh_linkify
+    zcat .hry/librarything.rdb.Z | _rh_select | _rh_finish | sorttable $1 | n_rh_linkify four
 }
-
-
 tiddlylink () 
 { 
     : format column to wrap with TiddlyWiki LINK syntax;
     compute "$1 = \"[[\" $1 \"]]\""
 }
 n_rh_linkify () 
-{ 
-    tiddlylink author | tiddlylink book | threeColumnTiddly
+{
+    set -- ${1:-three}
+    tiddlylink author | tiddlylink book | ${1}ColumnTiddly
 }
-
 read_books () 
 { 
     : next n { two } books to read;
