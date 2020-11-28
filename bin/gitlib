@@ -338,13 +338,6 @@ fiveColumnTiddly ()
             { printf "|%s |%s |%s |%s |%s |\n", $1, $2, $3, $4, $5 }
    '
 }
-toMIWreading () 
-{ 
-    : convert the reading list into the MyIdeaWarehouse format,;
-    : date: 2020-07-04;
-    report_notfile librarything.rdb && return 1;
-    sorttable -r < librarything.rdb | n_rh_linkify
-}
 wiki_tablereport () 
 { 
     : convert the reading list into the MyIdeaWarehouse format,;
@@ -354,9 +347,24 @@ wiki_tablereport ()
 days_reading () 
 { 
     : a days -- todays -- reading;
+    read_history | rd grep ${1:-$(yymmdd)} | sorttable
+}
+read_history ()
+{
+    : update and show history
     : date: 2020-07-10;
-    report_notfile librarything.rdb && return 1;
-    zcat .hry/librarything.rdb.Z | rd grep ${1:-$(yymmdd)} | sorttable
+    report_notfile book_page.rdb && return 1;
+    rdb_canon book_page.rdb
+    zcat .hry/book_page.rdb.Z
+}
+read_book ()
+{
+    : books reading history
+    if_missingargs 1 $@ && {
+        read_history | column book | sorttable | select_first book | headoff 1>&2
+        return 1
+	}
+    read_history |  row "book ~ /$1/" | rdb_iDate | sorttable -r i_date | select_first i_date | column i_date page book | sorttable
 }
 keysmatch () 
 { 
@@ -451,51 +459,14 @@ main ()
 { 
     book_tordb
 }
-date_finished () 
-{ 
-    : from the history, finished and date last read;
-    : date: 2020-08-07;
-    set -- .hry/librarything.rdb.Z;
-    report_notfile $1 && return 1;
-    zcat $1 | sorttable -r latest | ncolumn insert_time | select_first book | row delete_time | ncolumn delete_time
-}
-readhistory () 
-{ 
-    : active and when finished books;
-    : date: 2020-08-18;
-    function _rh_select () 
-    { 
-        sorttable -r latest | select_first book | sorttable book
-    };
-    function _rh_finish () 
-    { 
-        rename latest finish | compute '
-
-        finish = ((delete_time)? finish: "")' | ncolumn {insert,delete}_time
-    };
-    report_notfile librarything.rdb && return 1;
-    zcat .hry/librarything.rdb.Z | _rh_select | _rh_finish | sorttable $1 | n_rh_linkify four
-}
 tiddlylink () 
 { 
     : format column to wrap with TiddlyWiki LINK syntax;
     compute "$1 = \"[[\" $1 \"]]\""
 }
-n_rh_linkify () 
-{ 
-    set -- ${1:-three};
-    tiddlylink author | tiddlylink book | ${1}ColumnTiddly
-}
-read_books () 
-{ 
-    : next n { two } books to read;
-    : date: 2020-08-07;
-    report_notfile librarything.rdb && return 1;
-    sorttable < librarything.rdb | column book | headoff | sed ${1:-2}q
-}
 git_rdfun () 
 { 
-    ${*:-echo} $(myname) keysmatch field_tolc field_xref lower_canon book_tordb tab_count date_finished readhistory read_books
+    ${*:-echo} $(myname) keysmatch field_tolc field_xref lower_canon book_tordb tab_count onMyNightstand book_author
 }
 h_getold () 
 { 
@@ -521,13 +492,15 @@ book_author ()
     };
     cat $1 | row "book ~ /$2/"
 }
-i_timeDate () 
-{ 
+datedRecords () 
+{
+    : pull DATED current records from a history file, optionally RENAME the insert date,
     : date: 2020-11-27;
     row '!delete_time' | rdb_iDate | rename i_date ${1:-i_date} | ncolumn {insert,delete}_time
 }
 link_authorBook () 
-{ 
+{
+    : linkify author, book fields and {N, 4} Column Tiddly
     : date: 2020-11-27;
     set -- ${1:-four};
     tiddlylink author | tiddlylink book | ${1}ColumnTiddly
@@ -537,6 +510,12 @@ onMyNightstand ()
     : date: 2020-11-27;
     set -- .hry/book_page.rdb.Z
     report_notfile $1 && return 1
-    zcat $1 | sorttable -r | i_timeDate latest | jointable -1 book -2 book - author_book.rdb | column latest page author book | sorttable | link_authorBook
+    function _link_pages ()
+    {
+        : only to shrink long commandline
+        column latest page author book | sorttable | link_authorBook
+    }	
+    zcat $1 | sorttable -r | datedRecords latest | jointable -1 book -2 book - author_book.rdb | _link_pages
+    unset _link_pages
 }
 echo git_init 1>&2

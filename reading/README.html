@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-11-27 Fri 14:49 -->
+<!-- 2020-11-28 Sat 14:59 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>My Reading Notebook</title>
@@ -235,30 +235,31 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgfb1c1c6">1. My Reading Notebook</a>
+<li><a href="#org6c2550a">1. My Reading Notebook</a>
 <ul>
-<li><a href="#org8e080d4">1.1. Purpose</a></li>
-<li><a href="#org3a16411">1.2. Operation</a></li>
-<li><a href="#org231bee4">1.3. command repository</a></li>
-<li><a href="#org1fb4b3e">1.4. References</a></li>
+<li><a href="#org99dab18">1.1. Purpose</a></li>
+<li><a href="#orgd15d563">1.2. Operation</a></li>
+<li><a href="#org11d71f2">1.3. command repository</a></li>
+<li><a href="#org9d65eeb">1.4. References</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-orgfb1c1c6" class="outline-2">
-<h2 id="orgfb1c1c6"><span class="section-number-2">1</span> My Reading Notebook</h2>
+<div id="outline-container-org6c2550a" class="outline-2">
+<h2 id="org6c2550a"><span class="section-number-2">1</span> My Reading Notebook</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 Here is my <a href="https://applemcg.github.io/reading">Online Reading Notebook</a>.  The copy is edited from the
-<a href="https://tiddlywiki.com/static/TiddlyDesktop.html">Tiddly Desktop app</a>, where the file is <a href="./index.html">located here</a>, but please don't
-edit it directly thru a browser or a text editor.
+<a href="https://tiddlywiki.com/static/TiddlyDesktop.html">Tiddly Desktop app</a>, where the file is <a href="./index.html">located here (note the file:
+prefix)</a>, but please don't edit it directly thru a browser or a text
+editor.
 </p>
 </div>
 
-<div id="outline-container-org8e080d4" class="outline-3">
-<h3 id="org8e080d4"><span class="section-number-3">1.1</span> Purpose</h3>
+<div id="outline-container-org99dab18" class="outline-3">
+<h3 id="org99dab18"><span class="section-number-3">1.1</span> Purpose</h3>
 <div class="outline-text-3" id="text-1-1">
 <p>
 The diary exists to support the MIT Club of Princeton's Book Club, which
@@ -305,8 +306,8 @@ here as well.
 </div>
 </div>
 
-<div id="outline-container-org3a16411" class="outline-3">
-<h3 id="org3a16411"><span class="section-number-3">1.2</span> Operation</h3>
+<div id="outline-container-orgd15d563" class="outline-3">
+<h3 id="orgd15d563"><span class="section-number-3">1.2</span> Operation</h3>
 <div class="outline-text-3" id="text-1-2">
 <p>
 The frequently update On My Nightstand reports
@@ -325,8 +326,8 @@ The input tables:
 </div>
 </div>
 
-<div id="outline-container-org231bee4" class="outline-3">
-<h3 id="org231bee4"><span class="section-number-3">1.3</span> command repository</h3>
+<div id="outline-container-org11d71f2" class="outline-3">
+<h3 id="org11d71f2"><span class="section-number-3">1.3</span> command repository</h3>
 <div class="outline-text-3" id="text-1-3">
 <pre class="example">
 
@@ -335,6 +336,13 @@ i_timeDate      () { row '!delete_time' | rdb_iDate | rename i_date ${1:-i_date}
 link_authorBook () { set -- ${1:-four}; tiddlylink author | tiddlylink book | ${1}ColumnTiddly; };  qf link_authorBookw
 
 onMyNightstand () { zcat .hry/book_page.rdb.Z | i_timeDate latest | jointable -1 book -2 book - author_book.rdb  | column latest  page author book  | sorttable | link_authorBook; }; qf onMyNightstand
+
+set -- "Last Bus" ; read_history |  row "book ~ /$1/" | rdb_iDate |  | sorttable -r i_date | select_first i_date | ncolumn {insert,delete}_time
+
+book_pagers () set -- "Last Bus" ; read_history |  row "book ~ /$1/" | rdb_iDate | sorttable -r i_date | select_first i_date | column i_date page book | sorttable
+
+zcat .hry/book_page.rdb.Z | sorttable -r | select_first book | column delete_time book | sorttable |  j
+
 
 </pre>
 </div>
@@ -345,8 +353,8 @@ onMyNightstand () { zcat .hry/book_page.rdb.Z | i_timeDate latest | jointable -1
 
 
 
-<div id="outline-container-org1fb4b3e" class="outline-3">
-<h3 id="org1fb4b3e"><span class="section-number-3">1.4</span> References</h3>
+<div id="outline-container-org9d65eeb" class="outline-3">
+<h3 id="org9d65eeb"><span class="section-number-3">1.4</span> References</h3>
 <div class="outline-text-3" id="text-1-4">
 <ul class="org-ul">
 <li><a href="https://applemcg.github.io/reading">Online Reading Notebook</a>.</li>
@@ -359,7 +367,7 @@ onMyNightstand () { zcat .hry/book_page.rdb.Z | i_timeDate latest | jointable -1
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Marty McGowan</p>
-<p class="date">Created: 2020-11-27 Fri 14:49</p>
+<p class="date">Created: 2020-11-28 Sat 14:59</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

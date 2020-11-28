@@ -4,8 +4,9 @@
 * My Reading Notebook
 
 Here is my [[https://applemcg.github.io/reading][Online Reading Notebook]].  The copy is edited from the
-[[https://tiddlywiki.com/static/TiddlyDesktop.html][Tiddly Desktop app]], where the file is [[./index.html][located here]], but please don't
-edit it directly thru a browser or a text editor.
+[[https://tiddlywiki.com/static/TiddlyDesktop.html][Tiddly Desktop app]], where the file is [[./index.html][located here (note the file:
+prefix)]], but please don't edit it directly thru a browser or a text
+editor.
 
 ** Purpose
 
@@ -61,6 +62,13 @@ i_timeDate      () { row '!delete_time' | rdb_iDate | rename i_date ${1:-i_date}
 link_authorBook () { set -- ${1:-four}; tiddlylink author | tiddlylink book | ${1}ColumnTiddly; };  qf link_authorBookw
 
 onMyNightstand () { zcat .hry/book_page.rdb.Z | i_timeDate latest | jointable -1 book -2 book - author_book.rdb  | column latest  page author book  | sorttable | link_authorBook; }; qf onMyNightstand
+
+set -- "Last Bus" ; read_history |  row "book ~ /$1/" | rdb_iDate |  | sorttable -r i_date | select_first i_date | ncolumn {insert,delete}_time
+
+book_pages () { read_history |  row "book ~ /$1/" | rdb_iDate | sorttable -r i_date | select_first i_date | column i_date page book | sorttable; }; qf book_pages
+
+zcat .hry/book_page.rdb.Z | sorttable -r | select_first book | column delete_time book | sorttable |  j
+
 
 #+END_SRC
 
