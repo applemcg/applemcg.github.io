@@ -1,7 +1,9 @@
-** applemcg.github.io
+* applemcg.github.io
 
 Formerly in the MyIdeaWarehouse.html file, it's now the index file in
 this directory.
+
+** contents
 
 {user}.github.io for a  [[https://tiddlywiki.com][Tiddly Wiki]]: 
 
@@ -12,7 +14,11 @@ this directory.
 | shelf     | Lessons Learned in Shell Functions |
 | reading   | Import Library Thing               |
 
+** todo
 
++ Auto-merging reading/index.html
++ CONFLICT (content): Merge conflict in reading/index.html
++ Automatic merge failed; fix conflicts and then commit the result.
 
 
 
