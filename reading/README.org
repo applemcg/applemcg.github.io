@@ -63,18 +63,17 @@ link_authorBook () { set -- ${1:-four}; tiddlylink author | tiddlylink book | ${
 
 onMyNightstand () { zcat .hry/book_page.rdb.Z | i_timeDate latest | jointable -1 book -2 book - author_book.rdb  | column latest  page author book  | sorttable | link_authorBook; }; qf onMyNightstand
 
-set -- "Last Bus" ; read_history |  row "book ~ /$1/" | rdb_iDate |  | sorttable -r i_date | select_first i_date | ncolumn {insert,delete}_time
+rdb_canon book_page.rdb
 
-book_pages () { read_history |  row "book ~ /$1/" | rdb_iDate | sorttable -r i_date | select_first i_date | column i_date page book | sorttable; }; qf book_pages
+foreach rdb_canon {author_book,book_page}.rdb
 
-zcat .hry/book_page.rdb.Z | sorttable -r | select_first book | column delete_time book | sorttable |  j
+onMyNightstand
 
+: notquite readn for a function
+
+zcat .hry/book_page.rdb.Z | sorttable -r | select_first book | column delete_time book | rename delete_time finish | compute 'finish = substr(finish,1,6)' | jointable -1 book -2 book - author_book.rdb | column finish author book | sorttable -r | link_authorBook
 
 #+END_SRC
-
-
-
-
 
 
 ** References

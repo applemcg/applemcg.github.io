@@ -505,6 +505,10 @@ link_authorBook ()
     set -- ${1:-four};
     tiddlylink author | tiddlylink book | ${1}ColumnTiddly
 }
+latestpageauthorbook ()
+{
+    column latest page author book | tee $(myname).rdb
+}
 onMyNightstand () 
 { 
     : date: 2020-11-27;
@@ -513,7 +517,7 @@ onMyNightstand ()
     function _link_pages ()
     {
         : only to shrink long commandline
-        column latest page author book | sorttable | link_authorBook
+        latestpageauthorbook | sorttable | link_authorBook
     }	
     zcat $1 | sorttable -r | datedRecords latest | jointable -1 book -2 book - author_book.rdb | _link_pages
     unset _link_pages
