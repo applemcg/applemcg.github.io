@@ -1,6 +1,6 @@
 gitlib_copyright () 
 { 
-    cat <<EOF
+    cat  <<EOF
 
 Copyright (c)2 2015-2020 Marty McGowan, JYATL - Just Yet Another Testing Lab
 
@@ -349,22 +349,20 @@ days_reading ()
     : a days -- todays -- reading;
     read_history | rd grep ${1:-$(yymmdd)} | sorttable
 }
-read_history ()
-{
-    : update and show history
+read_history () 
+{ 
+    : update and show history;
     : date: 2020-07-10;
-    report_notfile book_page.rdb && return 1;
-    rdb_canon book_page.rdb
-    zcat .hry/book_page.rdb.Z
+    table_history book_page.rdb
 }
-read_book ()
-{
-    : books reading history
-    if_missingargs 1 $@ && {
-        read_history | column book | sorttable | select_first book | headoff 1>&2
+read_book () 
+{ 
+    : books reading history;
+    if_missingargs 1 $@ && { 
+        read_history | column book | sorttable | select_first book | headoff 1>&2;
         return 1
-	}
-    read_history |  row "book ~ /$1/" | rdb_iDate | sorttable -r i_date | select_first i_date | column i_date page book | sorttable
+    };
+    read_history | row "book ~ /$1/" | rdb_iDate | sorttable -r i_date | select_first i_date | column i_date page book | sorttable
 }
 keysmatch () 
 { 
@@ -493,33 +491,44 @@ book_author ()
     cat $1 | row "book ~ /$2/"
 }
 datedRecords () 
-{
-    : pull DATED current records from a history file, optionally RENAME the insert date,
+{ 
+    : pull DATED current records from a history file, optionally RENAME the insert date,;
     : date: 2020-11-27;
     row '!delete_time' | rdb_iDate | rename i_date ${1:-i_date} | ncolumn {insert,delete}_time
 }
 link_authorBook () 
-{
-    : linkify author, book fields and {N, 4} Column Tiddly
-    : date: 2020-11-27;
+{ 
+    : date: 2020-12-05;
     set -- ${1:-four};
     tiddlylink author | tiddlylink book | ${1}ColumnTiddly
 }
-latestpageauthorbook ()
-{
+latestpageauthorbook () 
+{ 
     column latest page author book | tee $(myname).rdb
 }
 onMyNightstand () 
 { 
-    : date: 2020-11-27;
-    set -- .hry/book_page.rdb.Z
-    report_notfile $1 && return 1
-    function _link_pages ()
-    {
-        : only to shrink long commandline
-        latestpageauthorbook | sorttable | link_authorBook
-    }	
-    zcat $1 | sorttable -r | datedRecords latest | jointable -1 book -2 book - author_book.rdb | _link_pages
-    unset _link_pages
+    : date: 2020-12-05;
+    latestbook | sorttable | link_authorBook
+}
+i_timeDate () 
+{ 
+    : date: 2020-12-05;
+    row '!delete_time' | rdb_iDate | rename i_date ${1:-i_date} | ncolumn {insert,delete}_time
+}
+table_history ()
+{
+    report_notfile ${1:-/dev/null} && {
+        sleep 7
+	cat /dev/null
+	return 1
+    }
+    rdb_canon $1
+    zcat .hry/$1.Z 
+}
+latestbook () 
+{ 
+    : date: 2020-12-05;
+    table_history book_page.rdb | i_timeDate latest | jointable -1 book -2 book - author_book.rdb | column latest page author book | tee $(myname).rdb
 }
 echo git_init 1>&2
