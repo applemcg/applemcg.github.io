@@ -4,6 +4,7 @@ table	author_book.rdb
 table	book_page.rdb
 table	collections.rdb
 table	haveread.rdb
+table	latestbook.rdb
 table	librarything.rdb
 table	libthingbooks.rdb
 table	rd_rules.rdb
