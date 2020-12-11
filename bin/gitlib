@@ -320,10 +320,14 @@ fourColumnTiddly ()
     : date: 2020-07-04;
     report_notpipe && return 1;
     sed 's/|/\&#124;/g' | tawk '        
-    
+    BEGIN   { left = "|%s "
+              rite = "| %s"
+	      line = "|\n"
+              defl = left left left left line
+	    }
     NR == 1 { printf "| !%s | !%s | !%s | !%s |\n", $1, $2, $3, $4}
      NR < 3 { next };
-            { printf "|%s |%s |%s |%s |\n", $1, $2, $3, $4 }
+            { printf defl, $1, $2, $3, $4 }
    '
 }
 fiveColumnTiddly () 
@@ -362,7 +366,7 @@ read_book ()
         read_history | column book | sorttable | select_first book | headoff 1>&2;
         return 1
     };
-    read_history | row "book ~ /$1/" | rdb_iDate | sorttable -r i_date | select_first i_date | column i_date page book | sorttable
+    read_history | row "book ~ /$1/" | rdb_iDate | sorttable -r i_date | select_first i_date | rename i_date read | column read page | sorttable -u
 }
 keysmatch () 
 { 
@@ -516,15 +520,15 @@ i_timeDate ()
     : date: 2020-12-05;
     row '!delete_time' | rdb_iDate | rename i_date ${1:-i_date} | ncolumn {insert,delete}_time
 }
-table_history ()
-{
-    report_notfile ${1:-/dev/null} && {
-        sleep 7
-	cat /dev/null
-	return 1
-    }
-    rdb_canon $1
-    zcat .hry/$1.Z 
+table_history () 
+{ 
+    report_notfile ${1:-/dev/null} && { 
+        sleep 7;
+        cat /dev/null;
+        return 1
+    };
+    rdb_canon $1;
+    zcat .hry/$1.Z
 }
 latestbook () 
 { 
