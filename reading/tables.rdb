@@ -9,7 +9,7 @@ librarything.rdb	      6	2020-11-26	latest author book page
 libthingbooks.rdb	    801	2020-10-15	entry_date 
 rd_rules.rdb	      4	2020-10-27	base rule input command 
 readhistory.rdb	     13	2020-08-19	finish author book 
-table_list.rdb	     17	2020-12-10	Type File 
-tables.rdb	     11	2020-12-10	table nrecrds modate fields 
+table_list.rdb	     17	2020-12-13	Type File 
+tables.rdb	     11	2020-12-13	table nrecrds modate fields 
 tags.rdb	    983	2020-07-18	tags book_id 
 twotiddlylinks.rdb	      9	2020-10-27	latest author book 

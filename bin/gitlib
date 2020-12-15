@@ -523,8 +523,8 @@ i_timeDate ()
 table_history () 
 { 
     report_notfile ${1:-/dev/null} && { 
-        sleep 7;
-        cat /dev/null;
+        sleep 5;
+        comment "[CR]" 
         return 1
     };
     rdb_canon $1;
