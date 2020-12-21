@@ -10,9 +10,7 @@ table	libthingbooks.rdb
 table	rd_rules.rdb
 table	readhistory.rdb
 table	table_list.rdb
-table	tables.rdb
 table	tags.rdb
-table	twotiddlylinks.rdb
 list	collections.lst
 list	libthingbooks.lst
 list	rd_rules.lst
