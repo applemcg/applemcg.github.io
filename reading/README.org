@@ -7,6 +7,7 @@ onMyNightstand
 
 ** book progress
 
-    table_history book_page.rdb | i_timeDate latest 
+    book_list
 
-| jointable -1 book -2 book - author_book.rdb | column latest page author book | tee $(myname).rdb
+    book_history { name of book }
+
