@@ -1,14 +1,13 @@
 table	nrecrds	modate	fields
 -----	-------	------	------
 author_book.rdb	     19	2020-12-09	author book 
-book_page.rdb	      7	2020-12-20	page book 
+book_page.rdb	      7	2020-12-24	page book 
 collections.rdb	    991	2020-07-18	collections book_id 
 haveread.rdb	    296	2020-07-18	tags collections lc_classification book_id title primary_author copies 
-latestbook.rdb	      7	2020-12-20	latest page author book 
-librarything.rdb	      6	2020-11-27	latest author book page 
+latestbook.rdb	      7	2020-12-24	latest page author book 
 libthingbooks.rdb	    801	2020-10-15	entry_date 
-rd_rules.rdb	      4	2020-10-30	base rule input command 
+rd_rules.rdb	      4	2020-10-27	base rule input command 
 readhistory.rdb	     13	2020-08-19	finish author book 
-table_list.rdb	     15	2020-12-20	Type File 
-tables.rdb	      0	2020-12-20	table nrecrds modate fields 
+table_list.rdb	     15	2020-12-24	Type File 
+tables.rdb	     10	2020-12-24	table nrecrds modate fields 
 tags.rdb	    983	2020-07-18	tags book_id 

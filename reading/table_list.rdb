@@ -5,11 +5,11 @@ table	book_page.rdb
 table	collections.rdb
 table	haveread.rdb
 table	latestbook.rdb
-table	librarything.rdb
 table	libthingbooks.rdb
 table	rd_rules.rdb
 table	readhistory.rdb
 table	table_list.rdb
+table	tables.rdb
 table	tags.rdb
 list	collections.lst
 list	libthingbooks.lst
