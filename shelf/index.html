@@ -141,6 +141,8 @@ Error message and password prompt
 
 <p>This <a class="tc-tiddlylink-external" href="https://tiddlywiki.com" rel="noopener noreferrer" target="_blank">TiddlyWiki</a> contains the following tiddlers:</p><p><ul>
 
+<li> -1919180127</li>
+
 <li> /rdb</li>
 
 <li> headoff_testdata</li>
@@ -1743,6 +1745,9 @@ Error message and password prompt
 <!--~~ Ordinary tiddlers ~~-->
 
 <div id="storeArea" style="display:none;">
+<div created="20201227152639440" creator="Marty McGowan" modified="20201227152643973" modifier="Marty McGowan" title=" -1919180127">
+<pre>list_format</pre>
+</div>
 <div created="20200928152557397" creator="Marty McGowan" modified="20200928152557397" modifier="Marty McGowan" title=" /rdb">
 <pre></pre>
 </div>
@@ -13630,8 +13635,8 @@ exports.context = contextWidget;
 <div created="20201023190323870" creator="Marty McGowan" modified="20201114144631979" modifier="Marty McGowan" title="$:/state/tab-144200842">
 <pre>instructions</pre>
 </div>
-<div created="20201011192703769" creator="Marty McGowan" modified="20201011192710362" modifier="Marty McGowan" title="$:/state/tab-1522865277">
-<pre>utility commands</pre>
+<div created="20201011192703769" creator="Marty McGowan" modified="20201227152655987" modifier="Marty McGowan" title="$:/state/tab-1522865277">
+<pre>rdb usage</pre>
 </div>
 <div created="20200727000625471" creator="Marty McGowan" modified="20201206174256079" modifier="Marty McGowan" title="$:/state/tab-1528275152">
 <pre>$:/plugins/danielo515/ContextPlugin/visualizer</pre>
@@ -13744,8 +13749,8 @@ exports.context = contextWidget;
 <div created="20200418122101344" creator="Marty McGowan" modified="20201114144536202" modifier="Marty McGowan" title="$:/state/tab/moresidebar-1850697562">
 <pre>$:/core/ui/MoreSideBar/Recent</pre>
 </div>
-<div created="20200418121835270" creator="Marty McGOwan" modified="20201114144539193" modifier="Marty McGowan" title="$:/state/tab/sidebar--595412856">
-<pre>$:/core/ui/SideBar/Recent</pre>
+<div created="20200418121835270" creator="Marty McGOwan" modified="20201227152559404" modifier="Marty McGowan" title="$:/state/tab/sidebar--595412856">
+<pre>$:/core/ui/SideBar/Open</pre>
 </div>
 <div created="20200504200956301" modified="20200810170447722" title="$:/state/tabs/controlpanel/toolbars-1345989671">
 <pre>$:/core/ui/ControlPanel/Toolbars/ViewToolbar</pre>
@@ -13768,7 +13773,7 @@ exports.context = contextWidget;
 <div bag="default" created="20200810170615861" creator="M" modified="20200811134449245" modifier="Marty McGwan" revision="1" title="$:/status/UserName">
 <pre>Marty McGowan</pre>
 </div>
-<div created="20201206183041175" creator="Marty McGowan" list="[[Reader's Guide]] [[Table of Contents]]" modified="20201206183041175" modifier="Marty McGowan" title="$:/StoryList">
+<div created="20201227152605017" creator="Marty McGowan" list="table_report rdb_table_format [[rdb usage]] /rdb [[information base]] [[Table of Contents]]" modified="20201227154434186" modifier="Marty McGowan" title="$:/StoryList">
 <pre></pre>
 </div>
 <div created="20200519141000553" list="$:/.giffmex/Buttons/more-tiddler-edit-actions $:/core/ui/Buttons/delete $:/core/ui/Buttons/cancel $:/core/ui/Buttons/save" modified="20200521145647980" tags="$:/giffmex/bigeditarea $:/giffmex/stroll" title="$:/tags/EditToolbar">
@@ -13831,11 +13836,11 @@ exports.context = contextWidget;
         },
         &quot;$:/info/browser/screen/width&quot;: {
             &quot;title&quot;: &quot;$:/info/browser/screen/width&quot;,
-            &quot;text&quot;: &quot;2560&quot;
+            &quot;text&quot;: &quot;1440&quot;
         },
         &quot;$:/info/browser/screen/height&quot;: {
             &quot;title&quot;: &quot;$:/info/browser/screen/height&quot;,
-            &quot;text&quot;: &quot;1440&quot;
+            &quot;text&quot;: &quot;900&quot;
         },
         &quot;$:/info/browser/language&quot;: {
             &quot;title&quot;: &quot;$:/info/browser/language&quot;,
@@ -13853,8 +13858,8 @@ exports.context = contextWidget;
 <div created="20200502174943975" modified="20200502174950301" title="$:/temp/RenameTags/search">
 <pre>tb</pre>
 </div>
-<div created="20200418122544376" creator="Marty McGowan" modified="20201206174209208" modifier="Marty McGowan" title="$:/temp/search">
-<pre>tabs</pre>
+<div created="20200418122544376" creator="Marty McGowan" modified="20201227152555365" modifier="Marty McGowan" title="$:/temp/search">
+<pre></pre>
 </div>
 <div created="20200429214841632" modified="20200429214841632" tags="$:/tags/ServerConnection" title="$:/temp/ServerConnection/https://tiddlywiki.com/library/v5.1.22/index.html" url="https://tiddlywiki.com/library/v5.1.22/index.html">
 <pre>loaded</pre>
@@ -19478,46 +19483,57 @@ command.rdb      	     34	2020-09-13	command type status fmt abstract
 ```
 </pre>
 </div>
-<div created="20200914174353620" creator="Marty McGowan" modified="20200925132022619" modifier="Marty McGowan" tags="" title="rdb_table_format">
+<div created="20200914174353620" creator="Marty McGowan" modified="20201227154412070" modifier="Marty McGowan" tags="" title="rdb_table_format">
 <pre>[[rdb usage]] | [[rdb_table_format]]
 
 
 An /rdb table in table_format is a tab-separated text file where the first line lists the field names, the second contains dashes to separate the field names from the data; the third through last lines are the data records.
 
 ```
-rdb.$ cat tables.rdb
+rdb.$ cat tables.rdb 
 table	nrecrds	modate	fields
 -----	-------	------	------
 checktestdata.rdb	      2	2020-09-13	command status a b c 
-column.tsv	     33	2020-09-06	command status fmt abstract 
-command.nxt	     34	2020-09-13	command type status fmt abstract 
-command.rdb	     34	2020-09-13	command type status fmt abstract 
-date_tables.nxt	      8	2020-09-13	table date wkday 
+cmmd_abstract.rdb	     23	2020-09-27	command abstract 
+cmmd_status.rdb	     37	2020-10-20	command status fmt 
+cmmd_type.rdb	     37	2020-09-28	command type 
+command.rdb	     37	2020-09-24	command type status fmt abstract 
 date_tables.rdb	      8	2020-09-05	table date wkday 
+devlib_abstract.rdb	      7	2020-09-26	name abstract 
+devlib_libtable.rdb	      9	2020-09-24	name library table abstract 
+differences.rdb	      3	2020-09-24	book implementation 
 instances.rdb	     77	2020-09-13	Count field value 
-statusvalue.nxt	      5	2020-09-13	status seqn explain 
-statusvalue.rdb	      5	2020-09-06	status seqn explain 
-tables.rdb	     12	2020-09-13	table nrecrds modate fields 
+rd_rules.rdb	      5	2020-10-25	base rule input command 
+rdb_rules.rdb	      4	2020-10-22	rule input command 
+statusvalue.rdb	      6	2020-09-20	status seqn explain 
+table_created.rdb	      6	2020-09-28	table created fromtables 
+table_list.rdb	     25	2020-12-27	Type File 
+tables.rdb	      0	2020-12-27	table nrecrds modate fields 
+test_abstract.rdb	     17	2020-09-24	name abstract 
 testobject.nxt	     40	2020-09-13	object flag means 
 testobject.rdb	     40	2020-09-05	object flag means 
-rdb.$ 
+twotiddlylinks.rdb	     10	2020-10-22	command type status abstract 
+util_abstract.rdb	      2	2020-09-24	name abstract 
+util_status.rdb	      2	2020-09-27	command status fmt 
 ```
 
-Note the first line of header records doesn't column - align since the field names (the column names) are all less than eight characters.   Also, the first row of data doesn't column align since the filename is wider than the tabbed field.  This table is produced by a utility: [[table_report]]. Further note ''tables.rdb'' is a record in the table.
 
+Note the first line of header records doesn't column - align since the field names (the column names) are all less than eight characters.   Also, the first row of data doesn't column align since the filename is wider than the tabbed field.  This table is produced by a utility: [[table_report]]. Further note ''tables.rdb'' is a record in the table.
 
 
 Here is routine query with the result in table format.  The [[justify]] command presents a tabbed table with the columns space-adjusted
 
 ```
 rdb.$ row 'table ~ /^t/' &lt; tables.rdb | justify
-table         	nrecrds	modate    	fields                      
------         	-------	------    	------                      
-tables.rdb    	     12	2020-09-13	table nrecrds modate fields 
-testobject.nxt	     40	2020-09-13	object flag means           
-testobject.rdb	     40	2020-09-05	object flag means           
-rdb.$ 
-
+table             	nrecrds	modate    	fields                       
+-----             	-------	------    	------                       
+table_created.rdb 	      6	2020-09-28	table created fromtables     
+table_list.rdb    	     25	2020-12-27	Type File                    
+tables.rdb        	      0	2020-12-27	table nrecrds modate fields  
+test_abstract.rdb 	     17	2020-09-24	name abstract                
+testobject.nxt    	     40	2020-09-13	object flag means            
+testobject.rdb    	     40	2020-09-05	object flag means            
+twotiddlylinks.rdb	     10	2020-10-22	command type status abstract 
 ```
 </pre>
 </div>
@@ -21014,8 +21030,7 @@ smart_population ()
 </pre>
 </div>
 <div created="20201206180256882" creator="Marty McGowan" modified="20201206180440259" modifier="Marty McGowan" tags="[[Smart Functions]]" title="smart_defaults">
-<pre>
-[[Smart Functions]] | [[ smart_defaults]]
+<pre>[[Smart Functions]] | [[ smart_defaults]]
 
 There are two schools of though on the proper default command:
 
@@ -21099,8 +21114,7 @@ prof_rehome ()
 <pre></pre>
 </div>
 <div created="20201206175003782" creator="Marty McGowan" modified="20201206175328151" modifier="Marty McGowan" tags="[[Smart Functions]]" title="smart_syntax">
-<pre>
-[[Smart Functions]] | [[smart_syntax]]
+<pre>[[Smart Functions]] | [[smart_syntax]]
 
 are characterized by this bit of syntax
 
@@ -21335,29 +21349,35 @@ Active:
 
 &lt;&lt;list-links filter:&quot;[tag[active]]+[!sort[modified]]&quot;&gt;&gt;</pre>
 </div>
-<div created="20200913182622697" creator="Marty McGowan" modified="20200913184054526" modifier="Marty McGowan" tags="code" title="table_report">
+<div created="20200913182622697" creator="Marty McGowan" modified="20201227154548405" modifier="Marty McGowan" tags="code" title="table_report">
 <pre>```
-rdb.$ declare -f table_{report,record,columns} tables 
+rrdb.$ declare -f table_{report,record,columns} tables 
 table_report () 
 { 
     : local tables;
     : usage: ~ OR, e.g. ~ cat, overrides default JUSTIFY;
     : RDB_LINES folds Long field lists;
-    set -- ${1:-justify } .tmp.{a,b,c}.report;
-    tables | tee $2 | ncolumn fields &gt; $3;
-    column table fields &lt; $2 | rdb_lines &gt; $4;
-    read_devtty $( wc -l  $3 $2 $4);
-    jointable $3 $4 | tee tables.rdb | $1;
-    rm -f ${*:2}
+    : date: 2020-09-30;
+    : date: 2020-11-14;
+    set -- &quot;${@:-justify}&quot; .tmp.{a,b,c}.report;
+    newest tables.rdb *.rdb || { 
+        tables | tee $2 | ncolumn fields &gt; $3;
+        column table fields &lt; $2 | rdb_lines &gt; $4;
+        read_devtty $( wc -l  $3 $2 $4);
+        jointable $3 $4 | sorttable -r modate | select_first table | sorttable &gt; tables.rdb
+    };
+    $1 &lt; tables.rdb;
+    rm -f .tmp.{a,b,c}.report
 }
 table_record () 
 { 
     : format of a single TABLE record;
     : heavily dependent on STAT -t and format;
+    : 2020-09-27 eschew the ISO format in favor of Y4MMDD;
     report_notfile $1 &amp;&amp; return 1;
     local records=$(expr $(cat $1 | wc -l) - 2);
     local fields=$(echo $(sed 1q $1));
-    local modate=$(stat -t %Y-%m-%d $1|field 10);
+    local modate=$(stat -t %Y%m%d $1|field 10);
     printf &quot;%s\t&quot; $1;
     printf &quot;%7d\t&quot; $records;
     printf &quot;%s\t&quot; &quot;${modate//\&quot;/}&quot;;
@@ -21371,11 +21391,13 @@ table_columns ()
 tables () 
 { 
     : collect args or local tables on STDOUT;
-    table_columns rdb_hdr;
-    foreach table_record $(tableorlist * | rowhas Type table | column File | headoff) 2&gt; /dev/null
+    : date: 2020-11-14;
+    set -- tables.rdb $(table_list);
+    newest $* || ( tables_columns rdb_hdr;
+    foreach tables_record $* ) &gt; $1;
+    cat $1
 }
 rdb.$ 
-
 ```
 </pre>
 </div>
@@ -21625,8 +21647,7 @@ command.rdb      	     34	2020-09-13	command type status fmt abstract
 {{listtotable_testdata}}</pre>
 </div>
 <div created="20201206174620282" creator="Marty McGowan" modified="20201206174815716" modifier="Marty McGowan" tags="" title="tabs_example">
-<pre>
-[[tabs_example]]
+<pre>[[tabs_example]]
 
 ```
 &lt;&lt;tabs &quot;

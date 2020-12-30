@@ -1,4 +1,5 @@
 
+* TOC
 ** daily reading
 
 cd reading
@@ -10,4 +11,8 @@ onMyNightstand
     book_list
 
     book_history { name of book }
+
+    reading histort   # newestfirst
+
+
 
