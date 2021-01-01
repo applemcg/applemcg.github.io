@@ -559,6 +559,6 @@ readhistory ()
 { 
     : reading history with currentbooks on top;
     : date: 2020-12-30;
-    zcat .hry/book_page.rdb.Z | sorttable -r | select_first book | ncolumn insert_time | rdb_dDate | column d_date page book | tiddlylink book | threeColumnTiddly
+    zcat .hry/book_page.rdb.Z | sorttable -r | select_first book | ncolumn insert_time | rdb_dDate | rename d_date latest | column latest page book | sorttable -r | tiddlylink book | threeColumnTiddly
 }
 echo git_init 1>&2
