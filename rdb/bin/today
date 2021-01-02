@@ -1,17 +1,6 @@
-: today -- gregorian -c
-
-: ${YYMMDD:=`date '+%y%m%d'`}
-export YYMMDD
-if [ $# -lt 1 ]
-then
-    echo $YYMMDD
-else
-    expr $(julian $YYMMDD) \
-    $(
-       echo $1 |
-       sed 's/\([+-]\)\(.*\)/\1 \2/'
-    ) |
-    gregorian
-fi
-
-
+today6 () 
+{ 
+    : today in YYMMDD;
+    : date: 2021-01-01;
+    expr $(today) - 20000000
+}
