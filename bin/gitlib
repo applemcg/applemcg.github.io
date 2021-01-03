@@ -1,6 +1,6 @@
 gitlib_copyright () 
 { 
-    cat <<EOF
+    cat  <<EOF
 
 Copyright (c)2 2015-2020 Marty McGowan, JYATL - Just Yet Another Testing Lab
 
@@ -139,7 +139,8 @@ git_help ()
 }
 git_untracked () 
 { 
-    cgit status | sed '1,/Untracked files:/d; s/^#[     ]*//' | tail +${1:-2}
+    cgit status | sed '1,/Untracked files:/d; s/^#[     ]*//' |
+    ... tail +${1:-2}
 }
 git_needadd () 
 { 
@@ -151,6 +152,7 @@ git ()
     : the default command is STATUS, unless you can think of another;
     set -- ${*:-status};
     local gfun=git_${1};
+    read_devtty gfun: $gfun
     isfunction $gfun && { 
         $gfun ${*:2};
         return $?
@@ -214,7 +216,13 @@ remote_repo ()
 cgit () 
 { 
     : date: 2020-05-03;
+    read_devtty $#,  $@	        
     command git $@
+}
+git_status ()
+{
+    read_devtty $#,  $@	    
+    cgit status
 }
 git_toio () 
 { 
@@ -363,10 +371,13 @@ read_book ()
 { 
     : books reading history;
     if_missingargs 1 $@ && { 
-        read_history | column book | sorttable | select_first book | headoff 1>&2;
+        read_history | column book | sorttable |
+    ... select_first book | headoff 1>&2;
         return 1
     };
-    read_history | row "book ~ /$1/" | rdb_iDate | sorttable -r i_date | select_first i_date | rename i_date read | column read page | sorttable -u
+    read_history | row "book ~ /$1/" | rdb_iDate |
+    ... sorttable -r i_date | select_first i_date |
+    ... ... rename i_date read | column read page | sorttable -u
 }
 keysmatch () 
 { 
@@ -394,7 +405,8 @@ field_xref ()
 { 
     : convert book_id field to field book_id, where field is multi-valued;
     newest $2.rdb $1 || { 
-        cat $1 | column book_id $2 | headoff | rdb_n2one $2 book_id > $2.rdb
+        cat $1 | column book_id $2 | headoff |
+    ... rdb_n2one $2 book_id > $2.rdb
     }
 }
 goodfields () 
@@ -425,7 +437,8 @@ book_tordb ()
     field_xref $1 tags;
     field_xref $1 collections;
     newest $3 $1 || { 
-        cat $1 | column book_id primary_author title rating date_{started,read} | tdb | compute '
+        cat $1 | column book_id primary_author title rating date_{started,read} |
+    ... tdb | compute '
 
         t=title ":"
 	l=index(t,":")-1
@@ -455,7 +468,8 @@ tab_count ()
     : tabulate the count of unique rows;
     : date: 2020-07-18;
     report_notpipe && return 1;
-    sorttable | rduniq | sorttable -n | column Count | rename Count oc | rduniq | rename Count tabul8 oc Count
+    sorttable | rduniq | sorttable -n | column Count |
+    ... rename Count oc | rduniq | rename Count tabul8 oc Count
 }
 main () 
 { 
@@ -496,9 +510,11 @@ book_author ()
 }
 datedRecords () 
 { 
-    : pull DATED current records from a history file, optionally RENAME the insert date,;
+    : pull DATED current records from a history file;
+    : optionally RENAME the insert date,;
     : date: 2020-11-27;
-    row '!delete_time' | rdb_iDate | rename i_date ${1:-i_date} | ncolumn {insert,delete}_time
+    row '!delete_time' | rdb_iDate | rename i_date ${1:-i_date} |
+    ... ncolumn {insert,delete}_time
 }
 link_authorBook () 
 { 
@@ -513,12 +529,14 @@ latestpageauthorbook ()
 onMyNightstand () 
 { 
     : date: 2020-12-05;
+    : date: 2021-01-03;
     latestbook | sorttable | link_authorBook
 }
 i_timeDate () 
 { 
     : date: 2020-12-05;
-    row '!delete_time' | rdb_iDate | rename i_date ${1:-i_date} | ncolumn {insert,delete}_time
+    row '!delete_time' | rdb_iDate |
+    ... rename i_date ${1:-i_date} | ncolumn {insert,delete}_time
 }
 table_history () 
 { 
@@ -539,8 +557,8 @@ latestbook ()
 { 
     : date: 2020-12-05;
     table_history book_page.rdb | i_timeDate latest |
-        jointable -1 book -2 book - author_book.rdb |
-	    column latest page author book | tee $(myname).rdb
+    ... jointable -1 book -2 book - author_book.rdb |
+    ... ... column latest page author book | tee $(myname).rdb
 }
 title_fold () 
 { 
@@ -555,14 +573,61 @@ book_history ()
         book_list | headoff | pr -t -2;
         return 1
     };
-    table_history book_page.rdb | ncolumn delete_time | rdb_iDate | row "book ~ /$1/" | title_fold | column i_date page book | sorttable
+    table_history book_page.rdb | ncolumn delete_time |
+    ... rdb_iDate | row "book ~ /$1/" | title_fold |
+    ... ... column i_date page book | sorttable
 }
 readhistory () 
 { 
     : reading history with currentbooks on top;
     : date: 2020-12-30;
-    zcat .hry/book_page.rdb.Z | sorttable -r | select_first book | ncolumn delete_time |
-    rdb_iDate | rename i_date latest | column latest page book |
-    tiddlylink book | threeColumnTiddly
+    : date: 2021-01-03;
+    zcat .hry/book_page.rdb.Z | sorttable -r | select_first book |
+    .. ncolumn delete_time | rdb_iDate | rename i_date latest |
+    .. column latest page book | tiddlylink book | threeColumnTiddly
+}
+... () 
+{ 
+    : synctactic sugar for long pipe sequences;
+    : date: 2021-01-03;
+    eval $@
+}
+.. () 
+{ 
+    : another synctactic sugar for long pipe sequences;
+    : date: 2021-01-03;
+    eval $@
+}
+func_args ()
+{
+    type -a ${@:-/dev/null} 2>/dev/null |  awk '$4 ~ /function/ { print $1 }'
+}
+declare () 
+{ 
+    : insert ... syntactic sugar into shell functions;
+    : date: 2021-01-03;
+    case $1 in 
+        -f)
+	    : test for function names
+            set -- $(func_args ${@:2})
+	    read_devtty $#,  $@	    
+	    [[ $# -lt 1 ]] && return 1
+	    :
+	    : there are some, proceed
+            command declare -f $@  | sed '
+	    s/| *\([.][. ]*\) /|\
+    \1 /g'
+        ;;
+        *)
+            command declare $@
+        ;;
+    esac
+}
+declare_test () 
+{ 
+    : date: 2021-01-03;
+    ignore pushd $HOME/Dropbox/git/applemcg.github.io/reading;
+    set -- ... declare{,_test} latestbook readhistory
+    declare -f $*;    
 }
 echo git_init 1>&2
