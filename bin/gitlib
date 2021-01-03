@@ -538,7 +538,9 @@ book_list ()
 latestbook () 
 { 
     : date: 2020-12-05;
-    table_history book_page.rdb | i_timeDate latest | jointable -1 book -2 book - author_book.rdb | column latest page author book | tee $(myname).rdb
+    table_history book_page.rdb | i_timeDate latest |
+        jointable -1 book -2 book - author_book.rdb |
+	    column latest page author book | tee $(myname).rdb
 }
 title_fold () 
 { 
