@@ -489,6 +489,8 @@ Error message and password prompt
 
 <li>On My Nightstand</li>
 
+<li>onMynightstand</li>
+
 <li>OrgMode</li>
 
 <li>Origin Story: A Big History of Everything</li>
@@ -12256,7 +12258,7 @@ exports.context = contextWidget;
 <div bag="default" revision="1" title="$:/status/UserName">
 <pre></pre>
 </div>
-<div created="20210102151304548" list="[[Colin Dexter]] [[Last Bus to Woodstock]] readhistory [[Reading History]] TableofContents [[MIT Club]]" modified="20210102152548111" title="$:/StoryList">
+<div created="20210103013028306" list="onMynightstand [[On My Nightstand]] TableofContents [[MIT Club]]" modified="20210103013105937" title="$:/StoryList">
 <pre></pre>
 </div>
 <div created="20200519141000553" list="$:/.giffmex/Buttons/more-tiddler-edit-actions $:/core/ui/Buttons/delete $:/core/ui/Buttons/cancel $:/core/ui/Buttons/save" modified="20200521145647980" tags="$:/giffmex/bigeditarea $:/giffmex/stroll" title="$:/tags/EditToolbar">
@@ -12316,11 +12318,11 @@ exports.context = contextWidget;
         },
         &quot;$:/info/browser/screen/width&quot;: {
             &quot;title&quot;: &quot;$:/info/browser/screen/width&quot;,
-            &quot;text&quot;: &quot;1440&quot;
+            &quot;text&quot;: &quot;2560&quot;
         },
         &quot;$:/info/browser/screen/height&quot;: {
             &quot;title&quot;: &quot;$:/info/browser/screen/height&quot;,
-            &quot;text&quot;: &quot;900&quot;
+            &quot;text&quot;: &quot;1440&quot;
         },
         &quot;$:/info/browser/language&quot;: {
             &quot;title&quot;: &quot;$:/info/browser/language&quot;,
@@ -12647,8 +12649,7 @@ While not the literary figure of, say, Michener, the method and popularity of th
 </pre>
 </div>
 <div created="20201126160409003" modified="20210102152711845" tags="author" title="Colin Dexter">
-<pre>
-* [[on Wikipedia|https://en.wikipedia.org/wiki/Colin_Dexter]]
+<pre>* [[on Wikipedia|https://en.wikipedia.org/wiki/Colin_Dexter]]
 
 
 
@@ -13241,10 +13242,10 @@ Click the buttons in any tiddler to see the tiddlers they create. Save changes. 
 {{Circe}}
 </pre>
 </div>
-<div created="20200721142238341" creator="Marty McGowan" modified="20210101175747563" modifier="Marty McGowan" tags="TableofContents table" title="On My Nightstand">
-<pre>```
-reading.$ onMynightstand
-```
+<div created="20200721142238341" creator="Marty McGowan" modified="20210103013103452" modifier="Marty McGowan" tags="TableofContents table" title="On My Nightstand">
+<pre>
+reading.$ [[onMynightstand]]
+
 On the &quot;page&quot;, two points to understand:
 
 * Some pages are either an e-book location, or a chapter number
@@ -13260,6 +13261,33 @@ Compare this list with [[Reading History]]
 |210101 |    20 |[[Sinclair Lewis]] |[[It Can't Happen Here]] |
 |210101 |   280 |[[Booth Tarkington]] |[[The Magnificent Ambersons]] |
 |210101 |  3640 |[[Colin Dexter]] |[[Last Seen Wearing]] |
+</pre>
+</div>
+<div created="20210103013103453" modified="20210103013753604" tags="function" title="onMynightstand">
+<pre>
+I've the design for a function ` ...` useful in pretty-printing long-winded pipes
+
+```
+onMyNightstand () 
+{ 
+    : date: 2020-12-05;
+    latestbook | sorttable | link_authorBook
+}
+latestbook () 
+{ 
+    : date: 2020-12-05;
+    table_history book_page.rdb | i_timeDate latest |
+    ... jointable -1 book -2 book - author_book.rdb | 
+    ... ... column latest page author book | tee $(myname).rdb
+}
+link_authorBook () 
+{ 
+    : date: 2020-12-05;
+    set -- ${1:-four};
+    tiddlylink author | tiddlylink book | ${1}ColumnTiddly
+}
+
+```
 </pre>
 </div>
 <div created="20200720121108904" creator="Marty McGowan" modified="20200720121108904" modifier="Marty McGowan" title="OrgMode">
@@ -13320,8 +13348,7 @@ Compare this list with [[Reading History]]
 <pre></pre>
 </div>
 <div created="20210102151529462" modified="20210102152434126" tags="function" title="readhistory">
-<pre>
-```
+<pre>```
  readhistory () 
 { 
     : reading history with currentbooks on top;
@@ -13335,8 +13362,7 @@ Compare this list with [[Reading History]]
 </pre>
 </div>
 <div created="20200818134415335" modified="20210102152518825" tags="table TableofContents" title="Reading History">
-<pre>
-todo: 
+<pre>todo: 
 
 # look up multi-volume starting number, subtract from this report
 # right-justify page numbers
