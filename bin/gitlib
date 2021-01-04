@@ -627,7 +627,7 @@ declare_test ()
 { 
     : date: 2021-01-03;
     ignore pushd $HOME/Dropbox/git/applemcg.github.io/reading;
-    set -- ... declare{,_test} latestbook readhistory
+    set -- func_args ... declare{,_test} latestbook readhistory
     declare -f $*;    
 }
 echo git_init 1>&2
