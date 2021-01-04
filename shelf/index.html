@@ -871,6 +871,8 @@ Error message and password prompt
 
 <li>dd_app(1)</li>
 
+<li>declare_test</li>
+
 <li>defining functions</li>
 
 <li>development story</li>
@@ -11809,8 +11811,7 @@ $:/config/ViewToolbarButtons/Visibility/$(listItem)$
 <div status="complete" title="$:/Import">
 <pre>The following tiddlers were imported:
 
-# [[Untitled 1]]
-# [[22nd December 2018]]</pre>
+# [[declare_test]]</pre>
 </div>
 <div created="20200910121818126" creator="Marty McGowan" modified="20200910121818126" modifier="Marty McGowan" title="$:/Import!!popup-Untitled">
 <pre>yes</pre>
@@ -13749,8 +13750,8 @@ exports.context = contextWidget;
 <div created="20200418122101344" creator="Marty McGowan" modified="20201114144536202" modifier="Marty McGowan" title="$:/state/tab/moresidebar-1850697562">
 <pre>$:/core/ui/MoreSideBar/Recent</pre>
 </div>
-<div created="20200418121835270" creator="Marty McGOwan" modified="20201227152559404" modifier="Marty McGowan" title="$:/state/tab/sidebar--595412856">
-<pre>$:/core/ui/SideBar/Open</pre>
+<div created="20200418121835270" creator="Marty McGOwan" modified="20210104030327070" modifier="Marty McGowan" title="$:/state/tab/sidebar--595412856">
+<pre>$:/core/ui/SideBar/Tools</pre>
 </div>
 <div created="20200504200956301" modified="20200810170447722" title="$:/state/tabs/controlpanel/toolbars-1345989671">
 <pre>$:/core/ui/ControlPanel/Toolbars/ViewToolbar</pre>
@@ -13773,7 +13774,7 @@ exports.context = contextWidget;
 <div bag="default" created="20200810170615861" creator="M" modified="20200811134449245" modifier="Marty McGwan" revision="1" title="$:/status/UserName">
 <pre>Marty McGowan</pre>
 </div>
-<div created="20201227152605017" creator="Marty McGowan" list="table_report rdb_table_format [[rdb usage]] /rdb [[information base]] [[Table of Contents]]" modified="20201227154434186" modifier="Marty McGowan" title="$:/StoryList">
+<div created="20210104030451827" creator="Marty McGowan" list="declare_test $:/Import [[Table of Contents]]" modified="20210104030451827" modifier="Marty McGowan" title="$:/StoryList">
 <pre></pre>
 </div>
 <div created="20200519141000553" list="$:/.giffmex/Buttons/more-tiddler-edit-actions $:/core/ui/Buttons/delete $:/core/ui/Buttons/cancel $:/core/ui/Buttons/save" modified="20200521145647980" tags="$:/giffmex/bigeditarea $:/giffmex/stroll" title="$:/tags/EditToolbar">
@@ -15888,6 +15889,55 @@ Also, note the dd_saved and dd_sumry functions.   Make sure you have a HOME/lib 
 
 MartyMcGowan
 
+</pre>
+</div>
+<div created="20210104020736268" creator="Marty McGowan" modified="20210104030519460" modifier="Marty McGowan" tags="fotd" title="declare_test">
+<pre>[[2020-11-05 09:44]]
+
+Two functions `...` and `declare_test` combine for the function of the day.   I've just added them to:
+
+* my [[Commonplace Book|http://mcgowans.org/pubs/marty3/commonplace/]]
+* the [[shell system chapter,|http://mcgowans.org/pubs/marty3/commonplace/10_red/index.html]] in a paper called
+* [[A Pretty Shell Function.|http://mcgowans.org/pubs/marty3/commonplace/software/aprettyshellfunction.html]]
+* here's the [[result of the test case|http://mcgowans.org/pubs/marty3/commonplace/software/aprettyshellfunction.html#org2596478]]
+
+The insight was that three dots `...` could be a function, and used to tab-align the re-formatted text of the long pipes.
+
+The declare_test result is in the `latestbook` and `readhistory` function.  They demonstrate three possibilities, since the programmer must insert the dots after a pipe, the choices are:
+
+* a common single (as in latestbook) or successive indenting (as in readhistory)
+* the size of the indenting, two, three, four ... spaces
+
+There is a two-dot function supplied, not shown, used in latestbook
+
+The dots appear in a regular expression which looks like:
+
+&gt;  command with args | ...  other command with other args | ... ... and another 
+
+This format is produced by the un-adorned `declare -f`  and may be demonstrated by this command:
+
+&gt;  $ command declare -f latestbook readhistory   # etc...
+
+Which suggests that demonstration should be added to the `declare_test` function.
+
+
+
+```
+$ declare -f ... declare_test
+... () 
+{ 
+    : synctactic sugar for long pipe sequences;
+    : date: 2021-01-03;
+    eval $@
+}
+declare_test () 
+{ 
+    : date: 2021-01-03;
+    ignore pushd $HOME/Dropbox/git/applemcg.github.io/reading;
+    set -- func_args ... declare{,_test} latestbook readhistory;
+    declare -f $*
+}
+```
 </pre>
 </div>
 <div created="20201206180811286" creator="Marty McGowan" modified="20201206180932782" modifier="Marty McGowan" tags="[[Smart Functions]]" title="defining functions">
