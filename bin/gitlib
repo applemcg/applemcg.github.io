@@ -590,17 +590,27 @@ readhistory ()
 { 
     : synctactic sugar for long pipe sequences;
     : date: 2021-01-03;
-    eval $@
+    read_devtty "$@"
+    eval "$@"
 }
 .. () 
 { 
     : another synctactic sugar for long pipe sequences;
     : date: 2021-01-03;
-    eval $@
+    eval "$@"
 }
 func_args ()
 {
-    type -a ${@:-/dev/null} 2>/dev/null |  awk '$4 ~ /function/ { print $1 }'
+    : use TYPE to simulate declare -f
+    : limitation:  QUOTED args may not be REFORMATTED
+    type -a ${@:-/dev/null} 2>/dev/null | awk '$4 ~ /function/ { print $1 }'
+}
+fold_pipedots ()
+{
+    : fold line from RE with PIPE followed by ... s
+    sed '
+        s/| *\([.][. ]*\) /|\
+    \1 /g'
 }
 declare () 
 { 
@@ -614,9 +624,7 @@ declare ()
 	    [[ $# -lt 1 ]] && return 1
 	    :
 	    : there are some, proceed
-            command declare -f $@  | sed '
-	    s/| *\([.][. ]*\) /|\
-    \1 /g'
+            command declare -f $@ | fold_pipedots
         ;;
         *)
             command declare $@
@@ -627,7 +635,15 @@ declare_test ()
 { 
     : date: 2021-01-03;
     ignore pushd $HOME/Dropbox/git/applemcg.github.io/reading;
-    set -- func_args ... declare{,_test} latestbook readhistory
-    declare -f $*;    
+    local format="\n%s\n==============================================\n"
+    : 
+    printf $format UTILITIES
+    declare -f func_args ... .. declare{,_test}
+    :
+    printf $format "BEFORE - declare builtin"
+    command declare -f  latestbook readhistory
+    :
+    printf $format "AFTER - declare Function"
+    declare -f  latestbook readhistory    
 }
 echo git_init 1>&2
