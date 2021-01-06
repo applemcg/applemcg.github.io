@@ -599,15 +599,25 @@ readhistory ()
     : date: 2021-01-03;
     eval "$@"
 }
+args_test ()
+{
+    : testing limitation -- may QUOTED args be REFORMATTED?
+    function .... () { cat - ; }
+    type -a ${@:-$(myname)} 2>/dev/null | .... awk '$4 ~ /function/ { print $1 }'
+    : may need to simulate this
+    : unset .... 
+}
 func_args ()
 {
     : use TYPE to simulate declare -f
-    : limitation:  QUOTED args may not be REFORMATTED
     type -a ${@:-/dev/null} 2>/dev/null | awk '$4 ~ /function/ { print $1 }'
 }
 fold_pipedots ()
 {
-    : fold line from RE with PIPE followed by ... s
+    : RE folds line with PIPE followed by ... s
+    : the RE allows zero or more spaces after the Pipe Symbol
+    : .. a Dot followed by zero or more Dots or Spaces,
+    : .. closed by a space, which separates .s from the command;
     sed '
         s/| *\([.][. ]*\) /|\
     \1 /g'
@@ -635,15 +645,15 @@ declare_test ()
 { 
     : date: 2021-01-03;
     ignore pushd $HOME/Dropbox/git/applemcg.github.io/reading;
-    local format="\n%s\n==============================================\n"
-    : 
-    printf $format UTILITIES
-    declare -f func_args ... .. declare{,_test}
-    :
-    printf $format "BEFORE - declare builtin"
-    command declare -f  latestbook readhistory
-    :
-    printf $format "AFTER - declare Function"
-    declare -f  latestbook readhistory    
+    local format="\n%s\n==============================================\n";
+    :;
+    printf $format UTILITIES;
+    declare -f func_args ... .. args_test fold_pipedots declare{,_test};
+    :;
+    printf $format "BEFORE - declare builtin";
+    command declare -f latestbook readhistory;
+    :;
+    printf $format "AFTER - declare Function";
+    declare -f latestbook readhistory
 }
 echo git_init 1>&2
