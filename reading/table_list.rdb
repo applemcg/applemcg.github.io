@@ -6,6 +6,7 @@ table	collections.rdb
 table	haveread.rdb
 table	latestbook.rdb
 table	libthingbooks.rdb
+table	multi_book.rdb
 table	rd_rules.rdb
 table	readhistory.rdb
 table	table_list.rdb
