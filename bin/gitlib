@@ -152,7 +152,7 @@ git ()
     : the default command is STATUS, unless you can think of another;
     set -- ${*:-status};
     local gfun=git_${1};
-    read_devtty gfun: $gfun
+    read_devtty gfun: $gfun;
     isfunction $gfun && { 
         $gfun ${*:2};
         return $?
@@ -216,12 +216,12 @@ remote_repo ()
 cgit () 
 { 
     : date: 2020-05-03;
-    read_devtty $#,  $@	        
+    read_devtty $#, $@;
     command git $@
 }
-git_status ()
-{
-    read_devtty $#,  $@	    
+git_status () 
+{ 
+    read_devtty $#, $@;
     cgit status
 }
 git_toio () 
@@ -590,7 +590,7 @@ readhistory ()
 { 
     : synctactic sugar for long pipe sequences;
     : date: 2021-01-03;
-    read_devtty "$@"
+    read_devtty "$@";
     eval "$@"
 }
 .. () 
@@ -599,24 +599,28 @@ readhistory ()
     : date: 2021-01-03;
     eval "$@"
 }
-args_test ()
-{
-    : testing limitation -- may QUOTED args be REFORMATTED?
-    function .... () { cat - ; }
-    type -a ${@:-$(myname)} 2>/dev/null | .... awk '$4 ~ /function/ { print $1 }'
-    : may need to simulate this
-    : unset .... 
+args_test () 
+{ 
+    : testing limitation -- may QUOTED args be REFORMATTED?;
+    function .... () 
+    { 
+        cat -
+    };
+    type -a ${@:-$(myname)} 2> /dev/null |
+    .... awk '$4 ~ /function/ { print $1 }';
+    : may need to simulate this;
+    : unset ....
 }
-func_args ()
-{
-    : use TYPE to simulate declare -f
-    type -a ${@:-/dev/null} 2>/dev/null | awk '$4 ~ /function/ { print $1 }'
+func_args () 
+{ 
+    : use TYPE to simulate declare -f;
+    type -a ${@:-/dev/null} 2> /dev/null | awk '$4 ~ /function/ { print $1 }'
 }
-fold_pipedots ()
-{
-    : RE folds line with PIPE followed by ... s
-    : the RE allows zero or more spaces after the Pipe Symbol
-    : .. a Dot followed by zero or more Dots or Spaces,
+fold_pipedots () 
+{ 
+    : RE folds line with PIPE followed by ... s;
+    : the RE allows zero or more spaces after the Pipe Symbol;
+    : .. a Dot followed by zero or more Dots or Spaces,;
     : .. closed by a space, which separates .s from the command;
     sed '
         s/| *\([.][. ]*\) /|\
@@ -628,12 +632,12 @@ declare ()
     : date: 2021-01-03;
     case $1 in 
         -f)
-	    : test for function names
-            set -- $(func_args ${@:2})
-	    read_devtty $#,  $@	    
-	    [[ $# -lt 1 ]] && return 1
-	    :
-	    : there are some, proceed
+            : test for function names;
+            set -- $(func_args ${@:2});
+            read_devtty $#, $@;
+            [[ $# -lt 1 ]] && return 1;
+            :;
+            : there are some, proceed;
             command declare -f $@ | fold_pipedots
         ;;
         *)
@@ -655,5 +659,16 @@ declare_test ()
     :;
     printf $format "AFTER - declare Function";
     declare -f latestbook readhistory
+}
+fun_column () 
+{ 
+    : collect one of columns in from the function table;
+    : date: 2021-01-18;
+    local file=shd_alldata.lst;
+    if_missingargs 1 $@ && { 
+        printfirst < $file;
+        return 1
+    };
+    cat $file | awk "\$1 ~ /fun/ || NF < 1 || \$1 ~ /$1/" | column fun $1 | listtotable | row $1
 }
 echo git_init 1>&2
