@@ -2,6 +2,11 @@
 
 Formerly in the MyIdeaWarehouse.html file, it's now the index file in
 this directory.
+** activity
+
+     git          # ~ status
+     gagm         # git add $(git modified)
+     git toio     # loads the changed files
 
 ** contents
 
