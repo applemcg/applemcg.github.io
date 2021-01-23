@@ -2,7 +2,7 @@ gitlib_copyright ()
 { 
     cat  <<EOF
 
-Copyright (c)2 2015-2020 Marty McGowan, JYATL - Just Yet Another Testing Lab
+Copyright (c)2 2015-2021 Marty McGowan, JYATL - Just Yet Another Testing Lab
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -461,7 +461,8 @@ rdb_n2one ()
     : date: 2020-07-18;
     report_notpipe && return 1;
     rdb_hdr $*;
-    sed 's/, /	/g' | tawk '{ for(i=2; i<=NF; i++) printf "%s\t%s\n", $i, $1 }'
+    sed 's/, /	/g' |
+    ... tawk '{ for(i=2; i<=NF; i++) printf "%s\t%s\n", $i, $1 }'
 }
 tab_count () 
 { 
@@ -488,7 +489,8 @@ h_getold ()
 { 
     : example of how to retrive a history file;
     set -- ${1:-5734};
-    set -- $(find . -name librarything.rdb | xargs ls -lrt | grep $1 | tail -1);
+    set -- $(find . -name librarything.rdb | xargs ls -lrt |
+    ... grep $1 | tail -1);
     declare -f $(myname);
     return;
     echo $# $*;
@@ -602,15 +604,9 @@ readhistory ()
 args_test () 
 { 
     : testing limitation -- may QUOTED args be REFORMATTED?;
-    function .... () 
-    { 
-        cat -
-    };
-    type -a ${@:-$(myname)} 2> /dev/null |
-    .... awk '$4 ~ /function/ { print $1 }';
-    : may need to simulate this;
-    : unset ....
-}
+    : related: func_args
+    return;
+}    
 func_args () 
 { 
     : use TYPE to simulate declare -f;
@@ -669,6 +665,7 @@ fun_column ()
         printfirst < $file;
         return 1
     };
-    cat $file | awk "\$1 ~ /fun/ || NF < 1 || \$1 ~ /$1/" | column fun $1 | listtotable | row $1
+    cat $file | awk "\$1 ~ /fun/ || NF < 1 || \$1 ~ /$1/" |
+    ... column fun $1 | listtotable | row $1
 }
 echo git_init 1>&2
