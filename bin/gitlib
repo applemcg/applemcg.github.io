@@ -522,7 +522,7 @@ link_authorBook ()
 { 
     : date: 2020-12-05;
     set -- ${1:-four};
-    tiddlylink author | tiddlylink book | ${1}ColumnTiddly
+    tiddlylink author | tiddlylink book | ${1}ColumnTiddly | tee /dev/tty | pbcopy
 }
 latestpageauthorbook () 
 { 
@@ -584,9 +584,9 @@ readhistory ()
     : reading history with currentbooks on top;
     : date: 2020-12-30;
     : date: 2021-01-03;
-    zcat .hry/book_page.rdb.Z | sorttable -r | select_first book |
+    table_history book_page.rdb | sorttable -r | select_first book |
     .. ncolumn delete_time | rdb_iDate | rename i_date latest |
-    .. column latest page book | tiddlylink book | threeColumnTiddly
+    .. column latest page book | tiddlylink book | threeColumnTiddly  | tee /dev/tty | pbcopy
 }
 ... () 
 { 
