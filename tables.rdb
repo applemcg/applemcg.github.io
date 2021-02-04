@@ -1,7 +1,0 @@
-table	nrecrds	modate	fields
------	-------	------	------
-devlib_abstract.rdb	      7	2020-09-24	name abstract 
-table_fields.tmp	     25	2020-08-25	table fields 
-tables.nxt	     15	2020-08-25	table nrecrds modate 
-tables.rdb	      0	2020-09-26	table nrecrds modate fields 
-tables.tmp	     15	2020-08-25	table nrecrds modate fields 
