@@ -586,7 +586,7 @@ readhistory ()
     : date: 2021-01-03;
     table_history book_page.rdb | sorttable -r | select_first book |
     .. ncolumn delete_time | rdb_iDate | rename i_date latest |
-    .. column latest page book | tiddlylink book | threeColumnTiddly  | tee /dev/tty | pbcopy
+    .. column latest page book | tiddlylink book | threeColumnTiddly | tee /dev/tty | pbcopy
 }
 ... () 
 { 
@@ -604,9 +604,9 @@ readhistory ()
 args_test () 
 { 
     : testing limitation -- may QUOTED args be REFORMATTED?;
-    : related: func_args
-    return;
-}    
+    : related: func_args;
+    return
+}
 func_args () 
 { 
     : use TYPE to simulate declare -f;
@@ -667,5 +667,29 @@ fun_column ()
     };
     cat $file | awk "\$1 ~ /fun/ || NF < 1 || \$1 ~ /$1/" |
     ... column fun $1 | listtotable | row $1
+}
+mytable () 
+{ 
+    : create an RDB table with name of the calling function, echoing the table Name;
+    : related: mytable    
+    : date: 2021-02-06;
+    sometable $(myname 2);
+}
+sometable ()
+{
+    : the table is named after a CALLER. the TMP is a HIDDEN file;
+    if_missingargs 1 $* && return 1;
+    set -- $1.rdb .$1.tmp;
+    report_notpipe && return 2;
+    read_devtty $*;
+    tee $2 | onlyChanged $1;
+    echo $1
+}
+yourtable () 
+{ 
+    : create an RDB table with name of the callers caller, echoing the table Name;
+    : related: mytable
+    : date: 2021-02-06;
+    sometable  $(myname 3);
 }
 echo git_init 1>&2

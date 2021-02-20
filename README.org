@@ -8,6 +8,19 @@ this directory.
      gagm         # git add $(git modified)
      git toio     # loads the changed files
 
+
+  each of the directories below will have a collection of
+  index.yymmdd....html and a .daily directory the function
+  index_lastofday lists the last backup file of the day,
+
+  So, here's a sequence
+
+$ cd TTGL
+$ ln -f $(index_lastofday) .daily
+$ llrt .daily      # see they've shown up
+$ rm -fr index.*   # leaving one for each day in .daily
+
+
 ** contents
 
 {user}.github.io for a  [[https://tiddlywiki.com][Tiddly Wiki]]: 

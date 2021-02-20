@@ -1016,9 +1016,10 @@ rdb_column ()
 }
 rdb_commands () 
 { 
-    : list the BOOK command names;
-    : date: 2020-04-11;
-    grep command ${RDB_HOME}/lib/command.lst | field 2 | sort -u
+    : the file of BOOK command names;
+    : date: 2021-02-07 recovered from oldcommand history
+    function commands_fields () { rdb_commands sed 1q; }
+    ${*:-echo} ${RDB_HOME}/bookcommand.rdb 
 }
 rdb_create () 
 { 
