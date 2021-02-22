@@ -532,7 +532,7 @@ onMyNightstand ()
 { 
     : date: 2020-12-05;
     : date: 2021-01-03;
-    latestbook | sorttable | link_authorBook
+    cat $(latestbook) | sorttable | link_authorBook
 }
 i_timeDate () 
 { 
@@ -556,11 +556,12 @@ book_list ()
     table_history book_page.rdb | column book | title_fold | sorttable -u
 }
 latestbook () 
-{ 
+{
+    : all reading history with author and book
     : date: 2020-12-05;
     table_history book_page.rdb | i_timeDate latest |
     ... jointable -1 book -2 book - author_book.rdb |
-    ... ... column latest page author book | tee $(myname).rdb
+    ... ... column latest page author book | mytable
 }
 title_fold () 
 { 
@@ -579,14 +580,19 @@ book_history ()
     ... rdb_iDate | row "book ~ /$1/" | title_fold |
     ... ... column i_date page book | sorttable
 }
-readhistory () 
+latestPageBook () 
 { 
     : reading history with currentbooks on top;
     : date: 2020-12-30;
     : date: 2021-01-03;
     table_history book_page.rdb | sorttable -r | select_first book |
     .. ncolumn delete_time | rdb_iDate | rename i_date latest |
-    .. column latest page book | tiddlylink book | threeColumnTiddly | tee /dev/tty | pbcopy
+    .. column latest page book | mytable
+}    
+readhistory ()
+{
+    : format latestPageBook for READING tiddlyWiki
+    cat $(latestPageBook) | tiddlylink book | threeColumnTiddly | tee /dev/tty | pbcopy
 }
 ... () 
 { 
@@ -678,7 +684,9 @@ mytable ()
 sometable ()
 {
     : the table is named after a CALLER. the TMP is a HIDDEN file;
+    : args: function-named TABLE
     if_missingargs 1 $* && return 1;
+    pptlog $1
     set -- $1.rdb .$1.tmp;
     report_notpipe && return 2;
     read_devtty $*;
