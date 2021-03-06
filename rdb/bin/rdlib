@@ -515,17 +515,19 @@ jointable ()
     local ARGS="";
     local f1="";
     local f2="";
+    local tmp=$HOME/tmp/$(myname)
+    rm -f $tmp.*
     while [ $# -gt 0 ]; do
         arg=$1;
         shift;
         case $arg in 
             -)
                 if [ -z "$f1" ]; then
-                    cat - > ~/tmp/i.join;
-                    f1=~/tmp/i.join;
+                    cat - > $tmp.i;
+                    f1=$tmp.i;
                 else
-                    cat - > ~/tmp/i.join;
-                    f2=~/tmp/i.join;
+                    cat - > $tmp.i;
+                    f2=$tmp.i;
                 fi;
                 read_devtty stdin, f1, f2: $arg, $f1, $f2
             ;;
@@ -573,11 +575,11 @@ jointable ()
     done;
     [[ -z "$f2" ]] && { 
         : there was no table 2, is it on STDIN;
-        [[ "$f1" = "~/tmp/i.join" ]] && { 
+        [[ "$f1" = "$tmp.i" ]] && { 
             comment bad STDIN or missing FILE $arg;
             return 3
         };
-        f2=~/tmp/i.join;
+        f2=$tmp.i;
         cat - > $f2
     };
     read_devtty last f1, f2: $f1, $f2;
@@ -607,19 +609,19 @@ jointable ()
     local COL2=$(sed 1q $f2);
     :;
     read_devtty FILE: $f1, COLUMNS: $COL1;
-    cat $f1 | column $COL1 | sorttable $j1 | headoff > ~/tmp/a.join;
+    cat $f1 | column $COL1 | sorttable -u $j1 | headoff > $tmp.a;
     :;
     read_devtty FILE: $f2, COLUMNS: $COL2;
-    cat $f2 | column $COL2 | sorttable $j2 | headoff > ~/tmp/b.join;
+    cat $f2 | column $COL2 | sorttable -u $j2 | headoff > $tmp.b;
     :;
     : columns of the JOINed table;
     set -- $(args_uniq $j1 $j2 $COL1 $COL2);
     read_devtty rdb_hdr $*;
     rdb_hdr $*;
-    read_devtty join $ARGS ~/tmp/{a,b}.join;
+    read_devtty join $ARGS $tmp.{a,b}
     : the EVAL is mandated by the TAB syntax;
-    echo "join $ARGS ~/tmp/{a,b}.join" > .join.err;
-    eval join $ARGS ~/tmp/{a,b}.join
+    echo "join $ARGS $tmp.{a,b}" > ${tmp}.err;
+    eval join $ARGS $tmp.{a,b}
 }
 jointable_test () 
 { 
@@ -1017,9 +1019,12 @@ rdb_column ()
 rdb_commands () 
 { 
     : the file of BOOK command names;
-    : date: 2021-02-07 recovered from oldcommand history
-    function commands_fields () { rdb_commands sed 1q; }
-    ${*:-echo} ${RDB_HOME}/bookcommand.rdb 
+    : date: 2021-02-07 recovered from oldcommand history;
+    function commands_fields () 
+    { 
+        rdb_commands sed 1q
+    };
+    ${*:-echo} ${RDB_HOME}/bookcommand.rdb
 }
 rdb_create () 
 { 
@@ -1554,4 +1559,31 @@ width ()
               }
               printf "\n"
             }'
+}
+couldTrimBlanks () 
+{ 
+    : detect FIELD with Leading, Trailing BLANKS;
+    : date: 2021-03-04;
+    if_missingargs 1 $* && return 2;
+    report_notpipe && return 1;    
+    row "$1 ~ /  *$/ || $1 ~ /^  */"
+}
+trimsBlanks () 
+{ 
+    : edit Blanks out of FIELD with Leading, Trailing BLANKS;
+    : date: 2021-03-06;
+    if_missingargs 1 $* && return 2;
+    report_notpipe && return 1;    
+    compute "sub(/  *$/,\"\",$1);  sub(/^  *$/,\"\",$1)"
+}
+edit_history ()
+{
+   : from TABLE_HISTORY file,
+   if_missingargs 1 $* && return 1
+   cmmd=${2:-xx}
+   report_notcommand $cmd && return 2
+   table_history $1 | ${2:-xx} | tee ${1%*.rdb}.tmp
+   ls -lrt $1 ${1%*.rdb}.tmp
+   indir .hry uncompress $1.Z
+   ls -lrt $1 ${1%*.rdb}.tmp .hry/$1*
 }

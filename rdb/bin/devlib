@@ -137,7 +137,7 @@ libtag_process ()
 { 
     : the steps for routine update;
     : date: 2020-10-10;
-    cat <<'HERE'
+    cat  <<'HERE'
     foreach f2file $(lib_changed 6);
     name_library;
     shd_tagcolumn
@@ -182,12 +182,13 @@ tiddly_tagtable ()
 { 
     : writes the "tag table" tiddler in Shell Functions;
     : date: 2020-10-15;
+    : date: 2020-02-27 new, multi tiddlylink;
     function tag_table () 
     { 
         jointable tag_count.rdb tag_group.rdb
     };
     runfrom $(lib) || return;
-    cat $(table_me tag_table ) | tiddlylink tag | tiddlylink group | fourColumnTiddly
+    cat $(table_me tag_table ) | tiddlylink tag group | fourColumnTiddly
 }
 tiddly_taggroup () 
 { 
@@ -202,22 +203,6 @@ tiddly_help ()
     : date: 2020-10-20;
     sfg -i tiddl
 }
-twotiddlylinks () 
-{ 
-    : two tiddly links to an {N:four} column tiddly table;
-    : date: 2020-10-21;
-    set $1 $2 ${3:-four}ColumnTiddly;
-    report_notfunction $3 && return 1;
-    tee $(myname).rdb | tiddlylink $1 | tiddlylink $2 | $3
-}
-onetiddlylink () 
-{ 
-    : two tiddly links to an {N:four} column tiddly table;
-    : date: 2020-10-21;
-    set $1 ${2:-four}ColumnTiddly;
-    report_notfunction $2 && return 1;
-    tiddlylink $1 | $2
-}
 row_notcolumn () 
 { 
     : discard the column where a row matches the 2nd argument;
@@ -231,4 +216,9 @@ todordbtable ()
     : and formats them suitable for a three-column table;
     : date: 2020-10-22;
     column fun todo < shd_alldata.lst | row todo | listtotable | jointable -a1 - fun_createdlatest.rdb | column fun latest todo | tiddlylink fun
+}
+latest_devfunctions () 
+{ 
+    : date: 2021-02-23;
+    latestfunctions devlib
 }

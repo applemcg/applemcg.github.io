@@ -476,10 +476,37 @@ main ()
 { 
     book_tordb
 }
-tiddlylink () 
+obs_tiddlylink () 
 { 
     : format column to wrap with TiddlyWiki LINK syntax;
     compute "$1 = \"[[\" $1 \"]]\""
+}
+pipe_myargs () 
+{ 
+    : pipe each arg through successive pipes;
+    : date: 2021-02-28;
+    if_missingargs 2 $* && return 1;
+    local caller=$(myname 2);
+    $caller $1 | $caller ${*:2}
+}
+tiddlylink () 
+{ 
+    : wrap each named data field with TiddlyWiki LINK syntax;
+    : todo: generalize the feature on the 3rd implementation;
+    : related: obs_tiddlylink;
+    : date: 2021-02-27;
+    if_missingargs 1 $* && return 1;
+    case $# in 
+        1)
+            report_notpipe && return 1;
+            compute "$1 = \"[[\" $1 \"]]\""
+        ;;
+        *)
+            pipe_myargs $*
+        ;;
+    esac;
+    return;
+    comment $(myname) $1 PIPE $(myname) ${*:2}
 }
 git_rdfun () 
 { 
@@ -518,22 +545,6 @@ datedRecords ()
     row '!delete_time' | rdb_iDate | rename i_date ${1:-i_date} |
     ... ncolumn {insert,delete}_time
 }
-link_authorBook () 
-{ 
-    : date: 2020-12-05;
-    set -- ${1:-four};
-    tiddlylink author | tiddlylink book | ${1}ColumnTiddly | tee /dev/tty | pbcopy
-}
-latestpageauthorbook () 
-{ 
-    column latest page author book | tee $(myname).rdb
-}
-onMyNightstand () 
-{ 
-    : date: 2020-12-05;
-    : date: 2021-01-03;
-    cat $(latestbook) | sorttable | link_authorBook
-}
 i_timeDate () 
 { 
     : date: 2020-12-05;
@@ -554,14 +565,6 @@ book_list ()
 { 
     : column table of the books;
     table_history book_page.rdb | column book | title_fold | sorttable -u
-}
-latestbook () 
-{
-    : all reading history with author and book
-    : date: 2020-12-05;
-    table_history book_page.rdb | i_timeDate latest |
-    ... jointable -1 book -2 book - author_book.rdb |
-    ... ... column latest page author book | mytable
 }
 title_fold () 
 { 
@@ -588,11 +591,63 @@ latestPageBook ()
     table_history book_page.rdb | sorttable -r | select_first book |
     .. ncolumn delete_time | rdb_iDate | rename i_date latest |
     .. column latest page book | mytable
-}    
-readhistory ()
+}
+latestbookpage () 
+{ 
+    : all reading history with author and book;
+    : date: 2021-03-04 save intermediate lat
+    table_history book_page.rdb | i_timeDate latest |
+    .. jointable -1 book -2 book - author_book.rdb | mytable
+}
+latestbook ()
 {
-    : format latestPageBook for READING tiddlyWiki
-    cat $(latestPageBook) | tiddlylink book | threeColumnTiddly | tee /dev/tty | pbcopy
+    : date: 2020-12-05;
+    cat $(latestbookpage) | column latest page author book | mytable
+}
+tiddlylink_test () 
+{ 
+    : multi- and single-link reports;
+    : date: 2021-02-27;
+    onMyNightstand;
+    read_year
+}
+link_authorBook () 
+{ 
+    : date: 2020-12-05;
+    report_notpipe && return 1;
+    set -- ${1:-four};
+    tiddlylink author book | ${1}ColumnTiddly | show_tmpclip
+}
+onMyNightstand () 
+{ 
+    : date: 2020-12-05;
+    : date: 2021-01-03;
+    cat $(latestbook) | sorttable | link_authorBook
+}
+readhistory () 
+{ 
+    : format latestPageBook for READING tiddlyWiki;
+    cat $(latestPageBook) | tiddlylink book | threeColumnTiddly | show_tmpclip
+}
+show_tmpclip () 
+{ 
+    : display the pipe on the tty, save in a TMPfile, and the CLIPBOARD;
+    : date: 2021-02-27;
+    report_notpipe && return 1;
+    tee /dev/tty | tee .$(myname 2).tmp | pbcopy
+}
+read_year () 
+{ 
+    : format latestPageBook for READING tiddlyWiki;
+    : date: 2021-02-27;
+    cat $(latestPageBook) | rowhas latest ${1:-$(date +^%y)} |
+    .. tiddlylink book | threeColumnTiddly | show_tmpclip
+}
+latest_gitfunctions () 
+{ 
+    : date: 2021-02-15;
+    latestfunctions gitlib;
+    return
 }
 ... () 
 { 
@@ -677,16 +732,16 @@ fun_column ()
 mytable () 
 { 
     : create an RDB table with name of the calling function, echoing the table Name;
-    : related: mytable    
+    : related: mytable;
     : date: 2021-02-06;
-    sometable $(myname 2);
+    sometable $(myname 2)
 }
-sometable ()
-{
+sometable () 
+{ 
     : the table is named after a CALLER. the TMP is a HIDDEN file;
-    : args: function-named TABLE
+    : args: function-named TABLE;
     if_missingargs 1 $* && return 1;
-    pptlog $1
+    pptlog $1;
     set -- $1.rdb .$1.tmp;
     report_notpipe && return 2;
     read_devtty $*;
@@ -696,8 +751,8 @@ sometable ()
 yourtable () 
 { 
     : create an RDB table with name of the callers caller, echoing the table Name;
-    : related: mytable
+    : related: mytable;
     : date: 2021-02-06;
-    sometable  $(myname 3);
+    sometable $(myname 3)
 }
 echo git_init 1>&2

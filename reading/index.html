@@ -449,7 +449,11 @@ Error message and password prompt
 
 <li>Latest Book</li>
 
+<li>latest_gitfunctions</li>
+
 <li>Laurence Bergreen</li>
+
+<li>Lawrence M Krauss</li>
 
 <li>LibraryThing</li>
 
@@ -513,8 +517,6 @@ Error message and password prompt
 
 <li>Philip Roth</li>
 
-<li>readhistory</li>
-
 <li>Reading History</li>
 
 <li>Reading History of The Magnificent Ambersons</li>
@@ -559,6 +561,8 @@ Error message and password prompt
 
 <li>The Family Circle</li>
 
+<li>The Greatest Story Ever Told -- So Far</li>
+
 <li>The Lake Wobegon Virus</li>
 
 <li>The Magnificent Ambersons</li>
@@ -570,6 +574,10 @@ Error message and password prompt
 <li>The Principles of Mathematics</li>
 
 <li>The Rising Sea</li>
+
+<li>The Silent World of Nicholas Quinn</li>
+
+<li>The Silent World of Nicholas Quinn   </li>
 
 <li>The TiddlyWiki layout</li>
 
@@ -12273,7 +12281,7 @@ exports.context = contextWidget;
 <div bag="default" revision="1" title="$:/status/UserName">
 <pre></pre>
 </div>
-<div created="20210221185944409" list="readingHistoryTable [[Reading History]] [[On My Nightstand]] TableofContents [[MIT Club]]" modified="20210221190159183" title="$:/StoryList">
+<div created="20210306202753677" list="readingHistoryTable latest_gitfunctions [[Reading History]] [[On My Nightstand]] TableofContents [[MIT Club]]" modified="20210306210114211" title="$:/StoryList">
 <pre></pre>
 </div>
 <div created="20200519141000553" list="$:/.giffmex/Buttons/more-tiddler-edit-actions $:/core/ui/Buttons/delete $:/core/ui/Buttons/cancel $:/core/ui/Buttons/save" modified="20200521145647980" tags="$:/giffmex/bigeditarea $:/giffmex/stroll" title="$:/tags/EditToolbar">
@@ -13139,7 +13147,32 @@ Has Valerie Taylor gone missing, or is she dead?</pre>
 {{Origin Story: A Big History of Everything}}
 </pre>
 </div>
+<div created="20210102151529462" modified="20210227181232439" tags="function" title="latest_gitfunctions">
+<pre>```
+read_year () 
+{ 
+    : format latestPageBook for READING tiddlyWiki;
+    cat $(latestPageBook) | rowhas latest ${1:-$(date +^%y)} |
+    .. tiddlylink book | threeColumnTiddly |
+    .. tee /dev/tty | pbcopy
+}
+latestPageBook () 
+{ 
+    : reading history with currentbooks on top;
+    : date: 2020-12-30;
+    : date: 2021-01-03;
+    table_history book_page.rdb | sorttable -r | select_first book |
+    .. ncolumn delete_time | rdb_iDate | rename i_date latest |
+    .. column latest page book | mytable
+}
+
+```
+</pre>
+</div>
 <div created="20200817152122474" creator="Marty McGowan" modified="20200823161940569" modifier="Marty McGowan" tags="author" title="Laurence Bergreen">
+<pre></pre>
+</div>
+<div created="20210227175746333" modified="20210227175746333" title="Lawrence M Krauss">
 <pre></pre>
 </div>
 <div created="20200720120551066" creator="Marty McGowan" modified="20200720120644775" modifier="Marty McGowan" tags="link" title="LibraryThing">
@@ -13363,7 +13396,7 @@ Click the buttons in any tiddler to see the tiddlers they create. Save changes. 
 {{Circe}}
 </pre>
 </div>
-<div created="20200721142238341" creator="Marty McGowan" modified="20210221190022806" modifier="Marty McGowan" tags="TableofContents table" title="On My Nightstand">
+<div created="20200721142238341" creator="Marty McGowan" modified="20210306202807211" modifier="Marty McGowan" tags="TableofContents table" title="On My Nightstand">
 <pre>reading.$ [[onMynightstand]]
 
 On the &quot;page&quot;, two points to understand:
@@ -13374,12 +13407,12 @@ On the &quot;page&quot;, two points to understand:
 Compare this list with [[Reading History]]
 
 | !latest | !page | !author | !book |
-|210130 |    42 |[[Richard Sparapany]] |[[Classical Mechanics]] |
 |210130 |   411 |[[Vasily Grossman]] |[[Life and Fate]] |
 |210206 |    88 |[[Ed Sykes]] |[[The Patch and The Stream Where the American Fell]] |
-|210221 |    27 |[[Sinclair Lewis]] |[[It Can't Happen Here]] |
-|210221 |   ... |[[Louise Erdrich]] |[[The Night Watchman]] |
-
+|210227 |    30 |[[Sinclair Lewis]] |[[It Can't Happen Here]] |
+|210227 |    66 |[[Richard Sparapany]] |[[Classical Mechanics]] |
+|210306 |   138 |[[Lawrence M Krauss]] |[[The Greatest Story Ever Told -- So Far]] |
+|210306 |  8998 |[[Colin Dexter]] |[[The Silent World of Nicholas Quinn]] |
 </pre>
 </div>
 <div created="20210103013103453" modified="20210103013753604" tags="function" title="onMynightstand">
@@ -13487,21 +13520,7 @@ I thought of one more comment. Not sure I agree on the importance of the way the
 <div created="20200823162039992" modified="20200823162114248" tags="author" title="Philip Roth">
 <pre></pre>
 </div>
-<div created="20210102151529462" modified="20210102152434126" tags="function" title="readhistory">
-<pre>```
- readhistory () 
-{ 
-    : reading history with currentbooks on top;
-    : date: 2020-12-30;
-    zcat .hry/book_page.rdb.Z | sorttable -r | 
-      select_first book | ncolumn delete_time |
-        rdb_iDate | rename i_date latest | column latest page book |
-          tiddlylink book | threeColumnTiddly
-}
-```
-</pre>
-</div>
-<div created="20200818134415335" modified="20210113150522919" tags="table TableofContents" title="Reading History">
+<div created="20200818134415335" modified="20210227181232445" tags="table TableofContents" title="Reading History">
 <pre>todo: 
 
 # look up multi-volume starting number, subtract from this report
@@ -13512,7 +13531,7 @@ done:
 # trim L and CH from pages, just use numbers, 1/1/21
 # put current reading as of last_read, s/a onMyNightstand 1/2/21
 
-reading.$ [[readhistory]]
+reading.$ [[latest_gitfunctions]]
 
 Compare with [[On My Nightstand]]
 
@@ -13554,34 +13573,27 @@ For the Book Club:
 * [[MIT-Have Read|https://www.librarything.com/catalog.php?view=applemcg&amp;shelf=list&amp;sort=stamp&amp;collection=107361]]: -- if you want to catch up
 </pre>
 </div>
-<div created="20210113150530927" modified="20210221190212473" tags="" title="readingHistoryTable">
+<div created="20210113150530927" modified="20210306210227092" tags="" title="readingHistoryTable">
 <pre>[[Reading History]]. | [[readingHistoryTable]]
+
+Trimmed to this year.
 
 Where blank ''page'' and `...` show the date the book was finally read.
 
 | !latest | !page | !book |
+|210306 |  8998 |[[The Silent World of Nicholas Quinn]] |
+|210306 |   138 |[[The Greatest Story Ever Told -- So Far]] |
+|210227 |    66 |[[Classical Mechanics]] |
+|210227 |    30 |[[It Can't Happen Here]] |
 |210221 |   ... |[[The Night Watchman]] |
-|210221 |    27 |[[It Can't Happen Here]] |
 |210212 |   ... |[[Last Seen Wearing]] |
 |210206 |    88 |[[The Patch and The Stream Where the American Fell]] |
 |210130 |   411 |[[Life and Fate]] |
-|210130 |    42 |[[Classical Mechanics]] |
 |210126 |   ... |[[Say Nothing: A True Story of Murder and Memory ...]] |
 |210126 |   ... |[[How to Be an Antiracist]] |
 |210123 |   ... |[[The Lake Wobegon Virus]] |
 |210101 |    ... |[[The Magnificent Ambersons]] |
-|201231 |    ... |[[Last Bus to Woodstock]] |
-|201015 | |[[Origin Story: A big History of Everything]] |
-|201015 | |[[Killers of the Flower Moon: The Osage Murders ...]] |
-|201004 | |[[Columbus: The Four Voyages]] |
-|200831 | |[[A Conflict of Visions: Ideological Origins ...]] |
-|200806 | |[[The Wrecker]] |
-|200803 | |[[Lost in Thought]] |
-|200801 | |[[Falter: Has the Human Game Begun to Play Itself Out?]] |
-|200731 | |[[Educated: A Memoir]] |
-|200729 | |[[Six Men]] |
-|200728 | |[[Circe]] |
-|200712 | |[[Our Time is Now]] |
+
 </pre>
 </div>
 <div created="20200510030209847" modified="20200808150229741" tags="$:/giffmex/tutorials" title="Recent updates to Stroll">
@@ -13887,6 +13899,9 @@ On the day I finished Educated: A Memoir
 * [[Shell Functions|https://applemcg.github.io/shelf]] -- Lesons Learned in the practice
 </pre>
 </div>
+<div created="20210227154900159" modified="20210227154900159" title="The Greatest Story Ever Told -- So Far">
+<pre></pre>
+</div>
 <div created="20201209213931140" modified="20201210211539416" tags="book" title="The Lake Wobegon Virus">
 <pre>* Author: [[Garrison Keillor]]
 * Library: https://www.librarything.com/work/25029900/edit/192844530
@@ -13932,6 +13947,12 @@ A larger project will be to bring in my annotation of It Can't Happen Here, whic
 * Finished: 2020-08-06
 * [[Reading History|https://www.librarything.com/catalog.php?view=applemcg&amp;collection=281387&amp;shelf=list]]
 * [[Reviews|https://www.librarything.com/work/20005797/reviews]]</pre>
+</div>
+<div created="20210304153525183" modified="20210304153525183" title="The Silent World of Nicholas Quinn">
+<pre></pre>
+</div>
+<div created="20210227154900158" modified="20210227154900158" title="The Silent World of Nicholas Quinn   ">
+<pre></pre>
 </div>
 <div created="20200423141216977" modified="20200521145918984" tags="$:/giffmex/tutorials" title="The TiddlyWiki layout">
 <pre>Stroll is an adaptation of ~TiddlyWiki. Think of ~TiddlyWiki as a file drawer of notecards [the notecards are called tiddlers, a British term for a small fish]. 

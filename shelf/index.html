@@ -1621,6 +1621,8 @@ Error message and password prompt
 
 <li>tiddly_tagtable</li>
 
+<li>tiddlylink</li>
+
 <li>TiddlyWiki</li>
 
 <li>TIddlyWiki</li>
@@ -13762,11 +13764,11 @@ exports.context = contextWidget;
 <div created="20201011194157414" creator="Marty McGowan" modified="20201011194157414" modifier="Marty McGowan" title="$:/state/tab-970932683">
 <pre>duplicate function problem</pre>
 </div>
-<div created="20200418122101344" creator="Marty McGowan" modified="20210204181139774" modifier="Marty McGowan" title="$:/state/tab/moresidebar-1850697562">
-<pre>$:/core/ui/MoreSideBar/Recent</pre>
+<div created="20200418122101344" creator="Marty McGowan" modified="20210227213317710" modifier="Marty McGowan" title="$:/state/tab/moresidebar-1850697562">
+<pre>$:/core/ui/MoreSideBar/Tags</pre>
 </div>
-<div created="20200418121835270" creator="Marty McGOwan" modified="20210206135806683" modifier="Marty McGowan" title="$:/state/tab/sidebar--595412856">
-<pre>$:/core/ui/SideBar/Recent</pre>
+<div created="20200418121835270" creator="Marty McGOwan" modified="20210227213315560" modifier="Marty McGowan" title="$:/state/tab/sidebar--595412856">
+<pre>$:/core/ui/SideBar/More</pre>
 </div>
 <div created="20200504200956301" modified="20200810170447722" title="$:/state/tabs/controlpanel/toolbars-1345989671">
 <pre>$:/core/ui/ControlPanel/Toolbars/ViewToolbar</pre>
@@ -13792,7 +13794,7 @@ exports.context = contextWidget;
 <div bag="default" created="20200810170615861" creator="M" modified="20200811134449245" modifier="Marty McGwan" revision="1" title="$:/status/UserName">
 <pre>Marty McGowan</pre>
 </div>
-<div created="20210206205955518" creator="Marty McGowan" list="[[command history e.g.]] command_history [[function tags]] abstract /rdb RDB mytable_code FunctionOfTheDay [[My Table]] References ?? [[Table of Contents]]" modified="20210207151632688" modifier="Marty McGowan" title="$:/StoryList">
+<div created="20210227213257292" creator="Marty McGowan" list="tiddlylink [[2020-11-05 09:44]] [[Shell Functions]] [[Table of Contents]]" modified="20210227213340638" modifier="Marty McGowan" title="$:/StoryList">
 <pre></pre>
 </div>
 <div created="20200519141000553" list="$:/.giffmex/Buttons/more-tiddler-edit-actions $:/core/ui/Buttons/delete $:/core/ui/Buttons/cancel $:/core/ui/Buttons/save" modified="20200521145647980" tags="$:/giffmex/bigeditarea $:/giffmex/stroll" title="$:/tags/EditToolbar">
@@ -18637,8 +18639,7 @@ myname ()
 </pre>
 </div>
 <div created="20210206211256750" creator="Marty McGowan" modified="20210207140041217" modifier="Marty McGowan" tags="" title="mytable_code">
-<pre>
-```
+<pre>```
 mytable () 
 { 
     : create an RDB table with name of the calling function, echoing the table Name;
@@ -22231,6 +22232,43 @@ onstdout NEWEST TARGET tag_table.rdb
 |[[usage]] |    14 |[[interface]] |flip side of args |
 |[[version]] |     3 |[[]] |libraries have version, this should be obsolete |
 |[[writes]] |     2 |[[interface]] |ditto files |
+</pre>
+</div>
+<div created="20210227213653434" creator="Marty McGowan" modified="20210228124708068" modifier="Marty McGowan" tags="fotd recursion" title="tiddlylink">
+<pre>
+```
+tiddlylink () 
+{ 
+    : wrap each named data field with TiddlyWiki LINK syntax;
+    : todo: generalize the feature on the 3rd implementation;
+    : related: obs_tiddlylink;
+    : date: 2021-02-27;
+    if_missingargs 1 $* &amp;&amp; return 1;
+    case $# in 
+        1)
+            report_notpipe &amp;&amp; return 1;
+            compute &quot;$1 = \&quot;[[\&quot; $1 \&quot;]]\&quot;&quot;
+        ;;
+        *)
+            $(myname) $1 | $(myname) ${*:2}
+        ;;
+    esac
+}
+
+```
+this suggests. a sub-function for the recursion case:
+
+
+```
+pipeTheseThruMe ()
+{
+     report_notargcount 2 $* &amp;&amp; return 1
+     local recur=$(myname 2)
+     $recur $1 | $recur ${*:2}; 
+     
+}
+
+```
 </pre>
 </div>
 <div created="20200726185214128" creator="Marty McGowan" modified="20200909191726239" modifier="Marty McGowan" tags="url" title="TiddlyWiki">
