@@ -515,8 +515,8 @@ jointable ()
     local ARGS="";
     local f1="";
     local f2="";
-    local tmp=$HOME/tmp/$(myname)
-    rm -f $tmp.*
+    local tmp=$HOME/tmp/$(myname);
+    rm -f $tmp.*;
     while [ $# -gt 0 ]; do
         arg=$1;
         shift;
@@ -618,7 +618,7 @@ jointable ()
     set -- $(args_uniq $j1 $j2 $COL1 $COL2);
     read_devtty rdb_hdr $*;
     rdb_hdr $*;
-    read_devtty join $ARGS $tmp.{a,b}
+    read_devtty join $ARGS $tmp.{a,b};
     : the EVAL is mandated by the TAB syntax;
     echo "join $ARGS $tmp.{a,b}" > ${tmp}.err;
     eval join $ARGS $tmp.{a,b}
@@ -1565,7 +1565,7 @@ couldTrimBlanks ()
     : detect FIELD with Leading, Trailing BLANKS;
     : date: 2021-03-04;
     if_missingargs 1 $* && return 2;
-    report_notpipe && return 1;    
+    report_notpipe && return 1;
     row "$1 ~ /  *$/ || $1 ~ /^  */"
 }
 trimsBlanks () 
@@ -1573,17 +1573,40 @@ trimsBlanks ()
     : edit Blanks out of FIELD with Leading, Trailing BLANKS;
     : date: 2021-03-06;
     if_missingargs 1 $* && return 2;
-    report_notpipe && return 1;    
+    report_notpipe && return 1;
     compute "sub(/  *$/,\"\",$1);  sub(/^  *$/,\"\",$1)"
 }
-edit_history ()
-{
-   : from TABLE_HISTORY file,
-   if_missingargs 1 $* && return 1
-   cmmd=${2:-xx}
-   report_notcommand $cmd && return 2
-   table_history $1 | ${2:-xx} | tee ${1%*.rdb}.tmp
-   ls -lrt $1 ${1%*.rdb}.tmp
-   indir .hry uncompress $1.Z
-   ls -lrt $1 ${1%*.rdb}.tmp .hry/$1*
+edit_history () 
+{ 
+    : from TABLE_HISTORY file,;
+    if_missingargs 1 $* && return 1;
+    cmmd=${2:-xx};
+    report_notcommand $cmd && return 2;
+    table_history $1 | ${2:-xx} | tee ${1%*.rdb}.tmp;
+    ls -lrt $1 ${1%*.rdb}.tmp;
+    indir .hry uncompress $1.Z;
+    ls -lrt $1 ${1%*.rdb}.tmp .hry/$1*
+}
+rdb_cmmdentry () 
+{ 
+    : define FUNction, reading TABLE, writing MYTABLE with QUERY;
+    : related: rd_cmmd rdb_hdr;
+    : generate the table-defining function;
+    :;
+    rdb_cmmdfun "$@";
+    :;
+    : collect record for table of function defining Queries;
+    :;
+    read_devtty 3: "$3";
+    printf "%s\t%s\t%s\n" $1 $2 "$3"
+}
+rdb_cmmdfun () 
+{ 
+    if_missingargs 3 $* && return 1;
+    local fun=$1;
+    local table=$2;
+    local query="$3";
+    read_devtty query $query;
+    eval "$fun () { cat \$($table) | $query | mytable; }"
+    read_devtty  fun: "$(declare -f $fun)"
 }
