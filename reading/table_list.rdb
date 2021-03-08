@@ -13,7 +13,6 @@ table	rd_rules.rdb
 table	readhistory.rdb
 table	table_list.rdb
 table	tags.rdb
-table	author_book.nxt
 list	collections.lst
 list	libthingbooks.lst
 list	rd_rules.lst
