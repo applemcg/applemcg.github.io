@@ -671,7 +671,12 @@ args_test ()
 func_args () 
 { 
     : use TYPE to simulate declare -f;
-    type -a ${@:-/dev/null} 2> /dev/null | awk '$4 ~ /function/ { print $1 }'
+    : Thou Shalt NOT sort!    
+    : date: 2021-03-09 much more explict TYPE -A test in AWK
+    type -a ${@:-/dev/null} 2>/dev/null | tee .dot.0 | awk '
+        $2$3$4 ~ /isafunction/ && \
+	$1 ~ /^[a-zA-Z0-9][a-zA-Z0-9_]*$/ { print $1 }
+    ' 
 }
 fold_pipedots () 
 { 
@@ -687,17 +692,23 @@ declare ()
 { 
     : insert ... syntactic sugar into shell functions;
     : date: 2021-01-03;
+    : date: 2021-03-09 the BUG was in FUNC_ARGS
     case $1 in 
         -f)
+	    shift
+            read_devtty A: $#, $@;    
+            echo $@ | tpl > .dot.a    
             : test for function names;
-            set -- $(func_args ${@:2});
-            read_devtty $#, $@;
+            set -- $(func_args $@)
+            read_devtty B: $#, $@;
+            echo $@ | tpl > .dot.b        	    
             [[ $# -lt 1 ]] && return 1;
             :;
             : there are some, proceed;
-            command declare -f $@ | fold_pipedots
+            command declare -f $@ | fold_pipedots 
         ;;
         *)
+            read_devtty D: $#, $@;
             command declare $@
         ;;
     esac
