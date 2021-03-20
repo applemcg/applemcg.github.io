@@ -1,0 +1,189 @@
+#+INCLUDE: ./orgheader.org
+#+TITLE: Rehosting Stonebridge Mens Club
+
+* Plan
+
+The Q&A are at [[Q&A]]
+
+Test plan is on this [[https://docs.google.com/spreadsheets/d/1rQhepRhOH38nqvV2rA13lrtIgPQkVaAJLBWzFP-Kpag/edit#gid=0][spread-sheet]]
+
+Here is the [[./project.txt][text-editable version]] of this file
+
+** todo
+
+1. Gregg Smith movable, non-renewal.   early Jan.  guarantee removal.
+
+1. 501c3 impact of hosting cost
+
+1. contract? 
+
+1. DNS transer complete?
+
+1. plan to move addresses.
+
+** Hostgator Info
+
+Marty - Send me the following information when you are ready to have the account set up. 
+
++ Domain name for the hosting - stonebridgemensclub.com
++ Hatchling hosting plan for 1, 2 or 3 years prepaid?  
++ Email to use for the account, not associated with the domain name
++ First and last name for the account, must match the payment method.
++ Business name, if applicable
++ Full address (house, street, city, state, country, region and zip), must match the payment method.
++ Phone number with area/country code
++ What is the 4 digit pin that you want to set up on the account (cannot start with a zero)?  Your PIN will help verify account ownership when contacting Customer Support. 
+
+Thanks Linda 
+
+** Approval and Board Update Steps 
+
+1. You and I discuss the Q&A and approach/plan below in detail by Zoom
+   or phone.
+
+1. We review with Don by Zoom, get agreement on appropriate level of
+   the detail to discuss with the Board (e.g. written summary sent to
+   them in advance, brief review answering questions in Jan 7th
+   meeting), who we recommend to participate in the review of the new
+   site before switching over, etc.
+
+1. We update the Board on Jan 7th and get approval to proceed.
+
+1. Complete the migration over the next 30 days. 
+
+1. Update the Board by email and at the Feb 4th meeting.
+
+** Terms:
+
++ /Migration/ - after initial sign-up, the current content is
+  available at *the new host* an un-published *i.e. privage* web (IP) address
++ /DNS Transfer/ - Domain Name ( *stonebridgemensclub.com* ) is
+  available in the new web (IP) address.
++ /IP/ -- Internet Protocol, a physical address e.g. 192.185.28.7 is
+  where *stonebridgemensclub.com* is currently found. *This
+  behind-the-scenses number changees when we switch to a new host.*
+
+** Q&A
+
+1. Why are we migrating?   
+
+    + while cost (save 100/yr) is helpful, the real reason is to show
+      ourselves we aren't at the mercy of a single hosting vendor,
+      *gain experience with migration and east of transfer
+      ("portability")*
+
+1. what is a hosting company? 
+
+   + a software services company that houses the website and supplies:
+
+        + file and media storage
+        + conventional Content Management Software (in our case
+          //Wordpress//) with operational plugins for backup, media
+          update, event management, etc... the features relevant to a
+          business
+        + optional features such as routine backup, software update, ..
+
+1. What new hosting company are we migrating to and why were they
+   selected?  
+
+    + We've chosen *Hostgator* over *A2 Hosting* and *Dreamhost*,
+      while the costs are competitive, Hostgator does the up-front
+      migration at no charge handlineg the two necessary backups, and
+      restore as part of the 3-year cost.  These are 3 hosting
+      companies listed among the top 5 of CNET's (a top tech website)
+      recommended providers/
+
+1. What are the costs and savings over time? 
+
+    + 3 years prepaid $98.83 ($32.94/year), following 
+      $107.40 / yr. Current site fee to Greg Smith $230/year. 
+
+1. What payment will be required and when?  
+
+    + $98.83, at registration
+    + and if completed in 30 days, good for 3 year
+    + otherwise annual fee at completion.
+
+1. Any one-time conversion cost?  
+
+    + No if we commit to the switch with Hostgator within 30 days of
+      their free migration.
+
+1. Who will perform the services Greg Smith had provided (backups,
+   software updates, template enhancements, other)?
+
+    + we will, Mark, Marty, Jim
+    + email forwarding registration,
+      eg. president@stonebridgemensclub.com
+    + administrative accounts
+    + routine backups, (e.g. or at a modest additional fee, possibly
+      suitable later, not propsed for this conversion)
+
+1. Does the new hosting site require or provide any changes to the
+   site, administration & security software, backup and update
+   procedures?
+
+    + none what-soever.  the central tools, Wordpress content
+      management and cPanel backup software are conventional and
+      industry standards
+
+1. How will we ensure the web site is migrated with all web pages,
+   content, features and capabilities of the old one?  
+
+    + we have a Test plan checklist for site appearance and user
+      operation, including images, text, forms, and user input
+
+    + ancillary operational features will be tested for image, text
+      update, event posting
+    + admin features fo backup, user andmin will be exercised
+    + an evaluation will be performed for site response time
+
+1. Will Board members be invited to review the new site before it goes
+   live? 
+
+    + Yes, Mike, Jim, Stan, ...
+
+1. How long will the migration take? 
+
+    + 5-7 days for technical transfer by Hostgator.  
+    + How long will the review period be by the tech group?  By the Board?
+    + from the 2nd day after migration, the remainder of the 30 days.
+
+1. Will there be any interruption to site access? Will members notice
+   anything?
+
+    + only for a heartbeat at DNS transfer
+    + the only evidence will be the page-footer hosting agent
+      information which will change from Gregg Smith to Hostgator
+
+1. When will you migrate the site?  Project plan to date and remaining
+   tasks:
+
+    + migration start: January 8, given Board approval
+    + migration complete: ~ Jan 14,
+    + available for board review: ~ Jan 16
+    + DNS Transfer: February 4, 5
+
+1. Does the migration impact or benefit email management and operation
+   or any other technical or SMC functions (marketing, activities,
+   fundraising, etc.)?
+
+    + marketing, i.e. routine email is unchanged
+    + forwarding to officers  president, entertainment, membership, ...
+      will seamlessly be able to  move to "{officer}@stonebridgemensclub.com", 
+      as separate post-transfer task.
+
+1. When does Greg Smith have to be notified? 
+
+    + early January, two questions:
+
+        + we plan on moving our host, when does our plan with you expire?
+        + given we make the move, 
+
+1. What assurance do we have and confirmation do we get that Greg
+   Smith deletes all copies of our website, content, etc. on his site?
+   (except for reasonable reference user of page[s]).
+
+1. Other? 
+
+

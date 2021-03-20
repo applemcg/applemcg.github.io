@@ -747,18 +747,6 @@ mytable ()
     : date: 2021-02-06;
     sometable $(myname 2)
 }
-sometable () 
-{ 
-    : the table is named after a CALLER. the TMP is a HIDDEN file;
-    : args: function-named TABLE;
-    if_missingargs 1 $* && return 1;
-    pptlog $1;
-    set -- $1.rdb .$1.tmp;
-    report_notpipe && return 2;
-    read_devtty $*;
-    tee $2 | onlyChanged $1;
-    echo $1
-}
 yourtable () 
 { 
     : create an RDB table with name of the callers caller, echoing the table Name;

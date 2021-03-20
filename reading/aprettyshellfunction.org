@@ -1,0 +1,259 @@
+#+INCLUDE: ./orgheader.org
+#+TITLE: A Pretty Shell Function
+
+* What is it?
+
+A pretty shell function is a special case of a *canonical function*,
+which is produced by using the *declare* shell built-in:
+
+:    $ declare -f function ...
+
+In this exercise, I've dressed it up to handle long lines from piped commands.
+
+This paper is part of my [[http:mcgowans.org/pubs/marty3/commonplace][Commonplace Book]], Here is the [[./aprettyshellfunction.txt][text of this paper]], in [ ... ][this chapter]].
+
+** The Challenge                                                :prettyprint:
+
+Long pipe sequences in functions can quickly run over the conventional
+page width, about a 72-character line length. I'd thought of trying to
+detect the extra-long lines and reformat on the fly.  Rather than
+focus on automated discovery, I thought it better if the developer decides
+where to break the long lines.  This feature provides the means.
+
+What would a resulting re-format look like?
+
++ it would have to retain it's execution semantics
++ it shouldn't be more intrusive than a badly-wrapped line,
++ it should be much more readable, and to foster that,
++ it might allow a tab formatting.
+
+On this last point, I recall reading Jon Bentley's, Rob Pike's shell
+scripts, which would have lines of long pipe sequences successively
+indented by two spaces.  The one problem is that I'd been committed to
+a shell function format given by the un-adorned: 
+
+:    declare -f  ... 
+
+which I call the canonical function format. 
+
+Preserving the interface, and sacrificing a small bit of performance
+fosters the ease of understanding by breaking long pipes into phrases.
+
+** How to Proceed                                                   :command:
+
+The bash shell has a *command* builtin.  This has allowed script
+writers the means of intercepting a call to the fixed commands and
+dressing up the results.  The *help* builtin facility uses an example
+with the *ls* command.  An ~ls~ function would look like this:
+
+#+BEGIN_SRC sh
+function ls ()
+{
+   ...
+   command ls ... # whatever default aguments you wanted to supply
+   ...
+}
+#+END_SRC
+
+The inner ~ls~ when prefaced by the *command* builtin says ignore any
+defined alias and function names, and proceed directly to the command
+on the users PATH.  Thus avoiding recursive calls.
+
+In our case, we want to capture the full features of the ~declare -f~ command,
+and dress up the resulting output.   Our function will look something like:
+
+#+BEGIN_SRC sh
+function declare () 
+{
+    : capture the declare -f command, pretty-print
+    :
+    case $1 in 
+    -f ) 
+        command declare $@ ...  # something with the remaining aguments
+                                # to achieve the desired pretty-print
+        ;;
+    *)
+        command declare $@      # all other cases behave as before 
+        ;;
+    esac
+}
+#+END_SRC
+
+** The insight                                                         :dots:
+
+Look at all the ~...~  lying around.  The literary equivalent of "do whatever".
+
+Can we turn a command line like this:
+
+:    a command with lots of stuff before | and after a pipe with maybe | more pipes following
+
+Into this:
+
+:    a command with lots of stuff before |
+:    ... and after a pipe with maybe |
+:    ... ... more pipes following
+
+Yes indeed, literally, "dot, dot, dot".
+
+What does that function look like?
+
+#+BEGIN_EXAMPLE
+    function ... () 
+    {
+        : a place-holder, do what follows;
+        :
+        eval $@
+    }
+#+END_EXAMPLE
+
+So, in the example,
+
+:    ... after
+
+executes ~after~ with its arguments, and
+
+:    ... ... pipes
+
+executes 
+
+:    ... pipes, which ... 
+
+** In practice                                                   :fold:pipes:
+
+I spent little time thinking about writing the code to automatically 
+detect pipes in the command line. It would present these challenges: 
+
++ What is the shortest command sequence allowed?
++ the longest?
++ how to handle multiple pipes on a line and their length?
++ ...
+
+The simple answer, "Let the programmer decide".  Should the programmer want a different
+sized offset, or a single level (un-tabbed) indenting, the above example might be rendered:
+
+#+BEGIN_EXAMPLE
+
+    a command with lots of stuff before |
+    .. and after a pipe with maybe |
+    .. more pipes following
+
+#+END_EXAMPLE
+
+All that's required is a different dot-dot function, and this is the important part, she
+must edit the original source to look like this:
+
+:    a command with lots of stuff before | ... and after a pipe with maybe | ... ... more pipes following
+
+or, for the second result:
+
+:    a command with lots of stuff before | .. and after a pipe with maybe | .. more pipes following
+
+** Now to declare                                                   :declare:
+
+#+BEGIN_SRC sh
+    $ declare -f declare
+    declare () 
+    { 
+        : insert ... syntactic sugar into shell functions;
+        : date: 2021-01-03;
+        case $1 in 
+            -f)
+                command declare -f ${@:2} | sed '
+    	    s/| *\([.][. ]*\) /|\
+        \1 /g'
+            ;;
+            *)
+                command declare $@
+            ;;
+        esac
+    }
+#+END_SRC
+    
+In the event the function is not called with the -f flag, 
+proceed as if the built-in were called directly, otherwise,
+handle the dotted commands.
+
++ the ~-f ${@:2}~ syntax repeats the -f flag, and passes the 
+subsequent function name arguments ~${@:2}~ to the declare builtin.
+This returns the canonical (including long lines) functions to the 
+stream editor, which
+
++ recognizes the pipe symbol
++ followed by zero or more spaces
++ then a single period, 
++ then an optional string containing only periods or spaces,
++ and a single space
+
+The stream editor remembers: \( ... \), which is the string from the first period
+to just before the last space, replacing the whole thing with
+
++ the pipe symobl,
++ a newline and four spaces, 
++ the remembered string
++ and finally, a space,
+
+this is repeated 'globally', i.e. for each instance of the pattern on the line.
+
+** A test case                                                      :declare_test:
+
+Note the functions, in particular ~declare_test~:
+
+#+BEGIN_SRC sh
+
+$ declare_test
+... () 
+{ 
+    : synctactic sugar for long pipe sequences;
+    : date: 2021-01-03;
+    eval $@
+}
+declare () 
+{ 
+    : insert ... syntactic sugar into shell functions;
+    : date: 2021-01-03;
+    case $1 in 
+        -f)
+            command declare -f ${@:2} | sed '
+	    s/| *\([.][. ]*\) /|\
+    \1 /g'
+        ;;
+        *)
+            command declare $@
+        ;;
+    esac
+}
+declare_test () 
+{ 
+    : date: 2021-01-03;
+    ignore pushd $HOME/Dropbox/git/applemcg.github.io/reading;
+    set -- ... declare{,_test} latestbook readhistory;
+    declare -f $*
+}
+latestbook () 
+{ 
+    : date: 2020-12-05;
+    table_history book_page.rdb | i_timeDate latest |
+    ... jointable -1 book -2 book - author_book.rdb |
+    ... ... column latest page author book | tee $(myname).rdb
+}
+readhistory () 
+{ 
+    : reading history with currentbooks on top;
+    : date: 2020-12-30;
+    : date: 2021-01-03;
+    zcat .hry/book_page.rdb.Z | sorttable -r | select_first book |
+    .. ncolumn delete_time | rdb_iDate | rename i_date latest |
+    .. column latest page book | tiddlylink book | threeColumnTiddly
+}
+#+END_SRC
+
+** A reflection
+
+This is the most recent chapter in my Commonplace Book.   As such
+it sets the future direction of that work.   Today's challenge is
+the work to place it in that framework.  The tasks:
+
++ load it to the Web: mcgowans.org/pubs/marty3/commonplace
++ place it in it's appropriate chapter
++ set links to the chapter and back to this article
++ ln -f aprettyshellfunction.{org,txt}
