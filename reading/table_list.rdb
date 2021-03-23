@@ -1,6 +1,7 @@
 Type	File
 ----	----
 table	author_book.rdb
+list	bookCollection.rdb
 table	book_page.rdb
 table	collections.rdb
 table	haveread.rdb
@@ -10,8 +11,10 @@ table	latestbookpage.rdb
 table	libthingbooks.rdb
 table	multi_book.rdb
 table	rd_rules.rdb
+table	readSummary.rdb
 table	readhistory.rdb
 table	table_list.rdb
+table	tables.rdb
 table	tags.rdb
 list	collections.lst
 list	libthingbooks.lst
