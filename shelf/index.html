@@ -367,6 +367,8 @@ Error message and password prompt
 
 <li>$:/state/Excise/-2088715609/new-title</li>
 
+<li>$:/state/Excise/-285823166/tagnew</li>
+
 <li>$:/state/Excise/-399983250/tagnew</li>
 
 <li>$:/state/Excise/-493818786/tagnew</li>
@@ -753,6 +755,8 @@ Error message and password prompt
 
 <li>appleton</li>
 
+<li>application</li>
+
 <li>args</li>
 
 <li>associative array</li>
@@ -859,6 +863,8 @@ Error message and password prompt
 
 <li>Commonlib Development</li>
 
+<li>Compose a function on the Command Line</li>
+
 <li>compute</li>
 
 <li>context_nonsh</li>
@@ -947,9 +953,7 @@ Error message and password prompt
 
 <li>DossysReply</li>
 
-<li>Draft of 'App from Lib' by Marty McGowan</li>
-
-<li>Draft of 'many duplicated functions' by Marty McGowan</li>
+<li>Draft of 'aging out a backup' by Marty McGowan</li>
 
 <li>Draft of 'Other Software' by Marty McGowan</li>
 
@@ -13507,6 +13511,9 @@ exports.context = contextWidget;
 <div created="20200924154628340" creator="Marty McGowan" modified="20200924154628340" modifier="Marty McGowan" title="$:/state/Excise/-2088715609/new-title">
 <pre>:</pre>
 </div>
+<div created="20210326154532944" creator="Marty McGowan" modified="20210326154532944" modifier="Marty McGowan" title="$:/state/Excise/-285823166/tagnew">
+<pre>yes</pre>
+</div>
 <div created="20200811143013535" creator="Marty McGowan" modified="20200811143013535" modifier="Marty McGowan" title="$:/state/Excise/-399983250/tagnew">
 <pre>yes</pre>
 </div>
@@ -13630,7 +13637,7 @@ exports.context = contextWidget;
 <div created="20200914170547136" creator="Marty McGowan" modified="20200914170547136" modifier="Marty McGowan" title="$:/state/tab--1315478450">
 <pre>$:/core/ui/TiddlerInfo/References</pre>
 </div>
-<div created="20200910133559896" creator="Marty McGowan" modified="20200910192843514" modifier="Marty McGowan" title="$:/state/tab--1323315331">
+<div created="20200910133559896" creator="Marty McGowan" modified="20210326154923931" modifier="Marty McGowan" title="$:/state/tab--1323315331">
 <pre>many duplicated functions</pre>
 </div>
 <div created="20200802233903007" creator="Marty McGOwan" modified="20201023194322238" modifier="Marty McGowan" title="$:/state/tab--1425329592">
@@ -13915,7 +13922,7 @@ exports.context = contextWidget;
 <div bag="default" created="20200810170615861" creator="M" modified="20200811134449245" modifier="Marty McGwan" revision="1" title="$:/status/UserName">
 <pre>Marty McGowan</pre>
 </div>
-<div created="20210325191331116" creator="Marty McGowan" list="commonlib [[Draft of 'App from Lib' by Marty McGowan]] flcomm [[Draft of 'many duplicated functions' by Marty McGowan]] backup $:/AdvancedSearch fixlib [[aging out a backup]] [[Table of Contents]]" modified="20210325200605261" modifier="Marty McGowan" title="$:/StoryList">
+<div created="20210326144921091" creator="Marty McGowan" list="[[Compose a function on the Command Line]] [[shell stories]] [[many duplicated functions]] fixlib [[Draft of 'aging out a backup' by Marty McGowan]] [[Table of Contents]]" modified="20210326154642424" modifier="Marty McGowan" title="$:/StoryList">
 <pre></pre>
 </div>
 <div created="20200519141000553" list="$:/.giffmex/Buttons/more-tiddler-edit-actions $:/core/ui/Buttons/delete $:/core/ui/Buttons/cancel $:/core/ui/Buttons/save" modified="20200521145647980" tags="$:/giffmex/bigeditarea $:/giffmex/stroll" title="$:/tags/EditToolbar">
@@ -13991,7 +13998,7 @@ exports.context = contextWidget;
     }
 }</pre>
 </div>
-<div created="20200418122623650" creator="Marty McGowan" modified="20201023175716237" modifier="Marty McGowan" title="$:/temp/NewTagName">
+<div created="20200418122623650" creator="Marty McGowan" modified="20210326154743693" modifier="Marty McGowan" title="$:/temp/NewTagName">
 <pre></pre>
 </div>
 <div created="20200502174947648" modified="20200502174955840" title="$:/temp/RenameTags/replace">
@@ -14487,8 +14494,53 @@ compute	abstr
 <div created="20200924174923636" creator="Marty McGowan" modified="20200924174923636" modifier="Marty McGowan" title="addcoll">
 <pre></pre>
 </div>
-<div created="20210324231455922" creator="Marty McGowan" modified="20210324231547431" modifier="Marty McGowan" tags="active" title="aging out a backup">
-<pre></pre>
+<div created="20210324231455922" creator="Marty McGowan" modified="20210326154806002" modifier="Marty McGowan" tags="[[aging out a backup]] backup" title="aging out a backup">
+<pre>by this time, i've discovered the functions in auxlib are no longer in use:
+
+&gt;   $ fuse functionName      # returns nothing
+
+So, all its functions can be retired.   the retiredlib is where all formerly useful functions go to spend their twilight.   There remains some chance they've instructional value for their descendants.
+
+The auxlib isn't removed until it's been backed up.   Then it may be removed.   The `backup sync` insures that a subsequent `backup files` doesn't identify it as currently being backed up.  and the following `find . - name auxlib` shows just where it has gone.   
+
+{{Compose a function on the Command Line}}
+
+```
+  620  cat auxlib &gt;&gt; retiredlib
+  621  backup auxlib; rm -f auxlib; backup sync; find . -name auxlib
+bin.$ backup_exercise () { !620; !621; }
+backup_exercise () { cat auxlib &gt;&gt; retiredlib; backup auxlib; rm -f auxlib; backup sync; find . -name auxlib; }
+```
+
+results in the function, and more general use:
+
+```
+  627  qf backup_exercise | sed 's/backup_exercise/retire_library/; s/aux/${1}/' | tee .x
+  628  . ./.x
+  630  th; qf backup_exercise retire_library
+
+
+backup_exercise () 
+{ 
+    cat auxlib &gt;&gt; retiredlib;
+    backup auxlib;
+    rm -f auxlib;
+    backup sync;
+    find . -name auxlib
+}
+retire_library () 
+{ 
+    cat ${1}lib &gt;&gt; retiredlib;
+    backup ${1}lib;
+    rm -f ${1}lib;
+    backup sync;
+    find . -name ${1}lib
+}
+
+
+```
+
+</pre>
 </div>
 <div created="20180921134902955" creator="MartyMcGowan" modified="20180921140344818" modifier="MartyMcGowan" tags="slogging lessons" title="An Expensive Lesson">
 <pre>Was:  A Simple Function, now [[An Expensive Lesson]].   It's home is [[Intro_SF]]
@@ -14569,7 +14621,7 @@ the functions it requires, it must identify the non-shell system
 resources such as other scripting and binary (compiled) programs and
 data files by file name.</pre>
 </div>
-<div created="20180430130536504" creator="MartyMcGowan" modified="20200811130906188" modifier="MartyMcGowan" tags="application slogging" title="App from Lib">
+<div created="20180430130536504" creator="MartyMcGowan" modified="20210326144907750" modifier="Marty McGowan" tags="application slogging active" title="App from Lib">
 <pre>See the [[application]] tag, in particular [[sh-bang]] and [[New Rules]].  The commonlib has been replaced by functionlib and retiredlib.
 
 -----
@@ -14783,6 +14835,9 @@ The first, setAllFiles encapsulates the commands listed when you search for //&q
 </pre>
 </div>
 <div created="20200816151952092" creator="Marty McGowan" modified="20200816151952092" modifier="Marty McGowan" title="appleton">
+<pre></pre>
+</div>
+<div created="20210326144907751" creator="Marty McGowan" modified="20210326144907751" modifier="Marty McGowan" title="application">
 <pre></pre>
 </div>
 <div created="20200928194345262" creator="Marty McGowan" modified="20200928194345262" modifier="Marty McGowan" title="args">
@@ -15617,6 +15672,26 @@ The app_fun function and following code fragment have been realized in the ''app
 
 </pre>
 </div>
+<div created="20210326154552531" creator="Marty McGowan" modified="20210326154917553" modifier="Marty McGowan" tags="[[aging out a backup]]" title="Compose a function on the Command Line">
+<pre>The command following # 621 shows how easy it is to compose a function on the command line
+
+# type a function name
+# add a set of closed ()'s
+# a left-curly brace {
+# select commands from the history
+# close with a right-curly brace'
+
+
+```
+  620  cat auxlib &gt;&gt; retiredlib
+  621  backup auxlib; rm -f auxlib; backup sync; find . -name auxlib
+bin.$ backup_exercise () { !620; !621; }
+backup_exercise () { cat auxlib &gt;&gt; retiredlib; backup auxlib; rm -f auxlib; backup sync; find . -name auxlib; }
+```
+
+
+and voila!    you have a function. which may be later molded into a more general usage.</pre>
+</div>
 <div created="20200823182132440" creator="Marty McGowan" modified="20200823182132440" modifier="Marty McGowan" title="compute">
 <pre></pre>
 </div>
@@ -16394,100 +16469,45 @@ Thanks for asking,
 -- 
 Dossy Shiobara     </pre>
 </div>
-<div created="20180430130536504" creator="MartyMcGowan" draft.of="App from Lib" draft.title="App from Lib" modified="20210325200550935" modifier="Marty McGowan" tags="application slogging active" title="Draft of 'App from Lib' by Marty McGowan">
-<pre>See the [[application]] tag, in particular [[sh-bang]] and [[New Rules]].  The commonlib has been replaced by functionlib and retiredlib.
+<div created="20210324231455922" creator="Marty McGowan" draft.of="aging out a backup" draft.title="aging out a backup" modified="20210326154849426" modifier="Marty McGowan" tags="[[aging out a backup]] backup" title="Draft of 'aging out a backup' by Marty McGowan">
+<pre>by this time, i've discovered the functions in auxlib are no longer in use:
 
------
+&gt;   $ fuse functionName      # returns nothing
 
-!! Obsolescent material:
+So, all its functions can be retired.   the retiredlib is where all formerly useful functions go to spend their twilight.   There remains some chance they've instructional value for their descendants.
 
-Turning [[ftplib|ftplib(1)]] into an app is showing me the way do this in general.
+The auxlib isn't removed until it's been backed up.   Then it may be removed.   The `backup sync` insures that a subsequent `backup files` doesn't identify it as currently being backed up.  and the following `find . - name auxlib` shows just where it has gone.   
 
-This method is giving way to a simpler approach. Follow the organization on [[commonlib]].   The objective remains the same:  Turn a working library into a stand-alone application.
+{{Compose a function on the Command Line}}
 
-
-
-An //app// is a function library whose only function references are internal.   Distinct from a //lib// which may refer to other function libraries.
-
-Here's a template of the commands to collect the functions into an //app//:
+results in the function, and more general use:
 
 ```
-. ftplib
-. ftp_app
-declare -f $(functions ../bin/ftp{lib,_app}) | tee ftp_next
-flcomm ftp_next ../bin/ftp_app  # inspect the differences 
-mv ftp_next ../bin/ftp_app
-```
-
-The steps:
-
-*source the //app//
-*source the //lib//     # turn these around?
-*collect the function bodies in //_next//
-*inspect the different list # and if satisfactory
-*move the //_next// to the //app//
-
-This proved the way to go.   I've detail the central functions in the [[software diary for April 30th, 2018|http://mcgowans.org/pubs/marty3/commonplace/software/swdiary-2018.html]].  
-
-After outlining the procedure to take advantage of an app in my software diary,  I've a working [[Last Sh-Bang You'll Ever Need here|http://mcgowans.org/pubs/marty3/commonplace/software/swdiary-2018.html#sec-5-2]]
+  627  qf backup_exercise | sed 's/backup_exercise/retire_library/; s/aux/${1}/' | tee .x
+  628  . ./.x
+  630  th; qf backup_exercise retire_library
 
 
+backup_exercise () 
+{ 
+    cat auxlib &gt;&gt; retiredlib;
+    backup auxlib;
+    rm -f auxlib;
+    backup sync;
+    find . -name auxlib
+}
+retire_library () 
+{ 
+    cat ${1}lib &gt;&gt; retiredlib;
+    backup ${1}lib;
+    rm -f ${1}lib;
+    backup sync;
+    find . -name ${1}lib
+}
 
-
-</pre>
-</div>
-<div created="20200910192854745" creator="Marty McGowan" draft.of="many duplicated functions" draft.title="many duplicated functions" modified="20210325200336823" modifier="Marty McGowan" tags="" title="Draft of 'many duplicated functions' by Marty McGowan">
-<pre>[[shell stories]] |  [[many duplicated functions]]
-
-This whole process has been cleaned up.   In truth the functions [[flcomm]] and lib_tidy play a large continuing role.   An
-
-!! A sequence of steps
-
-```
-    1	flcomm  -12 $(which rdlib) ./functionlib | wc
-    2	f2file $(which rdlib);
-    3	pushd $(f2file ./functionlib)
-    4	diff_dotd ../rdlib.d ../functionlib.d | grep '^&lt; ' | tee  ~/.x | more
-    5	pushd
-    6	flcomm -13 $(which rdlib) ./functionlib | tee .x | ff | tee .l
-    7	flcomm -12 .l functionlib | wc
-    8	backup functionlib
-    9	diff functionlib .bak/.bak
-   10	mv .l functionlib
-   11	backup functionlib
-   12	lib_tidy functionlib
-   13	backup functionlib
 
 ```
 
-The functionlib has had many common functions with rdlib.   Of those remaining in common, which one do we want to preserve, and make sure is promoted to rdlib, since this is the functionlib being recorded in github.  These steps isolate the common functions in separate directories, each with a file for each function, so a common function may be compare to another instance.  The result is to trim a list of functions from the functionlib, satisfied that the copy in rdlib is the only one we need..
-
-
-
-!! The steps in detail
-
-#. flcomm, using the ''comm'' command compares the list of function in the two libraries , excluding the functions ( arg -12 ) from the first list (1) and the second list (2) leaving a list of common functions, piped to the ''wc'' command, which counts the number of common function names.  No difference in the text of each is yet established.
-# f2file copies the functions in rdlib into a separate directory in individual fils
-# since f2file returns the directory name, do the same for the functionlib, which will be adjacent to rdlib's functions
-# the function diff_dotd compares the copies of individual functions in common .   The &quot;grep '^&lt; '&quot; command collects on the results from the rdlib, the first library.  Leave this off to see both sides of a diff.  This step told us indeed the rdlib copy is the one we want in all cases.
-# this pushd returns to the local directory of the functionlib.   We know this since the pushd in step 3 leads us to concliude we were in the local directory of the functionlib
-# this time use flcomm to exclude (1), the rdlib functions, and (3) the common functions in both libraries, leaving the list of functions unique to the functionlib.  The list of functions is put in the local file .x while the ff function writes the text of the functions named on the standard input, these functions copied into the newlib (.l) 
-# compare the updated library (.l) with the current functionlib.  the wc command shows the number of surviving functions, those in common to both libraries.
-# since we now trust the copy in .i, then backup the functionlib
-# mv the newlib .l to functionlib
-# back it up again
-# run lib_tidy which restores any init functions 
-# back it up again 
-
-
-
-!! the functions used
-
-* [[backup]]
-* [[diff_dotd]]
-* [[flcomm]]
-* [[f2file]]
-* [[lib_tidy]]
 </pre>
 </div>
 <div modified="20200906135508486" modifier="Marty McGowan" title="Draft of 'Other Software' by Marty McGowan">
@@ -18781,8 +18801,10 @@ First a digression to documents tracing the development of this practice
 <div created="20201003203154392" creator="Marty McGowan" modified="20201003203212009" modifier="Marty McGowan" tags="term" title="manufactured">
 <pre></pre>
 </div>
-<div created="20200910192854745" creator="Marty McGowan" modified="20210325200122325" modifier="Marty McGowan" tags="" title="many duplicated functions">
+<div created="20200910192854745" creator="Marty McGowan" modified="20210326154945396" modifier="Marty McGowan" tags="active" title="many duplicated functions">
 <pre>[[shell stories]] |  [[many duplicated functions]]
+
+This whole process has been cleaned up.   In truth the functions [[flcomm]] and lib_tidy play a large continuing role.   An
 
 !! A sequence of steps
 
@@ -18804,6 +18826,8 @@ First a digression to documents tracing the development of this practice
 ```
 
 The functionlib has had many common functions with rdlib.   Of those remaining in common, which one do we want to preserve, and make sure is promoted to rdlib, since this is the functionlib being recorded in github.  These steps isolate the common functions in separate directories, each with a file for each function, so a common function may be compare to another instance.  The result is to trim a list of functions from the functionlib, satisfied that the copy in rdlib is the only one we need..
+
+
 
 !! The steps in detail
 
@@ -21573,7 +21597,7 @@ lib.$
 
 </pre>
 </div>
-<div created="20200910133351885" creator="Marty McGowan" modified="20200910192832986" modifier="Marty McGowan" tags="" title="shell stories">
+<div created="20200910133351885" creator="Marty McGowan" modified="20210326155002440" modifier="Marty McGowan" tags="" title="shell stories">
 <pre>[ [[Shell Functions]] ][ [[shell stories]] ]
 
 &lt;&lt;tabs &quot;[[duplicate function problem]]

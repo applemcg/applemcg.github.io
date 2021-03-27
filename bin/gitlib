@@ -52,7 +52,7 @@ bookCollection ()
 		   printf "%d\t%s\n", $1, collection[i]
 		 };
 	       }
-       ' | ncolumn collections | mytable
+       ' | ncolumn collections | mytable $@
 }
 book_author () 
 { 
@@ -534,7 +534,7 @@ git_url ()
 }
 gitlib_copyright () 
 { 
-    cat  <<EOF
+    cat <<EOF
 
 Copyright (c)2 2015-2021 Marty McGowan, JYATL - Just Yet Another Testing Lab
 
@@ -721,14 +721,14 @@ latest_gitfunctions ()
 latestbook () 
 { 
     : date: 2020-12-05;
-    cat $(latestbookpage) | column latest page author book | mytable
+    cat $(latestbookpage) | column latest page author book | mytable $@
 }
 latestbookpage () 
 { 
     : all reading history with author and book;
     : date: 2021-03-04 save intermediate lat;
     table_history book_page.rdb | i_timeDate latest |
-    .. jointable -1 book -2 book - author_book.rdb | mytable
+    .. jointable -1 book -2 book - author_book.rdb | mytable $@
 }
 link_authorBook () 
 { 
