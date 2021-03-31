@@ -489,6 +489,10 @@ Error message and password prompt
 
 <li>Linking in Stroll, part 3</li>
 
+<li>lit_history</li>
+
+<li>lit_history_code</li>
+
 <li>Live and Fate</li>
 
 <li>LOA, ~ Novels and Stories</li>
@@ -12316,7 +12320,7 @@ exports.context = contextWidget;
 <div bag="default" revision="1" title="$:/status/UserName">
 <pre></pre>
 </div>
-<div created="20210330122933385" list="readingHistoryTable [[Reading History]] [[On My Nightstand]] TableofContents [[MIT Club]]" modified="20210330123605852" title="$:/StoryList">
+<div created="20210330122933385" list="lit_history lit_history_code readingHistoryTable [[Reading History]] [[On My Nightstand]] TableofContents [[MIT Club]]" modified="20210331195206915" title="$:/StoryList">
 <pre></pre>
 </div>
 <div created="20200519141000553" list="$:/.giffmex/Buttons/more-tiddler-edit-actions $:/core/ui/Buttons/delete $:/core/ui/Buttons/cancel $:/core/ui/Buttons/save" modified="20200521145647980" tags="$:/giffmex/bigeditarea $:/giffmex/stroll" title="$:/tags/EditToolbar">
@@ -13399,6 +13403,25 @@ One more thing about linking: if you change the name of a tiddler, all the links
 &lt;/span&gt;
 </pre>
 </div>
+<div created="20210331195036819" modified="20210331195036819" title="lit_history">
+<pre></pre>
+</div>
+<div created="20210331195107688" modified="20210331195254502" tags="" title="lit_history_code">
+<pre>[[lit_history]] | [[lit_history_code]]
+
+
+```
+lit_history () 
+{ 
+    : format latestPageBook for READING tiddlyWiki;
+    runfrom $(reading) || return;
+    cat $(latestPageBook) | tiddlylink book | threeColumnTiddly |
+    .. show_tmpclip
+}
+
+```
+</pre>
+</div>
 <div created="20210311215158427" modified="20210311215158427" title="Live and Fate">
 <pre></pre>
 </div>
@@ -13501,7 +13524,7 @@ Click the buttons in any tiddler to see the tiddlers they create. Save changes. 
 <div created="20210311215306837" modified="20210311215306837" title="On Book 1][LOF_Book1">
 <pre></pre>
 </div>
-<div created="20200721142238341" creator="Marty McGowan" modified="20210330122956875" modifier="Marty McGowan" tags="TableofContents table" title="On My Nightstand">
+<div created="20200721142238341" creator="Marty McGowan" modified="20210331194424169" modifier="Marty McGowan" tags="TableofContents table" title="On My Nightstand">
 <pre>reading.$ [[onMynightstand]]
 
 On the &quot;page&quot;, two points to understand:
@@ -13514,8 +13537,9 @@ Compare this list with [[Reading History]]
 | !latest | !page | !author | !book |
 |210321 |    75 |[[Sparapany, Richard]] |[[Classical Mechanics]] |
 |210321 |   433 |[[Grossman, Vasily]] |[[Life and Fate]] |
-|210330 |   112 |[[Dickens, Charles]] |[[A Tale of Two Cities]] |
 |210330 |   137 |[[Sykes, Ed]] |[[The Patch and The Stream Where the American Fell]] |
+|210331 |   142 |[[Dickens, Charles]] |[[A Tale of Two Cities]] |
+
 </pre>
 </div>
 <div created="20210103013103453" modified="20210103013753604" tags="function" title="onMynightstand">
@@ -13623,7 +13647,7 @@ I thought of one more comment. Not sure I agree on the importance of the way the
 <div created="20210311214528019" modified="20210311214528019" title="readhistory">
 <pre></pre>
 </div>
-<div created="20200818134415335" modified="20210311214528017" tags="table TableofContents" title="Reading History">
+<div created="20200818134415335" modified="20210331195036818" tags="table TableofContents" title="Reading History">
 <pre>todo: 
 
 # look up multi-volume starting number, subtract from this report
@@ -13634,7 +13658,7 @@ done:
 # trim L and CH from pages, just use numbers, 1/1/21
 # put current reading as of last_read, s/a onMyNightstand 1/2/21
 
-reading.$ [[readhistory]] [[latest_gitfunctions]]
+reading.$ [[lit_history]] [[latest_gitfunctions]]
 
 Compare with [[On My Nightstand]]
 
@@ -13676,7 +13700,7 @@ For the Book Club:
 * [[MIT-Have Read|https://www.librarything.com/catalog.php?view=applemcg&amp;shelf=list&amp;sort=stamp&amp;collection=107361]]: -- if you want to catch up
 </pre>
 </div>
-<div created="20210113150530927" modified="20210330124233148" tags="" title="readingHistoryTable">
+<div created="20210113150530927" modified="20210331194945195" tags="" title="readingHistoryTable">
 <pre>[[Reading History]]. | [[readingHistoryTable]]
 
 Trimmed to this year.
@@ -13685,8 +13709,8 @@ Where blank ''page'' and `...` show the date the book was finally read.
 
 
 | !latest | !page | !book |
+|210331 |   142 |[[A Tale of Two Cities]] |
 |210330 |   137 |[[The Patch and The Stream Where the American Fell]] |
-|210330 |   112 |[[A Tale of Two Cities]] |
 |210324 |   ... |[[The Greatest Story Ever Told -- So Far]] |
 |210321 |   433 |[[Life and Fate]] |
 |210321 |    75 |[[Classical Mechanics]] |
@@ -13698,6 +13722,7 @@ Where blank ''page'' and `...` show the date the book was finally read.
 |210126 |   ... |[[How to Be an Antiracist]] |
 |210123 |   ... |[[The Lake Wobegon Virus]] |
 |210101 |    ... |[[The Magnificent Ambersons]] |
+|201231 |    ... |[[Last Bus to Woodstock]] |
 </pre>
 </div>
 <div created="20200510030209847" modified="20200808150229741" tags="$:/giffmex/tutorials" title="Recent updates to Stroll">
