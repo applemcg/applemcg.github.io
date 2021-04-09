@@ -1,65 +1,3 @@
-_rdb_column_function () 
-{ 
-    : PROJECT columns from named RDB -- first Row -- FIELDS;
-    : reads STDIN for RDB list or TABLE format,;
-    : date: 2019-07-02;
-    : date: 2019-08-14 added the BLANK columns, not yet in table;
-    : date: 2020-05-17 RCAT replaces CAT;
-    : date: 2020-09-18 generic function for column function;
-    :;
-    local HEAD;
-    local DASH;
-    local COL="";
-    local arg;
-    local C;
-    : calling function needs to be a function in the rdb_awklib;
-    local awkfun=$(myname 2);
-    read_devtty awkfun: $awkfun;
-    : an associative array, to replace column;
-    declare -A pos;
-    :;
-    read HEAD;
-    read_devtty HEAD: $HEAD;
-    [[ -z "$HEAD" ]] && { 
-        ( echo;
-        rcat ) | listtotable | $awkfun $@ | tabletolist;
-        return 0
-    };
-    read DASH;
-    : ---------------------------------------- end template.fun --;
-    set -- $@;
-    : read_devtty @: $@;
-    (( C = 0 ));
-    : the columns default to their un-modified value;
-    for ARG in $HEAD;
-    do
-        (( C += 1 ));
-        arg[$C]="\$$C,";
-        pos[$ARG]=$C;
-    done;
-    : read_devtty arg: ${!arg[@]}, ${arg[@]};
-    : read_devtty pos: ${!pos[@]}, ${pos[@]};
-    :;
-    : find the column;
-    for I in $@;
-    do
-        local an=${pos[$I]};
-        : read_devtty I, pos[I]: $I $an;
-        arg[$an]="$awkfun(\$$an),";
-    done;
-    : read_devtty arg: ${!arg[@]}, ${arg[@]};
-    COL="${arg[@]}";
-    read_devtty COL: $COL;
-    rdb_hdr $HEAD;
-    rcat | awk "
-    $(rdb_awklib cat)
-    BEGIN { 
-            FS = OFS = \"\t\"
-	    blank = \"""\"
-          }
-          { print $COL \"\" }
-    "
-}
 addcol () 
 { 
     : adds columns to a table;
@@ -1607,6 +1545,18 @@ rdb_cmmdfun ()
     local table=$2;
     local query="$3";
     read_devtty query $query;
-    eval "$fun () { cat \$($table) | $query | mytable; }"
-    read_devtty  fun: "$(declare -f $fun)"
+    eval "$fun () { cat \$($table) | $query | mytable; }";
+    read_devtty fun: "$(declare -f $fun)"
+}
+current_table () 
+{ 
+    : extract the current table from the history;
+    : date: 2021-04-03;
+    if_missingargs 1 $* & return;
+    report_notfile $1 && { 
+        ls .hry/${1}* 1>&2;
+        return 1
+    };
+    rdb_canon $1;
+    zcat .hry/$1.Z | row '!delete_time' | ncolumn {insert,delete}_time | tee $1
 }
