@@ -1,17 +1,3 @@
-.. () 
-{ 
-    : related: func_args;
-    : date: 2021-03-22;
-    read_devtty $*;
-    $@
-}
-... () 
-{ 
-    : related: func_args;
-    : date: 2021-03-22;
-    read_devtty $*;
-    $@
-}
 args_test () 
 { 
     : testing limitation -- may QUOTED args be REFORMATTED?;
@@ -66,6 +52,11 @@ book_author ()
     };
     cat $1 | row "book ~ /$2/"
 }
+book_list () 
+{ 
+    : column table of the books;
+    table_history book_page.rdb | column book | title_fold | sorttable -u
+}
 book_onehistory () 
 { 
     : date, page read by book;
@@ -77,11 +68,6 @@ book_onehistory ()
     table_history book_page.rdb | ncolumn delete_time |
     ... rdb_iDate | row "book ~ /$1/" | title_fold |
     ... ... column i_date page book | sorttable
-}
-book_list () 
-{ 
-    : column table of the books;
-    table_history book_page.rdb | column book | title_fold | sorttable -u
 }
 book_tordb () 
 { 
@@ -115,55 +101,6 @@ cgit ()
     read_devtty $#, $@;
     command git $@
 }
-column () 
-{ 
-    : PROJECT columns from named RDB -- first Row -- FIELDS;
-    : reads STDIN for RDB list or TABLE format,;
-    : date: 2019-07-02;
-    : date: 2019-08-14 added the BLANK columns, not yet in table;
-    : date: 2020-05-17 RCAT replaces CAT;
-    : -------------------------------------- begin template.fun --;
-    local HEAD;
-    local DASH;
-    local COL="";
-    local C;
-    :;
-    : read_devtty $*;
-    read HEAD;
-    [[ -z "$HEAD" ]] && { 
-        ( echo;
-        rcat ) | listtotable | $(myname) "$@" | tabletolist;
-        return 0
-    };
-    read DASH;
-    : ---------------------------------------- end template.fun --;
-    : default to HEADER fields;
-    set -- ${@:-$HEAD};
-    for ARG in $@;
-    do
-        case " $HEAD " in 
-            *$ARG*)
-                : the column is in the table, what number?;
-                (( C = 1 ));
-                for I in $HEAD;
-                do
-                    [[ "$I" = "$ARG" ]] && { 
-                        COL="${COL},\$$C"
-                    };
-                    (( C += 1 ));
-                done
-            ;;
-            *)
-                : the column is NOT in the table;
-                COL="${COL},blank"
-            ;;
-        esac;
-    done;
-    COL=${COL#,};
-    : read_devtty COL: $COL;
-    rdb_hdr $@;
-    rcat | awk "BEGIN { FS = OFS = \"\t\"; blank = \"""\"; }; { print $COL; }"
-}
 datedRecords () 
 { 
     : pull DATED current records from a history file;
@@ -186,11 +123,9 @@ declare ()
         -f)
             shift;
             read_devtty A: $#, $@;
-            echo $@ | tpl > .dot.a;
             : test for function names;
             set -- $(func_args $@);
             read_devtty B: $#, $@;
-            echo $@ | tpl > .dot.b;
             [[ $# -lt 1 ]] && return 1;
             :;
             : there are some, proceed;
@@ -282,15 +217,11 @@ fourColumnTiddly ()
 }
 fun_column () 
 { 
-    : collect one of columns in from the function table;
-    : date: 2021-01-18;
-    local file=shd_alldata.lst;
-    if_missingargs 1 $@ && { 
-        printfirst < $file;
-        return 1
-    };
-    cat $file | awk "\$1 ~ /fun/ || NF < 1 || \$1 ~ /$1/" |
-    ... column fun $1 | listtotable | row $1
+    : functions with column ...;
+    : date: 2020-10-14;
+    runfrom $(lib) || return;
+    set -- ${1:-$(pick $(< shd_tagdatadict.txt))};
+    listtotable < shd_alldata.lst | row $1 | column fun $1
 }
 func_args () 
 { 
@@ -534,7 +465,7 @@ git_url ()
 }
 gitlib_copyright () 
 { 
-    cat  <<EOF
+    cat <<EOF
 
 Copyright (c)2 2015-2021 Marty McGowan, JYATL - Just Yet Another Testing Lab
 
@@ -587,126 +518,6 @@ i_timeDate ()
     row '!delete_time' | rdb_iDate |
     ... rename i_date ${1:-i_date} | ncolumn {insert,delete}_time
 }
-jointable () 
-{ 
-    : join two tables into one where keys match;
-    : for historic compatibility, -jN is preserved, and;
-    : uses join with -j N;
-    : todo: "sort" out leading column name;
-    : date: 2017-03-26;
-    : date: 2020-04-11;
-    local COLS="";
-    local ARGS="";
-    local f1="";
-    local f2="";
-    local tmp=$HOME/tmp/$(myname);
-    rm -f $tmp.*;
-    while [ $# -gt 0 ]; do
-        arg=$1;
-        shift;
-        case $arg in 
-            -)
-                if [ -z "$f1" ]; then
-                    cat - > $tmp.i;
-                    f1=$tmp.i;
-                else
-                    cat - > $tmp.i;
-                    f2=$tmp.i;
-                fi;
-                read_devtty stdin, f1, f2: $arg, $f1, $f2
-            ;;
-            -t)
-                : ignore the T, apply after args are parsed;
-                continue
-            ;;
-            -j1 | -1)
-                local j1=$1;
-                shift
-            ;;
-            -j2 | -2)
-                local j2=$1;
-                shift
-            ;;
-            -[aoj])
-                : ignore these
-            ;;
-            -[ve12])
-                ARGS="$ARGS $arg $1";
-                shift
-            ;;
-            -*)
-                ARGS="$ARGS $arg"
-            ;;
-            *)
-                read_devtty file?, f1, f2: $arg, $f1, $f2;
-                : column names or file args;
-                if [ ! -f $arg ]; then
-                    COLS="$COLS $arg";
-                    :;
-                else
-                    if [ -z "$f1" ]; then
-                        f1=$arg;
-                        :;
-                    else
-                        if [ -z "$f2" ]; then
-                            f2=$arg;
-                        fi;
-                    fi;
-                fi
-            ;;
-        esac;
-        read_devtty arg, f1, f2: $arg, $f1, $f2;
-    done;
-    [[ -z "$f2" ]] && { 
-        : there was no table 2, is it on STDIN;
-        [[ "$f1" = "$tmp.i" ]] && { 
-            comment bad STDIN or missing FILE $arg;
-            return 3
-        };
-        f2=$tmp.i;
-        cat - > $f2
-    };
-    read_devtty last f1, f2: $f1, $f2;
-    report_notfile $f1 && return 1;
-    report_notfile $f2 && return 2;
-    : --------------------------------------------------- clean up args --;
-    :;
-    : ---------------------------- multi-arg resolution --;
-    :;
-    [[ -n "$j1" ]] && { 
-        ARGS="$ARGS -1 $(rdb_column $f1 $j1)"
-    };
-    [[ -n "$j2" ]] && { 
-        ARGS="$ARGS -2 $(rdb_column $f2 $j2)"
-    };
-    read_devtty ARGS: $ARGS;
-    :;
-    : ---------------- TAB is the only field separator --;
-    : and requires the EVAL in the join command;
-    :;
-    : date: 2020-09-08 in which i learned this bash syntax;
-    : ref: "https://duckduckgo.com/?t=ffab&q=bash+join+tab";
-    ARGS="$ARGS -t $'\t'";
-    : --------------------------------------------- collect the columns --;
-    :;
-    local COL1=$(sed 1q $f1);
-    local COL2=$(sed 1q $f2);
-    :;
-    read_devtty FILE: $f1, COLUMNS: $COL1;
-    cat $f1 | column $COL1 | sorttable -u $j1 | headoff > $tmp.a;
-    :;
-    read_devtty FILE: $f2, COLUMNS: $COL2;
-    cat $f2 | column $COL2 | sorttable -u $j2 | headoff > $tmp.b;
-    :;
-    : columns of the JOINed table;
-    set -- $(args_uniq $j1 $j2 $COL1 $COL2);
-    read_devtty rdb_hdr $*;
-    rdb_hdr $*;
-    read_devtty join $ARGS $tmp.{a,b};
-    : the EVAL is mandated by the TAB syntax;
-    echo "join $ARGS $tmp.{a,b}" > ${tmp}.err;
-    eval join $ARGS $tmp.{a,b}
-}
 keysmatch () 
 { 
     : date: 2020-07-11;
@@ -721,14 +532,14 @@ latest_gitfunctions ()
 latestbook () 
 { 
     : date: 2020-12-05;
-    cat $(latestbookpage) | column latest page author book | mytable $@
+    cat $(latestbookpage) | column latest page author book | mytable
 }
 latestbookpage () 
 { 
     : all reading history with author and book;
     : date: 2021-03-04 save intermediate lat;
     table_history book_page.rdb | i_timeDate latest |
-    .. jointable -1 book -2 book - author_book.rdb | mytable $@
+    .. jointable -1 book -2 book - author_book.rdb | mytable
 }
 link_authorBook () 
 { 
@@ -787,41 +598,6 @@ mytable ()
     esac;
     read_devtty $*;
     sometable $caller
-}
-ncolumn () 
-{ 
-    : removes columns from table, "Not Column";
-    : date: 2019-07-02;
-    : date: 2019-08-14 added the BLANK columns, not yet in table;
-    : -------------------------------------- begin template.fun --;
-    : date: 2019-08-27;
-    local HEAD;
-    local DASH;
-    local COL="";
-    local C;
-    :;
-    read HEAD;
-    [[ -z "$HEAD" ]] && { 
-        ( echo;
-        cat ) | listtotable | $(myname) "$@" | tabletolist;
-        return 0
-    };
-    read DASH;
-    : ---------------------------------------- end template.fun --;
-    : extract names from HEADER fields;
-    COL=$(echo :$HEAD: | tr ' 	' :);
-    : app_trace COL: $COL;
-    for C in $@;
-    do
-        COL=${COL/:$C:/:};
-        : app_trace removed $C, COL: $COL;
-    done;
-    COL=$(echo $COL | tr : ' ');
-    : app_trace ARGS: $*;
-    : app_trace HEAD: $HEAD;
-    : app_trace COL: $COL;
-    ( rdb_hdr $HEAD;
-    cat ) | column $COL
 }
 obs_tiddlylink () 
 { 
@@ -885,12 +661,6 @@ rawtsv_tordb ()
     rdb_hdr $(sed 1q $2 | sed 's/ /_/g' | lc);
     tail +2 $2
 }
-rdb_iDate () 
-{ 
-    : convert INSERT_TIME into I_DATE;
-    : date: 2019-06-11;
-    addcol i_date | compute 'i_date = substr(insert_time,1,6)'
-}
 rdb_n2one () 
 { 
     : date: 2020-07-18;
@@ -912,34 +682,6 @@ remote_repo ()
     : save these for a recovery exercise?!;
     set -- $(basename $PWD);
     echo ${1:0:5}
-}
-rename () 
-{ 
-    : ~ fromFieldName toNewName ...;
-    : by modifying the matching column name;
-    : date: 2016-11-15;
-    : date: 2019-08-14;
-    report_notpipe && return 1;
-    : -------------------------------------- begin template.fun --;
-    local HEAD;
-    local DASH;
-    :;
-    read HEAD;
-    [[ -z "$HEAD" ]] && { 
-        ( echo;
-        rcat ) | listtotable | $(myname) "$@" | tabletolist;
-        return 0
-    };
-    read DASH;
-    : ---------------------------------------- end template.fun --;
-    HEAD=$(echo :$HEAD: | tr ' 	' :);
-    while [[ $# -gt 1 ]]; do
-        HEAD=${HEAD/:$1:/:$2:};
-        shift 2;
-    done;
-    HEAD=$(echo $HEAD | tr : ' ');
-    rdb_hdr $HEAD;
-    cat
 }
 replace () 
 { 
@@ -975,52 +717,6 @@ show_tmpclip ()
     : date: 2021-02-27;
     report_notpipe && return 1;
     tee /dev/tty | tee .$(myname 2).tmp | pbcopy
-}
-sorttable () 
-{ 
-    : sort /RDB table according to books p. 398;
-    : single lettter with following arg TkSo;
-    : todo: accomodate field NAMES;
-    : date: 2020-04-11;
-    : simple rd sort $*;
-    read HEAD;
-    [[ -z "$HEAD" ]] && { 
-        ( echo;
-        cat ) | listtotable | sorttable "$@" | tabletolist;
-        return 0
-    };
-    read DASH;
-    : sort -t ...;
-    ARGS="";
-    while [ -n "$1" ]; do
-        case $1 in 
-            --*)
-                : eschew or IGNORE -- args;
-                continue
-            ;;
-            -t)
-                : -t is a TAB, none other;
-                continue
-            ;;
-            -[koST])
-                : allow -k N args, prefer Column Name;
-                ARGS="$ARGS $1 $2";
-                shift
-            ;;
-            -*)
-                ARGS="$ARGS $1"
-            ;;
-            *)
-                : detect Column Name;
-                local argn=$(argnumber $1 $HEAD);
-                [[ $argn == 0 ]] && continue;
-                ARGS="$ARGS -k $argn"
-            ;;
-        esac;
-        shift;
-    done;
-    rdb_hdr $HEAD;
-    sort -t'	' $ARGS
 }
 subcmmd () 
 { 
@@ -1127,4 +823,3 @@ yourtable ()
     : date: 2021-02-06;
     sometable $(myname 3)
 }
-echo git_init 1>&2

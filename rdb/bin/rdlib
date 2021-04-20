@@ -44,12 +44,13 @@ column ()
     : date: 2019-08-14 added the BLANK columns, not yet in table;
     : date: 2020-05-17 RCAT replaces CAT;
     : -------------------------------------- begin template.fun --;
+    : date: 2021-04-13;
     local HEAD;
     local DASH;
     local COL="";
     local C;
     :;
-    : read_devtty $*;
+    read_devtty $*;
     read HEAD;
     [[ -z "$HEAD" ]] && { 
         ( echo;
@@ -59,31 +60,41 @@ column ()
     read DASH;
     : ---------------------------------------- end template.fun --;
     : default to HEADER fields;
+    local tomatch=":";
+    for h in $HEAD;
+    do
+        tomatch=":$h:$tomatch";
+    done;
+    read_devtty tomatch: $tomatch;
     set -- ${@:-$HEAD};
+    read_devtty ARGS: $@;
     for ARG in $@;
     do
-        case " $HEAD " in 
-            *$ARG*)
-                : the column is in the table, what number?;
-                (( C = 1 ));
-                for I in $HEAD;
-                do
-                    [[ "$I" = "$ARG" ]] && { 
-                        COL="${COL},\$$C"
-                    };
-                    (( C += 1 ));
-                done
-            ;;
-            *)
-                : the column is NOT in the table;
-                COL="${COL},blank"
-            ;;
-        esac;
+        local a=":$ARG:";
+        if [[ $tomatch == *"$a"* ]]; then
+            read_devtty the column is in the table, which field;
+            (( C = 1 ));
+            for I in $HEAD;
+            do
+                [[ "$I" = "$ARG" ]] && { 
+                    COL="${COL},\$$C";
+                    read_devtty IN Table, C, COL: $C, $COL;
+                    break
+                };
+                (( C += 1 ));
+            done;
+        else
+            read_devtty the column is NOT in Table, COL: $COL;
+            COL="${COL},blank";
+        fi;
+        read_devtty COL: $COL;
     done;
     COL=${COL#,};
-    : read_devtty COL: $COL;
+    read_devtty COL: $COL;
     rdb_hdr $@;
-    rcat | awk "BEGIN { FS = OFS = \"\t\"; blank = \"""\"; }; { print $COL; }"
+    local script="BEGIN { FS = OFS = \"\t\"; blank = \"""\"; }; { print $COL; }";
+    read_devtty script: $script;
+    rcat | awk "$script"
 }
 columns () 
 { 
@@ -449,6 +460,8 @@ jointable ()
     : todo: "sort" out leading column name;
     : date: 2017-03-26;
     : date: 2020-04-11;
+    : date: 2021-04-11 need, implemented -a, include unmatched;
+    : date: 2021-04-11;
     local COLS="";
     local ARGS="";
     local f1="";
@@ -481,10 +494,10 @@ jointable ()
                 local j2=$1;
                 shift
             ;;
-            -[aoj])
+            -[oj])
                 : ignore these
             ;;
-            -[ve12])
+            -[ave12])
                 ARGS="$ARGS $arg $1";
                 shift
             ;;
@@ -877,14 +890,14 @@ rdb_canon ()
     local r=$1;
     local h=$(needir .hry)/$1;
     local z=$h.Z;
-    : read_devtty "r: $r";
-    : read_devtty "h: $h";
-    : read_devtty "z: $z";
+    read_devtty "r: $r";
+    read_devtty "h: $h";
+    read_devtty "z: $z";
     [[ -s $h ]] || rm -f $h;
     [[ -s $z ]] || rm -f $z;
     while true; do
         set -- $(newest_first $r $h $z | tr '\n' : ; echo);
-        : read_devtty "$# $*";
+        read_devtty "$# $*";
         case $1 in 
             $z:*:$r | $z:$r:*)
                 $tracer "case z::r, $*";
