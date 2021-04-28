@@ -1,23 +1,22 @@
 table	nrecrds	modate	fields
 -----	-------	------	------
-author_book.rdb	     27	2021-03-21	author book 
+author_book.rdb	     29	2021-04-02	author book 
 bookCollection.rdb	      8	2021-03-22	book_id collection 
-book_page.rdb	      5	2021-03-24	page book 
+book_page.rdb	      4	2021-04-25	page book 
 collections.rdb	    991	2020-07-18	collections book_id 
-haveread.rdb	    296	2020-07-18	date_read isbn isbns subjects dewey_decimal lending_start lending_end 
-haveread.rdb	    296	2020-07-18	review rating 
-haveread.rdb	    296	2020-07-18	source entry_date from_where page_count lccn acquired date_started 
+haveread.rdb	    296	2020-07-18	 date_read isbn isbns subjects dewey_decimal lending_start lending_end 
+haveread.rdb	    296	2020-07-18	 review rating 
+haveread.rdb	    296	2020-07-18	 source entry_date from_where page_count lccn acquired date_started 
 haveread.rdb	    296	2020-07-18	tags collections lc_classification book_id title primary_author copies 
-latestPageBook.rdb	     25	2021-03-24	latest page book 
-latestbook.rdb	      5	2021-03-24	latest page author book 
-latestbookpage.rdb	      5	2021-03-24	book page latest author 
+latestPageBook.rdb	     27	2021-04-25	latest page book 
+latestbook.rdb	      5	2021-04-25	latest page author book 
+latestbookpage.rdb	      5	2021-04-25	book page latest author 
+libthingbooks.rdb	    801	2020-10-15	 date_started date_read tags collections isbn dewey_decimal copies 
+libthingbooks.rdb	    801	2020-10-15	 entry_date 
 libthingbooks.rdb	    801	2020-10-15	book_id title primary_author rating comment media page_count acquired 
-libthingbooks.rdb	    801	2020-10-15	date_started date_read tags collections isbn dewey_decimal copies 
-libthingbooks.rdb	    801	2020-10-15	entry_date 
 multi_book.rdb	      6	2021-01-01	start book 
 rd_rules.rdb	      4	2020-10-27	base rule input command 
 readSummary.rdb	    296	2021-03-22	book_id collections read started entry primary_author 
 readhistory.rdb	     13	2020-08-19	finish author book 
 table_list.rdb	     20	2021-03-27	Type File 
-tables.rdb	     20	2021-03-22	table nrecrds modate fields 
 tags.rdb	    983	2020-07-18	tags book_id 
