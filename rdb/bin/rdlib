@@ -138,6 +138,26 @@ compute ()
         BEGIN   { FS=OFS=\"\t\"}; { $COLIN $1; $COLOUT print }"
     }
 }
+couldTrimBlanks () 
+{ 
+    : detect FIELD with Leading, Trailing BLANKS;
+    : date: 2021-03-04;
+    if_missingargs 1 $* && return 2;
+    report_notpipe && return 1;
+    row "$1 ~ /  *$/ || $1 ~ /^  */"
+}
+current_table () 
+{ 
+    : extract the current table from the history;
+    : date: 2021-04-03;
+    if_missingargs 1 $* & return;
+    report_notfile $1 && { 
+        ls .hry/${1}* 1>&2;
+        return 1
+    };
+    rdb_canon $1;
+    zcat .hry/$1.Z | row '!delete_time' | ncolumn {insert,delete}_time | tee $1
+}
 datatype () 
 { 
     : produces the rdb datatype in each column;
@@ -271,6 +291,17 @@ do_name_report ()
         echo;
     done;
     shd_report
+}
+edit_history () 
+{ 
+    : from TABLE_HISTORY file,;
+    if_missingargs 1 $* && return 1;
+    cmmd=${2:-xx};
+    report_notcommand $cmd && return 2;
+    table_history $1 | ${2:-xx} | tee ${1%*.rdb}.tmp;
+    ls -lrt $1 ${1%*.rdb}.tmp;
+    indir .hry uncompress $1.Z;
+    ls -lrt $1 ${1%*.rdb}.tmp .hry/$1*
 }
 fold_2 () 
 { 
@@ -1482,6 +1513,14 @@ todaysdate_test ()
     };
     foreach _tdate_test {a..z} 8 7 0 13
 }
+trimsBlanks () 
+{ 
+    : edit Blanks out of FIELD with Leading, Trailing BLANKS;
+    : date: 2021-03-06;
+    if_missingargs 1 $* && return 2;
+    report_notpipe && return 1;
+    compute "sub(/  *$/,\"\",$1);  sub(/^  *$/,\"\",$1)"
+}
 updates () 
 { 
     app_trace $*
@@ -1510,66 +1549,4 @@ width ()
               }
               printf "\n"
             }'
-}
-couldTrimBlanks () 
-{ 
-    : detect FIELD with Leading, Trailing BLANKS;
-    : date: 2021-03-04;
-    if_missingargs 1 $* && return 2;
-    report_notpipe && return 1;
-    row "$1 ~ /  *$/ || $1 ~ /^  */"
-}
-trimsBlanks () 
-{ 
-    : edit Blanks out of FIELD with Leading, Trailing BLANKS;
-    : date: 2021-03-06;
-    if_missingargs 1 $* && return 2;
-    report_notpipe && return 1;
-    compute "sub(/  *$/,\"\",$1);  sub(/^  *$/,\"\",$1)"
-}
-edit_history () 
-{ 
-    : from TABLE_HISTORY file,;
-    if_missingargs 1 $* && return 1;
-    cmmd=${2:-xx};
-    report_notcommand $cmd && return 2;
-    table_history $1 | ${2:-xx} | tee ${1%*.rdb}.tmp;
-    ls -lrt $1 ${1%*.rdb}.tmp;
-    indir .hry uncompress $1.Z;
-    ls -lrt $1 ${1%*.rdb}.tmp .hry/$1*
-}
-rdb_cmmdentry () 
-{ 
-    : define FUNction, reading TABLE, writing MYTABLE with QUERY;
-    : related: rd_cmmd rdb_hdr;
-    : generate the table-defining function;
-    :;
-    rdb_cmmdfun "$@";
-    :;
-    : collect record for table of function defining Queries;
-    :;
-    read_devtty 3: "$3";
-    printf "%s\t%s\t%s\n" $1 $2 "$3"
-}
-rdb_cmmdfun () 
-{ 
-    if_missingargs 3 $* && return 1;
-    local fun=$1;
-    local table=$2;
-    local query="$3";
-    read_devtty query $query;
-    eval "$fun () { cat \$($table) | $query | mytable; }";
-    read_devtty fun: "$(declare -f $fun)"
-}
-current_table () 
-{ 
-    : extract the current table from the history;
-    : date: 2021-04-03;
-    if_missingargs 1 $* & return;
-    report_notfile $1 && { 
-        ls .hry/${1}* 1>&2;
-        return 1
-    };
-    rdb_canon $1;
-    zcat .hry/$1.Z | row '!delete_time' | ncolumn {insert,delete}_time | tee $1
 }
