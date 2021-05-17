@@ -1550,3 +1550,71 @@ width ()
               printf "\n"
             }'
 }
+bsr_rdb () 
+{ 
+    : converts leading blank separated records into an RDB table;
+    : .. where the records last field may have spaces. The first record;
+    : .. is the field names. NO dash separators required.;
+    : date: 2021-03-23;
+    : date: 2021-03-24;
+    : date: 2021-05-05;
+    report_notpipe && return 1;
+    read HEAD;
+    read_devtty HEAD $HEAD;
+    rdb_hdr $HEAD;
+    cat - | spacesToTab $(expr $# - 1 )
+}
+bsr_rdb_test () 
+{ 
+    : date: 2021-03-23;
+    : date: 2021-03-24;
+    : date: 2021-05-05;
+    ( cat <<EOF
+symbol name
+FSWB FS Bancorp
+ESGR Enstar Group Ltd
+HIBB Bibbett Sports
+KHB  KB Home
+MIK The Michaels Companies
+DKS Dicks Sporting Goods
+CAN Cardinal Health 
+EOF
+ ) | tee bsr_rdb.in | bsr_rdb | recUpdate bsrTest | tee bsrTest.rdb
+}
+recUpdate () 
+{ 
+    : update a BSR record, supply HOW on the command line;
+    : date: 2021-03-23;
+    : date: 2021-03-24;
+    : date: 2021-05-05;
+    if_missingargs 1 $* && return 1;
+    report_notpipe && return 1;
+    column $(sed 1q recommendation.rdb) | compute "how = \"$1\"; update = $(today6)"
+}
+spacesToTab () 
+{ 
+    : convert leading spaces to a TAB, repeat as necessary;
+    : date: 2021-03-23;
+    : date: 2021-03-24;
+    : date: 2021-05-05;
+    case $# in 
+        0)
+            report_notpipe && return 1;
+            cat -
+        ;;
+        1)
+            : convert the first string of spaces, 1 or more to a tab;
+            sed 's/  */	/'
+        ;;
+        *)
+            : repeat as necessary;
+            $(myname) $1 | $(myname) ${*:2}
+        ;;
+    esac
+}
+rdfields () 
+{ 
+    : date: 2021-05-13;
+    report_notfile ${1:-/dev/null} && return 1;
+    sed 1q $1
+}

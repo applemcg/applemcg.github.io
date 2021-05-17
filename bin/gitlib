@@ -228,7 +228,8 @@ func_args ()
     : use TYPE to simulate declare -f;
     : Thou Shalt NOT sort!;
     : date: 2021-03-09 much more explict TYPE -A test in AWK;
-    type -a ${@:-/dev/null} 2> /dev/null | tee .dot.0 | awk '
+    : date: 2021-05-13;
+    type -a ${@:-/dev/null} 2> /dev/null | awk '
         $2$3$4 ~ /isafunction/ && \
 	$1 ~ /^[.a-zA-Z0-9][.a-zA-Z0-9_]*$/ { print $1 }
     '
@@ -823,3 +824,4 @@ yourtable ()
     : date: 2021-02-06;
     sometable $(myname 3)
 }
+echo git_init 1>&2
