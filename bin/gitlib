@@ -319,11 +319,10 @@ git_local ()
 }
 git_location () 
 { 
-    : [go to] the Git REPO base directory;
+    : where is the Git REPO base directory;
     : date: 2020-02-26;
     : date: 2020-05-11;
-    ${*:-pushd} /Users/martymcgowan/git/bapp;
-    cdx
+    ${*:-echo} $(home)/git; 
 }
 git_modified () 
 { 

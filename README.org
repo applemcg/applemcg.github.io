@@ -2,6 +2,7 @@
 
 Formerly in the MyIdeaWarehouse.html file, it's now the index file in
 this directory.
+
 ** activity
 
      git          # ~ status
@@ -16,10 +17,9 @@ this directory.
   So, here's a sequence
 
 $ cd TTGL
-$ ln -f $(index_lastofday) .daily
+$ ln -f $(index_lastofday) .daily '[-
 $ llrt .daily      # see they've shown up
-$ rm -fr index.*   # leaving one for each day in .daily
-
+$ rm -fr index.*   # leaving one for                                                                                                                                                                                                                      4each day in .daily
 
 ** contents
 

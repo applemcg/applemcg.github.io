@@ -489,10 +489,12 @@ jointable ()
     : for historic compatibility, -jN is preserved, and;
     : uses join with -j N;
     : todo: "sort" out leading column name;
+    : todo: thoroughly test the STDIN or - arg;
     : date: 2017-03-26;
     : date: 2020-04-11;
-    : date: 2021-04-11 need, implemented -a, include unmatched;
+    : date: 2021-04-11 need, implemented -a, ixnclude unmatched;
     : date: 2021-04-11;
+    : date: 2021-05-30;
     local COLS="";
     local ARGS="";
     local f1="";
@@ -504,6 +506,7 @@ jointable ()
         shift;
         case $arg in 
             -)
+                : read -p "= A = arg F1 F2: $arg, $f1, $f2";
                 if [ -z "$f1" ]; then
                     cat - > $tmp.i;
                     f1=$tmp.i;
@@ -511,7 +514,7 @@ jointable ()
                     cat - > $tmp.i;
                     f2=$tmp.i;
                 fi;
-                read_devtty stdin, f1, f2: $arg, $f1, $f2
+                : read -p "TMP: $(wc -l $tmp.i)"
             ;;
             -t)
                 : ignore the T, apply after args are parsed;
@@ -536,7 +539,7 @@ jointable ()
                 ARGS="$ARGS $arg"
             ;;
             *)
-                read_devtty file?, f1, f2: $arg, $f1, $f2;
+                : read -p "= B = arg F1 F2: $arg, $f1, $f2";
                 : column names or file args;
                 if [ ! -f $arg ]; then
                     COLS="$COLS $arg";
@@ -553,7 +556,7 @@ jointable ()
                 fi
             ;;
         esac;
-        read_devtty arg, f1, f2: $arg, $f1, $f2;
+        : read -p "= C = arg F1 F2: $arg, $f1, $f2";
     done;
     [[ -z "$f2" ]] && { 
         : there was no table 2, is it on STDIN;
@@ -564,7 +567,7 @@ jointable ()
         f2=$tmp.i;
         cat - > $f2
     };
-    read_devtty last f1, f2: $f1, $f2;
+    : read -p "= D = arg F1 F2: $arg, $f1, $f2";
     report_notfile $f1 && return 1;
     report_notfile $f2 && return 2;
     : --------------------------------------------------- clean up args --;
@@ -577,33 +580,32 @@ jointable ()
     [[ -n "$j2" ]] && { 
         ARGS="$ARGS -2 $(rdb_column $f2 $j2)"
     };
-    read_devtty ARGS: $ARGS;
+    : read -p "ARGS: $ARGS;";
     :;
     : ---------------- TAB is the only field separator --;
     : and requires the EVAL in the join command;
     :;
     : date: 2020-09-08 in which i learned this bash syntax;
     : ref: "https://duckduckgo.com/?t=ffab&q=bash+join+tab";
+    : requires EVAL;
     ARGS="$ARGS -t $'\t'";
     : --------------------------------------------- collect the columns --;
     :;
     local COL1=$(sed 1q $f1);
     local COL2=$(sed 1q $f2);
     :;
-    read_devtty FILE: $f1, COLUMNS: $COL1;
+    : read -p "FILE: $f1, COLUMNS: $COL1;";
     cat $f1 | column $COL1 | sorttable -u $j1 | headoff > $tmp.a;
     :;
-    read_devtty FILE: $f2, COLUMNS: $COL2;
+    : read -p " FILE: $f2, COLUMNS: $COL2;";
     cat $f2 | column $COL2 | sorttable -u $j2 | headoff > $tmp.b;
     :;
     : columns of the JOINed table;
     set -- $(args_uniq $j1 $j2 $COL1 $COL2);
-    read_devtty rdb_hdr $*;
+    : read -p "rdb_hdr $*";
     rdb_hdr $*;
-    read_devtty join $ARGS $tmp.{a,b};
     : the EVAL is mandated by the TAB syntax;
-    echo "join $ARGS $tmp.{a,b}" > ${tmp}.err;
-    eval join $ARGS $tmp.{a,b}
+    eval join $ARGS $tmp.{a,b} | tee ${tmp}.out
 }
 jointable_test () 
 { 
