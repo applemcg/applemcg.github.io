@@ -108,6 +108,7 @@ compute ()
     : date: 2017-06-20;
     : date: 2019-07-07;
     : date: 2020-08-24;
+    : date: 2021-06-06;
     :;
     local COLIN;
     local COLOUT;
@@ -127,15 +128,17 @@ compute ()
         (( C += 1 ));
     done;
     : trace_call "IN, cmd, OUT: $COLIN; $cmmd; $COLOUT";
-    awklib='
+    local awklib='
        function max(x,y) { return (x>y?x:y) }
        function min(x,y) { return (x<y?x:y) }
        function abs(x)   { return (x<0?-x:x) }
     ';
+    : insight: 2nd arg is an ENDBLOCK,;
+    local endblock=${2:-exit};
     [[ -n "$COLIN" ]] && { 
         awk "
         $awklib
-        BEGIN   { FS=OFS=\"\t\"}; { $COLIN $1; $COLOUT print }"
+        BEGIN   { FS=OFS=\"\t\"}; { $COLIN $1; $COLOUT print }; END { $endblock; }"
     }
 }
 couldTrimBlanks () 
