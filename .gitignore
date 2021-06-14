@@ -1,29 +1,10 @@
-# for the moment, ignore all hidden files AND directories
-# it's possible to include .gitignore with a $ git add -f ...
+# files
 
 .*
-.*~
-*#
-
-# ignore these suffixes
-
-*~
-*.css
-*.err
-*.log
+*.lst
 *.nxt
-*.tsv
+*.rdb
 *.tmp
+*.tsv
 
-# these directories
 
-gdu
-ar/
-*_backup
-*_files
-rdb/lib/asfunctions
-
-# and these files
-
-Emacs
-bin/bin*
