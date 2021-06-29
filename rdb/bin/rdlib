@@ -917,12 +917,9 @@ rdb_canon ()
     : date: 2019-09-08, new FEATURE;
     : date: 2020-05-18;
     : date: 2020-06-20;
-    runfrom $(dirname $1) $(basename $1) || return;
-    set -- $(basename $1);
+    : date: 2021-06-19;
     report_notfile $1 && return 1;
-    local tracer=read_devtty;
-    local tracer=app_trace;
-    : read_devtty $# $*;
+    : Three files - R, the Rdb Table, H, the table History, Z, the packed history;
     local r=$1;
     local h=$(needir .hry)/$1;
     local z=$h.Z;
@@ -936,41 +933,53 @@ rdb_canon ()
         read_devtty "$# $*";
         case $1 in 
             $z:*:$r | $z:$r:*)
-                $tracer "case z::r, $*";
+                : the Packed is the Newest of three, so;
                 rm -f $h;
                 return
             ;;
             $r:$h:*)
-                $tracer "case r:h:, $*";
-                h_repair $r $h || { 
+                : History has 2 prelim fields -- {insert,delete}_time;
+                set -- $(sed 1q $h);
+                shift 2;
+                local hhdr="$*";
+                : Rdb table header defines data fields;
+                set -- $(sed 1q $r);
+                local rhdr="$*";
+                : if identical all is well;
+                [[ $rhdr = $hhdr ]] || { 
+                    : if not, then restore, compress the History;
                     comment ERROR, unable to REPAIR $h from $r;
+                    comment "R: $rhdr,  H: $hhdr";
                     compress $h;
                     return 1
                 };
+                : A, OK, so add the current Rdb table to the History;
                 h_update $r
             ;;
             $r:$z:*)
-                $tracer "case r:z:, $*";
+                : leave the Rdb Table newer than the History, and continue;
                 uncompress -f $z;
                 touch $r
             ;;
             $r:*)
-                $tracer "case r::, $*";
+                : theres no History or Packed copy, so;
                 local fields="{insert,delete}_time $(sed 1q $r)";
+                : put the header in the History file;
                 rdb_hdr $fields > $h;
+                : touch the table, to update the Packed History, on the next pass;
                 touch $r
             ;;
             $h:*)
-                $tracer "case h::, $*";
+                : if, for any reason, the History is newest,;
                 compress -f $h
             ;;
             $z:*)
-                $tracer "case z::, $*";
+                : the Packed History is newest, so at a minimum,;
+                : restore the RDB Table;
                 zcat $z | row !delete_time | ncolumn {insert,delete}_time | awk NF > $r;
                 touch $z
             ;;
             *)
-                $tracer "case ::, $*";
                 app_trace ERROR, no matching files: $*;
                 return
             ;;
@@ -1075,7 +1084,7 @@ rdb_next ()
     set ${1%.rdb}.{rdb,nxt} "${*:2}";
     report_notfunction $3 && return 2;
     report_notfile $1 && return 3;
-    $tracer DOES ${*:3};
+    read_devtty DOES ${*:3};
     awk NF $1 | does ${*:3} > $2;
     cat $2 | onlyChanged $1;
     nrdp $1;
