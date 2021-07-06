@@ -45,12 +45,13 @@ column ()
     : date: 2020-05-17 RCAT replaces CAT;
     : -------------------------------------- begin template.fun --;
     : date: 2021-04-13;
+    : date: 2021-07-02;
     local HEAD;
     local DASH;
     local COL="";
     local C;
     :;
-    read_devtty $*;
+    app_trace "$*";
     read HEAD;
     [[ -z "$HEAD" ]] && { 
         ( echo;
@@ -65,35 +66,35 @@ column ()
     do
         tomatch=":$h:$tomatch";
     done;
-    read_devtty tomatch: $tomatch;
+    app_trace "tomatch: $tomatch";
     set -- ${@:-$HEAD};
-    read_devtty ARGS: $@;
+    app_trace "ARGS: $@";
     for ARG in $@;
     do
         local a=":$ARG:";
         if [[ $tomatch == *"$a"* ]]; then
-            read_devtty the column is in the table, which field;
+            app_trace "the column is in the table, which field";
             (( C = 1 ));
             for I in $HEAD;
             do
                 [[ "$I" = "$ARG" ]] && { 
                     COL="${COL},\$$C";
-                    read_devtty IN Table, C, COL: $C, $COL;
+                    app_trace "IN Table, C, COL: $C, $COL";
                     break
                 };
                 (( C += 1 ));
             done;
         else
-            read_devtty the column is NOT in Table, COL: $COL;
+            app_trace "the column is NOT in Table, COL: $COL";
             COL="${COL},blank";
         fi;
-        read_devtty COL: $COL;
+        app_trace "COL: $COL";
     done;
     COL=${COL#,};
-    read_devtty COL: $COL;
+    app_trace "COL: $COL";
     rdb_hdr $@;
     local script="BEGIN { FS = OFS = \"\t\"; blank = \"""\"; }; { print $COL; }";
-    read_devtty script: $script;
+    app_trace "script: $script";
     rcat | awk "$script"
 }
 columns () 
@@ -498,6 +499,7 @@ jointable ()
     : date: 2021-04-11 need, implemented -a, ixnclude unmatched;
     : date: 2021-04-11;
     : date: 2021-05-30;
+    : date: 2021-06-30;
     local COLS="";
     local ARGS="";
     local f1="";
@@ -509,7 +511,7 @@ jointable ()
         shift;
         case $arg in 
             -)
-                : read -p "= A = arg F1 F2: $arg, $f1, $f2";
+                read_devtty "= A = arg F1 F2: $arg, $f1, $f2";
                 if [ -z "$f1" ]; then
                     cat - > $tmp.i;
                     f1=$tmp.i;
@@ -517,7 +519,7 @@ jointable ()
                     cat - > $tmp.i;
                     f2=$tmp.i;
                 fi;
-                : read -p "TMP: $(wc -l $tmp.i)"
+                read_devtty "TMP: $(wc -l $tmp.i)"
             ;;
             -t)
                 : ignore the T, apply after args are parsed;
@@ -542,7 +544,7 @@ jointable ()
                 ARGS="$ARGS $arg"
             ;;
             *)
-                : read -p "= B = arg F1 F2: $arg, $f1, $f2";
+                read_devtty "= B = arg F1 F2: $arg, $f1, $f2";
                 : column names or file args;
                 if [ ! -f $arg ]; then
                     COLS="$COLS $arg";
@@ -559,18 +561,21 @@ jointable ()
                 fi
             ;;
         esac;
-        : read -p "= C = arg F1 F2: $arg, $f1, $f2";
+        read_devtty "= C = arg F1 F2: $arg, $f1, $f2";
     done;
+    read_devtty "= D = arg F1 F2: $arg, $f1, $f2";
     [[ -z "$f2" ]] && { 
-        : there was no table 2, is it on STDIN;
+        comment there was no table 2, is it on STDIN;
         [[ "$f1" = "$tmp.i" ]] && { 
             comment bad STDIN or missing FILE $arg;
             return 3
         };
         f2=$tmp.i;
+        read_devtty "=  = tmp F2: $tmp.i, $f2";
+        report_notpipe && return 3;
         cat - > $f2
     };
-    : read -p "= D = arg F1 F2: $arg, $f1, $f2";
+    read_devtty "= E = arg F1 F2: $arg, $f1, $f2";
     report_notfile $f1 && return 1;
     report_notfile $f2 && return 2;
     : --------------------------------------------------- clean up args --;
@@ -583,7 +588,7 @@ jointable ()
     [[ -n "$j2" ]] && { 
         ARGS="$ARGS -2 $(rdb_column $f2 $j2)"
     };
-    : read -p "ARGS: $ARGS;";
+    read_devtty "ARGS: $ARGS;";
     :;
     : ---------------- TAB is the only field separator --;
     : and requires the EVAL in the join command;
@@ -597,15 +602,15 @@ jointable ()
     local COL1=$(sed 1q $f1);
     local COL2=$(sed 1q $f2);
     :;
-    : read -p "FILE: $f1, COLUMNS: $COL1;";
+    read_devtty "FILE: $f1, COLUMNS: $COL1;";
     cat $f1 | column $COL1 | sorttable -u $j1 | headoff > $tmp.a;
     :;
-    : read -p " FILE: $f2, COLUMNS: $COL2;";
+    read_devtty " FILE: $f2, COLUMNS: $COL2;";
     cat $f2 | column $COL2 | sorttable -u $j2 | headoff > $tmp.b;
     :;
     : columns of the JOINed table;
     set -- $(args_uniq $j1 $j2 $COL1 $COL2);
-    : read -p "rdb_hdr $*";
+    read_devtty "rdb_hdr $*";
     rdb_hdr $*;
     : the EVAL is mandated by the TAB syntax;
     eval join $ARGS $tmp.{a,b} | tee ${tmp}.out
@@ -918,6 +923,7 @@ rdb_canon ()
     : date: 2020-05-18;
     : date: 2020-06-20;
     : date: 2021-06-19;
+    : date: 2021-07-02;
     report_notfile $1 && return 1;
     : Three files - R, the Rdb Table, H, the table History, Z, the packed history;
     local r=$1;
@@ -930,9 +936,10 @@ rdb_canon ()
     [[ -s $z ]] || rm -f $z;
     while true; do
         set -- $(newest_first $r $h $z | tr '\n' : ; echo);
-        read_devtty "$# $*";
+        read_devtty "A: $# $*";
         case $1 in 
             $z:*:$r | $z:$r:*)
+                read_devtty "B: $*";
                 : the Packed is the Newest of three, so;
                 rm -f $h;
                 return
@@ -940,11 +947,15 @@ rdb_canon ()
             $r:$h:*)
                 : History has 2 prelim fields -- {insert,delete}_time;
                 set -- $(sed 1q $h);
+                read_devtty "C1: $*";
                 shift 2;
                 local hhdr="$*";
+                read_devtty "hhdr: $hhdr";
                 : Rdb table header defines data fields;
                 set -- $(sed 1q $r);
+                read_devtty "C2: $*";
                 local rhdr="$*";
+                read_devtty "rhdr: $rhdr";
                 : if identical all is well;
                 [[ $rhdr = $hhdr ]] || { 
                     : if not, then restore, compress the History;
@@ -963,9 +974,8 @@ rdb_canon ()
             ;;
             $r:*)
                 : theres no History or Packed copy, so;
-                local fields="{insert,delete}_time $(sed 1q $r)";
                 : put the header in the History file;
-                rdb_hdr $fields > $h;
+                rdb_hdr {insert,delete}_time $(sed 1q $r) > $h;
                 : touch the table, to update the Packed History, on the next pass;
                 touch $r
             ;;
@@ -980,7 +990,7 @@ rdb_canon ()
                 touch $z
             ;;
             *)
-                app_trace ERROR, no matching files: $*;
+                app_trace "ERROR, no matching files: $*";
                 return
             ;;
         esac;

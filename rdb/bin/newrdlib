@@ -189,7 +189,15 @@ rdb_hdx2 ()
 }
 rdb_history () 
 { 
-    for_existing h.$(rdb_name $1).Z zcat
+    : updates rdb function tables histories;
+    : date: 2021-07-04;
+    for table in $(history_files);
+    do
+        local function=${table%.rdb};
+        isfunction $function || continue;
+        doit rdb_canon $table;
+        echo;
+    done
 }
 rdb_historyname () 
 { 

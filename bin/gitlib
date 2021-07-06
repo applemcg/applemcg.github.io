@@ -114,29 +114,6 @@ days_reading ()
     : a days -- todays -- reading;
     read_history | rd grep ${1:-$(yymmdd)} | sorttable
 }
-declare () 
-{ 
-    : insert ... syntactic sugar into shell functions;
-    : date: 2021-01-03;
-    : date: 2021-03-09 the BUG was in FUNC_ARGS;
-    case $1 in 
-        -f)
-            shift;
-            read_devtty A: $#, $@;
-            : test for function names;
-            set -- $(func_args $@);
-            read_devtty B: $#, $@;
-            [[ $# -lt 1 ]] && return 1;
-            :;
-            : there are some, proceed;
-            command declare -f $@ | fold_pipedots
-        ;;
-        *)
-            read_devtty D: $#, $@;
-            command declare $@
-        ;;
-    esac
-}
 declare_test () 
 { 
     : date: 2021-01-03;
@@ -151,12 +128,6 @@ declare_test ()
     :;
     printf $format "AFTER - declare Function";
     declare -f latestbook readhistory
-}
-dotfunctions () 
-{ 
-    : functions having, or aware of a leading "." in the name;
-    read_devtty $*;
-    ${*:-echo} $(sfg ^[.]) sfg functions declare
 }
 field_tolc () 
 { 
@@ -188,16 +159,6 @@ fiveColumnTiddly ()
      NR < 3 { next };
             { printf "|%s |%s |%s |%s |%s |\n", $1, $2, $3, $4, $5 }
    '
-}
-fold_pipedots () 
-{ 
-    : RE folds line with PIPE followed by ... s;
-    : the RE allows zero or more spaces after the Pipe Symbol;
-    : .. a Dot followed by zero or more Dots or Spaces,;
-    : .. closed by a space, which separates .s from the command;
-    sed '
-        s/| *\([.][. ]*\) /|\
-    \1 /g'
 }
 fourColumnTiddly () 
 { 
@@ -322,7 +283,7 @@ git_location ()
     : where is the Git REPO base directory;
     : date: 2020-02-26;
     : date: 2020-05-11;
-    ${*:-echo} $(home)/git; 
+    ${*:-echo} $(home)/git
 }
 git_modified () 
 { 
@@ -585,20 +546,6 @@ mygithub ()
     esac;
     echo ${1}github.com${separator}$(git_account)/$(basename $PWD).git
 }
-mytable () 
-{ 
-    : create an RDB table with name of the calling function, echoing the table Name;
-    : related: dotfunctions;
-    : date: 2021-02-06;
-    local caller=$(myname 2);
-    case $caller in 
-        [.]*)
-            caller=$(myname 3)
-        ;;
-    esac;
-    read_devtty $*;
-    sometable $caller
-}
 obs_tiddlylink () 
 { 
     : format column to wrap with TiddlyWiki LINK syntax;
@@ -611,38 +558,6 @@ onMyNightstand ()
     runfrom $(reading) || return;
     cat $(latestbook) | sorttable | link_authorBook
 }
-pick () 
-{ 
-    : ~ arg ...;
-    : add positive replies to STDOUT;
-    : y -- add to output;
-    : Y -- add to output and Quit;
-    : q -- Quit;
-    : * -- ignore;
-    : fm Kernighan and Pike, Unix Programming Enviroment, 1984;
-    : date: 2018-06-22;
-    :;
-    for a in $*;
-    do
-        printf "%s\t?: " "$a" > /dev/tty;
-        read response < /dev/tty;
-        case $response in 
-            y*)
-                echo "$a" | field 1
-            ;;
-            Y*)
-                echo "$a" | field 1;
-                break
-            ;;
-            q*)
-                break
-            ;;
-            *)
-
-            ;;
-        esac;
-    done
-}
 pipe_myargs () 
 { 
     : pipe each arg through successive pipes;
@@ -654,7 +569,8 @@ pipe_myargs ()
 rawtsv_tordb () 
 { 
     : pick a file from the list of TSVs, write a HDR as a TABLE;
-    set -- ${1:-$(pick *.tsv /dev/null)};
+    : date: 2021-07-02;
+    set -- ${1:-$(pick tsv/*.tsv /dev/null)};
     set -- $1 ${1%*.tsv}.tmp;
     report_notfile $1 && return 1;
     fmdos $1 > $2;
@@ -690,26 +606,6 @@ replace ()
         return
     };
     sed "s/$1/$2/g" $*
-}
-select_first () 
-{ 
-    : select the first occurrence of a fields value;
-    : since "$1" in this context is the argument to this function,;
-    : a column name, and NOT a awk positional paramter. this function;
-    : started life with a "gem" tag, but thought better to call a "lesson"!;
-    : this is the GEM of the DAY;
-    : ref: needs a URL on th shelf w.r.t why such a gem;
-    : date: 2020-05-08;
-    : date: 2020-11-14;
-    report_notpipe && { 
-        cat -;
-        return 1
-    };
-    report_notargcount 1 $# && { 
-        cat -;
-        return 2
-    };
-    row "!selected[$1]++"
 }
 show_tmpclip () 
 { 
