@@ -107,9 +107,8 @@ columns ()
 compute () 
 { 
     : date: 2017-06-20;
-    : date: 2019-07-07;
-    : date: 2020-08-24;
-    : date: 2021-06-06;
+    : date: 2021-07-05;
+    : date: 2021-07-16;
     :;
     local COLIN;
     local COLOUT;
@@ -135,7 +134,17 @@ compute ()
        function abs(x)   { return (x<0?-x:x) }
     ';
     : insight: 2nd arg is an ENDBLOCK,;
-    local endblock=${2:-exit};
+    :;
+    local endblock="${2:-exit}";
+    :;
+    case $endblock in 
+        exit)
+
+        ;;
+        *)
+            pptlog "$(myname 2) $(myname) $# ENDBLOCK: $endblock" >> $(lib)/log/compute.log
+        ;;
+    esac;
     [[ -n "$COLIN" ]] && { 
         awk "
         $awklib
