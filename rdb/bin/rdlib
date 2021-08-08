@@ -267,7 +267,7 @@ dbdict ()
     : /RDB, p. 288;
     : date: 2020-08-24;
     :;
-    sed 1q $* | awk '
+    fieldsof $1 | awk '
 
     BEGIN {
             OFS="\t";
@@ -386,8 +386,8 @@ h_repair ()
     : match algorithm from ncolumn;
     local r=$1;
     local h=$2;
-    local table="$(sed 1q $r)";
-    set -- $(sed 1q $h);
+    local table="$(fieldsof $r)";
+    set -- $(fieldsof $h);
     app_trace table: $table, ARGS: $*;
     : was read_devtty;
     : start with the 3rd field after insert, delete _time fields;
@@ -424,7 +424,7 @@ h_update ()
     local wc=$(cat $2|wc -l);
     : read_devtty "wc $2: $wc";
     [[ $wc -lt 2 ]] && return;
-    column {insert,delete}_time $(sed 1q $1) < $2 | awk NF > $3;
+    column {insert,delete}_time $(fieldsof $1) < $2 | awk NF > $3;
     local wc=$(cat $3|wc -l);
     : read_devtty "wc $3 $wc, backup $2";
     backup $2;
@@ -608,8 +608,8 @@ jointable ()
     ARGS="$ARGS -t $'\t'";
     : --------------------------------------------- collect the columns --;
     :;
-    local COL1=$(sed 1q $f1);
-    local COL2=$(sed 1q $f2);
+    local COL1=$(fieldsof $f1);
+    local COL2=$(fieldsof $f2);
     :;
     read_devtty "FILE: $f1, COLUMNS: $COL1;";
     cat $f1 | column $COL1 | sorttable -u $j1 | headoff > $tmp.a;
@@ -955,13 +955,13 @@ rdb_canon ()
             ;;
             $r:$h:*)
                 : History has 2 prelim fields -- {insert,delete}_time;
-                set -- $(sed 1q $h);
+                set -- $(fieldsof $h);
                 read_devtty "C1: $*";
                 shift 2;
                 local hhdr="$*";
                 read_devtty "hhdr: $hhdr";
                 : Rdb table header defines data fields;
-                set -- $(sed 1q $r);
+                set -- $(fieldsof $r);
                 read_devtty "C2: $*";
                 local rhdr="$*";
                 read_devtty "rhdr: $rhdr";
@@ -984,7 +984,7 @@ rdb_canon ()
             $r:*)
                 : theres no History or Packed copy, so;
                 : put the header in the History file;
-                rdb_hdr {insert,delete}_time $(sed 1q $r) > $h;
+                rdb_hdr {insert,delete}_time $(fieldsof $r) > $h;
                 : touch the table, to update the Packed History, on the next pass;
                 touch $r
             ;;
@@ -1017,7 +1017,7 @@ rdb_column ()
     shift;
     local colm=$1;
     shift;
-    set -- $(sed 1q $file);
+    set -- $(fieldsof $file);
     read_devtty colm, args: $colm, $*;
     local C=0;
     for a in $*;
@@ -1602,7 +1602,7 @@ bsr_rdb_test ()
     : date: 2021-03-23;
     : date: 2021-03-24;
     : date: 2021-05-05;
-    ( cat <<EOF
+    ( cat  <<EOF
 symbol name
 FSWB FS Bancorp
 ESGR Enstar Group Ltd
@@ -1622,7 +1622,7 @@ recUpdate ()
     : date: 2021-05-05;
     if_missingargs 1 $* && return 1;
     report_notpipe && return 1;
-    column $(sed 1q recommendation.rdb) | compute "how = \"$1\"; update = $(today6)"
+    column $(fieldsof recommendation.rdb) | compute "how = \"$1\"; update = $(today6)"
 }
 spacesToTab () 
 { 

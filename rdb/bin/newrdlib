@@ -222,72 +222,6 @@ rdb_inserts ()
     rdb_hdr count $2;
     zcat $1 | column $2 | rd sort | rd uniq -c | sed 's/^ *//' | rdb_datrdb_data2tab
 }
-rdb_join () 
-{ 
-    : date: 2017-05-11;
-    function arg_colnames () 
-    { 
-        while [[ $# -gt 0 ]]; do
-            case $1 in 
-                -o)
-
-                ;;
-                -*)
-                    shift
-                ;;
-                *)
-                    [[ -f $1 ]] || echo $1
-                ;;
-            esac;
-            shift;
-        done
-    };
-    function arg_filename () 
-    { 
-        for f in $*;
-        do
-            [[ -f $f ]] && echo $f;
-        done
-    };
-    function arg_flags () 
-    { 
-        while [[ $# -gt 0 ]]; do
-            case $1 in 
-                -o)
-
-                ;;
-                -*)
-                    echo $1 $2;
-                    shift
-                ;;
-            esac;
-            shift;
-        done
-    };
-    : non-flag args are either files or column names;
-    local cols=$(arg_colnames $*);
-    local args=$(arg_flags $*);
-    set $(arg_filename $*);
-    report_notargcount 2 $# file file ... man join && return 1;
-    local f1=$1;
-    local f2=$2;
-    local col1=$(sed 1q $f1);
-    local col2=$(sed 1q $f2);
-    set $col1;
-    local cols=${cols:-$1};
-    local new1=$(columnlist $cols $col1);
-    local new2=$(columnlist $cols $col2);
-    local toun="toun cols args f1 col1 f2 col2 new1 new2";
-    foreach nava $toun 1>&2;
-    rm -f .tmp.{a,b}*;
-    set .tmp.{a,b}$$;
-    cat $f1 | column $new1 | tail +3 | sort > $1;
-    cat $f2 | column $new2 | tail +3 | sort > $2;
-    rdb_hdr $(columnlist $new1 $new2);
-    join $args -t '	' $1 $2 | tee .joined.rdb;
-    comment rm -f $1 $2;
-    unset $toun
-}
 rdb_key () 
 { 
     rdb_col $1 $(rdb_fields $1) | rd sort -u
@@ -364,7 +298,7 @@ rdb_records ()
 }
 rdb_repairnotes () 
 { 
-    cat <<'EOF'
+    cat  <<'EOF'
   $ rdb_repair file.rdb "selection critera"
 the selection criteria produces two files:
    file.edt -- the selection
@@ -501,7 +435,7 @@ rdgrep ()
     quietly comment -- /rdb grep;
     read HEAD;
     read DASH;
-    cat <<EOF
+    cat  <<EOF
 $HEAD
 $DASH
 EOF
@@ -547,7 +481,7 @@ rdlib_version ()
 }
 rdlint_doc () 
 { 
-    cat <<'EOF'
+    cat  <<'EOF'
    use this on LIST format data.  it guarantees
       a TAB before a SPACE.
  return code is complement of files "goodness"
