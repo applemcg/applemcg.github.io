@@ -249,6 +249,8 @@ Error message and password prompt
 
 <li>$:/DefaultTiddlers</li>
 
+<li>$:/Import</li>
+
 <li>$:/isEncrypted</li>
 
 <li>$:/language/Buttons/NewHere/Hint</li>
@@ -608,6 +610,8 @@ Error message and password prompt
 <li>Reif, Epstein, and Koch</li>
 
 <li>Rejoiner on Powell's Reasons</li>
+
+<li>RenameTags</li>
 
 <li>Replies</li>
 
@@ -10811,6 +10815,11 @@ $:/config/ViewToolbarButtons/Visibility/$(listItem)$
 
 </pre>
 </div>
+<div status="complete" title="$:/Import">
+<pre>The following tiddlers were imported:
+
+# [[RenameTags]]</pre>
+</div>
 <div bag="default" revision="0" title="$:/isEncrypted">
 <pre>no</pre>
 </div>
@@ -12358,8 +12367,8 @@ exports.context = contextWidget;
 <div created="20200423200401447" modified="20200423210926655" title="$:/state/ShowPaletteEditor">
 <pre>no</pre>
 </div>
-<div created="20200418121802381" modified="20210131171302020" title="$:/state/sidebar">
-<pre>no</pre>
+<div created="20200418121802381" modified="20210828190941431" title="$:/state/sidebar">
+<pre>yes</pre>
 </div>
 <div created="20200423135524613" modified="20200502164032606" title="$:/state/strollhometabs--312553599">
 <pre>Linking in Stroll</pre>
@@ -12400,8 +12409,8 @@ exports.context = contextWidget;
 <div created="20200418122101344" modified="20200711200135824" title="$:/state/tab/moresidebar-1850697562">
 <pre>$:/core/ui/MoreSideBar/Explorer</pre>
 </div>
-<div created="20200418121835270" modified="20210109014023704" title="$:/state/tab/sidebar--595412856">
-<pre>$:/core/ui/SideBar/Recent</pre>
+<div created="20200418121835270" modified="20210828191113421" title="$:/state/tab/sidebar--595412856">
+<pre>$:/core/ui/SideBar/Tools</pre>
 </div>
 <div created="20200504200956301" modified="20200504201043124" title="$:/state/tabs/controlpanel/toolbars-1345989671">
 <pre>$:/core/ui/ControlPanel/Toolbars/EditToolbar</pre>
@@ -12424,7 +12433,7 @@ exports.context = contextWidget;
 <div bag="default" revision="1" title="$:/status/UserName">
 <pre></pre>
 </div>
-<div list="[[Table of Contents]] [[letter to AHS students]] Active TTGL" title="$:/StoryList">
+<div list="[[Table of Contents]] Active TTGL" title="$:/StoryList">
 <pre></pre>
 </div>
 <div created="20200519141000553" list="$:/.giffmex/Buttons/more-tiddler-edit-actions $:/core/ui/Buttons/delete $:/core/ui/Buttons/cancel $:/core/ui/Buttons/save" modified="20200521145647980" tags="$:/giffmex/bigeditarea $:/giffmex/stroll" title="$:/tags/EditToolbar">
@@ -12509,8 +12518,8 @@ exports.context = contextWidget;
 <div created="20200502174943975" modified="20200502174950301" title="$:/temp/RenameTags/search">
 <pre>tb</pre>
 </div>
-<div created="20200418122544376" modified="20210109014427786" title="$:/temp/search">
-<pre>impeach</pre>
+<div created="20200418122544376" modified="20210828191101302" title="$:/temp/search">
+<pre>RenameTags</pre>
 </div>
 <div created="20200429214841632" modified="20200429214841632" tags="$:/tags/ServerConnection" title="$:/temp/ServerConnection/https://tiddlywiki.com/library/v5.1.22/index.html" url="https://tiddlywiki.com/library/v5.1.22/index.html">
 <pre>loaded</pre>
@@ -13741,6 +13750,31 @@ your arguments characterize a flaw of the RR:   those that don't agree with you 
 please, don't tell me after suggesting it's the left who &quot;sells out&quot; that  it's only the right who operate from higher and more selfless principal. 
 
 there is no argument you make that fails to throw too bright a light on the right.</pre>
+</div>
+<div created="20140114170004978" creator="Stephan Hradek" description="A great trick invented by Alberto Molina to search and replace tags." modified="20200521150920458" modifier="Stephan Hradek" title="RenameTags">
+<pre>This great trick was shown to the tiddlywiki google group by [[Alberto Molina|https://groups.google.com/forum/#!topic/tiddlywiki/OCntQ79DuwM]]. I enhanced it a bit.
+
+|!Search tag: | &lt;$edit-text tiddler=&quot;$:/temp/RenameTags/search&quot; tag=&quot;input&quot; type=&quot;text&quot;/&gt; |
+|!Replace by: | &lt;$edit-text tiddler=&quot;$:/temp/RenameTags/replace&quot; tag=&quot;input&quot; type=&quot;text&quot;/&gt; |
+
+---
+&lt;$reveal type=&quot;nomatch&quot; text=&quot;&quot; state=&quot;$:/temp/RenameTags/replace&quot;&gt;
+
+!First step
+!!//Apply the tag &lt;$tiddler tiddler={{$:/temp/RenameTags/replace}}&gt;&lt;$transclude tiddler=&quot;$:/core/ui/TagTemplate&quot;/&gt;&lt;/$tiddler&gt; to the following tiddlers//
+&lt;$list filter=&quot;[!has[draft.of]tag{$:/temp/RenameTags/search}!tag{$:/temp/RenameTags/replace}sort[created]]&quot;&gt;
+&lt;$checkbox tag={{$:/temp/RenameTags/replace}}&gt; &lt;$link to={{!!title}}&gt;&lt;$view field=&quot;title&quot;/&gt;&lt;/$link&gt;&lt;/$checkbox&gt;&lt;br/&gt;
+&lt;/$list&gt;
+&lt;/$reveal&gt;
+
+&lt;$reveal type=&quot;nomatch&quot; text=&quot;&quot; state=&quot;$:/temp/RenameTags/search&quot;&gt;
+
+!Second step
+!!//Remove the tag &lt;$tiddler tiddler={{$:/temp/RenameTags/search}}&gt;&lt;$transclude tiddler=&quot;$:/core/ui/TagTemplate&quot;/&gt;&lt;/$tiddler&gt; from the following tiddlers//
+&lt;$list filter=&quot;[!has[draft.of]tag{$:/temp/RenameTags/search}tag{$:/temp/RenameTags/replace}sort[created]]&quot;&gt;
+&lt;$checkbox tag={{$:/temp/RenameTags/search}}&gt; ~~&lt;$link to={{!!title}}&gt;&lt;$view field=&quot;title&quot;/&gt;&lt;/$link&gt;~~&lt;/$checkbox&gt;&lt;br/&gt;
+&lt;/$list&gt;
+&lt;/$reveal&gt;</pre>
 </div>
 <div created="20190729195453338" modified="20200726185849384" tags="[[Table of Contents]]" title="Replies">
 <pre>! [[Replies]]

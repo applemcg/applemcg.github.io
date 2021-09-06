@@ -1,6 +1,0 @@
-base	rule	input	command
-----	----	-----	-------
-reading	finishedtiddly	rd_run datefinished	twotiddlylinks author book three
-reading	datefinished	zcat .hry/librarything.rdb.Z	sorttable -r latest | ncolumn insert_time | select_first book | row delete_time | ncolumn delete_time
-any	rules	rd_rules cat	listtotable
-any	tiddlyrules	rd_run rules	fourColumnTiddly

@@ -1,22 +1,24 @@
 table	nrecrds	modate	fields
 -----	-------	------	------
-author_book.rdb	     29	2021-04-02	author book 
-bookCollection.rdb	      8	2021-03-22	book_id collection 
-book_page.rdb	      4	2021-04-25	page book 
-collections.rdb	    991	2020-07-18	collections book_id 
-haveread.rdb	    296	2020-07-18	 date_read isbn isbns subjects dewey_decimal lending_start lending_end 
-haveread.rdb	    296	2020-07-18	 review rating 
-haveread.rdb	    296	2020-07-18	 source entry_date from_where page_count lccn acquired date_started 
-haveread.rdb	    296	2020-07-18	tags collections lc_classification book_id title primary_author copies 
-latestPageBook.rdb	     27	2021-04-25	latest page book 
-latestbook.rdb	      5	2021-04-25	latest page author book 
-latestbookpage.rdb	      5	2021-04-25	book page latest author 
-libthingbooks.rdb	    801	2020-10-15	 date_started date_read tags collections isbn dewey_decimal copies 
-libthingbooks.rdb	    801	2020-10-15	 entry_date 
-libthingbooks.rdb	    801	2020-10-15	book_id title primary_author rating comment media page_count acquired 
-multi_book.rdb	      6	2021-01-01	start book 
-rd_rules.rdb	      4	2020-10-27	base rule input command 
-readSummary.rdb	    296	2021-03-22	book_id collections read started entry primary_author 
+author_book.rdb	     31	2021-08-31	author title 
+author_title.rdb	    820	2021-08-31	author title 
+book_page.rdb	      5	2021-08-31	page title 
+currently_reading.rdb	      8	2021-09-01	title acquired column title acquired started author entry tags 
+latestPageBook.rdb	     29	2021-08-31	latest page title 
+latestbook.rdb	      5	2021-08-31	latest page author title 
+latestbookpage.rdb	      1	2021-08-31	title page latest author 
+librarything.rdb	    825	2021-09-01	 bcid tags collections languages original_languages lc_classification 
+librarything.rdb	    825	2021-09-01	 copies source entry_date from_where oclc work_id lending_patron 
+librarything.rdb	    825	2021-09-01	 dimensions page_count lccn acquired date_started date_read barcode 
+librarything.rdb	    825	2021-09-01	 isbn isbns subjects dewey_decimal dewey_wording other_call_number 
+librarything.rdb	    825	2021-09-01	 lending_status lending_start lending_end 
+librarything.rdb	    825	2021-09-01	 secondary_author_roles publication date review rating comment private_comment 
+librarything.rdb	    825	2021-09-01	 summary media physical_description weight height thickness length 
+librarything.rdb	    825	2021-09-01	book_id title sort_character primary_author primary_author_role secondary_author 
+libthingbooks.rdb	    825	2021-09-01	 read tags collections isbn dewey_decimal copies entry 
+libthingbooks.rdb	    825	2021-09-01	book_id title author rating comment media page_count acquired started 
 readhistory.rdb	     13	2020-08-19	finish author book 
 table_list.rdb	     20	2021-03-27	Type File 
-tags.rdb	    983	2020-07-18	tags book_id 
+tables.rdb	     22	2021-09-02	table nrecrds modate fields 
+title_author.rdb	    825	2021-09-01	title author 
+title_page.rdb	      8	2021-09-04	title page 

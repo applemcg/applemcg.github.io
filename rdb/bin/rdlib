@@ -504,11 +504,9 @@ jointable ()
     : todo: "sort" out leading column name;
     : todo: thoroughly test the STDIN or - arg;
     : date: 2017-03-26;
-    : date: 2020-04-11;
     : date: 2021-04-11 need, implemented -a, ixnclude unmatched;
-    : date: 2021-04-11;
-    : date: 2021-05-30;
     : date: 2021-06-30;
+    : date: 2021-08-18;
     local COLS="";
     local ARGS="";
     local f1="";
@@ -1389,13 +1387,16 @@ sorttable ()
 tableorlist () 
 { 
     : reports if a file is table, list or ignores non /rdb files;
+    : todo: a list has a blank line followed by a name TAB value record;
+    : date: 2021-08-21;
+    : date: 2021-08-22;
     case $# in 
-        0 | 1)
-            [[ $# = 1 ]] && { 
-                listtableornaught $1;
-                return $?
-            };
+        0)
+            report_notpipe && return 1;
             listtableornaught
+        ;;
+        1)
+            listtableornaught $1
         ;;
         *)
             rdb_hdr Type File;
@@ -1650,4 +1651,61 @@ rdfields ()
     : date: 2021-05-13;
     report_notfile ${1:-/dev/null} && return 1;
     sed 1q $1
+}
+list_vstable () 
+{ 
+    : date: 2021-08-17;
+    : date: 2021-08-18;
+    if_missingargs 1 $* && return;
+    set -- ${1%.*}.{lst,rdb,tmp};
+    [[ -f $1 ]] || { 
+        $(myname);
+        return
+    };
+    [[ -f $2 ]] || { 
+        $(myname);
+        return
+    };
+    listtotable < $1 | sorttable | tee $3 | diff - $2
+}
+lst_canon () 
+{ 
+    : compliment of RDB_CANON, leaves an RDB copy of a newer LST;
+    : date: 2021-08-18;
+    report_notfile $1 && return 1;
+    set $1 ${1%.lst}.rdb;
+    newest $2 $1 || tabletolist < $2 > $1;
+    listtotable < $1 | onlyChanged $2;
+    rdb_canon $2;
+    comment rm -f $2 ??
+}
+listortable () 
+{ 
+    : related: tableorlist, i.e. why not?;
+    : date: 2021-08-21;
+    : library: rdlib;
+    : date: 2021-08-22;
+    tableorlist $@
+}
+list_toedit () 
+{ 
+    : new list updates table and table generates its list;
+    : todo: fix tables, ro this function;
+    : library: rdlib;
+    : date: 2021-08-22;
+    if_missingargs 1 $* && return;
+    set -- ${1%.*}.{rdb,lst};
+    comment $(ls -l $1);
+    comment $(ls -l $2);
+    [[ -f $2 ]] && { 
+        newest $1 $2 || { 
+            comment List: $2 is newer;
+            listtotable < $2 > $1;
+            comment $(ls -l $1)
+        }
+    };
+    rdb_canon $1;
+    comment $(ls -l .hry/$1.Z);
+    tabletolist < $1 | onlyChanged $2;
+    comment $(ls -l $2)
 }
