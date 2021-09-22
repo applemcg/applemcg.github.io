@@ -481,6 +481,7 @@ hold_r ()
 hwrite () 
 { 
     : date: 2019-08-17;
+    : date: 2021-09-18;
     set -- $(dirname $1) $(basename $1);
     echo $1/.hry/$2
 }
@@ -1210,18 +1211,23 @@ rdupdate ()
     : proper use of awk_file, report_notfile,;
     : date: 2019-08-17;
     : date: 2020-06-20;
+    : date: 2021-09-18;
     report_notfile $1 && return 1;
-    set $1 $(hwrite $1);
+    set $1 $(hwrite $1) ${1%.*}.nxt;
     [[ -f $2 ]] || { 
-        report_notfile $2.Z && return 1;
-        indir .hry uncompress $1;
-        $(myname) $1
+        rdb_hdr {insert,delete}_time $(sed 1q $1) > $2
     };
+    local awkfile=$(awk_file);
+    read_devtty "$# $*";
+    read_devtty "awkfile $awkfile";
     now=$(date '+%y%m%d%H%M%S');
-    : awk program, rdupdate.awk depends on knowing;
+    read_devtty "NOW: $now";
+    : awk program, rdupcatdate.awk depends on knowing;
     : history, and before data file;
-    : app_trace "awk -F'	' -v now=$now -f $(awk_file) $2 -";
-    awk NF $1 | awk -F'	' -v now=$now -f $(awk_file) $2 -
+    read_devtty "awk -F TAB-v now=$now -f $(awk_file) $2 -";
+    awk NF $1 | awk -F'	' -v now=$now -f $(awk_file) $2 - | tee $3;
+    doit mv $3 $2;
+    doit indir $(dirname $2) backup $(basename $2)
 }
 record () 
 { 

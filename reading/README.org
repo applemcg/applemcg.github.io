@@ -1,10 +1,12 @@
-
+#+TITLE:   README
+#+include: ./orgheader.org
 * TOC
 ** daily reading
 
-cd reading
-emacs book_page.rdb
-onMyNightstand
++ cd reading
++ ed title_page.rdb
++ rdupdate title_page.rdb
++ onMyNightstand
 
 ** book progress
 
