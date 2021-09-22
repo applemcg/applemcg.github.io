@@ -1,7 +1,0 @@
-command	status	a	b	c
--------	------	-	-	-
-addcol	body			
-blank	abstr			
-check	body			
-column	abstr			
-compute	abstr			

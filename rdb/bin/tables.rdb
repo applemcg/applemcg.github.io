@@ -1,7 +1,0 @@
-table	nrecrds	modate	fields
------	-------	------	------
-gregortest.out	      8	2020-09-19	date significance result diff 
-gregortest.rdb	      8	2020-09-19	date significance result diff   
-jdn_test.rdb	     21	2020-09-18	year month day result   
-juliantest.rdb	      4	2020-09-19	date jday expect diff significance   
-tables.rdb	      0	2020-09-19	table nrecrds modate fields   

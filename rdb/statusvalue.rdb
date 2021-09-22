@@ -1,8 +1,0 @@
-status	seqn	explain
-------	----	-------
-.	0	empty
-coded	2	code captured
-next	1	to move up
-outline	3	command page
-tested	5	full wiki entry
-testing	4	testcase prepared

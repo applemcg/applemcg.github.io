@@ -1,5 +1,0 @@
-book	implementation
-----	--------------
-commands	[[rdb]]
-column	allows columns not in the table. see [[addcoll]]
-/act commands	not implemented
