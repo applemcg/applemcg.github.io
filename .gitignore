@@ -1,8 +1,10 @@
 # files
 
 .*
+*.err
 *.lst
 *.nxt
+*.out
 *.rdb
 *.tmp
 *.tsv
