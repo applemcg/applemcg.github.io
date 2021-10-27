@@ -1,4 +1,0 @@
-: rdtimes -- deliver the event times in the history
-
-column insert_time delete_time
-

@@ -1,3 +1,0 @@
-: dstp -- date stamp
-
-sed "s/^/`date '+%y%m%d%H%M%S'`        /" $*

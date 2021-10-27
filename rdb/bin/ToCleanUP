@@ -1,1 +1,0 @@
-grep awk * | grep -- -F | sed 's/\(F.\)  */\1.../g'

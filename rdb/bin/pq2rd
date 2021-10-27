@@ -1,7 +1,0 @@
-# rd2pq -- rdb format to post query
-case $0 in
-(*rd2pq)       tail +3 $* | grep -v '^[        ]*$' |sed 's/   /|/g' ;;
-(*pq2rd)       fields $*;   sed 's/|/  /g'   ;;
-esac
-
-exit

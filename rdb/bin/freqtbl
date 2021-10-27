@@ -1,5 +1,0 @@
-: freqtbl -- frequency table of a table
-
-echo "$1\tcount\n---\t-----"
-
-column $1 | tail +3 | freq

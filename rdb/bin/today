@@ -1,6 +1,0 @@
-today6 () 
-{ 
-    : today in YYMMDD;
-    : date: 2021-01-01;
-    expr $(today) - 20000000
-}

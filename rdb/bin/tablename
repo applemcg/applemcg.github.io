@@ -1,7 +1,0 @@
-for i
-do
-       sed 2q $i       |
-       tail -1         |
-       grep '^[        -][     -]*$' >/dev/null && echo $i
-done
-

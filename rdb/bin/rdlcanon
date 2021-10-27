@@ -1,9 +1,0 @@
-# rdlcanon -- Relational Data List CANONicalizer
-
-sed '
-   s/^  *//
-   s/[         ][      ]*/     /
-   s/^[^       ][^     ]*$/&   /
-   s/ *        /       /g
-' $*
-
