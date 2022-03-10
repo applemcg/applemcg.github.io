@@ -1509,6 +1509,8 @@ Error message and password prompt
 
 <li>On /RDB</li>
 
+<li>On Bash Strict Mode</li>
+
 <li>On My Nightstand</li>
 
 <li>On_RDB</li>
@@ -2190,6 +2192,8 @@ Error message and password prompt
 <li>width</li>
 
 <li>word</li>
+
+<li>write_theapp</li>
 
 <li>writes</li>
 
@@ -14312,7 +14316,7 @@ exports.context = contextWidget;
 <div bag="default" created="20200810170615861" creator="M" modified="20200811134449245" modifier="Marty McGwan" revision="1" title="$:/status/UserName">
 <pre>Marty McGowan</pre>
 </div>
-<div created="20220220203642965" creator="Marty McGowan" list="[[Proper Function Writing]] Texinfo [[ToDo Function Table]] DotProf [[App Construction]] app [[ToDo README]] [[Table of Contents]]" modified="20220221201258489" modifier="Marty McGowan" title="$:/StoryList">
+<div created="20220309175258944" creator="Marty McGowan" list="[[On Bash Strict Mode]] [[Table of Contents]]" modified="20220309175258944" modifier="Marty McGowan" title="$:/StoryList">
 <pre></pre>
 </div>
 <div created="20200519141000553" list="$:/.giffmex/Buttons/more-tiddler-edit-actions $:/core/ui/Buttons/delete $:/core/ui/Buttons/cancel $:/core/ui/Buttons/save" modified="20200521145647980" tags="$:/giffmex/bigeditarea $:/giffmex/stroll" title="$:/tags/EditToolbar">
@@ -20882,6 +20886,79 @@ Testing criteria:
 <div created="20210105185340096" creator="Marty McGowan" modified="20210105185409486" modifier="Marty McGowan" tags="" title="On /RDB">
 <pre>{{On_RDB}}</pre>
 </div>
+<div created="20220309174819579" creator="Marty McGowan" modified="20220309180017971" modifier="Marty McGowan" tags="" title="On Bash Strict Mode">
+<pre>Bill,  
+
+
+quick follow up to [[unofficial bash strict mode|http://redsymbol.net/articles/unofficial-bash-strict-mode/]] reference: 
+
+
+!!!e:   
+not useful for command-line, but important in an actual script.   (see below)
+
+!!!o: 
+PIPEFAIL  good idea, however COMMA,  on any function i write that expects input on a pipe, I now include:
+
+
+&gt;      report_notpipe &amp;&amp; return N
+
+
+!!!u: 
+absolutely needed    here's an example script of mine. I think i have but three now, e.g.
+
+
+TODO:
+
+
+```
+#! /bin/bash
+source todolib
+source applib
+source todo_aux
+app_isa &quot;$@&quot;
+
+```
+
+
+Produced by:   [[write_theapp]]
+
+
+{{write_theapp}}
+
+Every app is the same, being an executable file. (sh-bang has a place but now limited to where it's essential)
+
+* Source it's own library
+* Source the applib,
+* Source it's AUX lib  -- loaded with all the functions called by the functions in the {name}lib
+* call the APP controller app_isa
+So, here's todo readme, supported mysteriously by //&quot;app_isa&quot;// and a function //todo_readme//, stored in the todo lib.
+
+
+And the README:
+ https://applemcg.github.io/shelf/#ToDo%20README
+
+
+Testing...
+
+
+
+```
+def todo_readme
+todo_readme ()
+{
+    : the online documentation;
+    ${*:-open} https://applemcg.github.io/shelf/#ToDo%20README
+}
+~.$ todo readme
+~.$ todo readme echo
+https://applemcg.github.io/shelf/#ToDo%20README
+
+
+```
+
+The default behavior of  ''todo readme''  or   as a function //todo_readme//
+is to open the URL,   with the optional argument, in this case &quot;echo&quot;,  rather than open the URL, it merely &quot;echo&quot;s the URL.</pre>
+</div>
 <div created="20200727000724861" creator="Marty McGowan" modified="20200905151614194" modifier="Marty McGowan" tags="url" title="On My Nightstand">
 <pre>https://applemcg.github.io/reading/#On%20My%20Nightstand</pre>
 </div>
@@ -25180,8 +25257,7 @@ The todo app has three components:
 <pre></pre>
 </div>
 <div created="20220220210015455" creator="Marty McGowan" modified="20220220211126548" modifier="Marty McGowan" tags="todo_code" title="todo_edit">
-<pre>
-```
+<pre>```
 todo_edit () 
 { 
     : ENTRY, edit the table and update the history;
@@ -25861,6 +25937,32 @@ Maybe test a few to see how it feels</pre>
 </div>
 <div created="20200824182359470" creator="Marty McGowan" modified="20200824182359470" modifier="Marty McGowan" title="word">
 <pre></pre>
+</div>
+<div created="20220309174945328" creator="Marty McGowan" modified="20220309175322983" modifier="Marty McGowan" tags="code" title="write_theapp">
+<pre>
+```
+write_theapp () 
+{ 
+    : the generic SCRIPT writer;
+    : whose default name is TODO, in honor of its founding app;
+    : date: 2022-02-23;
+    : date: 2022-02-25;
+    : date: 2022-02-26;
+    : date: 2022-03-06;
+    local name=${1:-todo};
+    rm -f $name;
+    cat &lt;&lt;EOF &gt; $name
+#! /bin/bash
+source ${name}lib
+source applib
+source ${name}_aux
+app_isa &quot;\$@&quot;
+EOF
+    chmod 555 $name
+}
+
+```
+</pre>
 </div>
 <div created="20200928194345293" creator="Marty McGowan" modified="20200928194345293" modifier="Marty McGowan" title="writes">
 <pre></pre>
