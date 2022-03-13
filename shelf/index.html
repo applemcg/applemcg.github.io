@@ -457,6 +457,10 @@ Error message and password prompt
 
 <li>$:/state/ProfClean2</li>
 
+<li>$:/state/ProfClean3</li>
+
+<li>$:/state/ProfClean4</li>
+
 <li>$:/state/refsection</li>
 
 <li>$:/state/SampleReveal1</li>
@@ -682,6 +686,8 @@ Error message and password prompt
 <li>$:/state/tabs/controlpanel/toolbars-1345989671</li>
 
 <li>$:/state/tag-manager/todo</li>
+
+<li>$:/state/ToDoREADME1</li>
 
 <li>$:/state/tree/$:/.giffmex/</li>
 
@@ -1441,6 +1447,8 @@ Error message and password prompt
 
 <li>Marty McGowan Jr</li>
 
+<li>MartyMcMacros</li>
+
 <li>MassiveWiki-01</li>
 
 <li>May 2020</li>
@@ -1464,6 +1472,8 @@ Error message and password prompt
 <li>MIT_nextbooks</li>
 
 <li>mitlib</li>
+
+<li>MIW</li>
 
 <li>mkdir_test_code</li>
 
@@ -2146,6 +2156,8 @@ Error message and password prompt
 <li>todotable</li>
 
 <li>todotiddly</li>
+
+<li>TodoTool</li>
 
 <li>tofix</li>
 
@@ -12336,16 +12348,11 @@ $:/config/ViewToolbarButtons/Visibility/$(listItem)$
 
 </pre>
 </div>
-<div plugin-type="import" status="pending" title="$:/Import" type="application/json">
-<pre>{
-    &quot;tiddlers&quot;: {
-        &quot;Untitled 2&quot;: {
-            &quot;title&quot;: &quot;Untitled 2&quot;,
-            &quot;text&quot;: &quot;dotty () \n{ \n    : manufacture the .., ... folding functions;\n    : date: 2021-04-14;\n    eval \&quot;.. () { \\$@; }\&quot;;\n    eval \&quot;... () { \\$@; }; \&quot;;\n    dotfunctions\n}\ndotfunctions () \n{ \n    : functions having, or aware of a leading \&quot;.\&quot; in the name;\n    : date: 2021-04-14;\n    read_devtty $*;\n    ${*:-echo} $(sfg ^[.]) sfg functions declare\n}\ndeclare () \n{ \n    : insert ... syntactic sugar into shell functions;\n    : date: 2021-01-03;\n    : date: 2021-03-09 the BUG was in FUNC_ARGS;\n    : date: 2021-04-14;\n    case $1 in \n        -f)\n            shift;\n            read_devtty A: $#, $@;\n            : test for function names;\n            set -- $(func_args $@);\n            read_devtty B: $#, $@;\n            [[ $# -lt 1 ]] &amp;&amp; return 1;\n            :;\n            : there are some, proceed;\n            command declare -f $@ | fold_pipedots\n        ;;\n        *)\n            read_devtty D: $#, $@;\n            command declare $@\n        ;;\n    esac\n}\nfold_pipedots () \n{ \n    : RE folds line with PIPE followed by ... s;\n    : the RE allows zero or more spaces after the Pipe Symbol;\n    : .. a Dot followed by zero or more Dots or Spaces,;\n    : .. closed by a space, which separates .s from the command;\n    : also, fold --.arg arguments to a shell command;\n    : related: multisymbol;\n    : date: 2021-04-14;\n    : date: 2021-05-22;\n    : date: 2021-05-30;\n    sed '\n        s/| *\\([.][. ]*\\) /|\\\n    \\1 /g; s/ \\(--[a-zA-Z][a-zA-Z]*\\)/ \\\\\\\n        \\1/g'\n}\n&quot;,
-            &quot;type&quot;: &quot;text/plain&quot;
-        }
-    }
-}</pre>
+<div status="complete" title="$:/Import">
+<pre>The following tiddlers were imported:
+
+# [[Untitled 2]]
+# [[MartyMcMacros]]</pre>
 </div>
 <div created="20200910121818126" creator="Marty McGowan" modified="20200910121818126" modifier="Marty McGowan" title="$:/Import!!popup-Untitled">
 <pre>yes</pre>
@@ -14038,10 +14045,16 @@ exports.context = contextWidget;
 <div created="20200425181600201" modified="20200425181604513" title="$:/state/plugin-info--896887961-$:/plugins/sq/Stories---1130285312">
 <pre>settings</pre>
 </div>
-<div created="20220312010721256" creator="Marty McGowan" modified="20220312012357168" modifier="Marty McGowan" title="$:/state/ProfClean1">
-<pre>show</pre>
+<div created="20220312010721256" creator="Marty McGowan" modified="20220312190611495" modifier="Marty McGowan" title="$:/state/ProfClean1">
+<pre>hide</pre>
 </div>
-<div created="20220312011118846" creator="Marty McGowan" modified="20220312011711834" modifier="Marty McGowan" title="$:/state/ProfClean2">
+<div created="20220312011118846" creator="Marty McGowan" modified="20220312190703174" modifier="Marty McGowan" title="$:/state/ProfClean2">
+<pre>hide</pre>
+</div>
+<div created="20220312180903730" creator="Marty McGowan" modified="20220312184918996" modifier="Marty McGowan" title="$:/state/ProfClean3">
+<pre>hide</pre>
+</div>
+<div created="20220312180629196" creator="Marty McGowan" modified="20220312184920914" modifier="Marty McGowan" title="$:/state/ProfClean4">
 <pre>hide</pre>
 </div>
 <div created="20200429221104414" modified="20200429231124917" title="$:/state/refsection">
@@ -14059,7 +14072,7 @@ exports.context = contextWidget;
 <div created="20200423200401447" modified="20200423210926655" title="$:/state/ShowPaletteEditor">
 <pre>no</pre>
 </div>
-<div created="20200418121802381" creator="Marty McGowan" modified="20220311143202218" modifier="Marty McGowan" title="$:/state/sidebar">
+<div created="20200418121802381" creator="Marty McGowan" modified="20220312182102297" modifier="Marty McGowan" title="$:/state/sidebar">
 <pre>yes</pre>
 </div>
 <div created="20200423135524613" modified="20200502164032606" title="$:/state/strollhometabs--312553599">
@@ -14347,8 +14360,8 @@ exports.context = contextWidget;
 <div created="20200823181320536" creator="Marty McGowan" modified="20201022162219513" modifier="Marty McGowan" title="$:/state/tab-613428447">
 <pre>rdb code</pre>
 </div>
-<div created="20201206175231629" creator="Marty McGowan" modified="20201206182416672" modifier="Marty McGowan" title="$:/state/tab-619679899">
-<pre>smart_example</pre>
+<div created="20201206175231629" creator="Marty McGowan" modified="20220312160051114" modifier="Marty McGowan" title="$:/state/tab-619679899">
+<pre>defining functions</pre>
 </div>
 <div created="20210613171157467" creator="Marty McGowan" modified="20220105194502772" modifier="Marty McGowan" title="$:/state/tab-656983863">
 <pre>collection</pre>
@@ -14371,17 +14384,20 @@ exports.context = contextWidget;
 <div created="20201011194157414" creator="Marty McGowan" modified="20201011194157414" modifier="Marty McGowan" title="$:/state/tab-970932683">
 <pre>duplicate function problem</pre>
 </div>
-<div created="20200418122101344" creator="Marty McGowan" modified="20220312010414376" modifier="Marty McGowan" title="$:/state/tab/moresidebar-1850697562">
+<div created="20200418122101344" creator="Marty McGowan" modified="20220312185344895" modifier="Marty McGowan" title="$:/state/tab/moresidebar-1850697562">
 <pre>$:/core/ui/MoreSideBar/System</pre>
 </div>
-<div created="20200418121835270" creator="Marty McGOwan" modified="20220312010411508" modifier="Marty McGowan" title="$:/state/tab/sidebar--595412856">
-<pre>$:/core/ui/SideBar/More</pre>
+<div created="20200418121835270" creator="Marty McGOwan" modified="20220312190349577" modifier="Marty McGowan" title="$:/state/tab/sidebar--595412856">
+<pre>$:/core/ui/SideBar/Tools</pre>
 </div>
 <div created="20200504200956301" modified="20200810170447722" title="$:/state/tabs/controlpanel/toolbars-1345989671">
 <pre>$:/core/ui/ControlPanel/Toolbars/ViewToolbar</pre>
 </div>
 <div created="20210105191359578" creator="Marty McGowan" modified="20210105191454459" modifier="Marty McGowan" title="$:/state/tag-manager/todo">
 <pre>closed</pre>
+</div>
+<div created="20220312153238041" creator="Marty McGowan" modified="20220312180323569" modifier="Marty McGowan" title="$:/state/ToDoREADME1">
+<pre>hide</pre>
 </div>
 <div created="20200504154623789" modified="20200504154625935" title="$:/state/tree/$:/.giffmex/">
 <pre>hide</pre>
@@ -14401,7 +14417,7 @@ exports.context = contextWidget;
 <div bag="default" created="20200810170615861" creator="M" modified="20200811134449245" modifier="Marty McGwan" revision="1" title="$:/status/UserName">
 <pre>Marty McGowan</pre>
 </div>
-<div created="20220311205911351" creator="Marty McGowan" list="dp_challenge [[Hints on Cleaning up .prof]]" modified="20220312010650349" modifier="Marty McGowan" title="$:/StoryList">
+<div created="20220312152636784" creator="Marty McGowan" list="[[Hints on Cleaning up .prof]]" modified="20220312190456327" modifier="Marty McGowan" title="$:/StoryList">
 <pre></pre>
 </div>
 <div created="20200519141000553" list="$:/.giffmex/Buttons/more-tiddler-edit-actions $:/core/ui/Buttons/delete $:/core/ui/Buttons/cancel $:/core/ui/Buttons/save" modified="20200521145647980" tags="$:/giffmex/bigeditarea $:/giffmex/stroll" title="$:/tags/EditToolbar">
@@ -14486,7 +14502,7 @@ exports.context = contextWidget;
 <div created="20200502174943975" modified="20200502174950301" title="$:/temp/RenameTags/search">
 <pre>tb</pre>
 </div>
-<div created="20200418122544376" creator="Marty McGowan" modified="20220311184947126" modifier="Marty McGowan" title="$:/temp/search">
+<div created="20200418122544376" creator="Marty McGowan" modified="20220312190344391" modifier="Marty McGowan" title="$:/temp/search">
 <pre></pre>
 </div>
 <div created="20200429214841632" modified="20200429214841632" tags="$:/tags/ServerConnection" title="$:/temp/ServerConnection/https://tiddlywiki.com/library/v5.1.22/index.html" url="https://tiddlywiki.com/library/v5.1.22/index.html">
@@ -17642,9 +17658,8 @@ fold_pipedots ()
 }
 ```</pre>
 </div>
-<div created="20220311185301489" creator="Marty McGowan" modified="20220311185329961" modifier="Marty McGowan" tags="" title="dp_challenge">
-<pre>[[Hints on Cleaning up .prof]]
-
+<div created="20220311185301489" creator="Marty McGowan" modified="20220312180505545" modifier="Marty McGowan" tags="" title="dp_challenge">
+<pre>
 !! The Challenge
 
 The task at hand is to put functions back in their //proper// library.   The challenge:
@@ -17656,8 +17671,10 @@ The task at hand is to put functions back in their //proper// library.   The cha
 The latter problem is a special case, handled here in the [[duplicate function problem]].
 </pre>
 </div>
-<div created="20220311191312126" creator="Marty McGowan" modified="20220311191312126" modifier="Marty McGowan" tags="[[Hints on Cleaning up .prof]]" title="dp_howtorestore">
-<pre>A diff fragment may look like this:
+<div created="20220311191312126" creator="Marty McGowan" modified="20220312181240604" modifier="Marty McGowan" tags="[[Hints on Cleaning up .prof]]" title="dp_howtorestore">
+<pre>!! How to Restore to their Proper Library
+
+A diff fragment may look like this:
 
 
 ```
@@ -17707,8 +17724,10 @@ And in yet another note-to-self,   answer to the larger question, [[A Family or 
 Leaving that thought for another day, your diarist says, &quot;let's put all this to work&quot; 
 </pre>
 </div>
-<div created="20220311185705648" creator="Marty McGowan" modified="20220311185705648" modifier="Marty McGowan" tags="[[Hints on Cleaning up .prof]]" title="dp_wheretheyarefound">
-<pre>[[find_profsfuns]] produces a two-column list where &quot;this function has a working copy in the dir/.../.prof file&quot;, e.g.
+<div created="20220311185705648" creator="Marty McGowan" modified="20220312175232397" modifier="Marty McGowan" tags="[[Hints on Cleaning up .prof]]" title="dp_wheretheyarefound">
+<pre>!! Where Prof Functions are Found
+
+[[find_profsfuns]] produces a two-column list where &quot;this function has a working copy in the dir/.../.prof file&quot;, e.g.
 
 &gt; function_name HOME/dir/sub/.prof
 &gt; ...
@@ -19551,40 +19570,39 @@ rdb.$
 <div created="20200910141928829" creator="Marty McGowan" modified="20220204203228074" modifier="Marty McGowan" title="highlighted text such as this">
 <pre>now clck the big X in the upper right corner of this tiddler to return to where you came from.</pre>
 </div>
-<div created="20220311140245494" creator="Marty McGowan" modified="20220312012443763" modifier="Marty McGowan" tags="dotprof" title="Hints on Cleaning up .prof">
-<pre>I'm using [[DotProf]] files to write new functions, and repair or rehabilitate older functions.  A function being repaired has a //proper// library, identified by the [[whf]] function.  A new function does not yet have a proper library.  I overuse a generic ''functionlib'' for otherwise homeless functions.
+<div created="20220311140245494" creator="Marty McGowan" modified="20220312190542323" modifier="Marty McGowan" tags="dotprof" title="Hints on Cleaning up .prof">
+<pre>
 
-&lt;$reveal type=&quot;nomatch&quot; state=&quot;$:/state/ProfClean1&quot; text=&quot;show&quot;&gt;
+!! Introduction
 
-&lt;$button set=&quot;$:/state/ProfClean1&quot; setTo=&quot;show&quot;&gt;The Challenge&lt;/$button&gt;
+I'm using [[DotProf]] files to write new functions, and repair or rehabilitate older functions.  A function being repaired has a //proper// library, identified by the [[whf]] function.  A new function does not yet have a proper library.  I overuse a generic ''functionlib'' for otherwise homeless functions.
 
-&lt;/$reveal&gt;
-
-&lt;$reveal type=&quot;match&quot; state=&quot;$:/state/ProfClean1&quot; text=&quot;show&quot;&gt;
-
-&lt;$button set=&quot;$:/state/ProfClean1&quot; setTo=&quot;hide&quot;&gt;The Challenge&lt;/$button&gt;
-
-{{dp_challenge}}
-
-&lt;/$reveal&gt;
-
-&lt;$reveal type=&quot;nomatch&quot; state=&quot;$:/state/ProfClean2&quot; text=&quot;show&quot;&gt;
-&lt;$button set=&quot;$:/state/ProfClean2&quot; setTo=&quot;show&quot;&gt;Where Prof Functions Are Found&lt;/$button&gt;
-
-&lt;/$reveal&gt;
-
-&lt;$reveal type=&quot;match&quot; state=&quot;$:/state/ProfClean2&quot; text=&quot;show&quot;&gt;
-
-&lt;$button set=&quot;$:/state/ProfClean2&quot; setTo=&quot;hide&quot;&gt;Where Prof Functions Are Found&lt;/$button&gt;
-
-{{dp_wheretheyarefound}}
-
-&lt;/$reveal&gt;
+&lt;!-- BIG Comment.   these commands are really TOO Fussy about line Breaks?!  I'm working on a macro --&gt; 
 
 
-[[dp_wheretheybelong]]
+&lt;$macrocall 
+    $name=&quot;toggleSlider&quot; 
+    substate=&quot;ProfClean1&quot; 
+    label=&quot;The Challenge&quot; 
+    contents=&quot;{{dp_challenge}}&quot;/&gt;
 
-[[dp_howtorestore]]
+&lt;$macrocall 
+    $name=&quot;toggleSlider&quot; 
+    substate=&quot;ProfClean2&quot; 
+    label=&quot;Where Prof Functions Are Found&quot; 
+    contents=&quot;{{dp_wheretheyarefound}}&quot;/&gt;
+
+&lt;$macrocall 
+    $name=&quot;toggleSlider&quot; 
+    substate=&quot;ProfClean3&quot; 
+    label=&quot;Where the Functions Belong&quot; 
+    contents=&quot;{{dp_wheretheybelong}}&quot;/&gt;
+
+&lt;$macrocall 
+    $name=&quot;toggleSlider&quot; 
+    substate=&quot;ProfClean4&quot; 
+    label=&quot;How to Restore to the Proper Library&quot; 
+    contents=&quot;{{dp_howtorestore}}&quot;/&gt;
 
 
 
@@ -20484,6 +20502,36 @@ The functionlib has had many common functions with rdlib.   Of those remaining i
 <div created="20220207161411191" creator="Marty McGowan" modified="20220207161411191" modifier="Marty McGowan" title="Marty McGowan Jr">
 <pre></pre>
 </div>
+<div created="20220312190126814" creator="MartyMcGowan" modified="20220312190215971" modifier="MartyMcGowan" tags="$:/tags/Macro" title="MartyMcMacros">
+<pre>\define toggleSlider(substate, label, contents) 
+
+&lt;$reveal 
+   type=&quot;nomatch&quot; 
+   state=&quot;$:/state/$substate$&quot; 
+   text=&quot;show&quot;&gt; 
+
+&lt;$button 
+   set=&quot;$:/state/$substate$&quot; 
+   setTo=&quot;show&quot;&gt;$label$&lt;/$button&gt; 
+
+&lt;/$reveal&gt; 
+
+&lt;$reveal 
+   type=&quot;match&quot; 
+   state=&quot;$:/state/$substate$&quot; 
+   text=&quot;show&quot;&gt;
+
+&lt;$button 
+   set=&quot;$:/state/$substate$&quot; 
+   setTo=&quot;hide&quot;&gt;Hide me&lt;/$button&gt;
+
+$contents$
+
+&lt;/$reveal&gt;
+
+\end
+</pre>
+</div>
 <div created="20210503192344968" creator="Marty McGowan" modified="20210504002943914" modifier="Marty McGowan" tags="" title="MassiveWiki-01">
 <pre>marty, instructions for setting up a Personal Access Token for GitHub are after step 5 in this document:
 
@@ -20603,6 +20651,9 @@ daily_open ()
 <pre></pre>
 </div>
 <div created="20210309143656993" creator="Marty McGowan" modified="20210309143656993" modifier="Marty McGowan" title="mitlib">
+<pre></pre>
+</div>
+<div created="20220312155623905" creator="Marty McGowan" modified="20220312155623905" modifier="Marty McGowan" title="MIW">
 <pre></pre>
 </div>
 <div created="20200304151227743" creator="MartyMcGowan" modified="20200304151359579" modifier="MartyMcGowan" tags="slogging code" title="mkdir_test_code">
@@ -23359,7 +23410,7 @@ date_tables.rdb  	3    	wkday
 <div created="20201022010000791" creator="Marty McGowan" modified="20201022010000791" modifier="Marty McGowan" title="sf_history">
 <pre></pre>
 </div>
-<div created="20180524234534362" creator="MartyMcGowan" modified="20200811142215467" modifier="MartyMcGowan" tags="slogging application" title="sh-bang">
+<div created="20180524234534362" creator="MartyMcGowan" modified="20220312155053005" modifier="Marty McGowan" tags="slogging application ToDo" title="sh-bang">
 <pre>[[New Rules]]
 
 !!! timely
@@ -23368,9 +23419,9 @@ Start with this reading of [[New Rules]]
 
 !!! opinion
 
-Let's lay the opinions out first:  the [[shell sh-bang|https://en.wikipedia.org/wiki/Shebang_(Unix)]] is the most over-used and needless feature of shell programming. I disagree with an overwhelming consensus of shell instructional sequence.  It should be the penultimate lesson, rather than the first or second.   
+Let's lay the opinions out first:  the [[shell sh-bang|https://en.wikipedia.org/wiki/Shebang_(Unix)]] is the most over-used  feature of shell programming. I disagree with an overwhelming consensus of shell instructional sequence.  It should be the penultimate lesson, rather than the first or second.   
 
-What I'm presenting here is one of two approaches to minimizing sh-bang's in shell programming.  The shell should be a programming language, not a &quot;scripting&quot; language.  I believe the [[shell function |https://leanpub.com/shellfunctions]] is the most useful and underutilized feature of the the various shell  implementations.  Since the '90s and certainly the '00s, the bash shell is the preeminent choice of shell practitioners. The sh-bang has been around since version 7 Unix, when one of its two developers added the the feature. (see the above reference)  The sh-bang is properly used for scripts in non-shell languages, for example Perl, Python, PHP, Tcl, Scheme, etc.  The practice laid out here asks and answers the question: of what use is the sh-bang to a shell programmer?  I'm trying to understand the need, since the shell is the default command language of the user's terminal window.
+What I'm presenting here is one of two approaches to minimizing sh-bang's in shell programming.  The shell should be a programming language, not a &quot;scripting&quot; language.  I believe the [[shell function |https://leanpub.com/shellfunctions]] is the most useful and underutilized feature of the the various shell  implementations.  Since the '90s and certainly the '00s, the bash shell is the preeminent choice of shell practitioners. The sh-bang has been around since version 7 Unix, when one of its two developers added the the feature. (see the above reference)  The sh-bang is properly used for scripts in non-shell languages, for example Perl, Python, PHP, Tcl, Scheme, etc.  The practice laid out here asks and answers the question: of what use is the sh-bang to a shell programmer? 
 
 !!! shell libraries
 
@@ -25542,8 +25593,11 @@ Lets break them out: undated, oldest, newest.  This should draw one's attention 
 |[[sf_history]] |2019-12-27 |move sh_ to retiredlib, collect userful smart file commands from table |
 lib.$ </pre>
 </div>
-<div created="20220204201406471" creator="Marty McGowan" modified="20220204201406471" modifier="Marty McGowan" title="ToDo">
-<pre></pre>
+<div color="#652c45" created="20220204201406471" creator="Marty McGowan" modified="20220312160008804" modifier="Marty McGowan" title="ToDo">
+<pre>* tiddlers tagged ToDo call for internal work.  
+* tiddlers tagged [[todo]] belong in [[MIW]], household work.
+* the TodoTool is an [[/RDB]] app documented here, starting with the [[ToDo README]]. 
+* and ''todo'' is also a [[tag]] in a shell function, with a developing set of functions under [[shdoc]].</pre>
 </div>
 <div created="20220220210205724" creator="Marty McGowan" modified="20220220210842558" modifier="Marty McGowan" tags="[[ToDo README]]" title="ToDo Function Table">
 <pre>!!!!! [[ToDo Function Table]]
@@ -25570,62 +25624,79 @@ lib.$ </pre>
 |[[todo_thisday]] |todo entries ENTERED or COMPLETED, on this day, default Today |
 </pre>
 </div>
-<div created="20220218150439735" creator="Marty McGowan" modified="20220221193732201" modifier="Marty McGowan" tags="[[things to do]] application" title="ToDo README">
-<pre>!!! NAME
+<div created="20220218150439735" creator="Marty McGowan" modified="20220312154428074" modifier="Marty McGowan" tags="[[things to do]] application" title="ToDo README">
+<pre>; NAME
 
-* ''todo'' -- keep track of tasks to do, and done
+: ''todo'' -- keep track of tasks to do, and done
 
-!!! SYNOPSIS
+; SYNOPSIS
 
-* ''todo'' -- displays the table of tasks todo
-* ''todo edit''  -- add, delete, change tasks
-* ''todo new'' -- command-line task entry 
-* in general, todo subfunction or todo_subfunction
+:''todo'' -- displays the table of tasks todo
+:''todo edit''  -- add, delete, change tasks
+:''todo new'' -- command-line task entry 
+:in general, todo subfunction or todo_subfunction
 
-!!! DESCRIPTION
+;  DESCRIPTION
 
-* ''todo'' uses an [[RDB]] table with fields:
-** //rating// -- the task's priority or due-date
-** //project// -- a user-defined group of tasks
-** //task// -- describes the task
-* Where the //rating// is preferably a letter A-? or a date in YYMMDD format.   All the fields are at user's option
-* and the history of all tasks is maintained in a history table, with additional fields
-** //insert_time// -- shortly after the task is added
-** //delete_time// -- shortly after the task was deleted, i.e. completed
+: ''todo'' uses an [[RDB]] table with fields:
+:  - //rating// -- the task's priority or due-date
+: -  //project// -- a user-defined group of tasks
+: - //task// -- describes the task
+:
+: Where the //rating// is preferably a letter A-? or a date in YYMMDD format.   All the fields are at user's option
+: and the history of all tasks is maintained in a history table, with additional fields
+: - //insert_time// -- shortly after the task is added
+: - //delete_time// -- shortly after the task was deleted, i.e. completed
 
-The todo app has three components:
 
-* an  executable sh-bang script ''todo''
-* a function library, ''todolib'', containing the separate functions of the todo app, and importantly,
-* a function library ''todo_aux'' containing all the necessary subordinate functions, which contains the important [[app_isa]] function.
  
-!!! OPTIONS
+; OPTIONS
 
 * Here is the list of all ''todo'' functions.  Note the names are ''todo''_//subfunction//.
 * commands may be executed, either:
 ** todo subfunction ..., a typing shorthand, or equivalently
 ** todo_subfunction ..., which are the actual function names
 
+&lt;$reveal type=&quot;nomatch&quot; state=&quot;$:/state/ToDoREADME1&quot; text=&quot;show&quot;&gt; 
+
+&lt;$button set=&quot;$:/state/ToDoREADME1&quot; setTo=&quot;show&quot;&gt;ToDo Function Table&lt;/$button&gt; 
+
+&lt;/$reveal&gt;
+
+&lt;$reveal type=&quot;match&quot; state=&quot;$:/state/ToDoREADME1&quot; text=&quot;show&quot;&gt;
+
+&lt;$button set=&quot;$:/state/ToDoREADME1&quot; setTo=&quot;hide&quot;&gt;Hide me&lt;/$button&gt;
+
 {{ToDo Function Table}}
 
-!!!! Adding, Modifying, or Completing a Task
+&lt;/$reveal&gt;
+
+
+
+
+
+; FILES
+
+:  ''todo'' - an  executable ([[sh-bang]]) script
+: ''todo_lib'' - a function library, containing the separate functions of the todo app, and importantly,
+:  ''todo_aux'' - a function library containing all the necessary subordinate functions, which contains the important [[app_isa]] function.
+; BUGS
+
+; TIPS
+
+;  Adding, Modifying, or Completing a Task
 
 # [[todo edit|todo_edit]] --  calls the user's EDITOR to manually edit the table, where tasks may be added, deleted (the ask is complete), or modified, changing priority.
 # [[todo new|todo_new]] -- enter a new task on the command line:
 &gt; $ todo new //rating// //project// multi-word task description
 * when done editing or entering a new task, the task is saved in a subordinate directory history file.  When a task is added, modified, or newly added on the command line, the history is updated.  It adds an //insert_time// for new and modified tasks, and a //delete_time// for the original modified task and deleted (closed) tasks.
 
-!!!! Task Snapshots
 
-!!! BUGS
+; AUTHOR
 
-!!! TIPS
+: [[Marty McGowan]]
 
-!!! AUTHOR
-
-[[Marty McGowan]]
-
-!!! SEE ALSO</pre>
+; SEE ALSO</pre>
 </div>
 <div created="20201022170924257" creator="Marty McGowan" modified="20201022170957488" modifier="Marty McGowan" tags="" title="todo table">
 <pre>[[todo]] | [[todo table]]
@@ -25809,6 +25880,9 @@ produces:
 <pre></pre>
 </div>
 <div created="20201023163159386" creator="Marty McGowan" modified="20201023163159386" modifier="Marty McGowan" title="todotiddly">
+<pre></pre>
+</div>
+<div created="20220312155623907" creator="Marty McGowan" modified="20220312155623907" modifier="Marty McGowan" title="TodoTool">
 <pre></pre>
 </div>
 <div created="20200928194345287" creator="Marty McGowan" modified="20200928194345287" modifier="Marty McGowan" title="tofix">
