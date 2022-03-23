@@ -323,6 +323,8 @@ Error message and password prompt
 
 <li>$:/state/Excise/--1289148890/tagnew</li>
 
+<li>$:/state/Excise/--1315133260/tagnew</li>
+
 <li>$:/state/Excise/--1356257834/tagnew</li>
 
 <li>$:/state/Excise/--1483101843/tagnew</li>
@@ -2034,6 +2036,10 @@ Error message and password prompt
 <li>tableorlist_testout</li>
 
 <li>tablerule</li>
+
+<li>tables</li>
+
+<li>tables_code</li>
 
 <li>tabletolist</li>
 
@@ -13890,6 +13896,9 @@ exports.context = contextWidget;
 <div created="20210307220650531" creator="Marty McGowan" modified="20210307220650531" modifier="Marty McGowan" title="$:/state/Excise/--1289148890/tagnew">
 <pre>yes</pre>
 </div>
+<div created="20220322200713443" creator="Marty McGowan" modified="20220322200713443" modifier="Marty McGowan" title="$:/state/Excise/--1315133260/tagnew">
+<pre>yes</pre>
+</div>
 <div created="20200727142711596" modified="20200727142711596" title="$:/state/Excise/--1356257834/tagnew">
 <pre>yes</pre>
 </div>
@@ -14469,7 +14478,7 @@ exports.context = contextWidget;
 <div bag="default" created="20200810170615861" creator="M" modified="20200811134449245" modifier="Marty McGwan" revision="1" title="$:/status/UserName">
 <pre>Marty McGowan</pre>
 </div>
-<div created="20220317140754905" creator="Marty McGowan" list="[[Current Alias]] [[Table of Contents]]" modified="20220317141832792" modifier="Marty McGowan" title="$:/StoryList">
+<div created="20220322200500293" creator="Marty McGowan" list="tables tables_code tablemine_code mytable date_tables [[Table of Contents]]" modified="20220322201420316" modifier="Marty McGowan" title="$:/StoryList">
 <pre></pre>
 </div>
 <div created="20200519141000553" list="$:/.giffmex/Buttons/more-tiddler-edit-actions $:/core/ui/Buttons/delete $:/core/ui/Buttons/cancel $:/core/ui/Buttons/save" modified="20200521145647980" tags="$:/giffmex/bigeditarea $:/giffmex/stroll" title="$:/tags/EditToolbar">
@@ -14554,8 +14563,8 @@ exports.context = contextWidget;
 <div created="20200502174943975" modified="20200502174950301" title="$:/temp/RenameTags/search">
 <pre>tb</pre>
 </div>
-<div created="20200418122544376" creator="Marty McGowan" modified="20220316014401105" modifier="Marty McGowan" title="$:/temp/search">
-<pre>Shell Functions</pre>
+<div created="20200418122544376" creator="Marty McGowan" modified="20220322200442296" modifier="Marty McGowan" title="$:/temp/search">
+<pre>tables</pre>
 </div>
 <div created="20200429214841632" modified="20200429214841632" tags="$:/tags/ServerConnection" title="$:/temp/ServerConnection/https://tiddlywiki.com/library/v5.1.22/index.html" url="https://tiddlywiki.com/library/v5.1.22/index.html">
 <pre>loaded</pre>
@@ -19672,8 +19681,7 @@ rdb.$
 <pre>now clck the big X in the upper right corner of this tiddler to return to where you came from.</pre>
 </div>
 <div created="20220311140245494" creator="Marty McGowan" modified="20220316013542291" modifier="Marty McGowan" tags="dotprof" title="Hints on Cleaning up .prof">
-<pre>
-!! Introduction
+<pre>!! Introduction
 
 I'm using [[DotProf]] files to write new functions, and repair or rehabilitate older functions.  A function being repaired has a //proper// library, identified by the [[whf]] function.  A new function does not yet have a proper library.  I overuse a generic ''functionlib'' for otherwise homeless functions.
 
@@ -24873,6 +24881,72 @@ tst.$
 <div created="20201020172613069" creator="Marty McGowan" modified="20201020172613069" modifier="Marty McGowan" title="tablerule">
 <pre></pre>
 </div>
+<div created="20220322200612398" creator="Marty McGowan" modified="20220323121413414" modifier="Marty McGowan" title="tables">
+<pre>
+
+Produces a table of the tables in this directory:
+
+; table 
+: name of the table
+; nrecrds
+: number of records -- rows
+; modate
+: iso-date of last modification
+; fields
+: field names of the table
+
+
+{{tables_code}}
+</pre>
+</div>
+<div created="20220322200715427" creator="Marty McGowan" modified="20220322201654955" modifier="Marty McGowan" title="tables_code">
+<pre>
+```
+tables () 
+{ 
+    : collect RDB tables in TABLES;
+    : done: 2021-04-15 absorbed table_report, using MYTABLE;
+    : date: 2022-01-08;
+    : date: 2022-03-22 -- now TABLE_RECORD;
+    : date: 2022-03-22;
+    local mine=$(myname);
+    local tbla=~/tmp/$mine.a.out;
+    local tblb=~/tmp/$mine.b.out;
+    local eror=~/tmp/$mine.err;
+    ( table_fields;
+    foreach table_record ${*:-*.rdb} 2&gt; $eror ) |
+    .. tee $tbla | ncolumn fields &gt; $tblb;
+    column table fields &lt; $tbla | rdb_lines | jointable $tblb - |
+    .. sorttable | tee $(myname).rdb | justify
+}
+table_record () 
+{ 
+    : usage: see TABLES;
+    : date: 2022-03-22;
+    debug ENTRY $*;
+    [[ -f $1 ]] || return;
+    local records=$(expr $(cat $1 | wc -l) - 2);
+    local fields=&quot;$(echo $(sed 1q $1))&quot;;
+    [ -z &quot;$fields&quot; ] &amp;&amp; { 
+        debug COMMENT $1 is NOT a table.;
+        return
+    };
+    local modate=$(modate $1);
+    printf &quot;%s\t&quot; $1;
+    printf &quot;%7d\t&quot; $records;
+    printf &quot;%s\t&quot; &quot;${modate//\&quot;/}&quot;;
+    printf &quot;%s\n&quot; &quot;$fields&quot;
+}
+table_fields () 
+{ 
+    : for the table of tables;
+    : date: 2022-03-22;
+    ${*:-echo} table nrecrds modate fields
+}
+
+```
+</pre>
+</div>
 <div created="20200824182359465" creator="Marty McGowan" modified="20200913172900294" modifier="Marty McGowan" title="tabletolist">
 <pre>[[rdb commands]] | [[tabletolist]] | [[listtotable]]
 
@@ -26227,8 +26301,7 @@ tw_funtempl ()
 Tiddly Wiki alias produced the [[Current Alias]], here's its [[code|twal_code]]</pre>
 </div>
 <div created="20220317141111551" creator="Marty McGowan" modified="20220317141904167" modifier="Marty McGowan" tags="twal" title="twal_code">
-<pre>
-```
+<pre>```
 twal () 
 { 
     : TiddlyWiki ALiases;
