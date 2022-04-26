@@ -965,6 +965,8 @@ Error message and password prompt
 
 <li>coded</li>
 
+<li>CollapseTiddlyBackups_Usage</li>
+
 <li>collect tags</li>
 
 <li>collect_home_qf</li>
@@ -994,6 +996,8 @@ Error message and password prompt
 <li>CommandHistory</li>
 
 <li>commands</li>
+
+<li>comment</li>
 
 <li>common_gj_code</li>
 
@@ -1363,6 +1367,8 @@ Error message and password prompt
 
 <li>iCloud Trial</li>
 
+<li>if_missingargs</li>
+
 <li>if_missingargs_code</li>
 
 <li>implied</li>
@@ -1416,6 +1422,12 @@ Error message and password prompt
 <li>labify</li>
 
 <li>Lapsed</li>
+
+<li>last_daily</li>
+
+<li>last_daily_code</li>
+
+<li>last_daily_utilities</li>
 
 <li>latestbook</li>
 
@@ -1677,6 +1689,8 @@ Error message and password prompt
 
 <li>princetonmembership</li>
 
+<li>printfirst</li>
+
 <li>prlatest</li>
 
 <li>prmem</li>
@@ -1854,6 +1868,8 @@ Error message and password prompt
 <li>report</li>
 
 <li>report_exceedargcount</li>
+
+<li>report_notargcount</li>
 
 <li>report_nottype</li>
 
@@ -2352,6 +2368,8 @@ Error message and password prompt
 <li>whfput</li>
 
 <li>width</li>
+
+<li>WikiDesktop</li>
 
 <li>word</li>
 
@@ -14538,7 +14556,7 @@ exports.context = contextWidget;
 <div bag="default" created="20200810170615861" creator="M" modified="20200811134449245" modifier="Marty McGwan" revision="1" title="$:/status/UserName">
 <pre>Marty McGowan</pre>
 </div>
-<div created="20220423201101911" creator="Marty McGowan" list="[[Nearest Neighbor Problem]] [[2022-04-26  10:39]] [[Notes to Self on Dot Prof Profusion]] [[Hints on Cleaning up .prof]] [[What's Here]] [[Recently Modified]] [[Table of Contents]]" modified="20220426144532859" modifier="Marty McGowan" title="$:/StoryList">
+<div created="20220426194510812" creator="Marty McGowan" list="last_daily_utilities last_daily CollapseTiddlyBackups_Usage [[Table of Contents]]" modified="20220426200304145" modifier="Marty McGowan" title="$:/StoryList">
 <pre></pre>
 </div>
 <div created="20200519141000553" list="$:/.giffmex/Buttons/more-tiddler-edit-actions $:/core/ui/Buttons/delete $:/core/ui/Buttons/cancel $:/core/ui/Buttons/save" modified="20200521145647980" tags="$:/giffmex/bigeditarea $:/giffmex/stroll" title="$:/tags/EditToolbar">
@@ -14623,8 +14641,8 @@ exports.context = contextWidget;
 <div created="20200502174943975" modified="20200502174950301" title="$:/temp/RenameTags/search">
 <pre>tb</pre>
 </div>
-<div created="20200418122544376" creator="Marty McGowan" modified="20220423201304729" modifier="Marty McGowan" title="$:/temp/search">
-<pre>dp_</pre>
+<div created="20200418122544376" creator="Marty McGowan" modified="20220426192204294" modifier="Marty McGowan" title="$:/temp/search">
+<pre>last_daily</pre>
 </div>
 <div created="20200429214841632" modified="20200429214841632" tags="$:/tags/ServerConnection" title="$:/temp/ServerConnection/https://tiddlywiki.com/library/v5.1.22/index.html" url="https://tiddlywiki.com/library/v5.1.22/index.html">
 <pre>loaded</pre>
@@ -16171,6 +16189,14 @@ today (2020-09-20) I walked through the [[common_gl_code]], and found these mist
 <div created="20201020181307816" creator="Marty McGowan" modified="20201020181307816" modifier="Marty McGowan" title="coded">
 <pre></pre>
 </div>
+<div created="20220426194323610" creator="Marty McGowan" modified="20220426194508647" modifier="Marty McGowan" tags="" title="CollapseTiddlyBackups_Usage">
+<pre># $ cd index.html_backup # where the backups live
+# $ last_backup -- # shows list of last backups of the day, to moved by...
+# $ [[last_daily]]     -- # save (move) the last backup of the day to .daily. -- 
+# $ emacs . 
+# D ....           --  delete all but the last few
+</pre>
+</div>
 <div created="20200930145959376" creator="Marty McGowan" modified="20201003200625872" modifier="Marty McGowan" tags="" title="collect tags">
 <pre>[[function tags]]  | [[collect tags]]
 
@@ -16633,6 +16659,9 @@ for at least two reasons:
 * see the discussion around the [[abstract]] concept, a more active model
 
 </pre>
+</div>
+<div created="20220426200250029" creator="Marty McGowan" modified="20220426200250029" modifier="Marty McGowan" title="comment">
+<pre></pre>
 </div>
 <div created="20200919194650829" creator="Marty McGowan" modified="20200920135111778" modifier="Marty McGowan" tags="julian_code" title="common_gj_code">
 <pre>[[common_gj_code]]
@@ -19910,6 +19939,9 @@ Use [[Dropbox]] instead.
 
 </pre>
 </div>
+<div created="20220426200250027" creator="Marty McGowan" modified="20220426200250027" modifier="Marty McGowan" title="if_missingargs">
+<pre></pre>
+</div>
 <div created="20201105144621193" creator="Marty McGowan" modified="20210308143515207" modifier="Marty McGowan" tags="[[2020-11-05 09:44]] code" title="if_missingargs_code">
 <pre>{{foreach}}</pre>
 </div>
@@ -20160,6 +20192,116 @@ date    	jday   	expect 	diff	significance
 </div>
 <div created="20210309143656996" creator="Marty McGowan" modified="20210309143656996" modifier="Marty McGowan" title="Lapsed">
 <pre></pre>
+</div>
+<div created="20220426194508647" creator="Marty McGowan" modified="20220426195555890" modifier="Marty McGowan" title="last_daily">
+<pre>{{last_daily_code}}
+
+These functions either list (last_backup) the last of the daily WikiDesktop backup files, or using that list, move (last_daily) those files to the .daily directory.
+
+In the event there are no files to move, each function produces an error message.  
+
+
+These functions are used by last_{daily,backup}:
+
+[[last_daily_utilities]]</pre>
+</div>
+<div created="20220426195124330" creator="Marty McGowan" modified="20220426195124330" modifier="Marty McGowan" tags="" title="last_daily_code">
+<pre>
+```
+last_daily () 
+{ 
+    : move the last daily backup to .DAILY;
+    : date: 2020-12-14;
+    local bdir=.daily;
+    local none=.ThisisNotaFile;
+    rm -f $none;
+    mkdir -p $bdir;
+    set -- $(last_backup);
+    mv ${*:-$none} $bdir
+}
+last_backup () 
+{ 
+    : list the last backup of the day;
+    : date: 2020-12-14;
+    : date: 2022-04-26;
+    set -- index.20*.html;
+    if_missingargs 1 $* &amp;&amp; { 
+        comment find some backup files;
+        return
+    };
+    ls -t $* | sed 's/\(index.........\)/\1 /' | printfirst | sed 's/ //'
+}
+
+```
+</pre>
+</div>
+<div created="20220426195555894" creator="Marty McGowan" modified="20220426200427634" modifier="Marty McGowan" title="last_daily_utilities">
+<pre>
+```
+if_missingargs () 
+{ 
+    : called N arg ..., displaying caller if insufficient argcount;
+    : related: foreach;
+    : date: 2021-01-03;
+    : date: 2021-08-18;
+    local shouldHave=$1;
+    shift;
+    report_notargcount $shouldHave $# || return 1;
+    : there were missing args;
+    declare -f $(myname 2);
+    return
+}
+comment () 
+{ 
+    : since the DECLARE -F idiom eats;
+    : date: 2018-02-16;
+    : date: 2021-03-24;
+    echo $* 1&gt;&amp;2
+}
+report_usage () 
+{ 
+    : writes: usage message of report_... caller FAILURE to STDERR;
+    : date: 2018-03-30;
+    local caller=$(myname 3);
+    : callStack;
+    echo USAGE $caller: $* 1&gt;&amp;2
+}
+report_notargcount () 
+{ 
+    : date: 2018-02-16;
+    : date: 2021-08-18;
+    [[ $2 -ge $1 ]] &amp;&amp; return 1;
+    report_usage need at least $1 arg/s: ${*:3}
+}
+myname () 
+{ 
+    : e.g. myname &quot;[n, default 1]&quot;;
+    : returns name of caller OR callers caller ...;
+    : date: 2018-02-16;
+    : date: 2021-02-18 attempt to accomodate zsh;
+    echo ${FUNCNAME[${1:-1}]}
+}
+printfirst () 
+{ 
+    : ~ STDIN or file ...;
+    : lists line with first INSTANCE of first FIELD;
+    : date: 2018-02-16;
+    : date: 2018-10-09;
+    awk '!printed [$1]++' $*
+}
+
+```
+These functions may already have their own home.  At least, the code is above, if not, here are the missing links:
+
+* [[if_missingargs]]
+* [[comment]]
+* [[report_usage]]
+* [[report_notargcount]]
+* [[myname]]
+* [[printfirst]]
+
+
+</pre>
 </div>
 <div created="20210309143656992" creator="Marty McGowan" modified="20210309143656992" modifier="Marty McGowan" title="latestbook">
 <pre></pre>
@@ -22087,6 +22229,9 @@ You may want to write [[The Author]]
 <div created="20210309143657001" creator="Marty McGowan" modified="20210309143657001" modifier="Marty McGowan" title="princetonmembership">
 <pre></pre>
 </div>
+<div created="20220426200250031" creator="Marty McGowan" modified="20220426200250031" modifier="Marty McGowan" title="printfirst">
+<pre></pre>
+</div>
 <div created="20210309143657002" creator="Marty McGowan" modified="20210309143657002" modifier="Marty McGowan" title="prlatest">
 <pre></pre>
 </div>
@@ -23218,6 +23363,9 @@ working.rdb      	2020-08-25	Tue
 <pre></pre>
 </div>
 <div created="20201003202830234" creator="Marty McGowan" modified="20201003202830234" modifier="Marty McGowan" title="report_exceedargcount">
+<pre></pre>
+</div>
+<div created="20220426200250030" creator="Marty McGowan" modified="20220426200250030" modifier="Marty McGowan" title="report_notargcount">
 <pre></pre>
 </div>
 <div created="20220204195155335" creator="Marty McGowan" modified="20220204195155335" modifier="Marty McGowan" title="report_nottype">
@@ -26945,6 +27093,9 @@ whf ()
 <pre></pre>
 </div>
 <div created="20200824182359469" creator="Marty McGowan" modified="20200824182359469" modifier="Marty McGowan" title="width">
+<pre></pre>
+</div>
+<div created="20220426195555892" creator="Marty McGowan" modified="20220426195555892" modifier="Marty McGowan" title="WikiDesktop">
 <pre></pre>
 </div>
 <div created="20200824182359470" creator="Marty McGowan" modified="20200824182359470" modifier="Marty McGowan" title="word">
