@@ -1201,6 +1201,8 @@ Error message and password prompt
 
 <li>file</li>
 
+<li>file backups</li>
+
 <li>find_profsfuns</li>
 
 <li>find_profsfuns_code</li>
@@ -14526,8 +14528,8 @@ exports.context = contextWidget;
 <div created="20200418121835270" creator="Marty McGOwan" modified="20220423201158141" modifier="Marty McGowan" title="$:/state/tab/sidebar--595412856">
 <pre>$:/core/ui/SideBar/Recent</pre>
 </div>
-<div created="20220316014306814" creator="Marty McGowan" modified="20220423201139854" modifier="Marty McGowan" title="$:/state/tab/whatshere-01--325356957">
-<pre>Shell Functions</pre>
+<div created="20220316014306814" creator="Marty McGowan" modified="20220428135451839" modifier="Marty McGowan" title="$:/state/tab/whatshere-01--325356957">
+<pre>Other Software</pre>
 </div>
 <div created="20200504200956301" modified="20200810170447722" title="$:/state/tabs/controlpanel/toolbars-1345989671">
 <pre>$:/core/ui/ControlPanel/Toolbars/ViewToolbar</pre>
@@ -14556,7 +14558,7 @@ exports.context = contextWidget;
 <div bag="default" created="20200810170615861" creator="M" modified="20200811134449245" modifier="Marty McGwan" revision="1" title="$:/status/UserName">
 <pre>Marty McGowan</pre>
 </div>
-<div created="20220426194510812" creator="Marty McGowan" list="last_daily_utilities last_daily CollapseTiddlyBackups_Usage [[Table of Contents]]" modified="20220426200304145" modifier="Marty McGowan" title="$:/StoryList">
+<div created="20220428135420999" creator="Marty McGowan" list="[[What's Here]] [[file backups]] [[Table of Contents]]" modified="20220428135420999" modifier="Marty McGowan" title="$:/StoryList">
 <pre></pre>
 </div>
 <div created="20200519141000553" list="$:/.giffmex/Buttons/more-tiddler-edit-actions $:/core/ui/Buttons/delete $:/core/ui/Buttons/cancel $:/core/ui/Buttons/save" modified="20200521145647980" tags="$:/giffmex/bigeditarea $:/giffmex/stroll" title="$:/tags/EditToolbar">
@@ -14641,8 +14643,8 @@ exports.context = contextWidget;
 <div created="20200502174943975" modified="20200502174950301" title="$:/temp/RenameTags/search">
 <pre>tb</pre>
 </div>
-<div created="20200418122544376" creator="Marty McGowan" modified="20220426192204294" modifier="Marty McGowan" title="$:/temp/search">
-<pre>last_daily</pre>
+<div created="20200418122544376" creator="Marty McGowan" modified="20220428135319028" modifier="Marty McGowan" title="$:/temp/search">
+<pre></pre>
 </div>
 <div created="20200429214841632" modified="20200429214841632" tags="$:/tags/ServerConnection" title="$:/temp/ServerConnection/https://tiddlywiki.com/library/v5.1.22/index.html" url="https://tiddlywiki.com/library/v5.1.22/index.html">
 <pre>loaded</pre>
@@ -18586,6 +18588,11 @@ The book, on p. 300 alerts on false reports.  In this case, the [[fd_testdata]] 
 <div created="20200928194345271" creator="Marty McGowan" modified="20200928194345271" modifier="Marty McGowan" title="file">
 <pre></pre>
 </div>
+<div created="20220428135532552" creator="Marty McGowan" modified="20220428135714841" modifier="Marty McGowan" tags="[[What's Here]]" title="file backups">
+<pre>In addition to [[The Only Backup You'll Ever Need]], pmario sent this link for a towers of hanoi backup scheme:
+
+https://github.com/pmario/file-backups</pre>
+</div>
 <div created="20220311140545986" creator="Marty McGowan" modified="20220311180208047" modifier="Marty McGowan" tags="dotprof" title="find_profsfuns">
 <pre>{{find_profsfuns_code}}
 </pre>
@@ -20206,8 +20213,7 @@ These functions are used by last_{daily,backup}:
 [[last_daily_utilities]]</pre>
 </div>
 <div created="20220426195124330" creator="Marty McGowan" modified="20220426195124330" modifier="Marty McGowan" tags="" title="last_daily_code">
-<pre>
-```
+<pre>```
 last_daily () 
 { 
     : move the last daily backup to .DAILY;
@@ -20236,8 +20242,7 @@ last_backup ()
 </pre>
 </div>
 <div created="20220426195555894" creator="Marty McGowan" modified="20220426200427634" modifier="Marty McGowan" title="last_daily_utilities">
-<pre>
-```
+<pre>```
 if_missingargs () 
 { 
     : called N arg ..., displaying caller if insufficient argcount;
