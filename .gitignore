@@ -10,4 +10,12 @@
 *.tsv
 *~
 
+# directories
 
+rdb/
+TTGL/
+lib/
+miw/
+rdb/
+reading/
+shelf/
